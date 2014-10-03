@@ -1,0 +1,192 @@
+---
+---
+$container-large-desktop: 970px;
+
+$font-family-base: "Merriweather", "Helvetica Neue", Arial, sans-serif;
+$headings-font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+$headings-font-weight: 700;
+
+$font-size-base: 14px;
+$font-size-h1: floor(($font-size-base * 2));
+$font-size-h2: floor(($font-size-base * 1.4));
+$font-size-h3: floor(($font-size-base * 1));
+$font-size-h4: floor(($font-size-base * 1.1));
+$font-size-h5: floor(($font-size-base * 1));
+$font-size-h6: floor(($font-size-base * 1));
+$blockquote-font-size: floor(($font-size-base * 1.25));
+$line-height-base: 1;
+$headings-line-height: 1;
+
+$navbar-default-bg: #fff;
+$navbar-default-border: #fff;
+$navbar-default-brand-color: #333;
+$navbar-height: 60px;
+$navbar-inverse-link-color: #fff;
+$navbar-inverse-toggle-border-color: #fff;
+$navbar-inverse-color: rgba(#fff, 0.75);
+$navbar-inverse-toggle-hover-bg: rgba(#fff, 0.2);
+
+$gray-dark: #555;
+$gray: #888;
+$btn-default-color: #555;
+$gray-light: #aaa;
+
+$brand-primary: #3498db;
+$code-color: #555;
+$code-bg: #f5f5f5;
+$headings-color: #333;
+
+// http://flatuicolors.com/
+$dark: #3d566e;
+$dark-brand-primary: #5b7fa4; // Set saturation to 50
+$turquoise: #1abc9c;
+$green: #2ecc71;
+$blue: #3498db;
+$purple: #9b59b6;
+$orange: #e67e22;
+$red: #e74c3c;
+
+{% unless site.color == "default" %}
+  $theme-color: ${{ site.color }};
+  $navbar-inverse-bg: $theme-color;
+  @if $theme-color == $dark {
+    $brand-primary: $dark-brand-primary;
+  } @else {
+    $brand-primary: $theme-color;
+  }
+{% endunless %}
+
+@import "custom-bootstrap-variables";
+@import "bootstrap-sass/bootstrap";
+
+$space-xs: $line-height-computed * 1;
+$space-sm: $line-height-computed * 1.5;
+$space-md: $line-height-computed * 2;
+
+p { 
+  line-height: 25px;
+}
+
+li { 
+  line-height: 25px;
+}
+
+h3 {
+  text-transform: uppercase;
+}
+
+.headline {
+  color: $dark;
+}
+
+.lead {
+  @media (min-width: $screen-sm-min) {
+    font-size: $blockquote-font-size;
+  }
+}
+
+.btn {
+  font-family: $headings-font-family;
+}
+
+
+.post-title-home {
+  a {
+    color: inherit;
+  }
+}
+
+.post-title-archive {
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  margin-right: 1em;
+}
+
+.post-content img,
+.post-excerpt-home img,
+.post-nav img {
+  @extend .img-responsive;
+}
+
+.navbar-brand {
+  font-weight: $headings-font-weight;
+}
+.navbar {
+  font-family: $headings-font-family;
+}
+
+.footer {
+  margin: $space-sm 0 $space-sm;
+  font-size: $font-size-small;
+  color: $gray-light;
+}
+
+#welcome {
+  margin: 30px 0 20px 0;
+}
+
+#welcome-header {
+  margin-bottom: 20px;
+}
+
+#welcome-fluo {
+  margin-bottom: 15px;
+}
+
+#news-posts {
+  margin: 40px 0 40px 0;
+}
+
+#news-header {
+  margin-bottom: 15px;
+}
+
+#news-archive-link {
+  margin-top: 10px;
+}
+
+#view-on-github {
+  margin-right: 1em;
+}
+
+#archive {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+#archive-header {
+  margin-bottom: 30px;
+}
+
+// posts
+
+.post-header {
+  margin-top: 30px;
+}
+
+#post-view-more {
+  margin-top: 40px;
+}
+
+// page 
+
+#page-content {
+  margin-top: 20px;
+}
+
+@media(max-width: $screen-xs-max) {
+  .navbar-header {
+    text-align: center;
+  }
+  .navbar-brand {
+    display: inline-block;
+    float: none;
+  }
+  .navbar-toggle-wrapper {
+    position: absolute;
+    left: $navbar-padding-horizontal;
+    height: ($navbar-height + 34px) / 2;
+  }
+}
+
+@import "custom-scss";

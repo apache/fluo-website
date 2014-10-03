@@ -1,0 +1,14 @@
+---
+layout: default
+---
+<div class="post-header">
+  <h2 class="post-title-main">{{ page.title }}</h1>
+  <p class="text-muted">{{ page.date | date_to_string }}</p>
+</div>
+<div class="post-content">
+  {{ content }}
+</div>
+
+<div id="post-view-more">
+  <p>View more posts in <a href="{{ "/archive" | prepend:site.baseurl }}">News Archive</a></p>
+</div>

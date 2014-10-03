@@ -1,0 +1,35 @@
+---
+---
+<div id="welcome">
+  <h2 id="welcome-header">Welcome</h2>
+  <div class="row">
+    <div class="col-sm-12">
+      <h4 id="welcome-fluo"><a href="https://github.com/fluo-io/fluo" target="_blank">Fluo</a> is a transactional key value store that enables incremental processing</h4>
+      <p>Fluo is an implementation of <a href="http://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> built on <a href="https://accumulo.apache.org/" target="_blank">Accumulo</a> thats run in <a href="http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html" target="_blank">YARN</a>.</p>
+      <p>If you are new to Fluo, check out the following resources:</p>
+      <ul>
+        <li>Follow the <a href="{{ "/quickstart" | prepend:site.baseurl }}">quickstart</a> guide to run a simple Fluo application</li>
+        <li>Check out <a href="https://github.com/fluo-io/phrasecount" target="_blank">phrase count</a> example to see a more complicated Fluo application</li>
+        <li>See how you can <a href="{{ "/getinvolved" | prepend:site.baseurl }}">get involved</a> in the Fluo project</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="news-posts">
+  <h2 id="news-header">Latest News</h2>
+  {% for post in site.posts limit:site.num_home_posts %}
+  <div class="post-header-home">
+    <div class="row">
+      <div class="col-sm-2">
+        <p class="text-muted">{{ post.date | date_to_string }}</p>
+      </div>
+      <div class="col-sm-10">
+        <h4 class="post-title-home"><a href="{{ post.url | prepend:site.baseurl }}">{{ post.title }}</a></h3>
+      </div>
+  </div>
+  {% endfor %}
+  <div id="news-archive-link">
+    <a href="{{ "/archive" | prepend:site.baseurl }}">News Archive</a>
+  </div>
+</div>
