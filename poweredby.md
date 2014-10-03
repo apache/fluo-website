@@ -17,6 +17,7 @@ Fluo is powered by these great open source projects:
 * [Junit][junit]
 * [Guava][guava]
 * [slf4j][slf4j]
+* [TravisCI][travisci]
 
 This website is powered by these awesome projects:
 
@@ -37,6 +38,7 @@ This website is powered by these awesome projects:
 [guava]: https://code.google.com/p/guava-libraries/
 [maven]: http://maven.apache.org/
 [slf4j]: http://www.slf4j.org/
+[travisci]: https://travis-ci.org/
 [bootstrap]: http://getbootstrap.com/
 [fontawesome]: http://fontawesome.io/
 [jekyll]: http://jekyllrb.com/
