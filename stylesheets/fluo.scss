@@ -108,6 +108,8 @@ h3 {
   @extend .img-responsive;
 }
 
+// default.html
+
 .navbar-brand {
   font-weight: $headings-font-weight;
 }
@@ -115,11 +117,17 @@ h3 {
   font-family: $headings-font-family;
 }
 
+#view-on-github {
+  margin-right: 1em;
+}
+
 .footer {
   margin: $space-sm 0 $space-sm;
   font-size: $font-size-small;
   color: $gray-light;
 }
+
+// index.html
 
 #welcome {
   margin: 30px 0 20px 0;
@@ -143,10 +151,7 @@ h3 {
 
 #news-archive-link {
   margin-top: 10px;
-}
-
-#view-on-github {
-  margin-right: 1em;
+  font-size: $font-size-small;
 }
 
 #archive {
