@@ -4,8 +4,9 @@ title: Quickstart
 permalink: /quickstart/
 ---
 
-This quickstart example runs a Fluo application that counts the number of unique words in documents 
-loaded into Fluo.  In order to run this example, you will need [Git], [Java], and [Maven] installed.
+This quickstart example runs a Fluo application that counts the number of times each word occurs
+in documents loaded into Fluo.  In order to run this example, you will need [Git], [Java], and 
+[Maven] installed.
 
 First, clone the [fluo-quickstart] repo:
 
