@@ -1,11 +1,10 @@
 ---
-title: Archive
-permalink: "/archive/"
+title: Blog Archive
+permalink: "/blog-archive/"
 ---
-
 <div id="archive">
-  <h2 id="archive-header">News Archive</h2>
-{% for post in site.posts %}
+  <h2 id="archive-header">Blog Archive</h2>
+{% for post in site.categories.blog %}
   {% assign post_month_year = post.date | date: "%B %Y" %}
   {% assign newer_post_month_year = post.next.date | date: "%B %Y" %}
   {% if post_month_year != newer_post_month_year %}
