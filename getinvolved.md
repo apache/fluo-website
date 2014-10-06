@@ -10,6 +10,10 @@ Below are some ways that you can get involved in Fluo:
 
 Join our public mailing list by sending an email to ```fluo-dev+subscribe@googlegroups.com```.  Discussions regarding issues and pull requests should remain on [GitHub][1].  Our email list is for announcing releases, organizing meet ups, or any discussion that doesn't make sense for GitHub. 
 
+### IRC
+
+Drop by and chat about Fluo at [#fluo][6] on [freenode][7].  
+
 ### User feedback 
 
 Create an [issue][2] on Github or send an email to ```fluo-dev@googlegroups.com```.
@@ -23,3 +27,5 @@ Contributions are welcome to all [Fluo projects][5]! All Fluo projects follow a 
 [3]: http://www.apache.org/foundation/glossary.html#ReviewThenCommit
 [4]: https://github.com/fluo-io/fluo/wiki/Contributing
 [5]: https://github.com/fluo-io
+[6]: irc://chat.freenode.net/fluo
+[7]: https://freenode.net/
