@@ -1,0 +1,21 @@
+---
+title: Release Archive
+permalink: "/release-archive/"
+---
+
+<div id="archive">
+  <h2 id="archive-header">Release Archive</h2>
+{% for release in site.categories.releases %}
+  {% assign release_month_year = release.date | date: "%B %Y" %}
+  {% assign newer_release_month_year = release.next.date | date: "%B %Y" %}
+  {% if release_month_year != newer_release_month_year %}
+    <h3 class="archive-section-header">
+      {{ release_month_year }}
+    </h3>
+  {% endif %}
+  <p>
+    <a href="{{ release.url | prepend:site.baseurl}}" class="release-title-archive">{{ release.title }}</a>
+    <small class="text-muted">{{ release.date | date_to_string }}</small>
+  </p>
+{% endfor %}
+</div>
