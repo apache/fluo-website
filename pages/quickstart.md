@@ -29,12 +29,13 @@ mvn exec:java -Dexec.mainClass=io.fluo.quickstart.Main -Dexec.cleanupDaemonThrea
 
 The quickstart [Main] class does all of the heavy lifting.  It starts a local Fluo instance (called MiniFluo), 
 adds documents, waits for the [DocumentObserver] to finish processing all documents, and then prints 
-out the word counts of the loaded documents.  It finally shutdowns MiniFluo before exiting. 
+out the word counts of the loaded documents.  It finally shutdowns MiniFluo before exiting.  It may help to
+reference the [API javadocs][api] while you are learning the Fluo API.
 
 This example is intentionally not comprehensive to keep it short and provide you an opportunity to experiment.
 Further improvements are suggested in the source code comments of [Main] & [DocumentObserver] if you are
 interested. For a more comprehensive Fluo application, see the [phrasecount] example.
-
+  
 [Git]: http://git-scm.com/
 [Java]: https://www.oracle.com/java/index.html
 [Maven]: http://maven.apache.org/
@@ -42,3 +43,4 @@ interested. For a more comprehensive Fluo application, see the [phrasecount] exa
 [Main]: https://github.com/fluo-io/fluo-quickstart/blob/master/src/main/java/io/fluo/quickstart/Main.java
 [DocumentObserver]: https://github.com/fluo-io/fluo-quickstart/blob/master/src/main/java/io/fluo/quickstart/DocumentObserver.java
 [phrasecount]: https://github.com/fluo-io/phrasecount
+[api]: /apidocs/1.0.0-alpha-1/api/
