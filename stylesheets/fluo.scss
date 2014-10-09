@@ -63,6 +63,10 @@ $space-xs: $line-height-computed * 1;
 $space-sm: $line-height-computed * 1.5;
 $space-md: $line-height-computed * 2;
 
+th, td {
+  padding: 10px 5px 10px 0px;
+}
+
 p { 
   line-height: 25px;
 }
