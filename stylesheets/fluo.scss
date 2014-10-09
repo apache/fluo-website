@@ -6,6 +6,8 @@ $font-family-base: "Merriweather", "Helvetica Neue", Arial, sans-serif;
 $headings-font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
 $headings-font-weight: 700;
 
+$table-font-family: "Helvetica", Arial, sans-serif;
+
 $font-size-base: 14px;
 $font-size-h1: floor(($font-size-base * 2));
 $font-size-h2: floor(($font-size-base * 1.4));
@@ -63,20 +65,42 @@ $space-xs: $line-height-computed * 1;
 $space-sm: $line-height-computed * 1.5;
 $space-md: $line-height-computed * 2;
 
-th, td {
-  padding: 10px 5px 10px 0px;
+table, th, td {
+  padding: 10px 5px 10px 5px;
+  border: 1px solid black;
+  font-family: $table-font-family;
 }
 
 p { 
   line-height: 25px;
+  margin-left: 8px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.text-muted {
+  margin-left: 0px;
+}
+
+tr:nth-child(even) {background: #DFEBF2}
+tr:nth-child(odd) {background: #FFF}
+
+.highlight {
+  padding-left: 8px;
+  padding-bottom: 4px;
 }
 
 li { 
   line-height: 25px;
+  padding-left: 3px;
 }
 
 h3 {
   text-transform: uppercase;
+}
+
+h4 {
+  padding-top: 7px;
 }
 
 .headline {
