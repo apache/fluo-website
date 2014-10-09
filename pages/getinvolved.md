@@ -16,7 +16,7 @@ Drop by and chat about Fluo at [#fluo][6] on [freenode][7].
 
 ### User feedback 
 
-Create an [issue][2] on Github or send an email to ```fluo-dev@googlegroups.com```.
+Create a [fluo issue][2] on Github or send an email to ```fluo-dev@googlegroups.com```.  If you have suggestions for this website, open a [web issue][8].
 
 ### Contributions 
 
@@ -29,3 +29,4 @@ Contributions are welcome to all [Fluo projects][5]! All Fluo projects follow a 
 [5]: https://github.com/fluo-io
 [6]: irc://chat.freenode.net/fluo
 [7]: https://freenode.net/
+[8]: https://github.com/fluo-io/fluo-io.github.io/issues
