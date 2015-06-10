@@ -25,6 +25,7 @@ fi
 mkdir -p $RELEASE_DOCS
 
 cd $FLUO_PATH
+git checkout $RELEASE_VERSION
 mvn clean javadoc:aggregate
 cp -r target/site/apidocs $RELEASE_DOCS/full
 
