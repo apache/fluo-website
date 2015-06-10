@@ -6,7 +6,10 @@ permalink: /apidocs/
 
 Below are the Fluo API and full codebase javadocs for each Fluo release:
 
-* 1.0.0-alpha-1: [API docs][1], [Full docs][2]
+* 1.0.0-beta-1: [API docs][1], [Full docs][2]
+* 1.0.0-alpha-1: [API docs][3], [Full docs][4]
 
-[1]: /apidocs/1.0.0-alpha-1/api/
-[2]: /apidocs/1.0.0-alpha-1/full/
+[1]: /apidocs/1.0.0-beta-1/api/
+[2]: /apidocs/1.0.0-beta-1/full/
+[3]: /apidocs/1.0.0-alpha-1/api/
+[4]: /apidocs/1.0.0-alpha-1/full/
