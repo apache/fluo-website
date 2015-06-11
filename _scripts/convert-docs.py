@@ -16,9 +16,12 @@ args = output_dir.rpartition("/docs")
 url_prefix = args[1] + args[2]
 release_ver = url_prefix.split("/")[2]
 github_prefix = "https://github.com/fluo-io/fluo/blob/{0}/modules/".format(release_ver)
+apidocs_prefix = "/apidocs/{0}/full/".format(release_ver)
 resources_prefix = "/docs/{0}/resources/".format(release_ver)
 
 def path_to_url(path):
+  if path.find("#") != -1:
+    print "WARNING - URL references anchor tag #: ", path.strip()
   url = url_prefix + path.rpartition("/")[2].replace(".md", "/")
   if url.endswith("/index/"):
     return url.replace("/index/", "/")
@@ -51,12 +54,17 @@ def convert_file(inPath, outPath):
         if line.startswith("["):
           if line.find(".md") != -1:
             for word in line.split(' '):
-              if word.strip().endswith(".md"):
+              if word.find(".md") != -1:
                 fout.write(path_to_url(word))
               else:
                 fout.write(word+" ")
           elif line.find("../modules") != -1:
-            fout.write(line.replace("../modules/", github_prefix))
+            if line.strip().endswith(".java"):
+              start = line.find("../modules/")
+              end = line.find("io/fluo")
+              fout.write(line.replace(line[start:end], apidocs_prefix).replace(".java", ".html"))
+            else:
+              fout.write(line.replace("../modules/", github_prefix))
           elif line.find("resources/") and any(x in line for x in ('.png','.jpg','.pdf')):
             fout.write(line.replace("resources/", resources_prefix))
           else:
