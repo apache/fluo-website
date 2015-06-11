@@ -1,30 +1,46 @@
 Fluo website
 ============
 
-The Fluo website is powered by [Jekyll][1].
+Code powering the Fluo project website ([http://fluo.io](http://fluo.io)).
 
-Before you can run the website locally, you will need to [install][2] Jekyll.  
+Contributions
+-------------
 
-Once Jekyll is installed, use the following command to run the website locally:
-```
-jekyll serve --watch
+Contributions to the website can be made by submitting pull requests to this repo. 
+If you want to view your changes in your browser before submitting a pull request, 
+you will need install [Jekyll] on your machine by following these [instructions].
+Once Jekyll is installed, use the following command to run the development server:
 
-```
-Then, browse to `http://localhost:4000`.
+    jekyll serve --watch
 
-Generating Javadocs
--------------------
+Next, open a web browser to [http://localhost:4000](http://localhost:4000).
 
-For each release, Javadocs need to be generated for the Fluo codebase and copied to the `apidocs/` directory.
+Fluo releases
+-------------
 
-This process is scripted by `gen-javadocs.sh` which is run with the release version and the path to your Fluo repo:
+Below are the steps required to update the Fluo project website for a new release 
+(substitute `1.0.0-beta-1` with the version of your release):
 
-```
-./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo
-```
+1. Run the commands below to copy and convert documentation in your release tag of
+   your Fluo repo to this repo:
 
-After running `gen-javadoc.sh`, you will need to modify the API index at `apidocs/index.md` to include the javadocs 
-for the new release.
+    ```bash
+    cd fluo-io.github.io
+    mkdir -p docs/1.0.0-beta-1
+    ./_scripts/convert-docs.py /path/to/fluo/docs/ /path/to/fluo-io.github.io/docs/1.0.0-beta-1/
+    ```
 
-[1]: http://jekyllrb.com/
-[2]: http://jekyllrb.com/docs/installation/
+2. Run this command to generate Javadocs from your your Fluo release tag repo and 
+   copy them to this repo.  The command assumes that you have a tag in your Fluo
+   repo named after your release version (i.e 1.0.0-beta-1):
+
+    ```bash
+    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo
+    ```
+
+3. Modify `apidocs/index.md` to point to the new javadocs that you just generated.
+
+4. Create a blog post announcing the release in `_posts/blog/`
+
+[Jekyll]: http://jekyllrb.com/
+[instructions]: http://jekyllrb.com/docs/installation/
