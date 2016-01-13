@@ -4,7 +4,8 @@ title:  Fluo 1.0.0-beta-1 Documentation
 permalink: /docs/1.0.0-beta-1/
 ---
 
-**Please Note** - This documentation is for the latest Fluo release.  Documentation for prior releases can be found [here](/docs/)
+**Please Note** - This documentation is for an older Fluo release.  Documentation for all
+releases can be found [here](/docs/)
 
 **Fluo is transaction layer that enables incremental processsing on big data.**
 
