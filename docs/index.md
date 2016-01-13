@@ -6,7 +6,7 @@ permalink: /docs/
 
 Below are links to the documentation for each Fluo release:
 
-* [1.0.0-beta-2][b2] - January 13, 2016 - **Latest Release**
+* [1.0.0-beta-2][b2] - January 12, 2016 - **Latest Release**
 * [1.0.0-beta-1][b1] - June 9, 2015
 * [1.0.0-alpha-1][a1] - October 2, 2014
 
