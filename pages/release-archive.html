@@ -5,7 +5,7 @@ permalink: "/release-archive/"
 
 <div id="archive">
   <h2 id="archive-header">Release Archive</h2>
-{% for release in site.categories.releases %}
+{% for release in site.categories.release-summaries %}
   {% assign release_month_year = release.date | date: "%B %Y" %}
   {% assign newer_release_month_year = release.next.date | date: "%B %Y" %}
   {% if release_month_year != newer_release_month_year %}

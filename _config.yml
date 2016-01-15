@@ -28,3 +28,6 @@ num_home_posts: 3
 
 # Color scheme based on http://flatuicolors.com/.
 color: default
+
+# Fluo specific settings
+latest_release: "1.0.0-beta-2"
