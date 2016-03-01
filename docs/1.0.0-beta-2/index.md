@@ -19,7 +19,7 @@ There are several ways to run Fluo (listed in order of increasing difficulty):
 * [quickstart] - Starts a MiniFluo instance that is configured to run a word count application
 * [MiniFluo] - Sets up a minimal Fluo instance that writes its data to single directory
 * [fluo-dev] - Command-line tool for running Fluo and its dependencies on a single machine
-* [fluo-deploy] - Command-line tool that launches an AWS cluster and deploys Fluo and its dependencies to it
+* [Zetten] - Command-line tool that launches an AWS cluster and deploys Fluo and its dependencies to it
 * [Production] - Sets up Fluo on a cluster where Accumulo, Hadoop & Zookeeper are running
 
 Except for [quickstart], all above will set up a Fluo application that will be idle unless you
@@ -41,7 +41,7 @@ application][applications] or configure your Fluo application to run an example 
 [YARN]: http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html
 [quickstart]: https://github.com/fluo-io/fluo-quickstart
 [fluo-dev]: https://github.com/fluo-io/fluo-dev
-[fluo-deploy]: https://github.com/fluo-io/fluo-deploy
+[Zetten]: https://github.com/fluo-io/zetten
 [phrasecount]: https://github.com/fluo-io/phrasecount
 [fluo-stress]: https://github.com/fluo-io/fluo-stress
 [MiniFluo]: /docs/1.0.0-beta-2/mini-fluo-setup/
