@@ -1,10 +1,9 @@
 ---
 ---
 <div id="welcome">
-  <h2 id="welcome-header">Welcome</h2>
   <div class="row">
-    <div class="col-sm-12">
-      <h4 id="welcome-fluo"><a href="https://github.com/fluo-io/fluo" target="_blank">Fluo</a> is a transaction layer that enables incremental processing on big data</h4>
+    <div class="col-sm-6">
+      <h2 id="welcome-fluo"><a href="https://github.com/fluo-io/fluo" target="_blank">Fluo</a> is a transaction layer that enables incremental processing on big data</h2>
       <p>Fluo is an implementation of <a href="http://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> built on <a href="https://accumulo.apache.org/" target="_blank">Accumulo</a> thats run in <a href="http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html" target="_blank">YARN</a>.</p>
       <p>If you are new to Fluo, check out the following resources:</p>
       <ul>
@@ -14,24 +13,23 @@
         <li>See how you can <a href="{{ "/getinvolved" | prepend:site.baseurl }}">get involved</a> in the Fluo project</li>
       </ul>
     </div>
-  </div>
-</div>
-
-<div id="news-posts">
-  <h2 id="news-header">Latest News</h2>
-  {% for post in site.categories.blog limit:site.num_home_posts %}
-  <div class="post-header-home">
-    <div class="row">
-      <div class="col-sm-2">
-        <p class="text-muted">{{ post.date | date_to_string }}</p>
+    <div class="col-sm-5 col-sm-offset-1">
+      <h2 id="news-header">Latest News</h2>
+      {% for post in site.categories.blog limit:site.num_home_posts %}
+      <div class="post-header-home">
+        <div class="row">
+          <div class="col-sm-4">
+            <p class="text-muted">{{ post.date | date_to_string }}</p>
+          </div>
+          <div class="col-sm-8">
+            <h4><a href="{{ post.url | prepend:site.baseurl }}">{{ post.title }}</a></h4>
+          </div>
+        </div>
       </div>
-      <div class="col-sm-10">
-        <h4><a href="{{ post.url | prepend:site.baseurl }}">{{ post.title }}</a></h4>
+      {% endfor %}
+      <div id="news-archive-link">
+        View all blog posts in <a href="{{ "/blog-archive" | prepend:site.baseurl }}">Archive</a>
       </div>
     </div>
-  </div>
-  {% endfor %}
-  <div id="news-archive-link">
-    View all blog posts in <a href="{{ "/blog-archive" | prepend:site.baseurl }}">Archive</a>
   </div>
 </div>
