@@ -9,9 +9,6 @@ Contributions
 Contributions to the website can be made by submitting pull requests to this repo. 
 If you want to view your changes in your browser before submitting a pull request, 
 you will need install [Jekyll] on your machine by following these [instructions].
-In addition to Jekyll, install redcarpet to format markdown.
-
-    gem install redcarpet
 
 Once Jekyll is installed, use the following command to run the development server:
 
