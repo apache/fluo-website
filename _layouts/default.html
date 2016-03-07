@@ -17,7 +17,7 @@
     <![endif]-->
   </head>
   <body>
-    <div class="navbar navbar-default navbar-static-top">
+    <div id="fluo-nav" class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
           <div class="navbar-toggle-wrapper visible-xs">
@@ -27,15 +27,14 @@
               <span class="icon-bar"></span>
             </button>
           </div>
-          <a href="{{ "/" | prepend:site.baseurl }}" class="navbar-brand">{{ site.title }}</a>
+          <a href="{{ "/" | prepend:site.baseurl }}" class="navbar-brand"><img src="/resources/fluo-logo.png" alt="Fluo"></a>
         </div>
-        <div class="collapse navbar-collapse js-navbar-collapse">
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
           <ul class="navbar-nav nav">
             <li><a href="{{ site.baseurl }}/docs/{{ site.latest_release }}/">Documentation</a></li>
             <li><a href="https://github.com/fluo-io/fluo/releases/tag/{{ site.latest_release }}" target="_blank">Download</a></li>
             <li><a href="{{ "/apidocs/" | prepend:site.baseurl }}">API</a></li>
             <li><a href="{{ site.baseurl }}/{{site.latest_release }}-release">Latest Release</a></li>
-            <li><a href="{{ "/getinvolved" | prepend:site.baseurl }}">Get Involved</a></li>
           </ul>
           <ul class="navbar-nav nav navbar-right">
             <li>
