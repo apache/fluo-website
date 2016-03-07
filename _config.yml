@@ -3,11 +3,6 @@ title: Fluo
 baseurl: "" # the subpath of site
 url: "http://fluo.io" # the base hostname & protocol for your site
 
-# Build settings
-markdown: redcarpet
-redcarpet:
-  extensions: ["tables"]
-
 permalink: :title
 defaults:
   -
