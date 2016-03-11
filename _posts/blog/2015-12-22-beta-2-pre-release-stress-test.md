@@ -1,8 +1,7 @@
 ---
-layout: post
 title:  "Beta 2 pre-release stress test"
 date:   2015-12-22 15:30:00
-categories: blog
+redirect_from: /beta-2-pre-release-stress-test/
 ---
 
 In preperation for a beta 2 release, the [stress test][3] was run again on EC2.
@@ -60,8 +59,8 @@ Further testing
 
 A long run of webindex will also be run on EC2 before releasing beta-2.
 
-[1]: /stress-test-long-run/
-[2]: /1.0.0-beta-1-release-notes/
+[1]: /blog/2014/12/30/stress-test-long-run/
+[2]: /release-notes/1.0.0-beta-1/
 [3]: https://github.com/fluo-io/fluo-stress
 [4]: https://github.com/fluo-io/fluo/commit/c4789b3100092683b37c57c48ddd87993e84972c
 [5]: https://github.com/fluo-io/fluo-stress/commit/32edaf91138bb13b442632262c23e7f13f8fb17c

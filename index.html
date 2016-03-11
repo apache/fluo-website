@@ -10,7 +10,7 @@
         <li>Read the latest <a href="{{ site.baseurl }}/docs/{{ site.latest_release }}/">documentation</a> for the Fluo {{ site.latest_release }} release</li>
         <li>Run the Fluo <a href="https://github.com/fluo-io/fluo-quickstart" target="_blank">quickstart</a> example application</li>
         <li>View the <a href="https://github.com/fluo-io/phrasecount" target="_blank">phrase count</a> example to see a more comprehensive Fluo application</li>
-        <li>See how you can <a href="{{ "/getinvolved" | prepend:site.baseurl }}">get involved</a> in the Fluo project</li>
+        <li>See how you can <a href="{{ site.baseurl }}/getinvolved">get involved</a> in the Fluo project</li>
       </ul>
     </div>
     <div class="col-sm-5 col-sm-offset-1">
@@ -22,13 +22,13 @@
             <p class="text-muted">{{ post.date | date_to_string }}</p>
           </div>
           <div class="col-sm-8">
-            <h4><a href="{{ post.url | prepend:site.baseurl }}">{{ post.title }}</a></h4>
+            <h4><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h4>
           </div>
         </div>
       </div>
       {% endfor %}
       <div id="news-archive-link">
-        View all blog posts in <a href="{{ "/blog-archive" | prepend:site.baseurl }}">Archive</a>
+        View all blog posts in the <a href="{{ site.baseurl }}/blog/">archive</a>
       </div>
     </div>
   </div>

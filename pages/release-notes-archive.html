@@ -1,11 +1,11 @@
 ---
-title: Release Archive
-permalink: "/release-archive/"
+title: Fluo Release Notes Archive
+permalink: "/release-notes/"
 ---
 
 <div id="archive">
-  <h2 id="archive-header">Release Archive</h2>
-{% for release in site.categories.release-summaries %}
+  <h2 id="archive-header">{{ page.title }}</h2>
+{% for release in site.categories.release-notes %}
   {% assign release_month_year = release.date | date: "%B %Y" %}
   {% assign newer_release_month_year = release.next.date | date: "%B %Y" %}
   {% if release_month_year != newer_release_month_year %}
@@ -14,8 +14,8 @@ permalink: "/release-archive/"
     </h3>
   {% endif %}
   <p>
-    <a href="{{ release.url | prepend:site.baseurl}}" class="release-title-archive">{{ release.title }}</a>
-    <small class="text-muted">{{ release.date | date_to_string }}</small>
+    <small class="text-muted">{{ release.date | date_to_string }}</small> &nbsp;
+    <a href="{{ site.baseurl }}/release-notes/{{ release.version }}/">{{ release.version }}</a>
   </p>
 {% endfor %}
 </div>

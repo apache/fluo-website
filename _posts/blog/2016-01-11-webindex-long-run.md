@@ -1,8 +1,7 @@
 ---
-layout: post
 title:  "Running Webindex for 3 days on EC2"
 date:   2016-01-11 03:30:00
-categories: blog
+redirect_from: /webindex-long-run/
 ---
 
 In preparation for the Fluo beta 2 release, [Webindex][webindex], an example

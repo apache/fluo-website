@@ -1,8 +1,7 @@
 ---
-layout: post
 title:  "First long stress test run on Fluo"
 date:   2014-12-30 17:00:00
-categories: blog
+redirect_from: /stress-test-long-run/
 ---
 
 Fluo has a [stress test][1] which computes the number of unique integers
