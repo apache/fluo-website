@@ -26,7 +26,7 @@ defaults:
     values:
       layout: "release-notes"
       category: "release-notes"
-      permalink: "/:categories/:title"
+      permalink: "/:categories/:title/"
   -
     scope:
       path: "_posts/release-summaries"
@@ -34,7 +34,7 @@ defaults:
     values:
       layout: "release-summary"
       category: "release-summaries"
-      permalink: "/:categories/:title"
+      permalink: "/:categories/:title/"
 
 # Number of posts displayed on the home page.
 num_home_posts: 5
