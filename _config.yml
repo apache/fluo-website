@@ -3,7 +3,8 @@ title: Fluo
 baseurl: "" # the subpath of site
 url: "http://fluo.io" # the base hostname & protocol for your site
 
-permalink: :title
+permalink: pretty
+
 defaults:
   -
     scope:
@@ -13,10 +14,27 @@ defaults:
       layout: "default"
   -
     scope:
-      path: ""
+      path: "_posts/blog"
       type: "posts"
     values:
       layout: "post"
+      category: "blog"
+  - 
+    scope:
+      path: "_posts/release-notes"
+      type: "posts"
+    values:
+      layout: "release-notes"
+      category: "release-notes"
+      permalink: "/:categories/:title"
+  -
+    scope:
+      path: "_posts/release-summaries"
+      type: "posts"
+    values:
+      layout: "release-summary"
+      category: "release-summaries"
+      permalink: "/:categories/:title"
 
 # Number of posts displayed on the home page.
 num_home_posts: 5
@@ -26,3 +44,6 @@ color: default
 
 # Fluo specific settings
 latest_release: "1.0.0-beta-2"
+
+gems: [jekyll-redirect-from]
+whitelist: [jekyll-redirect-from]

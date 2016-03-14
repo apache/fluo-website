@@ -9,6 +9,7 @@ Contributions
 Contributions to the website can be made by submitting pull requests to this repo. 
 If you want to view your changes in your browser before submitting a pull request, 
 you will need install [Jekyll] on your machine by following these [instructions].
+You will also need to install all gems in the [Gemfile].
 
 Once Jekyll is installed, use the following command to run the development server:
 
@@ -44,4 +45,5 @@ Below are the steps required to update the Fluo project website for a new releas
 4. Create a blog post announcing the release in `_posts/blog/`
 
 [Jekyll]: http://jekyllrb.com/
+[Gemfile]: Gemfile
 [instructions]: http://jekyllrb.com/docs/installation/

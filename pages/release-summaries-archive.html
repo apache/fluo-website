@@ -1,0 +1,21 @@
+---
+title: Fluo Release Summaries Archive
+permalink: "/release-summaries/"
+---
+
+<div id="archive">
+  <h2 id="archive-header">{{ page.title }}</h2>
+{% for release in site.categories.release-summaries %}
+  {% assign release_month_year = release.date | date: "%B %Y" %}
+  {% assign newer_release_month_year = release.next.date | date: "%B %Y" %}
+  {% if release_month_year != newer_release_month_year %}
+    <h3 class="archive-section-header">
+      {{ release_month_year }}
+    </h3>
+  {% endif %}
+  <p>
+    <small class="text-muted">{{ release.date | date_to_string }}</small> &nbsp;
+    <a href="{{ site.baseurl }}/release-summaries/{{ release.version }}/" class="release-title-archive">{{ release.version }}</a>
+  </p>
+{% endfor %}
+</div>

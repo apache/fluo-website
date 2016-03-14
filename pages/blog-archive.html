@@ -1,9 +1,9 @@
 ---
-title: Blog Archive
-permalink: "/blog-archive/"
+title: Fluo Blog Archive
+permalink: "/blog/"
 ---
 <div id="archive">
-  <h2 id="archive-header">Blog Archive</h2>
+  <h2 id="archive-header">{{ page.title }}</h2>
 {% for post in site.categories.blog %}
   {% assign post_month_year = post.date | date: "%B %Y" %}
   {% assign newer_post_month_year = post.next.date | date: "%B %Y" %}
@@ -13,8 +13,8 @@ permalink: "/blog-archive/"
     </h3>
   {% endif %}
   <p>
-    <a href="{{ post.url | prepend:site.baseurl}}" class="post-title-archive">{{ post.title }}</a>
-    <small class="text-muted">{{ post.date | date_to_string }}</small>
+    <small class="text-muted">{{ post.date | date_to_string }}</small> &nbsp; - &nbsp;
+    <a href="{{ site.baseurl }}{{ post.url }}" class="post-title-archive">{{ post.title }}</a>
   </p>
 {% endfor %}
 </div>
