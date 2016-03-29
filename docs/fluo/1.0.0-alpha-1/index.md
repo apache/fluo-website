@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Fluo 1.0.0-alpha-1 Documentation
-permalink: /docs/1.0.0-alpha-1/
+redirect_from: /docs/1.0.0-alpha-1/
 ---
 
 **Please Note** - This documentation is for an older Fluo release.  Documentation for all

@@ -1,7 +1,7 @@
 ---
 layout: page
-title:  Fluo 1.0.0-beta-2 Documentation
-permalink: /docs/1.0.0-beta-2/
+title: Fluo 1.0.0-beta-2 Documentation
+redirect_from: /docs/1.0.0-beta-2/
 ---
 
 **Please Note** - This documentation is for the latest Fluo release.  Documentation for prior releases can be found [here](/docs/)
