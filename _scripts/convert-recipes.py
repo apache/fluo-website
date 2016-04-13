@@ -6,7 +6,7 @@ from os.path import isfile, join, exists
 import shutil
 
 if len(sys.argv) != 3:
-  print "Usage: ./convert-docs.py <inputDocsDir> <outputDocsDir>"
+  print "Usage: ./convert-recipes.py <inputDocsDir> <outputDocsDir>"
   sys.exit(-1)
 
 input_dir = sys.argv[1]
@@ -15,9 +15,8 @@ output_dir = sys.argv[2]
 args = output_dir.rpartition("/docs")
 url_prefix = args[1] + args[2]
 release_ver = url_prefix.split("/")[3]
-github_prefix = "https://github.com/fluo-io/fluo/blob/{0}/modules/".format(release_ver)
+github_prefix = "https://github.com/fluo-io/fluo-recipes/blob/{0}/modules/".format(release_ver)
 apidocs_prefix = "/apidocs/{0}/full/".format(release_ver)
-resources_prefix = "/docs/{0}/resources/".format(release_ver)
 
 def path_to_url(path):
   if path.find("#") != -1:
@@ -36,19 +35,18 @@ def convert_file(inPath, outPath):
     fin.readline()
 
     if inPath.endswith("README.md"):
-      title = "Fluo {0} Documentation".format(release_ver)
+      title = "Fluo Recipes {0} Documentation".format(release_ver)
 
     with open(outPath, "w") as fout:
       print >> fout, "---" 
       print >> fout, "layout: page" 
       print >> fout, "title: ", title 
-      print >> fout, "permalink:", path_to_url(outPath)  
       print >> fout, "---"
 
       if inPath.endswith("README.md"):
         fin.readline()
         fin.readline()
-        print >> fout, "\n**Please Note** - This documentation is for the latest Fluo release.  Documentation for prior releases can be found [here](/docs/)"
+        print >> fout, "\n**Please Note** - This documentation is for the latest Fluo Recipes release.  Documentation for prior releases can be found [here](/docs/)\n"
 
       for line in fin:
         if line.startswith("["):
@@ -65,8 +63,6 @@ def convert_file(inPath, outPath):
               fout.write(line.replace(line[start:end], apidocs_prefix).replace(".java", ".html"))
             else:
               fout.write(line.replace("../modules/", github_prefix))
-          elif line.find("resources/") and any(x in line for x in ('.png','.jpg','.pdf')):
-            fout.write(line.replace("resources/", resources_prefix))
           else:
             fout.write(line)
         else:
@@ -78,16 +74,3 @@ for f in listdir(input_dir):
   fn = join(input_dir, f)
   if isfile(fn) and fn.endswith(".md"):
     convert_file(fn, join(output_dir, f))
-
-src_resources = join(input_dir, 'resources')
-dst_resources = join(output_dir, 'resources')
-
-if not exists(dst_resources):
-  makedirs(dst_resources)
-
-for f in listdir(src_resources):
-  src = join(src_resources, f)
-  dst = join(dst_resources, f)
-
-  if not exists(dst) and isfile(src) and src.endswith(('.png','.jpg','.pdf')):
-    shutil.copy(src, dst_resources)

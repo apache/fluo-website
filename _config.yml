@@ -43,7 +43,13 @@ num_home_posts: 5
 color: default
 
 # Fluo specific settings
-latest_release: "1.0.0-beta-2"
+latest_fluo_release: "1.0.0-beta-2"
+latest_recipes_release: "1.0.0-beta-2"
 
-gems: [jekyll-redirect-from]
 whitelist: [jekyll-redirect-from]
+gems: [jekyll-redirect-from]
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  hard_wrap: false
