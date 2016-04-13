@@ -1,7 +1,7 @@
 ---
-layout: page
-title:  Fluo Architecture
-permalink: /docs/1.0.0-beta-1/architecture/
+layout: fluo-doc
+title: Fluo Architecture
+version: 1.0.0-beta-1
 ---
 
 ![fluo-architecture][1]
@@ -40,4 +40,4 @@ Fluo requires the following software to be running on the cluster:
  * **Zookeeper** - Fluo stores its metadata and state information in Zookeeper.  Zookeeper is also 
             required for Accumulo.
       
-[1]: /docs/1.0.0-beta-1/resources/fluo-architecture.png
+[1]: /docs/fluo/1.0.0-beta-1/resources/fluo-architecture.png

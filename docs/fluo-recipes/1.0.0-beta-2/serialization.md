@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: recipes-doc
 title: Serializing Data
+version: 1.0.0-beta-2
 ---
 Various Fluo Recipes deal with POJOs and need to serialize them.  The
 serialization mechanism is configurable and defaults to using [Kryo][1].

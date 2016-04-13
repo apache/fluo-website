@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: fluo-doc
 title:  MiniFluo Setup
-permalink: /docs/1.0.0-beta-1/mini-fluo-setup/
+version: 1.0.0-beta-1
 ---
 
 Below are instructions for running a test/development instance of Fluo
@@ -140,7 +140,7 @@ A MiniFluo application can be stopped by running the following command:
 If MiniFluo started its own Accumulo cluster, it will also remove the `mini/` data 
 directory and any data in your instance will be lost.
 
-[prod-fluo]: /docs/1.0.0-beta-1/prod-fluo-setup/
+[prod-fluo]: /docs/fluo/1.0.0-beta-1/prod-fluo-setup/
 [release]: https://github.com/fluo-io/fluo/releases
 [phrasecount]: https://github.com/fluo-io/phrasecount
 [fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties

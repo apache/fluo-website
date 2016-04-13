@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: recipes-doc
 title: Collision Free Map Recipe
+version: 1.0.0-beta-2
 ---
 ## Background
 

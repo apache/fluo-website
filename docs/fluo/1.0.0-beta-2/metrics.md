@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: fluo-doc
 title:  Fluo Metrics
-permalink: /docs/1.0.0-beta-2/metrics/
+version: 1.0.0-beta-2
 ---
 
 Fluo core is instrumented using [dropwizard metrics][1].  This allows fluo
@@ -72,7 +72,7 @@ request for 3 timestamps, then the count for `i.f.<pid>.oracle.server.stamps` wo
 be 2 and the mean would be (5+3)/2.
 
 [1]: https://dropwizard.github.io/metrics/3.1.0/
-[3]: /docs/1.0.0-beta-2/grafana/
+[3]: /docs/fluo/1.0.0-beta-2/grafana/
 [T]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#timers
 [C]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#counters
 [H]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms

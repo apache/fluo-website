@@ -39,8 +39,9 @@ def convert_file(inPath, outPath):
 
     with open(outPath, "w") as fout:
       print >> fout, "---" 
-      print >> fout, "layout: page" 
+      print >> fout, "layout: recipes-doc" 
       print >> fout, "title: ", title 
+      print >> fout, "version: ", release_ver 
       print >> fout, "---"
 
       if inPath.endswith("README.md"):

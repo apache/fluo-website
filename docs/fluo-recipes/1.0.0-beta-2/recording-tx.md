@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: recipes-doc
 title: RecordingTransaction recipe
+version: 1.0.0-beta-2
 ---
 A `RecordingTransaction` is an implementation of `Transaction` that logs all transaction operations
 (i.e GET, SET, or DELETE) to a `TxLog` object for later uses such as exporting data.  The code below

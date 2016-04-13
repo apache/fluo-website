@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: recipes-doc
 title: Fluo Table Optimization
+version: 1.0.0-beta-1
 ---
 
 ## Background

@@ -1,11 +1,9 @@
 ---
-layout: page
+layout: fluo-doc
 title: Fluo 1.0.0-alpha-1 Documentation
 redirect_from: /docs/1.0.0-alpha-1/
+version: 1.0.0-alpha-1
 ---
-
-**Please Note** - This documentation is for an older Fluo release.  Documentation for all
-releases can be found [here](/docs/)
 
 Fluo is a [Percolator][2] prototype for [Accumulo][1].  This prototype relies on 
 Accumulo 1.6.0 which has [ACCUMULO-1000][3] and [ACCUMULO-112][5].
@@ -132,7 +130,6 @@ Additional Documentation
 ------------------------
 
 [Stress Testing](stress/)
-
 
 [1]: http://accumulo.apache.org
 [2]: http://research.google.com/pubs/pub36726.html

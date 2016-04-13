@@ -1,7 +1,7 @@
 ---
-layout: page
-title:  Creating Fluo applications
-permalink: /docs/1.0.0-beta-2/applications/
+layout: fluo-doc
+title: Creating Fluo applications
+version: 1.0.0-beta-2
 ---
 
 Once you have Fluo installed and running on your cluster, you can now run Fluo applications which consist of 
@@ -178,4 +178,4 @@ the `\` character is escaped to make the output unambiguous.
 [AbstractObserver]: /apidocs/1.0.0-beta-2/full/io/fluo/api/observer/AbstractObserver.html
 [fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties
 [API]: http://fluo.io/apidocs/
-[metrics]: /docs/1.0.0-beta-2/metrics/
+[metrics]: /docs/fluo/1.0.0-beta-2/metrics/

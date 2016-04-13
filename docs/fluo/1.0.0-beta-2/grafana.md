@@ -1,11 +1,11 @@
 ---
-layout: page
-title:  
-permalink: /docs/1.0.0-beta-2/grafana/
+layout: fluo-doc
+title: Fluo metrics in Grafana
+version: 1.0.0-beta-2
 ---
 
 Fluo is instrumented using [dropwizard metrics][1] which allows Fluo to be configured
-to send metrics to multiple metrics tools (such as Graphite, Ganglia, etc).  
+to send metrics to multiple metrics tools (such as Graphite, Ganglia, etc).
 
 This document describes how to send Fluo metrics to [InfluxDB], a time series database, and make 
 them viewable in [Grafana], a visualization tool.  If you want general information on metrics, see the 
@@ -76,7 +76,7 @@ Grafana on your own.
     the browser to start viewing metrics.
 
 [1]: https://dropwizard.github.io/metrics/3.1.0/
-[2]: /docs/1.0.0-beta-2/metrics/
+[2]: /docs/fluo/1.0.0-beta-2/metrics/
 [fluo-dev]: https://github.com/fluo-io/fluo-dev
 [Grafana]: http://grafana.org/
 [InfluxDB]: https://influxdb.com/

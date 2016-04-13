@@ -1,11 +1,9 @@
 ---
-layout: page
+layout: fluo-doc
 title: Fluo 1.0.0-beta-1 Documentation
 redirect_from: /docs/1.0.0-beta-1/
+version: 1.0.0-beta-1
 ---
-
-**Please Note** - This documentation is for an older Fluo release.  Documentation for all
-releases can be found [here](/docs/)
 
 **Fluo is transaction layer that enables incremental processsing on big data.**
 
@@ -45,9 +43,9 @@ application][applications] or configure your Fluo application to run an example 
 [fluo-deploy]: https://github.com/fluo-io/fluo-deploy
 [phrasecount]: https://github.com/fluo-io/phrasecount
 [fluo-stress]: https://github.com/fluo-io/fluo-stress
-[MiniFluo]: /docs/1.0.0-beta-1/mini-fluo-setup/
-[Production]: /docs/1.0.0-beta-1/prod-fluo-setup/
-[applications]: /docs/1.0.0-beta-1/applications/
-[Metrics]: /docs/1.0.0-beta-1/metrics/
-[Contributing]: /docs/1.0.0-beta-1/contributing/
-[Architecture]: /docs/1.0.0-beta-1/architecture/
+[MiniFluo]: /docs/fluo/1.0.0-beta-1/mini-fluo-setup/
+[Production]: /docs/fluo/1.0.0-beta-1/prod-fluo-setup/
+[applications]: /docs/fluo/1.0.0-beta-1/applications/
+[Metrics]: /docs/fluo/1.0.0-beta-1/metrics/
+[Contributing]: /docs/fluo/1.0.0-beta-1/contributing/
+[Architecture]: /docs/fluo/1.0.0-beta-1/architecture/
