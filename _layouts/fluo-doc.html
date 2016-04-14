@@ -1,0 +1,18 @@
+---
+layout: default
+---
+<div class="fluo-doc">
+
+  {% if page.version != site.latest_fluo_release %}
+  <div class="alert alert-danger" role="alert">These docs are for Fluo {{ page.version }} which is an old version! Check out the <a href="{{ site.baseurl }}/docs/fluo/{{ site.latest_fluo_release }}/">latest docs</a>!</div>
+  {% endif %}
+
+  <header class="post-header">
+    <h2 class="post-title">{{ page.title }}</h2>
+  </header>
+
+  <article id="page-content">
+    {{ content }}
+  </article>
+
+</div>

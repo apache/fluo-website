@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: recipes-doc
 title: Serializing Data
+version: 1.0.0-beta-1
 ---
 
 Various Fluo Recipes deal with POJOs and need to serialize them.  The

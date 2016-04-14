@@ -40,9 +40,9 @@ def convert_file(inPath, outPath):
 
     with open(outPath, "w") as fout:
       print >> fout, "---" 
-      print >> fout, "layout: page" 
+      print >> fout, "layout: fluo-doc" 
       print >> fout, "title: ", title 
-      print >> fout, "permalink:", path_to_url(outPath)  
+      print >> fout, "version: ", release_ver
       print >> fout, "---"
 
       if inPath.endswith("README.md"):

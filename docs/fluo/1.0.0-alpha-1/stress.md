@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: fluo-doc
 title: Fluo Stress Test
-permalink: /docs/1.0.0-alpha-1/stress/
+version: 1.0.0-alpha-1
 ---
 
 The Fluo stress test computes the number of unique integers 

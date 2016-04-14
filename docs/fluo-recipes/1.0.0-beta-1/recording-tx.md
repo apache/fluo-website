@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: recipes-doc
 title: RecordingTransaction recipe
+version: 1.0.0-beta-1
 ---
 
 A `RecordingTransaction` is an implementation of `Transaction` that logs all transaction operations

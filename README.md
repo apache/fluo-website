@@ -29,7 +29,7 @@ Below are the steps required to update the Fluo project website for a new releas
     ```bash
     cd fluo-io.github.io
     mkdir -p docs/1.0.0-beta-1
-    ./_scripts/convert-docs.py /path/to/fluo/docs/ /path/to/fluo-io.github.io/docs/1.0.0-beta-1/
+    ./_scripts/convert-docs.py /path/to/fluo/docs/ /path/to/fluo-io.github.io/docs/fluo/1.0.0-beta-1/
     ```
 
 2. Modify `docs/index.md` to point to new release and update the `latest_fluo_release` 

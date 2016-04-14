@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: fluo-doc
 title:  Fluo Metrics
-permalink: /docs/1.0.0-beta-1/metrics/
+version: 1.0.0-beta-1
 ---
 
 Fluo core is instrumented using [dropwizard metrics][1].  This allows fluo

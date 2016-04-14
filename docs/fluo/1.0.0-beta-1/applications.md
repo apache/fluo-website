@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: fluo-doc
 title:  Creating Fluo applications
-permalink: /docs/1.0.0-beta-1/applications/
+version: 1.0.0-beta-1
 ---
 
 Once you have Fluo installed and running on your cluster, you can now run Fluo applications which consist of 
@@ -146,4 +146,4 @@ shows that a transaction with a start timestamp of `106` and a class name of
 [AbstractObserver]: /apidocs/1.0.0-beta-1/full/io/fluo/api/observer/AbstractObserver.html
 [fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties
 [API]: http://fluo.io/apidocs/
-[metrics]: /docs/1.0.0-beta-1/metrics/
+[metrics]: /docs/fluo/1.0.0-beta-1/metrics/

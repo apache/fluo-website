@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: fluo-doc
 title:  Production Setup
-permalink: /docs/1.0.0-beta-2/prod-fluo-setup/
+version: 1.0.0-beta-2
 ---
 
 Below are instructions for running Fluo in a production environment where Accumulo,
@@ -201,7 +201,7 @@ Use the following commands to stop a local Fluo process:
 In a distributed environment, you will need to deploy and configure a Fluo 
 distribution on every node in your cluster.
 
-[MiniFluo]: /docs/1.0.0-beta-2/mini-fluo-setup/
+[MiniFluo]: /docs/fluo/1.0.0-beta-2/mini-fluo-setup/
 [fluo-dev]: https://github.com/fluo-io/fluo-dev
 [Accumulo]: https://accumulo.apache.org/
 [Hadoop]: http://hadoop.apache.org/

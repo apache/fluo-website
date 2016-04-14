@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: recipes-doc
 title: Export Queue Recipe
+version: 1.0.0-beta-2
 ---
 ## Background
 
@@ -108,9 +109,9 @@ This row range is defined by using the export queue id as a row prefix for all
 data in the export queue.  So the row range defined by the export queue id
 should not be used by anything else.
 
-All data stored in an export queue is [transient](transient.md). When an export
+All data stored in an export queue is [transient](../transient/). When an export
 queue is configured, it will recommend split points using the [table
-optimization process](table-optimization.md).
+optimization process](../table-optimization/).
 
 ## Example Use
 

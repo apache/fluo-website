@@ -1,9 +1,8 @@
 ---
-layout: page
+layout: recipes-doc
 title: Fluo Recipes 1.0.0-beta-2 Documentation
+version: 1.0.0-beta-2
 ---
-
-**Please Note** - This documentation is for the latest Fluo Recipes release.  Documentation for prior releases can be found [here](/docs/)
 
 Common code for Fluo application developers.  
 

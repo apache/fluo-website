@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: recipes-doc
 title: Accumulo Export Queue Specialization
+version: 1.0.0-beta-2
 ---
 ## Background
 

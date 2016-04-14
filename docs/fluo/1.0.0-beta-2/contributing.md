@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: fluo-doc
 title:  Contributing to Fluo
-permalink: /docs/1.0.0-beta-2/contributing/
+version: 1.0.0-beta-2
 ---
 
 Building Fluo
