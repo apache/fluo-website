@@ -140,10 +140,10 @@ shows that a transaction with a start timestamp of `106` and a class name of
 ```
 
 [phrasecount]: https://github.com/fluo-io/phrasecount
-[FluoFactory]: /apidocs/1.0.0-beta-1/full/io/fluo/api/client/FluoFactory.html
-[FluoClient]: /apidocs/1.0.0-beta-1/full/io/fluo/api/client/FluoClient.html
-[FluoConfiguration]: /apidocs/1.0.0-beta-1/full/io/fluo/api/config/FluoConfiguration.html
-[AbstractObserver]: /apidocs/1.0.0-beta-1/full/io/fluo/api/observer/AbstractObserver.html
+[FluoFactory]: /apidocs/fluo/1.0.0-beta-1/io/fluo/api/client/FluoFactory.html
+[FluoClient]: /apidocs/fluo/1.0.0-beta-1/io/fluo/api/client/FluoClient.html
+[FluoConfiguration]: /apidocs/fluo/1.0.0-beta-1/io/fluo/api/config/FluoConfiguration.html
+[AbstractObserver]: /apidocs/fluo/1.0.0-beta-1/io/fluo/api/observer/AbstractObserver.html
 [fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties
 [API]: http://fluo.io/apidocs/
 [metrics]: /docs/fluo/1.0.0-beta-1/metrics/

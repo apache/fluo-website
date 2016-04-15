@@ -16,7 +16,7 @@ args = output_dir.rpartition("/docs")
 url_prefix = args[1] + args[2]
 release_ver = url_prefix.split("/")[3]
 github_prefix = "https://github.com/fluo-io/fluo-recipes/blob/{0}/modules/".format(release_ver)
-apidocs_prefix = "/apidocs/{0}/full/".format(release_ver)
+apidocs_prefix = "/apidocs/fluo-recipes/{0}/".format(release_ver)
 
 def path_to_url(path):
   if path.find("#") != -1:
@@ -31,7 +31,7 @@ def convert_file(inPath, outPath):
   print "Creating ", outPath
 
   with open(inPath) as fin:
-    title = fin.readline().strip()
+    title = fin.readline().lstrip(' #').strip()
     fin.readline()
 
     if inPath.endswith("README.md"):
@@ -40,14 +40,13 @@ def convert_file(inPath, outPath):
     with open(outPath, "w") as fout:
       print >> fout, "---" 
       print >> fout, "layout: recipes-doc" 
-      print >> fout, "title: ", title 
-      print >> fout, "version: ", release_ver 
+      print >> fout, "title:", title 
+      print >> fout, "version:", release_ver
       print >> fout, "---"
 
       if inPath.endswith("README.md"):
         fin.readline()
         fin.readline()
-        print >> fout, "\n**Please Note** - This documentation is for the latest Fluo Recipes release.  Documentation for prior releases can be found [here](/docs/)\n"
 
       for line in fin:
         if line.startswith("["):

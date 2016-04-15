@@ -63,5 +63,5 @@ If only `<interval>` is specied the command will loop forever calling
 `compactTransient()` sleeping `<interval>` seconds between calls.  If `<count>`
 is additionally specified then the command will only loop `<count>` times.
 
-[1]: /apidocs/1.0.0-beta-2/full/io/fluo/recipes/common/TransientRegistry.html
-[2]: /apidocs/1.0.0-beta-2/full/io/fluo/recipes/accumulo/ops/TableOperations.html
+[1]: /apidocs/fluo-recipes/1.0.0-beta-2/io/fluo/recipes/common/TransientRegistry.html
+[2]: /apidocs/fluo-recipes/1.0.0-beta-2/io/fluo/recipes/accumulo/ops/TableOperations.html

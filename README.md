@@ -40,7 +40,7 @@ Below are the steps required to update the Fluo project website for a new releas
    repo named after your release version (i.e 1.0.0-beta-1):
 
     ```bash
-    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo
+    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo/modules/api /path/to/fluo-io.github.io/apidocs/fluo
     ```
 
 4. Modify `apidocs/index.md` to point to the new javadocs that you just generated.
@@ -61,6 +61,16 @@ Steps to update website for new Fluo Recipes release:
     ```
 
 2. Modify `docs/index.md` to point to new release and update the `latest_recipes_release` variable in `_config.yml`.
+
+3. Run this command to generate Javadocs from your Fluo release tag repo and 
+   copy them to this repo.  The command assumes that you have a tag in your Fluo
+   repo named after your release version (i.e 1.0.0-beta-1):
+
+    ```bash
+    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo-recipes /path/to/fluo-io.github.io/apidocs/fluo-recipes
+    ```
+
+4. Modify `apidocs/index.md` to point to the new javadocs that you just generated.
 
 [Jekyll]: http://jekyllrb.com/
 [Gemfile]: Gemfile
