@@ -73,6 +73,6 @@ how to do this.
 ```
 
 [1]: https://github.com/EsotericSoftware/kryo
-[2]: /apidocs/1.0.0-beta-1/full/io/fluo/recipes/serialization/SimpleSerializer.html
+[2]: /apidocs/fluo-recipes/1.0.0-beta-1/io/fluo/recipes/serialization/SimpleSerializer.html
 [3]: https://github.com/EsotericSoftware/kryo#registration
 

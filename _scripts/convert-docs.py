@@ -16,8 +16,8 @@ args = output_dir.rpartition("/docs")
 url_prefix = args[1] + args[2]
 release_ver = url_prefix.split("/")[3]
 github_prefix = "https://github.com/fluo-io/fluo/blob/{0}/modules/".format(release_ver)
-apidocs_prefix = "/apidocs/{0}/full/".format(release_ver)
-resources_prefix = "/docs/{0}/resources/".format(release_ver)
+apidocs_prefix = "/apidocs/fluo/{0}/".format(release_ver)
+resources_prefix = "/docs/fluo/{0}/resources/".format(release_ver)
 
 def path_to_url(path):
   if path.find("#") != -1:
@@ -48,7 +48,6 @@ def convert_file(inPath, outPath):
       if inPath.endswith("README.md"):
         fin.readline()
         fin.readline()
-        print >> fout, "\n**Please Note** - This documentation is for the latest Fluo release.  Documentation for prior releases can be found [here](/docs/)"
 
       for line in fin:
         if line.startswith("["):
