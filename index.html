@@ -1,10 +1,18 @@
 ---
+title: Fluo - Large-scale Incremental Processing
+html_title_override: true
 ---
 <div id="welcome">
   <div class="row">
     <div class="col-sm-6">
-      <h2 id="welcome-fluo"><a href="https://github.com/fluo-io/fluo" target="_blank">Fluo</a> is a transaction layer that enables incremental processing on big data</h2>
-      <p>Fluo is an implementation of <a href="http://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> built on <a href="https://accumulo.apache.org/" target="_blank">Accumulo</a> that runs in <a href="http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html" target="_blank">YARN</a>.</p>
+      <h2 id="welcome-fluo">Fluo incrementally processes large data sets stored in Accumulo</h2>
+      <p>Fluo is an implementation of <a href="http://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> for <a href="https://accumulo.apache.org/" target="_blank">Accumulo</a> that provides the following features:</p>
+      <ul>
+        <li>Transactions for concurrent, cross-node updates to data stored in Accumulo</li>
+        <li>Notifications that execute user code when observed data changes</li>
+        <li>A core <a href="{{ site.baseurl }}/apidocs/fluo/{{ site.latest_fluo_release }}/">Fluo API</a> to perform transactional updates using simple get/set methods</li>
+        <li>A higher order <a href="{{ site.baseurl }}/docs/fluo-recipes/{{ site.latest_recipes_release }}/">Fluo Recipes API</a> that builds on the core Fluo API to support more complex methods for transactional updates</li>
+      </ul>
       <p>If you are new to Fluo, check out the following resources:</p>
       <ul>
         <li>Read the latest documentation for <a href="{{ site.baseurl }}/docs/fluo/{{ site.latest_fluo_release }}/">Fluo</a> and 

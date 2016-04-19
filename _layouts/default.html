@@ -10,7 +10,7 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
     <link rel="icon" type="image/png" href="{{ site.baseurl }}/resources/favicon.png">
-    <title>{% if page.title %}{{ page.title }} {% else %} Fluo {% endif %}</title>
+    <title>{% if page.title %}{% if page.html_title_override %}{{ page.title }}{% else %}{{ page.title }} | Fluo{% endif %}{% else %} Fluo {% endif %}</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
