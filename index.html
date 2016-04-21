@@ -4,7 +4,7 @@ html_title_override: true
 ---
 <div id="welcome">
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-8">
       <h2 id="welcome-fluo">Fluo incrementally processes large data sets stored in Accumulo</h2>
       <p>Fluo is an implementation of <a href="http://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> for <a href="https://accumulo.apache.org/" target="_blank">Accumulo</a> that provides the following features:</p>
       <ul>
@@ -22,16 +22,13 @@ html_title_override: true
         <li>See how you can <a href="{{ site.baseurl }}/getinvolved">get involved</a> in the Fluo project</li>
       </ul>
     </div>
-    <div class="col-sm-5 col-sm-offset-1">
+    <div class="col-sm-4">
       <h2 id="news-header">Latest News</h2>
       {% for post in site.categories.blog limit:site.num_home_posts %}
       <div class="post-header-home">
         <div class="row">
-          <div class="col-sm-4">
-            <p class="text-muted">{{ post.date | date_to_string }}</p>
-          </div>
-          <div class="col-sm-8">
-            <h4><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h4>
+          <div class="col-sm-12">
+            <h5><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> <small class="text-muted">{{ post.date | date: "%b %Y" }}</small></h5>
           </div>
         </div>
       </div>
