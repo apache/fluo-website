@@ -272,9 +272,9 @@ Software used
 [ACCUMULO-1124]: https://issues.apache.org/jira/browse/ACCUMULO-1124
 [ACCUMULO-4314]: https://issues.apache.org/jira/browse/ACCUMULO-4314
 [ACCUMULO-4066]: https://issues.apache.org/jira/browse/ACCUMULO-4066
-[lr1]: /blog/2016/01/10/webindex-long-run/
-[lr1-overview]: /blog/2016/01/10/webindex-long-run/#webindex-overview
-[lr1-plots]: /blog/2016/01/10/webindex-long-run/#grafana-plots
+[lr1]: /blog/2016/01/11/webindex-long-run/
+[lr1-overview]: /blog/2016/01/11/webindex-long-run/#webindex-overview
+[lr1-plots]: /blog/2016/01/11/webindex-long-run/#grafana-plots
 [fluo-623]: https://github.com/fluo-io/fluo/issues/623
 [fluo-648]: https://github.com/fluo-io/fluo/issues/648
 [fluo-593]: https://github.com/fluo-io/fluo/issues/593
