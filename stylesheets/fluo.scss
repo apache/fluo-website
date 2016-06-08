@@ -65,9 +65,14 @@ $space-xs: $line-height-computed * 1;
 $space-sm: $line-height-computed * 1.5;
 $space-md: $line-height-computed * 2;
 
-table, th, td {
-  padding: 10px 5px 10px 5px;
-  border: 1px solid black;
+table {
+ margin: 10px 0px 30px 0px;
+ padding: 10px 5px 10px 5px;
+}
+
+th, td {
+  padding: 10px 100px 10px 5px;
+  border-bottom: 1px solid #ddd;
   font-family: $table-font-family;
 }
 
@@ -90,15 +95,14 @@ tr:nth-child(odd) {background: #FFF}
 
 li { 
   line-height: 25px;
-  padding-left: 3px;
 }
 
-h3 {
-  text-transform: uppercase;
-}
-
-h4 {
+h1, h2 {
   padding-top: 7px;
+}
+
+h3, h4 {
+  padding-top: 5px;
 }
 
 .headline {
@@ -125,7 +129,7 @@ h4 {
 .post-title-archive {
   font-family: $headings-font-family;
   font-weight: $headings-font-weight;
-  margin-right: 1em;
+  margin-right: 5px;
 }
 
 .post-content img,
@@ -152,7 +156,7 @@ h4 {
 }
 
 .footer {
-  margin: 80px 0 30px;
+  margin: 10px 0 30px;
   font-size: $font-size-small;
   color: $gray-light;
 }
@@ -160,11 +164,17 @@ h4 {
 // index.html
 
 #welcome {
-  margin: 30px 0 20px 0;
+  margin: 10px 0 10px 0;
+}
+
+#welcome-jumbotron {
+  padding-top: 32px;
+  padding-bottom: 32px;
 }
 
 #welcome-fluo {
-  margin-bottom: 15px;
+  font-size: 22px;
+  font-weight: 500;
 }
 
 #news-header {
@@ -172,18 +182,11 @@ h4 {
 }
 
 #news-archive-link {
-  margin-top: 10px;
+  margin-top: 15px;
+  margin-bottom: 10px;
   font-size: $font-size-small;
 }
 
-#archive {
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-#archive-header {
-  margin-bottom: 30px;
-}
 
 // posts
 

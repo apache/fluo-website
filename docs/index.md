@@ -1,33 +1,37 @@
 ---
 layout: page
 title: Documentation
-redirect_from:
-  - /docs/fluo/
-  - /docs/fluo-recipes/
 ---
 
 [Fluo] and [Fluo Recipes] have seperate documentation as they are different repositories with their own release cycle.
 
-Below are links to their latest documentation:
+## Fluo
 
-* [Fluo 1.0.0-beta-2 documentation][fluo-b2] - January 12, 2016
-* [Fluo Recipes 1.0.0-beta-2 documentation][recipes-b2] - March 29, 2016
+Latest release is `{{ site.latest_fluo_release }}` made on {{ site.latest_fluo_release_date }}.
 
-Fluo documentation archive:
+* Fluo documentation - [Latest][fluo-docs-latest] \| [Archive][fluo-docs-archive]
+* Fluo API - [Latest][fluo-api-latest] \| [Archive][fluo-api-archive]
+* Fluo release summary -  [Latest][fluo-sum-latest] \| [Archive][fluo-sum-archive]
+* Fluo release notes - [Latest][fluo-notes-latest] \| [Archive][fluo-notes-archive]
 
-* [1.0.0-beta-2][fluo-b2] - January 12, 2016 - **Latest Release**
-* [1.0.0-beta-1][fluo-b1] - June 9, 2015
-* [1.0.0-alpha-1][fluo-a1] - October 2, 2014
+## Fluo Recipes
 
-Fluo Recipes documentation archive:
+Latest release is `{{ site.latest_recipes_release }}` made on {{ site.latest_recipes_release_date }}
 
-* [1.0.0-beta-2][recipes-b2] - March 19, 2016 - **Latest Release**
-* [1.0.0-beta-1][recipes-b1] - January 13, 2016
+* Fluo Recipes documentation - [Latest][recipes-docs-latest] \| [Archive][recipes-docs-archive]
+* Fluo Recipes API - [Latest][recipes-api-latest] \| [Archive][recipes-api-archive]
 
-[Fluo]: https://github.com/fluo-io/fluo
-[Fluo Recipes]: https://github.com/fluo-io/fluo-recipes
-[fluo-b2]: /docs/fluo/1.0.0-beta-2/
-[fluo-b1]: /docs/fluo/1.0.0-beta-1/
-[fluo-a1]: /docs/fluo/1.0.0-alpha-1/
-[recipes-b2]: /docs/fluo-recipes/1.0.0-beta-2/
-[recipes-b1]: /docs/fluo-recipes/1.0.0-beta-1/
+[Fluo]: https://github.com/apache/incubator-fluo
+[Fluo Recipes]: https://github.com/apache/incubator-fluo-recipes
+[fluo-docs-latest]: /docs/fluo/{{ site.latest_fluo_release }}/
+[fluo-api-latest]: /apidocs/fluo/{{ site.latest_fluo_release }}/
+[fluo-sum-latest]: /release-summaries/{{ site.latest_fluo_release }}/
+[fluo-notes-latest]: /release-notes/{{ site.latest_fluo_release }}/
+[recipes-docs-latest]: /docs/fluo-recipes/{{ site.latest_recipes_release }}/
+[recipes-api-latest]: /apidocs/fluo-recipes/{{ site.latest_recipes_release }}/
+[fluo-docs-archive]: /docs/fluo/
+[fluo-api-archive]: /apidocs/fluo/
+[fluo-sum-archive]: /release-summaries/
+[fluo-notes-archive]: /release-notes/
+[recipes-docs-archive]: /docs/fluo-recipes/
+[recipes-api-archive]: /apidocs/fluo-recipes/

@@ -5,37 +5,73 @@ html_title_override: true
 <div id="welcome">
   <div class="row">
     <div class="col-sm-8">
-      <h2 id="welcome-fluo">Fluo incrementally processes large data sets stored in Accumulo</h2>
-      <p>Fluo is an implementation of <a href="http://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> for <a href="https://accumulo.apache.org/" target="_blank">Accumulo</a> that provides the following features:</p>
-      <ul>
-        <li>Transactions for concurrent, cross-node updates to data stored in Accumulo</li>
-        <li>Notifications that execute user code when observed data changes</li>
-        <li>A core <a href="{{ site.baseurl }}/apidocs/fluo/{{ site.latest_fluo_release }}/">Fluo API</a> to perform transactional updates using simple get/set methods</li>
-        <li>A higher order <a href="{{ site.baseurl }}/docs/fluo-recipes/{{ site.latest_recipes_release }}/">Fluo Recipes API</a> that builds on the core Fluo API to support more complex methods for transactional updates</li>
-      </ul>
-      <p>If you are new to Fluo, check out the following resources:</p>
-      <ul>
-        <li>Read the latest documentation for <a href="{{ site.baseurl }}/docs/fluo/{{ site.latest_fluo_release }}/">Fluo</a> and 
-            <a href="{{ site.baseurl }}/docs/fluo-recipes/{{ site.latest_recipes_release }}/">Fluo Recipes</a></li>
-        <li>Run the Fluo <a href="https://github.com/fluo-io/fluo-quickstart" target="_blank">quickstart</a> example application</li>
-        <li>View the <a href="https://github.com/fluo-io/phrasecount" target="_blank">phrase count</a> example to see a more comprehensive Fluo application</li>
-        <li>See how you can <a href="{{ site.baseurl }}/getinvolved">get involved</a> in the Fluo project</li>
-      </ul>
+      <div id="welcome-jumbotron" class="jumbotron">
+        <h2 id="welcome-fluo"><b>Fluo</b> lets users make incremental updates to large data sets stored in Apache Accumulo</h2>
+      </div>
+      <h2 style="padding-top: 0px">Overview</h2>
+      <p>Fluo is an open source implementation of <a href="http://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> 
+         (which populates Google's search index) for <a href="https://accumulo.apache.org/" target="_blank">Apache Accumulo</a>. Fluo make its possible to update the results of a large-scale computation, index, or analytic as new data is discovered.</p>
     </div>
     <div class="col-sm-4">
-      <h2 id="news-header">Latest News</h2>
-      {% for post in site.categories.blog limit:site.num_home_posts %}
-      <div class="post-header-home">
-        <div class="row">
-          <div class="col-sm-12">
-            <h5><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> <small class="text-muted">{{ post.date | date: "%b %Y" }}</small></h5>
+      <div class="row">
+        <div class="col-sm-12 panel panel-default">
+          <h2 id="news-header">Latest News</h2>
+          {% for post in site.categories.blog limit:site.num_home_posts %}
+          <div class="post-header-home">
+            <div class="row">
+              <div class="col-sm-12">
+                <h5><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> <small class="text-muted">{{ post.date | date: "%b %Y" }}</small></h5>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <div id="news-archive-link">
+            View all blog posts in the <a href="{{ site.baseurl }}/blog/">archive</a>
           </div>
         </div>
       </div>
-      {% endfor %}
-      <div id="news-archive-link">
-        View all blog posts in the <a href="{{ site.baseurl }}/blog/">archive</a>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <a href="https://github.com/fluo-io/fluo" target="_blank" class="btn btn-primary btn-sm navbar-btn"><i class="fa fa-github fa-lg"></i> View on GitHub</a>
+        </div>
+        <div class="col-sm-6">
+          <iframe src="http://ghbtns.com/github-btn.html?user=fluo-io&repo=fluo&type=watch&count=true&size=large" 
+            allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" style="margin-top: 14px;"></iframe>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <h2 style="padding-top:0px;">Major Features</h2>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <h4>Reduced Latency</h4>
+      <p>When combining new data with existing data, Fluo offers reduced latency when compared to batch processing frameworks (e.g Spark, MapReduce).</p>
+    </div>
+    <div class="col-sm-4">
+      <h4>Reliable</h4>
+      <p>Incremental updates are implemented using transactions which allow thousands of updates to happen concurrently without corrupting data.</p>
+    </div>
+    <div class="col-sm-4">
+      <h4>Core API</h4>
+      <p>The core <a href="{{ site.baseurl }}/apidocs/fluo/{{ site.latest_fluo_release }}/">Fluo API</a> supports simple transactional updates using get/set methods.</li>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <h4>Avoid Reprocessing Data</h4>
+      <p>Combine new data with existing data without having to reprocess the entire dataset.</p>
+    </div>
+    <div class="col-sm-4">
+      <h4>General Purpose</h4>
+      <p>Fluo applications consist of a series of observers that execute user code when observed data is updated.</p>
+    </div>
+    <div class="col-sm-4">
+      <h4>Recipes API</h4>
+      <p>The <a href="{{ site.baseurl }}/docs/fluo-recipes/{{ site.latest_recipes_release }}/">Fluo Recipes API</a> builds on the core API to offer complex transactional updates.</li>
     </div>
   </div>
 </div>
