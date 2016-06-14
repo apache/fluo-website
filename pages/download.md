@@ -18,4 +18,4 @@ If you would rather install and run Fluo on your own, follow these [installation
 [all]: https://github.com/fluo-io/fluo/releases
 [fluo-dev]: https://github.com/fluo-io/fluo-dev
 [Zetten]: https://github.com/fluo-io/zetten
-[install]: http://fluo.io/docs/fluo/{{ site.latest_fluo_release}}/prod-fluo-setup/
+[install]: /docs/fluo/{{ site.latest_fluo_release}}/prod-fluo-setup/

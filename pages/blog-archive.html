@@ -1,5 +1,5 @@
 ---
-title: Fluo Blog Archive
+title: Blog Archive
 permalink: "/blog/"
 ---
 <div id="archive">
@@ -8,13 +8,8 @@ permalink: "/blog/"
   {% assign post_month_year = post.date | date: "%B %Y" %}
   {% assign newer_post_month_year = post.next.date | date: "%B %Y" %}
   {% if post_month_year != newer_post_month_year %}
-    <h3 class="archive-section-header">
-      {{ post_month_year }}
-    </h3>
+  <h3 class="archive-section-header">{{ post_month_year }}</h3>
   {% endif %}
-  <p>
-    <small class="text-muted">{{ post.date | date_to_string }}</small> &nbsp; - &nbsp;
-    <a href="{{ site.baseurl }}{{ post.url }}" class="post-title-archive">{{ post.title }}</a>
-  </p>
+  <p><a href="{{ site.baseurl }}{{ post.url }}" class="post-title-archive">{{ post.title }}</a> <small class="text-muted">{{ post.date | date_to_string }}</small></p>
 {% endfor %}
 </div>

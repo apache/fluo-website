@@ -33,21 +33,38 @@
           <ul class="navbar-nav nav">
             <li><a href="{{ site.baseurl }}/docs/">Documentation</a></li>
             <li><a href="{{ site.baseurl }}/download/">Download</a></li>
-            <li><a href="{{ site.baseurl }}/apidocs/">API</a></li>
-            <li><a href="{{ site.baseurl }}/release-summaries/{{site.latest_fluo_release }}/">Latest Release</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ site.baseurl }}/getinvolved/">Get Involved</a></li>
+                <li><a href="{{ site.baseurl }}/blog/">Blog</a></li>
+                <li><a href="{{ site.baseurl }}/people/">People</a></li>
+                <li><a href="{{ site.baseurl }}/related-projects/">Related Projects</a></li>
+                <li><a href="{{ site.baseurl }}/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ site.baseurl }}/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="{{ site.baseurl }}/release-process/">Release Process</a></li>
+              </ul>
+            </li>
           </ul>
+          <!--Uncomment when moved to Apache
           <ul class="navbar-nav nav navbar-right">
-            <li>
-              <div id="view-on-github">
-                <a href="https://github.com/fluo-io/fluo" target="_blank" class="btn btn-primary btn-sm navbar-btn"><i class="fa fa-github fa-lg"></i> View on GitHub</a>
-              <div>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+              </ul>
             </li>
-            <li class="hidden-xs">
-              <iframe src="http://ghbtns.com/github-btn.html?user=fluo-io&repo=fluo&type=watch&count=true&size=large" 
-              allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" style="margin-top: 14px;">
-              </iframe>
-            </li>
-          </ul>
+          </ul-->
         </div>
       </div>
     </div>
@@ -57,9 +74,14 @@
             {{ content }}
           </div>
       </div>
+      <hr>
       <div class="row footer">
         <div class="col-sm-12 text-center">
-          Fluo is powered by <a href="{{ site.baseurl }}/poweredby">these projects</a>
+          <!-- Uncomment when moved to Apache 
+          <div class="center-block">
+          <a href="https://apache.org"><img src="{{ site.baseurl }}/resources/feather.png" alt="Apache"></a>
+          Copyright &copy; {{ site.time | date: '%Y' }} The Apache Software Foundation. Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+          </div-->
         </div>
       </div>
     </div>

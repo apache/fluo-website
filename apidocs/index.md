@@ -1,32 +1,16 @@
 ---
 layout: page
 title: API Documentation
-permalink: /apidocs/
 ---
 
-[Fluo] and [Fluo Recipes] have seperate javadocs as they are different repositories with their own release cycle.
+[Fluo] and [Fluo Recipes] have seperate API documentation as they are different repositories with their own release cycle.
 
-Below are links to their latest documentation:
-
-* [Fluo 1.0.0-beta-2 javadocs][fluo-b2] - January 12, 2016
-* [Fluo Recipes 1.0.0-beta-2 javadocs][recipes-b2] - March 19, 2016
-
-Fluo javadocs archive:
-
-* [1.0.0-beta-2][fluo-b2] - January 12, 2016 - **Latest Release**
-* [1.0.0-beta-1][fluo-b1] - June 9, 2015
-* [1.0.0-alpha-1][fluo-a1] - October 2, 2014
-
-Fluo Recipes javadocs archive:
-
-* [1.0.0-beta-2][recipes-b2] - March 19, 2016 - **Latest Release**
-* [1.0.0-beta-1][recipes-b1] - January 13, 2016
+* Fluo API documentation - [Latest][fluo-api-latest] \| [Archive][fluo-api-archive]
+* Fluo Recipes API docoumentation - [Latest][recipes-api-latest] \| [Archive][recipes-api-archive]
 
 [Fluo]: https://github.com/fluo-io/fluo
 [Fluo Recipes]: https://github.com/fluo-io/fluo-recipes
-[fluo-b2]: /apidocs/fluo/1.0.0-beta-2/
-[fluo-b1]: /apidocs/fluo/1.0.0-beta-1/
-[fluo-a1]: /apidocs/fluo/1.0.0-alpha-1/
-[recipes-b2]: /apidocs/fluo-recipes/1.0.0-beta-2/
-[recipes-b1]: /apidocs/fluo-recipes/1.0.0-beta-1/
-
+[fluo-api-latest]: /apidocs/fluo/{{ site.latest_fluo_release }}/
+[recipes-api-latest]: /apidocs/fluo-recipes/{{ site.latest_recipes_release }}/
+[fluo-api-archive]: /apidocs/fluo/
+[recipes-api-archive]: /apidocs/fluo-recipes/
