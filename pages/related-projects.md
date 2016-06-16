@@ -4,9 +4,7 @@ title: Related Projects
 permalink: /related-projects/
 ---
 
-<!--- Uncomment after move to Apache
 While the [Apache Software Foundation][asf] hosts the primary Fluo repositories ([Fluo], [Fluo Recipes], [Fluo Website]), there are several notable Fluo-related repos that exist outside of the ASF and are listed below.
--->
 
 ### Tools for running Fluo
 
