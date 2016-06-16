@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/fluo.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="canonical" href="http://fluo.io/blog/2015/12/22/beta-2-pre-release-stress-test/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    <title>Beta 2 pre-release stress test | Fluo</title>
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="fluo-nav" class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img src="/resources/fluo-logo.png" alt="Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/docs/">Documentation</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/getinvolved/">Get Involved</a></li>
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!--Uncomment when moved to Apache
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+              </ul>
+            </li>
+          </ul-->
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div id="post-header">
+  <h2>Beta 2 pre-release stress test</h1>
+  <p class="text-muted">22 Dec 2015</p>
+</div>
+<div id="post-content">
+  <p>In preperation for a beta 2 release, the <a href="https://github.com/fluo-io/fluo-stress">stress test</a> was run again on EC2.
+The test went well outperforming the <a href="/blog/2014/12/30/stress-test-long-run/">first stress test</a> and <a href="/release-notes/1.0.0-beta-1/">beta-1 stress
+test</a>.</p>
+
+<p>For this test run, initially ~1 billion random integers were generated and
+loaded into Fluo via map reduce.  After that, 1 million random integers were
+repeatedly loaded 20 times, sleeping 10 minutes between loads.  After
+everything finished, the test was a success. The number of unique integers
+computed independently by MapReduce matched the number computed by Fluo.  Both
+computed 1,019,481,332 unique integers.</p>
+
+<p>The test took a total of 7 hours 30 minutes and 30 seconds.  Over this time
+period 61.7 million NodeObserver and 20 million NodeLoader transactions were
+executed.  The average rate of transactions per second for the entire test was
+2,968 tansactions per second.  At the conclusion of the test, the stress table
+had 3.87 billion entries.</p>
+
+<p>The test was run with the following environment.</p>
+
+<ul>
+  <li>18 m3.xlarge worker nodes</li>
+  <li>18 Fluo workers, each having had 4G memory and 128 threads</li>
+  <li>18 Map reduce load task, each with 32 threads</li>
+  <li>18 Tablet servers, each with 3G (1.5G for data cache, .5G for index cache, and .5G for in memory map)</li>
+  <li>Fluo built from <a href="https://github.com/fluo-io/fluo/commit/c4789b3100092683b37c57c48ddd87993e84972c">c4789b3</a></li>
+  <li>Fluo stress built from <a href="https://github.com/fluo-io/fluo-stress/commit/32edaf91138bb13b442632262c23e7f13f8fb17c">32edaf9</a></li>
+  <li>Accumulo 1.8.0-SNAPSHOT with <a href="https://issues.apache.org/jira/browse/ACCUMULO-4066">ACCUMULO-4066</a> patch.</li>
+</ul>
+
+<h2 id="grafana-plots">Grafana plots</h2>
+
+<p>An exciting new development in the Fluo eco-system for beta-2 is the
+utilization of Grafana and InfluxDB to plot metrics.  Also metrics
+configuration was simplified making it possible to report metrics from Map
+Reduce and Spark. In the plots below we can see metrics from the load
+transactions executing in Map Reduce.  In previous test, this was not visible,
+being able to see it now is really useful.</p>
+
+<p><img src="/resources/blog/stress_3/grafana-1.png" alt="Grafana long run" /></p>
+
+<p>Notifications were building up during the test. A better method than sleeping
+between loads, as mentioned in <a href="https://github.com/fluo-io/fluo-stress/issues/30">fluo-io/fluo-stress#30</a>, is still needed.</p>
+
+<h2 id="short-runs">Short runs</h2>
+
+<p>Before starting the long run, a few short runs loading 1 million few times were
+done with an empty table.</p>
+
+<p><img src="/resources/blog/stress_3/grafana-2.png" alt="Grafana short run" /></p>
+
+<h2 id="further-testing">Further testing</h2>
+
+<p>A long run of webindex will also be run on EC2 before releasing beta-2.</p>
+
+
+</div>
+
+<div>
+  <p class="text-muted">View more posts in the <a href="/blog/">Blog archive</a></p>
+</div>
+
+          </div>
+      </div>
+      <hr>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <!-- Uncomment when moved to Apache 
+          <div class="center-block">
+          <a href="https://apache.org"><img src="/resources/feather.png" alt="Apache"></a>
+          Copyright &copy; 2016 The Apache Software Foundation. Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+          </div-->
+        </div>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <!-- Place your <script> tags here. -->
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55360307-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

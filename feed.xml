@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fluo</title>
+    <description></description>
+    <link>http://fluo.io/</link>
+    <atom:link href="http://fluo.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Thu, 16 Jun 2016 14:35:03 -0400</pubDate>
+    <lastBuildDate>Thu, 16 Jun 2016 14:35:03 -0400</lastBuildDate>
+    <generator>Jekyll v3.0.3</generator>
+    
+      <item>
+        <title>Fluo is moving to Apache</title>
+        <description>&lt;p&gt;Fluo was recently &lt;a href=&quot;https://wiki.apache.org/incubator/FluoProposal&quot;&gt;proposed&lt;/a&gt; as an Apache Podling.  The &lt;a href=&quot;https://lists.apache.org/thread.html/Zt804544sb0m1wi&quot;&gt;vote&lt;/a&gt; passed and
+now we are in the process of moving to Apache.  See &lt;a href=&quot;https://issues.apache.org/jira/browse/INFRA-11900&quot;&gt;INFRA-11900&lt;/a&gt; for more
+details.&lt;/p&gt;
+
+&lt;p&gt;Currently the only thing setup in Apache land is the mailing list.  If you
+would like to subscribe to the new list, send an email to
+&lt;a href=&quot;&amp;#109;&amp;#097;&amp;#105;&amp;#108;&amp;#116;&amp;#111;:&amp;#100;&amp;#101;&amp;#118;&amp;#045;&amp;#115;&amp;#117;&amp;#098;&amp;#115;&amp;#099;&amp;#114;&amp;#105;&amp;#098;&amp;#101;&amp;#064;&amp;#102;&amp;#108;&amp;#117;&amp;#111;&amp;#046;&amp;#105;&amp;#110;&amp;#099;&amp;#117;&amp;#098;&amp;#097;&amp;#116;&amp;#111;&amp;#114;&amp;#046;&amp;#097;&amp;#112;&amp;#097;&amp;#099;&amp;#104;&amp;#101;&amp;#046;&amp;#111;&amp;#114;&amp;#103;&quot;&gt;&amp;#100;&amp;#101;&amp;#118;&amp;#045;&amp;#115;&amp;#117;&amp;#098;&amp;#115;&amp;#099;&amp;#114;&amp;#105;&amp;#098;&amp;#101;&amp;#064;&amp;#102;&amp;#108;&amp;#117;&amp;#111;&amp;#046;&amp;#105;&amp;#110;&amp;#099;&amp;#117;&amp;#098;&amp;#097;&amp;#116;&amp;#111;&amp;#114;&amp;#046;&amp;#097;&amp;#112;&amp;#097;&amp;#099;&amp;#104;&amp;#101;&amp;#046;&amp;#111;&amp;#114;&amp;#103;&lt;/a&gt;.  &lt;a href=&quot;https://lists.apache.org/list.html?dev@fluo.apache.org&quot;&gt;Archives&lt;/a&gt; of the list are also
+available.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 02 Jun 2016 07:43:00 -0400</pubDate>
+        <link>http://fluo.io/blog/2016/06/02/fluo-moving-to-apache/</link>
+        <guid isPermaLink="true">http://fluo.io/blog/2016/06/02/fluo-moving-to-apache/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Running Webindex for 3 days on EC2 Again</title>
+        <description>&lt;p&gt;Another long run of &lt;a href=&quot;https://github.com/fluo-io/webindex&quot;&gt;Webindex&lt;/a&gt; was done to test changes made since beta-2
+and it went well.  This run performed much better than the previous the
+&lt;a href=&quot;/blog/2016/01/11/webindex-long-run/&quot;&gt;previous long run of Webindex&lt;/a&gt;.  The experiment was run on 21 EC2
+m3-xlarge nodes (20 worker nodes).  Each node has 4 cores and 15G of RAM.
+273.6 million web pages and 3.54 billion links were processed from 8,000 common
+crawl files (each file is around 330M).  It took around 80 hours to load the
+files resulting in a rate of ~950 web page/sec and ~12,292 links/sec.&lt;/p&gt;
+
+&lt;p&gt;This blog post outlines the changes to Fluo, Fluo Recipes, and Webindex that
+made this long run so much better than the last one.  For anyone writing
+applications on Fluo, the changes to Webindex that resulted in improvements may
+be of interest.  Unreleased versions of Fluo and Fluo Recipes were used for
+this test, so the improvements are not easily available to users yet.  However
+we hope to release new versions soon.&lt;/p&gt;
+
+&lt;h2 id=&quot;rate-limited-page-loading&quot;&gt;Rate limited page loading&lt;/h2&gt;
+
+&lt;p&gt;The plot below shows how many transactions per second were executed by
+different observers.  Please refer to the &lt;a href=&quot;/blog/2016/01/11/webindex-long-run/#webindex-overview&quot;&gt;overview in the last
+post&lt;/a&gt; for a description of the observers and see the &lt;a href=&quot;/blog/2016/01/11/webindex-long-run/#grafana-plots&quot;&gt;previous
+plots&lt;/a&gt;.  The transactions per second is very even compared to the
+last run.   The document load rate was limited to a maximum of 1,000 pages per
+second.  There was no limit in the last run, it just ran as fast as it could.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/webindex_run_201605/wilr2-tps.png&quot; alt=&quot;Transactions per second plot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The PageLoader is not show in the plot above because of a bug with it in the
+historical view.  In the recent Grafana view it plotted fine and basically
+mirrored the PageObserver.&lt;/p&gt;
+
+&lt;p&gt;The ability to rate limit page loading was added in &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/70&quot;&gt;webindex-70&lt;/a&gt;.  For this
+test run 20 Spark load task were run, each limited to 50 pages per second.  The
+latest code can sustain much higher rates initially (see &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/593#issuecomment-213630145&quot;&gt;this
+comment&lt;/a&gt;).  However once a lot of data builds up,
+compactions and scans in Accumulo start taking more CPU.  A rate of 1,000 pages
+per second was chosen as something that could be sustained over multiple days.
+The CPU plots below show that in the beginning there is idle CPU to spare, but
+that does not last.&lt;/p&gt;
+
+&lt;h2 id=&quot;cpu-utilization&quot;&gt;CPU Utilization&lt;/h2&gt;
+
+&lt;p&gt;Inorder to get higher throughput changes were made to reduce CPU usage and
+evenly spread CPU usage across the cluster.  The following plot shows the CPU
+usage of all nodes across the cluster during the test.  Unfortunately this data
+was not kept for the previous run.  One issue that caused problems in the
+previous run was hotpots, where one node was swamped while others were under
+utilized.  In this run the utilization across the cluster was fairly uniform.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/webindex_run_201605/wilr2-cpu.png&quot; alt=&quot;CPU usage plots&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The following evenly spread computation :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A short hash was appended to URLs used as the row key for pages.  This
+spread web pages evenly across the cluster.  These changes were made in
+&lt;a href=&quot;https://github.com/fluo-io/webindex/issues/49&quot;&gt;webindex-49&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/fluo-recipes/issues/45&quot;&gt;fluo-recipes-45&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;The webindex query table schema was changed in &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/71&quot;&gt;webindex-71&lt;/a&gt; to allow large
+rows to split.  Before this change compactions of large tablets that could
+not split were causing uneven CPU utilization.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The following reduced CPU usage :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The two Accumulo tables (Fluo and query table) were configured to use Snappy
+instead of GZip.&lt;/li&gt;
+  &lt;li&gt;In &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/623&quot;&gt;fluo-623&lt;/a&gt; the Fluo iterators that run in Accumulo were optimized to
+sometimes seek.  This resulted in scanning less data in Accumulo to execute
+transactions and find notifications.&lt;/li&gt;
+  &lt;li&gt;In &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/54&quot;&gt;webindex-54&lt;/a&gt; parsing links was sped up, using less CPU.&lt;/li&gt;
+  &lt;li&gt;Accumulo 1.7.1 was used which has &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4066&quot;&gt;ACCUMULO-4066&lt;/a&gt;.  This made processing
+conditional mutations less CPU intensive.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There were 20 worker nodes and 1 master node.  The master node was running the
+namenode, zookeeper, resource manager, Accumulo master, Grafana, and InfluxDB.
+The master node was normally lightly loaded.  However, at one point InfluxDB
+was burning lots of CPU for an extended period.  This impacted the namenode,
+which impacted the entire cluster.  Not sure what InfluxDB was doing, maybe
+something like a compaction.  May put it on its own node in future test.&lt;/p&gt;
+
+&lt;p&gt;The following table shows how the 8,000 files were loaded by 5 spark jobs.
+After each Spark job completed the two tables were compacted.  Compacting the
+query table prevented expensive compactions from occurring during the next load.
+Compacting the Fluo table cleaned up transaction bookkeeping data.  The
+compactions explain why the CPU utilization is low when the jobs first start.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Num files&lt;/th&gt;
+      &lt;th&gt;Start time&lt;/th&gt;
+      &lt;th&gt;Duration&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2000&lt;/td&gt;
+      &lt;td&gt;5/11 22:32:41&lt;/td&gt;
+      &lt;td&gt;20.8h&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2000&lt;/td&gt;
+      &lt;td&gt;5/12 19:34:38&lt;/td&gt;
+      &lt;td&gt;20.7h&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2000&lt;/td&gt;
+      &lt;td&gt;5/13 18:19:09&lt;/td&gt;
+      &lt;td&gt;17.7h&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1000&lt;/td&gt;
+      &lt;td&gt;5/14 15:09:43&lt;/td&gt;
+      &lt;td&gt;10.5h&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1000&lt;/td&gt;
+      &lt;td&gt;5/14 03:10:13&lt;/td&gt;
+      &lt;td&gt;10.5h&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;preventing-yarn-from-killing-workers&quot;&gt;Preventing YARN from killing workers&lt;/h2&gt;
+
+&lt;p&gt;In the previous run Fluo worker processes were constantly being killed by YARN
+for exceeding memory limits.  This would cause transactions to have to be
+rolled back.  With the new asynchronous commit changes discussed below a lot of
+committing transactions could be in flight.  Frequently killing processes with
+lots of committing transactions would cause lots of rollbacks.&lt;/p&gt;
+
+&lt;p&gt;This problem was remedied in &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/593&quot;&gt;fluo-593&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/zetten/pull/139&quot;&gt;zetten-139&lt;/a&gt;.  For this run the
+workers were given 5.5G with 1.5G reserved.  With these settings no workers
+were killed by YARN.  When workers are killed it causes upward spikes in the
+memory plots.  There are no spikes of individual workers like this in the
+memory plots below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/webindex_run_201605/wilr2-memory.png&quot; alt=&quot;Memory usage plots&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Twill reserved memory was set by adding the following to yarn-site.xml.
+&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/671&quot;&gt;fluo-671&lt;/a&gt; was opened to investigate a better way of setting this.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;property&amp;gt;
+    &amp;lt;name&amp;gt;twill.java.reserved.memory.mb&amp;lt;/name&amp;gt;
+    &amp;lt;value&amp;gt;1536&amp;lt;/value&amp;gt;
+  &amp;lt;/property&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The following was set in fluo.properties.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  io.fluo.worker.max.memory.mb=5632
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This resulted in workers running with a max heap size of 4096M.  The processes
+will grow larger than 4096M, but will not be killed by YARN unless exceeding
+5632M.&lt;/p&gt;
+
+&lt;h2 id=&quot;asynchronous-commits&quot;&gt;Asynchronous commits&lt;/h2&gt;
+
+&lt;p&gt;In &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/593&quot;&gt;fluo-593&lt;/a&gt; commit processing was rewritten using an asynchronous model.
+There is no longer a single thread walking each transaction through the commit
+steps.  Instead many transactions are put on a queue for each step and
+processed by a few threads.  This allows many more transactions to be
+concurrently committing.   With this model a temporary pause or high CPU load
+on a tablet server does not lower throughput.  Before this change, when
+tservers spiked to 100% this would impact many committing transactions and the
+threads running those transactions.  Those threads would wait.  This would lead
+to lower utilization across the cluster.&lt;/p&gt;
+
+&lt;p&gt;The plot below shows the number of transactions committing.  As the CPU
+utilization increase, so does the number of committing transactions.  With the
+high CPU utilization it takes longer for individual transactions to commit, but
+throughput is maintained.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/webindex_run_201605/wilr2-committing.png&quot; alt=&quot;Committing transactions plot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Unfortunately the plot does not have all data because it was based on recent
+data which ages off.  The historical plots for committing transactions is not
+yet implemented.  See &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/653&quot;&gt;fluo-653&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Asynchronous commits offer higher throughput but also increase the commit time
+of individual transactions.  As outlined in &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/650&quot;&gt;fluo-650&lt;/a&gt; this can lead to
+increased lock wait time when one transaction is waiting on another.  This
+problem was partially solved by &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/654&quot;&gt;fluo-654&lt;/a&gt; which executes older notifications
+first.  For Webindex, executing older transactions first works well for the
+page data.  However for the Collision Free Maps and Export Queue buckets that
+are always being updated, it does not work so well.   A transaction processing
+these buckets will usually have lock wait.  The number of buckets was set at
+half the total number of worker threads with the thought that this would
+usually leave some threads to process pages.  Not sure if this was helpful.  A
+better solution to &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/650&quot;&gt;fluo-650&lt;/a&gt; is needed.  Below is a plot of lock wait time.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/webindex_run_201605/wilr2-lockwait.png&quot; alt=&quot;Lock wait time plot&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;read-and-write-plots&quot;&gt;Read and Write plots&lt;/h2&gt;
+
+&lt;p&gt;Below are plots of the amount data read and written per second by different
+Observers.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/webindex_run_201605/wilr2-erps.png&quot; alt=&quot;Cells read per second&quot; /&gt;
+&lt;img src=&quot;/resources/blog/webindex_run_201605/wilr2-esps.png&quot; alt=&quot;Cells written per second&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;accumulo-settings&quot;&gt;Accumulo Settings&lt;/h2&gt;
+
+&lt;p&gt;The following were executed in the Accumulo shell after initializing Fluo but
+before starting the first Spark load job.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config -t webindex -s table.compaction.major.ratio=1.75
+config -t webindex -s table.file.compress.blocksize.index=256K
+config -t webindex -s table.file.compress.blocksize=64K
+config -t webindex -s table.file.compress.type=snappy
+config -t webindex_search -s table.file.compress.type=snappy
+config -t webindex_search -s table.split.threshold=512M
+config -t accumulo.metadata -s table.durability=flush
+config -t accumulo.root -s table.durability=flush
+config -s tserver.wal.replication=2
+config -s table.file.replication=2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Fluo used the &lt;code class=&quot;highlighter-rouge&quot;&gt;webindex&lt;/code&gt; table.  A blocksize of 64k was selected to speed up
+random lookups a bit.  A compaction ratio of 1.75 was chosen so that the Fluo
+table would compact more frequently.  Compactions of the Fluo table run the
+Fluo garbage collection iterator.&lt;/p&gt;
+
+&lt;p&gt;Webindex uses the &lt;code class=&quot;highlighter-rouge&quot;&gt;webindex_search&lt;/code&gt; table for queries and Fluo exports to it.
+This table uses real data like domain names and URLs, therefore the data does
+not spread evenly.  Lowering the split from the default of 1G to 512M makes
+tablets with popular domains or URLs split and spread across the cluster
+sooner.&lt;/p&gt;
+
+&lt;p&gt;Data replication was set to 2 because the cluster did not have a lot of space
+and the default of 3 may have filled it up.&lt;/p&gt;
+
+&lt;p&gt;The Accumulo tserver were configured with a data cache of 3G and an index cache
+of 512M.&lt;/p&gt;
+
+&lt;p&gt;At some point later in the test, the number of compaction threads in Accumulo was
+adjusted from 3 to 2.  This was done because there were only 4 cores and having
+compactions use most of them could be disruptive.&lt;/p&gt;
+
+&lt;h2 id=&quot;fluo-settings&quot;&gt;Fluo Settings&lt;/h2&gt;
+
+&lt;p&gt;Fluo was configured with 128 threads per worker and 20 workers.&lt;/p&gt;
+
+&lt;p&gt;For the test the following was set in fluo.properties.  This settings
+determines the maximum amount of transactions that will be held in memory to
+commit asynchronously.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;io.fluo.impl.tx.commit.memory=104857600
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;webindex-settings&quot;&gt;Webindex settings&lt;/h2&gt;
+
+&lt;p&gt;Webindex was configured with the following settings.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;numTablets: 60
+numBuckets: 1020
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Each type of data started with 60 tablets.  The types of data are page data,
+url inlink counts, domain url counts, and the export queue.  1,020 is multiple
+of 60 giving each tablet the same number of buckets.  With 60 tablets, each
+tablet server started off with 3 tablets per data type.   Some of the data
+types split as the test ran.&lt;/p&gt;
+
+&lt;h2 id=&quot;final-data-size&quot;&gt;Final Data Size&lt;/h2&gt;
+
+&lt;p&gt;After loading all of the data the two tables were compacted.  The size of the
+tables is shown below.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@instance16&amp;gt; du webindex
+         291,525,943,501 [webindex]
+root@instance16&amp;gt; du webindex_search
+         271,106,371,976 [webindex_search]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Postmortem analysis of the RFiles from this test run lead to work on
+&lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-1124&quot;&gt;ACCUMULO-1124&lt;/a&gt; and &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4314&quot;&gt;ACCUMULO-4314&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;software-used&quot;&gt;Software used&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Centos 7&lt;/li&gt;
+  &lt;li&gt;Hadoop 2.6.3&lt;/li&gt;
+  &lt;li&gt;Zookeeper 3.4.8&lt;/li&gt;
+  &lt;li&gt;Accumulo 1.7.1&lt;/li&gt;
+  &lt;li&gt;Fluo &lt;a href=&quot;https://github.com/fluo-io/fluo/commit/82301a143140a55dae52f308e218e69edc7ec963&quot;&gt;82301a1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Fluo Recipes &lt;a href=&quot;https://github.com/fluo-io/fluo-recipes/commit/dd1c37313d272ff7647040e43ed4261c70939a9b&quot;&gt;dd1c373&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Webindex &lt;a href=&quot;https://github.com/fluo-io/webindex/commit/1f9462d0938c7ca98d26de911ddb57e270a6a75f&quot;&gt;1f9462d&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Zetten &lt;a href=&quot;https://github.com/fluo-io/zetten/commit/43e9cdea8d3c37d532796a994011e579f7495767&quot;&gt;43e9cde&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 17 May 2016 01:44:00 -0400</pubDate>
+        <link>http://fluo.io/blog/2016/05/17/webindex-long-run-2/</link>
+        <guid isPermaLink="true">http://fluo.io/blog/2016/05/17/webindex-long-run-2/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Fluo 1.0.0-beta-2 Release Summary</title>
+        <description>&lt;p&gt;The &lt;a href=&quot;https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-2&quot;&gt;1.0.0-beta-2&lt;/a&gt; release is the third release of Fluo and likely the final
+release before 1.0.0.&lt;/p&gt;
+
+&lt;p&gt;It contains the following significant improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fluo metrics were improved and can now be sent to InfluxDB and viewed in Grafana.&lt;/li&gt;
+  &lt;li&gt;Improvements were made to Fluo to make it work better with Apache Spark.&lt;/li&gt;
+  &lt;li&gt;Several performances improvements were made to decrease transaction commit time.&lt;/li&gt;
+  &lt;li&gt;Fluo administration was improved with bug fixes and the addition of new commands.&lt;/li&gt;
+  &lt;li&gt;Several improvements were made to the Fluo API.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Fluo is now at a point where its two cluster test suites, &lt;a href=&quot;https://github.com/fluo-io/webindex&quot;&gt;Webindex&lt;/a&gt;
+and &lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;Stress&lt;/a&gt;, are running well for long periods on EC2.&lt;/p&gt;
+
+&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Read the &lt;a href=&quot;/release-notes/1.0.0-beta-2/&quot;&gt;release notes&lt;/a&gt; for a full list of notable features and bug fixes.&lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.0.0-beta-2/&quot;&gt;documentation&lt;/a&gt; for help getting started with Fluo.&lt;/li&gt;
+  &lt;li&gt;Download the &lt;a href=&quot;https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-2&quot;&gt;Fluo binary tarball&lt;/a&gt; for 1.0.0-beta-2 from GitHub.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/apidocs/fluo/1.0.0-beta-2/&quot;&gt;Javadocs&lt;/a&gt; are available for this release.&lt;/li&gt;
+  &lt;li&gt;A &lt;a href=&quot;https://github.com/fluo-io/fluo/tree/1.0.0-beta-2&quot;&gt;tag&lt;/a&gt; of Fluo codebase for 1.0.0-beta-2 is available.&lt;/li&gt;
+  &lt;li&gt;The &lt;a href=&quot;https://github.com/fluo-io/fluo-quickstart&quot;&gt;Quickstart&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/phrasecount&quot;&gt;Phrasecount&lt;/a&gt; applications were updated to work with this release.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 12 Jan 2016 10:30:00 -0500</pubDate>
+        <link>http://fluo.io/release-summaries/1.0.0-beta-2/</link>
+        <guid isPermaLink="true">http://fluo.io/release-summaries/1.0.0-beta-2/</guid>
+        
+        
+        <category>release-summaries</category>
+        
+      </item>
+    
+      <item>
+        <title>Fluo 1.0.0-beta-2 Release Notes</title>
+        <description>&lt;p&gt;Fluo 1.0.0-beta-2 is the third official release of Fluo.  This release closed
+&lt;a href=&quot;https://github.com/fluo-io/fluo/issues?q=milestone%3A1.0.0-beta-2+is%3Aclosed&quot;&gt;48 tickets&lt;/a&gt;.  There is no upgrade path from 1.0.0-beta-1 to
+1.0.0-beta-2.&lt;/p&gt;
+
+&lt;h2 id=&quot;significant-features&quot;&gt;Significant features&lt;/h2&gt;
+
+&lt;p&gt;This release contains many new features that makes it easier to run, develop, and monitor Fluo applications.&lt;/p&gt;
+
+&lt;h4 id=&quot;improved-fluo-metrics-that-can-be-sent-to-influxdb-and-viewed-in-grafana&quot;&gt;Improved Fluo metrics that can be sent to InfluxDB and viewed in Grafana&lt;/h4&gt;
+
+&lt;p&gt;In &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/569&quot;&gt;#569&lt;/a&gt;, &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/570&quot;&gt;#570&lt;/a&gt;, &amp;amp; &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/580&quot;&gt;#580&lt;/a&gt;, Fluo metrics and monitoring were refactored to fix several
+bugs and allow metrics to be sent to &lt;a href=&quot;https://github.com/influxdata/influxdb&quot;&gt;InfluxDB&lt;/a&gt; and viewed in &lt;a href=&quot;http://grafana.org/&quot;&gt;Grafana&lt;/a&gt;.  Fluo metrics 
+are still instrumented using &lt;a href=&quot;https://dropwizard.github.io/metrics/3.1.0/&quot;&gt;Dropwizard metrics&lt;/a&gt; but in &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/574&quot;&gt;#574&lt;/a&gt; metrics configuration was 
+moved from its own file and to now reside in &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo.properties&lt;/code&gt;.  While Fluo metrics can still be sent to 
+many different tools (i.e Graphite, Ganglia), Fluo now ships with configuration that can be used to configure 
+a Fluo dashboard in Grafana that queries InfluxDB.  To set up the sending of Fluo metrics to InfluxDB/Grafana,
+view this &lt;a href=&quot;/docs/fluo/1.0.0-beta-2/grafana/&quot;&gt;documentation&lt;/a&gt; or consider using &lt;a href=&quot;https://github.com/fluo-io/fluo-dev&quot;&gt;Fluo-dev&lt;/a&gt; or &lt;a href=&quot;https://github.com/fluo-io/zetten&quot;&gt;Zetten&lt;/a&gt;
+to run Fluo as they can install InfluxDB+Grafana and setup metrics for you.&lt;/p&gt;
+
+&lt;h4 id=&quot;improved-fluo-administration&quot;&gt;Improved Fluo administration&lt;/h4&gt;
+
+&lt;p&gt;Several commands were added to the &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo&lt;/code&gt; script which is used to administer Fluo.  A &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo exec&lt;/code&gt; command
+(&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/581&quot;&gt;#581&lt;/a&gt;) was created to provide an easy way to execute application code using Fluo classes and dependencies.
+A &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo list&lt;/code&gt; command (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/523&quot;&gt;#523&lt;/a&gt;) was created to let users list all Fluo applications within a Fluo instance.
+The &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo scan&lt;/code&gt; command now has a &lt;code class=&quot;highlighter-rouge&quot;&gt;--raw&lt;/code&gt; option (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/597&quot;&gt;#597&lt;/a&gt;) that prints Fluo data as stored in Accumulo. This
+was accomplished by moving the Fluo formatter from Accumulo shell to the scan command.  The scan command can now
+format non-ascii characters as hex (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/568&quot;&gt;#568&lt;/a&gt;).  The &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo new&lt;/code&gt; command was improved to prevent users from
+setting invalid Fluo application names (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/510&quot;&gt;#510&lt;/a&gt;).  A bug was fixed in the &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo start&lt;/code&gt; command that was causing
+time outs when starting applications (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/562&quot;&gt;#562&lt;/a&gt;).  Finally, the &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo&lt;/code&gt; command can now be run without the &lt;code class=&quot;highlighter-rouge&quot;&gt;apps/&lt;/code&gt;
+directory configured for an application for most commands (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/524&quot;&gt;#524&lt;/a&gt;). Only the &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;start&lt;/code&gt; commands need
+this directory configured.  All other commands only require the default properties file to be configured at 
+&lt;code class=&quot;highlighter-rouge&quot;&gt;conf/fluo.properties&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;made-fluo-work-better-with-spark&quot;&gt;Made Fluo work better with Spark&lt;/h4&gt;
+
+&lt;p&gt;Several changes were made to Fluo to allow it work better with Apache Spark.  All Fluo data types now implement
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Serializable&lt;/code&gt; and can be use in Spark RDDs (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/539&quot;&gt;#539&lt;/a&gt;).  Fluo data types also now implement &lt;code class=&quot;highlighter-rouge&quot;&gt;Comparable&lt;/code&gt; which
+allows RDDs of Fluo data types to be sorted (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/544&quot;&gt;#544&lt;/a&gt;).  Also, a no args constructor was created for the
+MutableBytes data type to enable Kryo serialization in Spark (&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/549&quot;&gt;#549&lt;/a&gt;).  Finally, a new InputFormat called
+&lt;code class=&quot;highlighter-rouge&quot;&gt;FluoEntryInputFormat&lt;/code&gt; was created that returns key/value entries and the existing &lt;code class=&quot;highlighter-rouge&quot;&gt;FluoInputFormat&lt;/code&gt; that returns
+rows was renamed &lt;code class=&quot;highlighter-rouge&quot;&gt;FluoRowInputFormat&lt;/code&gt; (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/538&quot;&gt;#538&lt;/a&gt;,&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/540&quot;&gt;#540&lt;/a&gt;).&lt;/p&gt;
+
+&lt;h4 id=&quot;performance-improvements&quot;&gt;Performance improvements&lt;/h4&gt;
+
+&lt;p&gt;A good bit of time was spent analyzing Fluo while it was running to determine
+where time is spent when executing transactions.   Based on this analysis, it
+was found that a good bit of time was spent committing transactions.  Changes
+were made in Fluo and Accumulo in order to decrease commit time.  For Fluo, the
+following changes were made :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/591&quot;&gt;#591&lt;/a&gt; - Shared batch writer increases transaction history&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/590&quot;&gt;#590&lt;/a&gt; - Increased batch writer threads and made configurable&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/589&quot;&gt;#589&lt;/a&gt; - Added 2nd conditional writer and logging of commit times&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/584&quot;&gt;#584&lt;/a&gt; - Adjust number of conditional writer threads based on cluster size&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For Accumulo, changes are being made in &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4066&quot;&gt;ACCUMULO-4066&lt;/a&gt; to decrease the time it
+takes to process conditional mutations.  Conditional mutations are used when
+Fluo commits a transaction.&lt;/p&gt;
+
+&lt;p&gt;These changes resulted in nice improvements over beta-1 in testing.  However there
+is probably still room for improvement.  More analysis is needed.&lt;/p&gt;
+
+&lt;h4 id=&quot;api-changes&quot;&gt;API Changes&lt;/h4&gt;
+
+&lt;p&gt;Once Fluo 1.0.0 is released, all releases after that will follow
+&lt;a href=&quot;http://semver.org/&quot;&gt;semver&lt;/a&gt;.  For now some small API changes are still being
+made.  The following API changes happened between beta-1 and beta-2.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/566&quot;&gt;#566&lt;/a&gt; - Added RowColumnValue and made Accumulo init code use it&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/551&quot;&gt;#551&lt;/a&gt; - Added method to get start timestamp of transaction&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/550&quot;&gt;#550&lt;/a&gt; - Changed setObservers() to addObservers()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;other-important-improvements-and-bug-fixes&quot;&gt;Other important improvements and bug fixes&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/598&quot;&gt;#598&lt;/a&gt; - Upgraded Hadoop to 2.6.3 and Accumulo to 1.6.4&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/587&quot;&gt;#587&lt;/a&gt; - Specified datasource for all graphs in fluo’s Grafana dashboard&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/586&quot;&gt;#586&lt;/a&gt; - Added efficient and easy way to build Bytes objects&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/578&quot;&gt;#578&lt;/a&gt; - Plot nothing in Grafana when no data exists&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/573&quot;&gt;#573&lt;/a&gt; - Fixed issues building against Accumulo 1.8.0-SNAPSHOT&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/561&quot;&gt;#561&lt;/a&gt; - Stopped checkstyle mvn plugin from running at validate&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/559&quot;&gt;#559&lt;/a&gt; - Eventually drop deleted data&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/558&quot;&gt;#558&lt;/a&gt; - Added arguments to deploy command to skip findbugs, checkstyle, and auto-formatting&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/556&quot;&gt;#556&lt;/a&gt; - Make TravisCI deploy snapshot jars after successful builds&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/552&quot;&gt;#552&lt;/a&gt; - Made eclipse stop complaining about unknown plugins&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/547&quot;&gt;#547&lt;/a&gt; - Provide better documentation for LoaderExecutor&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/535&quot;&gt;#535&lt;/a&gt; - Upgraded Twill to 0.6.0-incubating&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/520&quot;&gt;#520&lt;/a&gt; - Consolidate all implementation properties into FluoConfigurationImpl&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/518&quot;&gt;#518&lt;/a&gt; - Make Oracle run on a random port&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/513&quot;&gt;#513&lt;/a&gt; - Unable to pass spaces to scan command&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/495&quot;&gt;#495&lt;/a&gt; - Add support for notifications to Fluo formatter&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
+
+&lt;p&gt;For this release, a long run of the &lt;a href=&quot;https://github.com/fluo-io/webindex&quot;&gt;Webindex&lt;/a&gt; application was performed and is documented in
+&lt;a href=&quot;/blog/2016/01/11/webindex-long-run/&quot;&gt;a blog post&lt;/a&gt;.  A long run of &lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;Fluo stress&lt;/a&gt; was run and documented in 
+&lt;a href=&quot;/blog/2015/12/22/beta-2-pre-release-stress-test/&quot;&gt;another blog post&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 12 Jan 2016 10:30:00 -0500</pubDate>
+        <link>http://fluo.io/release-notes/1.0.0-beta-2/</link>
+        <guid isPermaLink="true">http://fluo.io/release-notes/1.0.0-beta-2/</guid>
+        
+        
+        <category>release-notes</category>
+        
+      </item>
+    
+      <item>
+        <title>Fluo 1.0.0-beta-2 is released!</title>
+        <description>&lt;p&gt;The Fluo project is happy to announce a &lt;a href=&quot;/release-summaries/1.0.0-beta-2/&quot;&gt;1.0.0-beta-2&lt;/a&gt; release which is the
+third release of Fluo and likely the final release before 1.0.0.  Many
+improvements in this release were driven by the creation of two new Fluo related
+projects:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo-recipes&quot;&gt;Fluo recipes&lt;/a&gt; is a collection of common development patterns
+designed to make Fluo application development easier.  Creating Fluo recipes
+required new Fluo functionality and updates to the Fluo API.  The first release
+of Fluo recipes has been made and is available in &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://github.com/fluo-io/webindex&quot;&gt;WebIndex&lt;/a&gt; is an example Fluo application that indexes links to web
+pages in multiple ways.  Webindex enabled the testing of Fluo on real data at
+scale.  It also inspired improvements to Fluo to allow it to work better with
+Apache Spark.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Fluo is now at a point where its two cluster test suites, &lt;a href=&quot;https://github.com/fluo-io/webindex&quot;&gt;Webindex&lt;/a&gt;
+and &lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;Stress&lt;/a&gt;, are running well for long periods on Amazon EC2.  We
+invite early adopters to try out the beta-2 release and help flush out problems
+before 1.0.0.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 12 Jan 2016 10:30:00 -0500</pubDate>
+        <link>http://fluo.io/blog/2016/01/12/fluo-1.0.0-beta-2-is-released/</link>
+        <guid isPermaLink="true">http://fluo.io/blog/2016/01/12/fluo-1.0.0-beta-2-is-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Running Webindex for 3 days on EC2</title>
+        <description>&lt;p&gt;In preparation for the Fluo beta 2 release, &lt;a href=&quot;http://github.com/fluo-io/webindex&quot;&gt;Webindex&lt;/a&gt;, an example
+Fluo application, was run on 24 EC2 m3-xlarge nodes (20 worker node) for 3
+days.  The experiment went well as Webindex indexed 178 million web pages and
+2.32 billion links. The average rate for the entire test was 698 pages/sec and
+8,943 links/sec.  A few problems with &lt;a href=&quot;http://github.com/fluo-io/fluo-recipes&quot;&gt;Fluo Recipes&lt;/a&gt; and Webindex were
+discovered during the course of the test.&lt;/p&gt;
+
+&lt;h2 id=&quot;webindex-overview&quot;&gt;Webindex Overview&lt;/h2&gt;
+
+&lt;p&gt;Webindex indexes URLs from &lt;a href=&quot;https://commoncrawl.org/&quot;&gt;Common Crawl&lt;/a&gt; data in multiple ways into an
+external &lt;a href=&quot;http://accumulo.apache.org/&quot;&gt;Accumulo&lt;/a&gt; table. Webindex offers a simple web application
+for querying this external Accumulo table.  The following three questions can
+be answered from this web page.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Which page is the most linked to?&lt;/li&gt;
+  &lt;li&gt;Which page in a domain is the most linked to and how many pages were seen for a domain?&lt;/li&gt;
+  &lt;li&gt;For a given page, what links to it and how many links are there?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In order to answer these questions, Webindex continually updates the following
+three indexes in an external Accumulo table.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A per domain index containing linked to counts in descending order.&lt;/li&gt;
+  &lt;li&gt;A total index containing linked to counts for all pages in descending order.&lt;/li&gt;
+  &lt;li&gt;A per page index containing the pages incoming and outgoing links and incoming link count.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The following is a simple example of some of what Webindex does.  In order to
+keep it simple, the example below does not show everything Webindex does.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Content for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://A.com&lt;/code&gt; that links to &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is loaded.&lt;/li&gt;
+  &lt;li&gt;Content for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://C.com&lt;/code&gt; that links to &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is loaded.&lt;/li&gt;
+  &lt;li&gt;The inbound link count for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is computed as 2.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(2,http://B.org)&lt;/code&gt; is inserted into the external domain index, total index, and page count.&lt;/li&gt;
+  &lt;li&gt;Content for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://C.com&lt;/code&gt; that links to &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is loaded.&lt;/li&gt;
+  &lt;li&gt;The inbound link count for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is computed as 3.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(2,http://B.org)&lt;/code&gt; is deleted from all the external indexes and &lt;code class=&quot;highlighter-rouge&quot;&gt;(3, http://B.org)&lt;/code&gt; is inserted.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;videos-from-run&quot;&gt;Videos from run&lt;/h2&gt;
+
+&lt;p&gt;During the course of the 3 day run, screenshots of different queries in the
+Webindex web application were taken every 6 minutes.  From these screenshots,
+the following videos were created showing Fluo in action. Keep in mind that as
+the counts are changing, the old count is deleted and a new count is inserted.
+If Fluo ever dropped the ball on this, it would leave both entries in the
+external index causing the same URL to show up twice with different counts.&lt;/p&gt;
+
+&lt;p&gt;The video below shows querying for the most linked to page every 6 minutes.&lt;/p&gt;
+
+&lt;iframe width=&quot;715&quot; height=&quot;402&quot; src=&quot;https://www.youtube.com/embed/Munsucq1KXo&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;The video below shows querying for which pages at stackoverflow.com are the most
+linked to.  The count at the top is the total number of pages seen in the
+wikipedia.org domain.&lt;/p&gt;
+
+&lt;iframe width=&quot;715&quot; height=&quot;402&quot; src=&quot;https://www.youtube.com/embed/mJJNJbPN2EI&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;Videos were also created for &lt;a href=&quot;http://youtu.be/9kvYzgg72Es&quot;&gt;apache&lt;/a&gt;,
+&lt;a href=&quot;https://youtu.be/a-9_hnRprpQ&quot;&gt;wikipedia&lt;/a&gt;,
+&lt;a href=&quot;https://youtu.be/IlJ95dVkLnk&quot;&gt;github&lt;/a&gt;, and &lt;a href=&quot;https://youtu.be/D66nBP5QKS8&quot;&gt;cnn&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Some custom scripts and &lt;a href=&quot;https://github.com/sindresorhus/pageres-cli&quot;&gt;pageres-cli&lt;/a&gt; were used to generate the screenshots.
+Videos with a screenshot every minute are also available.  If interested in
+seeing these, contact the Fluo dev list.&lt;/p&gt;
+
+&lt;h2 id=&quot;grafana-plots&quot;&gt;Grafana plots&lt;/h2&gt;
+
+&lt;p&gt;The Grafana plots below are from the three day run. No plot of notifications
+queued is shown because processing of pages kept up and never fell behind. To
+understand the plots, below is a simple description of what the different
+observers do.  Observers are written by Fluo users, run by Fluo workers,  and
+respond to notifications and execute transactions.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The PageLoader runs in a Spark job and loads pages parsed from a CommonCrawl
+data file.&lt;/li&gt;
+  &lt;li&gt;The PageObserver processes updates to pages, determines what links changed,
+and pushes link updates to other observers.&lt;/li&gt;
+  &lt;li&gt;The CollisionFreeMapObserver computes linked to counts and pushes the counts
+to the ExportObserver.  This observer also rolls up domain counts and pushes
+those for export (calling different code and operating on a different part of
+the table).&lt;/li&gt;
+  &lt;li&gt;The ExportObserver updates the external Accumulo index table in a fault
+tolerant manner.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/webindex_run_201601/grafana-1.png&quot; alt=&quot;Grafana long run&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;problems-found&quot;&gt;Problems Found&lt;/h2&gt;
+
+&lt;p&gt;The test was useful in that it showed Fluo is probably ready for another
+release. While no show stoppers were found, it was also useful in that many
+areas where improvements could be made were found.&lt;/p&gt;
+
+&lt;p&gt;During the first day of the test, it was noticed that major compactions in
+Accumulo were sucking up a lot of resources.  Each node only had four cores.
+Before the test were started, compaction ratios were adjusted.   Fluo’s table
+was set to 1.5 and the external index table was set to 2.  These ratios coupled
+with the fact that the compactions were using gzip caused really high load,
+which eventually caused processing to drop to around 500 pages/sec.  While the
+test was running the compaction ratios were adjusted to 2 and 3, and compaction
+was set use snappy.  This caused performance to increase.  A few more cores
+would have been nice.&lt;/p&gt;
+
+&lt;p&gt;The Spark load jobs have to parse, validate, and clean up all of the links.
+This seems to be very CPU intensive and may be the current bottleneck (see
+&lt;a href=&quot;https://github.com/fluo-io/webindex/issues/41&quot;&gt;fluo-io/webindex#41&lt;/a&gt;). It seems that as Accumulo’s CPU load
+increased (because of compactions) that the load rate dropped.  As an
+experiment during the 2nd day of the test, loaders were stopped and two loaders
+per node were started.  This resulted in a higher load rate of around 1000
+pages/sec.  In order to ensure the test would run over night, this was only
+done for a brief period before reverting to one loader per node.  Again, more
+cores would have been nice.  In place of more cores, looking into optimizing this
+and getting a higher load rate would nice.  Another issue noticed with loading
+was &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/39&quot;&gt;fluo-io/webindex#39&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;While monitoring the test it became apparent that split points for the Fluo
+table were not equally spreading computation across all tablet servers. See
+&lt;a href=&quot;https://github.com/fluo-io/fluo-recipes/issues/44&quot;&gt;fluo-io/fluo-recipes#44&lt;/a&gt; for more information.  Somewhere around the
+2nd day of the test, tablets were merged and new splits points were added while
+the test was running.  This worked really well.  Another issue found relating
+to split points was &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/40&quot;&gt;fluo-io/webindex#40&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The lack of metrics about Conditional mutations from Accumulo tablet servers
+makes it hard to track down problems where many Fluo transactions are hitting a
+few tablet servers.  The bad split points mentioned in the previous paragraph
+are one example of this type of problem.  &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4107&quot;&gt;ACCUMULO-4107&lt;/a&gt; was
+created to address this issue.&lt;/p&gt;
+
+&lt;p&gt;Some skew was noticed as a result of YARN’s placement decisions.  This was
+caused by coordination task displacing CPU intensive task.  For example
+Fluo has three task types that run in YARN : Oracle, Twill Application manager,
+and Workers.  Ideally there would be one Worker per node. However, because of
+the Oracle and Application task, YARN may place two workers on a single node.
+Opened &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/600&quot;&gt;fluo-io/fluo#600&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;During the test, worker task were dying or being killed because of memory
+overuse.  Twill/YARN automatically restarted the workers and the test kept
+running w/o much problem.  It would be good to avoid this since this causes
+transaction recovery or rollback.  See &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/42&quot;&gt;fluo-io/webindex#42&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The test identified a possible need for &lt;a href=&quot;https://github.com/fluo-io/fluo-recipes/issues/45&quot;&gt;HashedRow recipe&lt;/a&gt; to more
+evenly distribute processing of page related transactions.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-environment&quot;&gt;Test environment&lt;/h2&gt;
+
+&lt;p&gt;The following configuration and software were used for this test.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;24 m3.xlarge EC2 nodes. 15G ram, 4 cores, and 2x35G SSD.&lt;/li&gt;
+  &lt;li&gt;Centos 7&lt;/li&gt;
+  &lt;li&gt;Hadoop 2.6.0&lt;/li&gt;
+  &lt;li&gt;Zookeeper 3.4.7&lt;/li&gt;
+  &lt;li&gt;Accumulo 1.8.0-SNAPSHOT with &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4066&quot;&gt;ACCUMULO-4066&lt;/a&gt; patches&lt;/li&gt;
+  &lt;li&gt;Fluo beta-2-SNAPSHOT 78bcdb7&lt;/li&gt;
+  &lt;li&gt;Fluo recipes beta-1-SNAPSHOT 96858d0&lt;/li&gt;
+  &lt;li&gt;Fluo deploy 43bf08f&lt;/li&gt;
+  &lt;li&gt;2G data cache and 768M index cache in Accumulo&lt;/li&gt;
+  &lt;li&gt;64 threads in Accumulo client pool and readahead pool&lt;/li&gt;
+  &lt;li&gt;128 worker threads and 4G per worker (initially went to 5G and 6G as test was running).&lt;/li&gt;
+  &lt;li&gt;20 Load task running in Spark&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;storage-statistics&quot;&gt;Storage statistics&lt;/h2&gt;
+
+&lt;p&gt;After the three day run completed, the external index table had 4.71 billion
+entries and used 191G in HDFS.   A compaction was forced on the Accumulo table,
+which caused old versions and deleted data to be dropped.  After the compaction
+the table had 4.02 billion entries and used 159G in HDFS.  The table was being
+frequently updated by Fluo and that’s why so much data was dropped by the
+compaction.  The way Accumulo works, compactions were continually happening
+while test was running.  So the total amount of data dropped from the table as
+a result of updates is unknown.&lt;/p&gt;
+
+&lt;p&gt;The table used by Fluo had 1.46 billion entries at the conclusion of the test
+and used 93G in HDFS.&lt;/p&gt;
+
+&lt;h2 id=&quot;future-work&quot;&gt;Future Work&lt;/h2&gt;
+
+&lt;p&gt;Most Fluo scale testing to date has been on EC2.  It would be really nice to
+test Fluo on bare metal.  We are going to experiment with getting &lt;a href=&quot;https://github.com/fluo-io/fluo-deploy&quot;&gt;Fluo
+Deploy&lt;/a&gt; to work on bare metal where
+CentOS 7 is already installed.&lt;/p&gt;
+
+&lt;p&gt;Seeing Application level stats plotted in Grafana, as outlined in
+&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/534&quot;&gt;fluo-io/fluo#534&lt;/a&gt;, would be really nice.  For webindex this would
+include things like URLs exported per second, domains exported per second, etc.
+This issue was not identified during this test, it just would have been really
+nice to have this information while running the test.&lt;/p&gt;
+
+&lt;p&gt;Eventually this test needs to be run on 10, 20, and 40 nodes to measure the
+relative performance increase as the number of nodes is increased.  Ideally
+this test would run on bare metal.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 10 Jan 2016 22:30:00 -0500</pubDate>
+        <link>http://fluo.io/blog/2016/01/10/webindex-long-run/</link>
+        <guid isPermaLink="true">http://fluo.io/blog/2016/01/10/webindex-long-run/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Beta 2 pre-release stress test</title>
+        <description>&lt;p&gt;In preperation for a beta 2 release, the &lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;stress test&lt;/a&gt; was run again on EC2.
+The test went well outperforming the &lt;a href=&quot;/blog/2014/12/30/stress-test-long-run/&quot;&gt;first stress test&lt;/a&gt; and &lt;a href=&quot;/release-notes/1.0.0-beta-1/&quot;&gt;beta-1 stress
+test&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;For this test run, initially ~1 billion random integers were generated and
+loaded into Fluo via map reduce.  After that, 1 million random integers were
+repeatedly loaded 20 times, sleeping 10 minutes between loads.  After
+everything finished, the test was a success. The number of unique integers
+computed independently by MapReduce matched the number computed by Fluo.  Both
+computed 1,019,481,332 unique integers.&lt;/p&gt;
+
+&lt;p&gt;The test took a total of 7 hours 30 minutes and 30 seconds.  Over this time
+period 61.7 million NodeObserver and 20 million NodeLoader transactions were
+executed.  The average rate of transactions per second for the entire test was
+2,968 tansactions per second.  At the conclusion of the test, the stress table
+had 3.87 billion entries.&lt;/p&gt;
+
+&lt;p&gt;The test was run with the following environment.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;18 m3.xlarge worker nodes&lt;/li&gt;
+  &lt;li&gt;18 Fluo workers, each having had 4G memory and 128 threads&lt;/li&gt;
+  &lt;li&gt;18 Map reduce load task, each with 32 threads&lt;/li&gt;
+  &lt;li&gt;18 Tablet servers, each with 3G (1.5G for data cache, .5G for index cache, and .5G for in memory map)&lt;/li&gt;
+  &lt;li&gt;Fluo built from &lt;a href=&quot;https://github.com/fluo-io/fluo/commit/c4789b3100092683b37c57c48ddd87993e84972c&quot;&gt;c4789b3&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Fluo stress built from &lt;a href=&quot;https://github.com/fluo-io/fluo-stress/commit/32edaf91138bb13b442632262c23e7f13f8fb17c&quot;&gt;32edaf9&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Accumulo 1.8.0-SNAPSHOT with &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4066&quot;&gt;ACCUMULO-4066&lt;/a&gt; patch.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;grafana-plots&quot;&gt;Grafana plots&lt;/h2&gt;
+
+&lt;p&gt;An exciting new development in the Fluo eco-system for beta-2 is the
+utilization of Grafana and InfluxDB to plot metrics.  Also metrics
+configuration was simplified making it possible to report metrics from Map
+Reduce and Spark. In the plots below we can see metrics from the load
+transactions executing in Map Reduce.  In previous test, this was not visible,
+being able to see it now is really useful.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/stress_3/grafana-1.png&quot; alt=&quot;Grafana long run&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notifications were building up during the test. A better method than sleeping
+between loads, as mentioned in &lt;a href=&quot;https://github.com/fluo-io/fluo-stress/issues/30&quot;&gt;fluo-io/fluo-stress#30&lt;/a&gt;, is still needed.&lt;/p&gt;
+
+&lt;h2 id=&quot;short-runs&quot;&gt;Short runs&lt;/h2&gt;
+
+&lt;p&gt;Before starting the long run, a few short runs loading 1 million few times were
+done with an empty table.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/blog/stress_3/grafana-2.png&quot; alt=&quot;Grafana short run&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;further-testing&quot;&gt;Further testing&lt;/h2&gt;
+
+&lt;p&gt;A long run of webindex will also be run on EC2 before releasing beta-2.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 22 Dec 2015 10:30:00 -0500</pubDate>
+        <link>http://fluo.io/blog/2015/12/22/beta-2-pre-release-stress-test/</link>
+        <guid isPermaLink="true">http://fluo.io/blog/2015/12/22/beta-2-pre-release-stress-test/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Fluo 1.0.0-beta-1 Release Summary</title>
+        <description>&lt;p&gt;The &lt;a href=&quot;https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-1&quot;&gt;1.0.0-beta-1&lt;/a&gt; release is the second release of Fluo.  It contains the following significant improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Simplified administration of Fluo on a local machine or EC2 cluster&lt;/li&gt;
+  &lt;li&gt;Transaction metrics are now viewable using common monitoring tools&lt;/li&gt;
+  &lt;li&gt;Improved processing of notifications in Fluo workers&lt;/li&gt;
+  &lt;li&gt;Easier management of Fluo from the command line&lt;/li&gt;
+  &lt;li&gt;Support for running multiple Fluo applications on a single cluster&lt;/li&gt;
+  &lt;li&gt;Improved the deletion of observer notifications&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This release is not recommended for production use.  There is no upgrade path from 1.0.0-alpha-1 to 1.0.0-beta-1.&lt;/p&gt;
+
+&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Read the &lt;a href=&quot;/release-notes/1.0.0-beta-1/&quot;&gt;release notes&lt;/a&gt; for a full list of notable features and bug fixes.&lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.0.0-beta-1/&quot;&gt;documentation&lt;/a&gt; for help getting started with Fluo.&lt;/li&gt;
+  &lt;li&gt;Download the &lt;a href=&quot;https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-1&quot;&gt;Fluo binary tarball&lt;/a&gt; for 1.0.0-beta-1 from GitHub.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/apidocs/fluo/1.0.0-beta-1/&quot;&gt;Javadocs&lt;/a&gt; are available for this release.&lt;/li&gt;
+  &lt;li&gt;A &lt;a href=&quot;https://github.com/fluo-io/fluo/tree/1.0.0-beta-1&quot;&gt;tag&lt;/a&gt; of Fluo codebase for 1.0.0-beta-1 is available.&lt;/li&gt;
+  &lt;li&gt;The &lt;a href=&quot;https://github.com/fluo-io/fluo-quickstart&quot;&gt;Quickstart&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/phrasecount&quot;&gt;Phrasecount&lt;/a&gt; applications were updated to work with this release.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 09 Jun 2015 14:30:00 -0400</pubDate>
+        <link>http://fluo.io/release-summaries/1.0.0-beta-1/</link>
+        <guid isPermaLink="true">http://fluo.io/release-summaries/1.0.0-beta-1/</guid>
+        
+        
+        <category>release-summaries</category>
+        
+      </item>
+    
+      <item>
+        <title>Fluo 1.0.0-beta-1 Release Notes</title>
+        <description>&lt;p&gt;Fluo 1.0.0-beta-1 is the second official release of Fluo.  The release closed &lt;a href=&quot;https://github.com/fluo-io/fluo/issues?q=milestone%3A1.0.0-beta-1+is%3Aclosed&quot;&gt;133 tickets&lt;/a&gt;.  This release is not recommended for production use.&lt;/p&gt;
+
+&lt;h2 id=&quot;significant-features&quot;&gt;Significant features&lt;/h2&gt;
+
+&lt;p&gt;This release contains many new features that makes it easier to run, develop, and monitor Fluo applications.&lt;/p&gt;
+
+&lt;h4 id=&quot;simplified-fluo-administration-on-a-local-machine-or-ec2-cluster&quot;&gt;Simplified Fluo administration on a local machine or EC2 cluster&lt;/h4&gt;
+
+&lt;p&gt;Developers can now run Fluo and its dependencies on their local machine (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/92&quot;&gt;#92&lt;/a&gt;) or an AWS EC2 cluster (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/356&quot;&gt;#356&lt;/a&gt;) using a few simple commands.
+This was done by creating two administration tools called &lt;a href=&quot;https://github.com/fluo-io/fluo-dev&quot;&gt;Fluo-dev&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/fluo-deploy&quot;&gt;Fluo-deploy&lt;/a&gt; whose scripts and configuration reside in repos
+separate from the Fluo code base.  These tools allow developers to collaborate and share configuration for running Fluo.&lt;/p&gt;
+
+&lt;h4 id=&quot;transaction-metrics-are-viewable-using-common-monitoring-tools&quot;&gt;Transaction metrics are viewable using common monitoring tools&lt;/h4&gt;
+
+&lt;p&gt;Fluo now publishes metrics (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/20&quot;&gt;#20&lt;/a&gt;) about transactions, collisions, and timestamps using &lt;a href=&quot;https://dropwizard.github.io/metrics/3.1.0/&quot;&gt;Dropwizard metrics&lt;/a&gt;.  These metrics are by default published 
+using JMX and are viewable using JConsole or JVisualVM.  Fluo can also be configured to publish metrics to Graphite or Ganglia.  View the &lt;a href=&quot;https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/docs/metrics.md&quot;&gt;metrics documentation&lt;/a&gt;
+for more information.&lt;/p&gt;
+
+&lt;h4 id=&quot;improved-processing-of-notifications-in-fluo-workers&quot;&gt;Improved processing of notifications in Fluo workers&lt;/h4&gt;
+
+&lt;p&gt;Fluo workers were refactored to separate the code used for finding and executing work.  Each worker uses a single thread for finding 
+work (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/19&quot;&gt;#19&lt;/a&gt;).  A new method was introduced to partition work among workers using a hash+mod of notifications (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/282&quot;&gt;#282&lt;/a&gt;).
+The commit message for &lt;a href=&quot;https://github.com/fluo-io/fluo/commit/4100e236b8438350e30eda924a6360e2c722ae37&quot;&gt;4100e23&lt;/a&gt; contains a good description of some of the benefits and drawback of the current
+hashing approach.&lt;/p&gt;
+
+&lt;h4 id=&quot;improved-the-deletion-of-observer-notifications&quot;&gt;Improved the deletion of observer notifications&lt;/h4&gt;
+
+&lt;p&gt;When a cell is deleted in Accumulo, a delete marker is inserted.  Delete markers stay around until
+all files in a tablet are compacted.  For Fluo this could cause a lot of notification delete markers
+to build up over time.  To avoid this buildup, the way Fluo deletes notifications was changed in
+(&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/457&quot;&gt;#457&lt;/a&gt;).  Accumulo delete markers are no longer used, Fluo now uses a custom delete marker for
+notifications.  The custom deleter marker allows Fluo to do analysis when Accumulo flushes memory to
+disk and avoid writing many delete markers to persistent storage.&lt;/p&gt;
+
+&lt;h4 id=&quot;easier-management-of-fluo-from-the-command-line&quot;&gt;Easier management of Fluo from the command line&lt;/h4&gt;
+
+&lt;p&gt;Fluo now provides different scripts (&lt;strong&gt;fluo&lt;/strong&gt;, &lt;strong&gt;mini-fluo&lt;/strong&gt;, &amp;amp; &lt;strong&gt;local-fluo&lt;/strong&gt;) for managing Fluo using a YARN cluster, MiniFluo, or local processes.  Several commands
+were created for these scripts.  A &lt;strong&gt;scan&lt;/strong&gt; command allows users to print a snapshot of a Fluo table (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/319&quot;&gt;#319&lt;/a&gt;).  A &lt;strong&gt;info&lt;/strong&gt; command shows locations of containers
+when running Fluo in YARN (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/297&quot;&gt;#297&lt;/a&gt;).  A &lt;strong&gt;classpath&lt;/strong&gt; command gives users a list of jars needed to execute Fluo client code (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/436&quot;&gt;#436&lt;/a&gt;).  A &lt;strong&gt;wait&lt;/strong&gt; command will
+sleep until all notifications are processed (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/434&quot;&gt;#434&lt;/a&gt;).&lt;/p&gt;
+
+&lt;h4 id=&quot;support-for-running-multiple-fluo-applications-on-a-single-cluster&quot;&gt;Support for running multiple Fluo applications on a single cluster&lt;/h4&gt;
+
+&lt;p&gt;Users can now run multiple Fluo applications using a single cluster (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/454&quot;&gt;#454&lt;/a&gt;).  This enables different Fluo users to share the same cluster.  Fluo applications
+can be started and stopped independently.  Each application has its own configuration.&lt;/p&gt;
+
+&lt;h4 id=&quot;fluo-build-improvements&quot;&gt;Fluo build improvements&lt;/h4&gt;
+
+&lt;p&gt;On each build, all Java code is automatically formatted based on Google Java Style (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/479&quot;&gt;#479&lt;/a&gt;).  Also, checkstyle and findbugs will fail the build if certain
+standards are not reached (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/185&quot;&gt;#185&lt;/a&gt;).  The POM is also sorted (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/493&quot;&gt;#493&lt;/a&gt;).&lt;/p&gt;
+
+&lt;h4 id=&quot;organized-fluo-code-base&quot;&gt;Organized Fluo code base&lt;/h4&gt;
+
+&lt;p&gt;The Fluo stress test was moved to its own &lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;repo&lt;/a&gt; and is no longer a sub-module (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/385&quot;&gt;#385&lt;/a&gt;).  MiniFluo was moved from fluo-core to the fluo-mini 
+module/jar (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/439&quot;&gt;#439&lt;/a&gt;).  This reduced the number of dependencies in fluo-core.  However, developers will now need to include the fluo-mini jar in their Maven
+POM if they start MiniFluo.&lt;/p&gt;
+
+&lt;h4 id=&quot;fluo-testing-improvements&quot;&gt;Fluo testing improvements&lt;/h4&gt;
+
+&lt;p&gt;Integration tests can now be run from Eclipse (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/322&quot;&gt;#322&lt;/a&gt;).  Several new &lt;a href=&quot;https://github.com/fluo-io/fluo/issues?utf8=%E2%9C%93&amp;amp;q=milestone%3A1.0.0-beta-1+is%3Aclosed+%22unit+test%22&quot;&gt;unit tests&lt;/a&gt; were created.&lt;/p&gt;
+
+&lt;h4 id=&quot;other-important-improvements-and-bug-fixes&quot;&gt;Other important improvements and bug fixes&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/470&quot;&gt;#470&lt;/a&gt; - Replaced FluoFileOutputFormat with an Accumulo Key/Value generator&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/460&quot;&gt;#460&lt;/a&gt; - Reduced Fluo API module dependencies&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/456&quot;&gt;#456&lt;/a&gt; - Fixed bug with notifications being lost when processes died&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/446&quot;&gt;#446&lt;/a&gt; - Simplified log configuration and configure rolling log files in YARN&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/442&quot;&gt;#442&lt;/a&gt; - Reduced the number of curator clients in FluoAdmin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/383&quot;&gt;#383&lt;/a&gt; - Improved transaction logging to help users debug collisions. See &lt;a href=&quot;https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/docs/applications.md#debugging-applications&quot;&gt;debugging documentation&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/365&quot;&gt;#365&lt;/a&gt; - Analyze Fluo code to see what non-public Accumulo APIs are used&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/362&quot;&gt;#362&lt;/a&gt; - Made API data objects immutable&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/349&quot;&gt;#349&lt;/a&gt; - Support application level configuration in fluo.properties&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/342&quot;&gt;#342&lt;/a&gt; - Add a configurable retry timeout to Fluo clients&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/294&quot;&gt;#294&lt;/a&gt; - Fluo now uses chroot suffix in its Zookeeper connection.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/293&quot;&gt;#293&lt;/a&gt; - Add argument checking to FluoConfiguration&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/244&quot;&gt;#244&lt;/a&gt; - Make re-initialization easier for user&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
+
+&lt;p&gt;A successful long stress test run was conducted using Fluo built from commit
+&lt;a href=&quot;https://github.com/fluo-io/fluo/commit/fb647dd6a470e8015654f8ed99b9196f5f49582a&quot;&gt;fb647dd&lt;/a&gt;.  The test ran very well and never fell behind like a
+&lt;a href=&quot;/blog/2014/12/30/stress-test-long-run/&quot;&gt;previous long run&lt;/a&gt; of stress did.  The test had the following
+properties.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Initialized stress test using 1 billion random integers.&lt;/li&gt;
+  &lt;li&gt;Ran 150 incremental loads of 100 thousand integers.  Slept 3 minutes between loads.&lt;/li&gt;
+  &lt;li&gt;Used 19 m3.xlarge nodes on EC2.  16 workers and 3 masters&lt;/li&gt;
+  &lt;li&gt;Configuration for the test committed and tagged in git : &lt;a href=&quot;https://github.com/keith-turner/fluo-deploy/tree/beta-long-test-1&quot;&gt;fluo-deploy tag&lt;/a&gt; and &lt;a href=&quot;https://github.com/keith-turner/fluo-stress/tree/beta-long-test-1&quot;&gt;fluo-stress tag&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Opened two issues as a result of test &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/499&quot;&gt;#499&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/fluo-stress/issues/30&quot;&gt;fluo-stress#30&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Below is the trailing output from running the test.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;*****Generating and loading incremental data set 148*****
+*****Generating and loading incremental data set 149*****
+*****Generating and loading incremental data set 150*****
+*****Calculating # of unique integers using MapReduce*****
+                UNIQUE=1014486419
+*****Wait for Fluo to finish processing*****
+05:33:40.158 [main] INFO  io.fluo.cluster.runner.AppRunner - The wait command will exit when all notifications are processed
+05:33:40.417 [Thread-3] INFO  io.fluo.core.oracle.OracleClient - Connected to oracle at worker4:9913
+05:33:41.308 [main] INFO  io.fluo.cluster.runner.AppRunner - All processing has finished!
+*****Printing # of unique integers calculated by Fluo*****
+Total at root : 1014486419
+Nodes Scanned : 59605
+*****Verifying Fluo &amp;amp; MapReduce results match*****
+Success! Fluo &amp;amp; MapReduce both calculated 1014486419 unique integers
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The test ran for a little over 12 hours.  Below are two plots pulled from
+graphite showing the number of notifications queued and transaction rate over
+the entire test run.  Load transactions are not included in the rate.  The rate
+is transactions per second.  The accuracy of these plots is uncertain because
+no graphite configuration changes were made.  The plots do seem within the
+ballpark.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/resources/release-notes/1.0.0-beta-1/queued.png&quot; alt=&quot;Notifications Queued&quot; title=&quot;Notifications Queued&quot; /&gt; &lt;img src=&quot;/resources/release-notes/1.0.0-beta-1/rate.png&quot; alt=&quot;Transaction rate&quot; title=&quot;Transaction Rate&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 09 Jun 2015 14:30:00 -0400</pubDate>
+        <link>http://fluo.io/release-notes/1.0.0-beta-1/</link>
+        <guid isPermaLink="true">http://fluo.io/release-notes/1.0.0-beta-1/</guid>
+        
+        
+        <category>release-notes</category>
+        
+      </item>
+    
+      <item>
+        <title>Fluo 1.0.0-beta-1 is released!</title>
+        <description>&lt;p&gt;The Fluo project is happy to announce the &lt;a href=&quot;/release-summaries/1.0.0-beta-1/&quot;&gt;1.0.0-beta-1&lt;/a&gt; release of &lt;a href=&quot;https://github.com/fluo-io/fluo&quot;&gt;Fluo&lt;/a&gt;.  This is the second 
+release of Fluo.&lt;/p&gt;
+
+&lt;p&gt;We invite developers read the Fluo &lt;a href=&quot;/docs/fluo/1.0.0-beta-1/&quot;&gt;documentation&lt;/a&gt;, play with the &lt;a href=&quot;https://github.com/fluo-io/fluo-quickstart&quot;&gt;quickstart&lt;/a&gt; &amp;amp; &lt;a href=&quot;https://github.com/fluo-io/phrasecount&quot;&gt;phrasecount&lt;/a&gt; 
+examples, and contribute back in the form of bug reports, new feature requests, and pull requests.&lt;/p&gt;
+
+&lt;p&gt;Fluo is an implementation of Google’s &lt;a href=&quot;http://research.google.com/pubs/pub36726.html&quot;&gt;percolator paper&lt;/a&gt;, which adds large-scale incremental 
+processing of data using distributed transactions and notifications. It runs on &lt;a href=&quot;http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html&quot;&gt;YARN&lt;/a&gt; and stores its 
+data in &lt;a href=&quot;https://accumulo.apache.org/&quot;&gt;Accumulo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/release-notes/1.0.0-beta-1/&quot;&gt;Release notes&lt;/a&gt; and &lt;a href=&quot;/apidocs/fluo/1.0.0-beta-1/&quot;&gt;javadocs&lt;/a&gt; are available.  The Fluo &lt;a href=&quot;http://search.maven.org/#search%7Cga%7C1%7Cfluo&quot;&gt;jars&lt;/a&gt; have been deployed to 
+Maven Central.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 09 Jun 2015 14:30:00 -0400</pubDate>
+        <link>http://fluo.io/blog/2015/06/09/fluo-1.0.0-beta-1-is-released/</link>
+        <guid isPermaLink="true">http://fluo.io/blog/2015/06/09/fluo-1.0.0-beta-1-is-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+  </channel>
+</rss>
