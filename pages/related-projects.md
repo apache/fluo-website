@@ -24,8 +24,8 @@ While the [Apache Software Foundation][asf] hosts the primary Fluo repositories 
 * [resources] - Fluo build resources
 
 [asf]: https://www.apache.org/
-[Fluo]: https://github.com/apache/fluo
-[Fluo Recipes]: https://github.com/apache/fluo-recipes
+[Fluo]: https://github.com/apache/incubator-fluo
+[Fluo Recipes]: https://github.com/apache/incubator-fluo-recipes
 [Fluo Website]: https://github.com/fluo/fluo-io.github.io
 [Zetten]: https://github.com/fluo-io/zetten
 [Fluo-dev]: https://github.com/fluo-io/fluo-dev

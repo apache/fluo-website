@@ -1,7 +1,7 @@
 Fluo website
 ============
 
-Code powering the Fluo project website ([http://fluo.io](http://fluo.io)).
+Code powering the Fluo project website ([https://fluo.incubator.apache.org](https://fluo.incubator.apache.org)).
 
 Contributions
 -------------
