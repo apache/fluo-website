@@ -14,8 +14,8 @@ or [Zetten] (which sets up Fluo on a cluster).  Both will download and install F
 
 If you would rather install and run Fluo on your own, follow these [installation instructions][install].
 
-[latest]: https://github.com/apache/incubator-fluo/releases/latest
-[all]: https://github.com/apache/incubator-fluo/releases
+[latest]: https://github.com/apache/fluo/releases/latest
+[all]: https://github.com/apache/fluo/releases
 [fluo-dev]: https://github.com/fluo-io/fluo-dev
 [Zetten]: https://github.com/fluo-io/zetten
 [install]: /docs/fluo/{{ site.latest_fluo_release}}/prod-fluo-setup/

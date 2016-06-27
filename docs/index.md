@@ -21,8 +21,8 @@ Latest release is `{{ site.latest_recipes_release }}` made on {{ site.latest_rec
 * Fluo Recipes documentation - [Latest][recipes-docs-latest] \| [Archive][recipes-docs-archive]
 * Fluo Recipes API - [Latest][recipes-api-latest] \| [Archive][recipes-api-archive]
 
-[Fluo]: https://github.com/apache/incubator-fluo
-[Fluo Recipes]: https://github.com/apache/incubator-fluo-recipes
+[Fluo]: https://github.com/apache/fluo
+[Fluo Recipes]: https://github.com/apache/fluo-recipes
 [fluo-docs-latest]: /docs/fluo/{{ site.latest_fluo_release }}/
 [fluo-api-latest]: /apidocs/fluo/{{ site.latest_fluo_release }}/
 [fluo-sum-latest]: /release-summaries/{{ site.latest_fluo_release }}/
