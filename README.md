@@ -1,7 +1,7 @@
 Fluo website
 ============
 
-Code powering the Fluo project website ([https://fluo.incubator.apache.org](https://fluo.incubator.apache.org)).
+Code powering the Fluo project website ([https://fluo.apache.org](https://fluo.apache.org)).
 
 Contributions
 -------------
@@ -27,9 +27,9 @@ Below are the steps required to update the Fluo project website for a new releas
    your Fluo repo to this repo:
 
     ```bash
-    cd fluo-io.github.io
+    cd fluo-website/
     mkdir -p docs/1.0.0-beta-1
-    ./_scripts/convert-docs.py /path/to/fluo/docs/ /path/to/fluo-io.github.io/docs/fluo/1.0.0-beta-1/
+    ./_scripts/convert-docs.py /path/to/fluo/docs/ /path/to/fluo-website/docs/fluo/1.0.0-beta-1/
     ```
 
 2. Modify `docs/index.md` to point to new release and update the `latest_fluo_release` 
@@ -40,7 +40,7 @@ Below are the steps required to update the Fluo project website for a new releas
    repo named after your release version (i.e 1.0.0-beta-1):
 
     ```bash
-    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo/modules/api /path/to/fluo-io.github.io/apidocs/fluo
+    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo/modules/api /path/to/fluo-website/apidocs/fluo
     ```
 
 4. Modify `apidocs/index.md` to point to the new javadocs that you just generated.
@@ -55,9 +55,9 @@ Steps to update website for new Fluo Recipes release:
 1. Run the commands below to copy and convert documentation in your release tag.
 
     ```bash
-    cd fluo-io.github.io
+    cd fluo-website
     mkdir -p docs/1.0.0-beta-1
-    ./_scripts/convert-recipes.py /path/to/fluo-recipes/docs/ /path/to/fluo-io.github.io/docs/fluo-recipes/1.0.0-beta-1/
+    ./_scripts/convert-recipes.py /path/to/fluo-recipes/docs/ /path/to/fluo-website/docs/fluo-recipes/1.0.0-beta-1/
     ```
 
 2. Modify `docs/index.md` to point to new release and update the `latest_recipes_release` variable in `_config.yml`.
@@ -67,7 +67,7 @@ Steps to update website for new Fluo Recipes release:
    repo named after your release version (i.e 1.0.0-beta-1):
 
     ```bash
-    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo-recipes /path/to/fluo-io.github.io/apidocs/fluo-recipes
+    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo-recipes /path/to/fluo-website/apidocs/fluo-recipes
     ```
 
 4. Modify `apidocs/index.md` to point to the new javadocs that you just generated.
