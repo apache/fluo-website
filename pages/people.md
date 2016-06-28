@@ -8,30 +8,32 @@ permalink: /people/
 
 ## Committers
 
-| Username | Name              | Organization                | Timezone |
------------|-------------------|-----------------------------|----------|
-| cjnolet  | Corey Nolet       | [Tetra Concepts LLC][tc]    | [ET][et] |
-| ctubbsii | Christopher Tubbs |                             | [ET][et] |
-| elserj   | Josh Elser        | [Hortonworks][hw]           | [ET][et] |
-| kturner  | Keith Turner      | [Peterson Technologies][pt] | [ET][et] |
-| mwalch   | Mike Walch        | [Peterson Technologies][pt] | [ET][et] |
+| Name                                             | Organization                | Timezone |
+---------------------------------------------------|-----------------------------|----------|
+| [Corey Nolet](https://github.com/cjnolet)        | [Tetra Concepts LLC][tc]    | [ET][et] |
+| [Christopher Tubbs](https://github.com/ctubbsii) |                             | [ET][et] |
+| [Josh Elser](https://github.com/joshelser)       | [Hortonworks][hw]           | [ET][et] |
+| [Keith Turner](https://github.com/keith-turner)  | [Peterson Technologies][pt] | [ET][et] |
+| [Mike Walch](https://github.com/mikewalch)       | [Peterson Technologies][pt] | [ET][et] |
 
 ## Mentors
 
-| Username | Name              | Organization                | Timezone |
------------|-------------------|-----------------------------|----------|
-| billie   | Billie Rinaldi    | [Hortonworks][hw]           | [ET][et] |
-| drew     | Drew Farris       | [Booz Allen Hamilton][bah]  | [ET][et] |
-| elserj   | Josh Elser        | [Hortonworks][hw]           | [ET][et] |
+| Name                                               | Organization               | Timezone |
+-----------------------------------------------------|----------------------------|----------|
+| [Billie Rinaldi](https://github.com/billierinaldi) | [Hortonworks][hw]          | [ET][et] |
+| [Drew Farris](https://github.com/drewfarris)       | [Booz Allen Hamilton][bah] | [ET][et] |
+| [Josh Elser](https://github.com/joshelser)         | [Hortonworks][hw]          | [ET][et] |
 
 ## Contributors
 
-| Username | Name              | Organization                | Timezone |
------------|-------------------|-----------------------------|----------|
-| ecn      | Eric Newton       |                             | [ET][et] |
+| Name                                          | Organization                        | Timezone   |
+------------------------------------------------|-------------------------------------|------------|
+| [Eric Newton](https://github.com/ericnewton)  |                                     | [ET][et]   |
+| [Garvit Bansal](https://github.com/Garvit244) | [Flipkart](http://www.flipkart.com) | [IST][ist] |
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: http://hortonworks.com/
 [pt]: http://www.ptech-llc.com/
-[et]: http://www.timeanddate.com/time/zones/et
 [bah]: http://www.boozallen.com/
+[et]: http://www.timeanddate.com/time/zones/et
+[ist]: http://www.timeanddate.com/time/zones/ist
