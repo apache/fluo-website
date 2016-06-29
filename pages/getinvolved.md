@@ -25,11 +25,11 @@ Users can provide feedback by:
 
 Contributions are welcome to all Fluo projects! All projects follow a [review-then-commit][rtc] process. If you are interested in contributing, read our [How To Contribute][htc] page.
 
-[f]: https://github.com/apache/incubator-fluo
-[r]: https://github.com/apache/incubator-fluo-recipes
+[f]: https://github.com/apache/fluo
+[r]: https://github.com/apache/fluo-recipes
 [w]: https://github.com/fluo/fluo-io.github.io
-[fi]: https://github.com/apache/incubator-fluo/issues
-[ri]: https://github.com/apache/incubator-fluo-recipes/issues
+[fi]: https://github.com/apache/fluo/issues
+[ri]: https://github.com/apache/fluo-recipes/issues
 [wi]: https://github.com/fluo/fluo-io.github.io/issues
 [fnf]: irc://chat.freenode.net/fluo
 [fn]: https://freenode.net/

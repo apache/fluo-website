@@ -67,11 +67,11 @@ This can be configured by common IDEs:
 * Eclipse: ```Window -> Preferences -> Java -> Organize Imports```
 * Intelli-J: ```Preferences -> Code Style -> Java -> Imports```
 
-[f]: https://github.com/apache/incubator-fluo
-[r]: https://github.com/apache/incubator-fluo-recipes
+[f]: https://github.com/apache/fluo
+[r]: https://github.com/apache/fluo-recipes
 [w]: https://github.com/apache/incubator-fluo-website
-[fi]: https://github.com/apache/incubator-fluo/issues
-[ri]: https://github.com/apache/incubator-fluo-recipes/issues
+[fi]: https://github.com/apache/fluo/issues
+[ri]: https://github.com/apache/fluo-recipes/issues
 [wi]: https://github.com/apache/incubator-fluo-website/issues
 [tutorial]: http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
 [stackoverflow]: http://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git
