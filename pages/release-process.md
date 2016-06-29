@@ -103,7 +103,7 @@ When consensus has been reached on a release candidate, follow the steps below t
  
  7.  Send an email to `dev@fluo.incubator.apache.org` announcing new release.
 
-[website README]: https://github.com/fluo-io/fluo-io.github.io/blob/master/README.md
+[website README]: https://github.com/apache/incubator-fluo-website/blob/master/README.md
 [documentation]: http://central.sonatype.org/pages/apache-maven.html
 [sonatype account]: https://issues.sonatype.org/
 [Release the artifacts]: http://central.sonatype.org/pages/releasing-the-deployment.html

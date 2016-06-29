@@ -15,7 +15,7 @@ output_dir = sys.argv[2]
 args = output_dir.rpartition("/docs")
 url_prefix = args[1] + args[2]
 release_ver = url_prefix.split("/")[3]
-github_prefix = "https://github.com/fluo-io/fluo-recipes/blob/{0}/modules/".format(release_ver)
+github_prefix = "https://github.com/apache/fluo-recipes/blob/{0}/modules/".format(release_ver)
 apidocs_prefix = "/apidocs/fluo-recipes/{0}/".format(release_ver)
 
 def path_to_url(path):
