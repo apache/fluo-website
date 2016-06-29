@@ -2010,7 +2010,7 @@ p { line-height: 25px; padding-top: 9px; }
 
 .text-muted { margin-left: 0px; }
 
-tr:nth-child(even) { background: #DFEBF2; }
+tr:nth-child(even) { background: #F3F3F3; }
 
 tr:nth-child(odd) { background: #FFF; }
 
