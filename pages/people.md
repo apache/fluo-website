@@ -6,15 +6,17 @@ permalink: /people/
 
 ---
 
-## Committers
+## PPMC/Committers
 
-| Name                                             | Organization                | Timezone |
----------------------------------------------------|-----------------------------|----------|
-| [Corey Nolet](https://github.com/cjnolet)        | [Tetra Concepts LLC][tc]    | [ET][et] |
-| [Christopher Tubbs](https://github.com/ctubbsii) |                             | [ET][et] |
-| [Josh Elser](https://github.com/joshelser)       | [Hortonworks][hw]           | [ET][et] |
-| [Keith Turner](https://github.com/keith-turner)  | [Peterson Technologies][pt] | [ET][et] |
-| [Mike Walch](https://github.com/mikewalch)       | [Peterson Technologies][pt] | [ET][et] |
+| Name                                               | Organization                | Timezone |
+-----------------------------------------------------|-----------------------------|----------|
+| [Billie Rinaldi](https://github.com/billierinaldi) | [Hortonworks][hw]           | [ET][et] |
+| [Corey Nolet](https://github.com/cjnolet)          | [Tetra Concepts LLC][tc]    | [ET][et] |
+| [Christopher Tubbs](https://github.com/ctubbsii)   |                             | [ET][et] |
+| [Drew Farris](https://github.com/drewfarris)       | [Booz Allen Hamilton][bah]  | [ET][et] |
+| [Josh Elser](https://github.com/joshelser)         | [Hortonworks][hw]           | [ET][et] |
+| [Keith Turner](https://github.com/keith-turner)    | [Peterson Technologies][pt] | [ET][et] |
+| [Mike Walch](https://github.com/mikewalch)         | [Peterson Technologies][pt] | [ET][et] |
 
 ## Mentors
 
