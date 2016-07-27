@@ -3,6 +3,8 @@ layout: page
 title: Documentation
 ---
 
+For a general overview of Fluo, take the [Fluo tour](/tour/).
+
 [Apache Fluo] and [Apache Fluo Recipes] have seperate documentation as they are different repositories with their own release cycle.
 
 ## Apache Fluo
@@ -19,4 +21,3 @@ Documentation about releases made before Apache Fluo entered incubation at Apach
 
 [Apache Fluo]: https://github.com/apache/fluo
 [Apache Fluo Recipes]: https://github.com/apache/fluo-recipes
-

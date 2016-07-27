@@ -1,5 +1,8 @@
-Fluo Data Model
----------------
+---
+title: Data Model
+tour_num: 1
+permalink: /tour/1/
+---
 
 Fluo uses Accumulo's data model which is based on the BigTable data model.
 This data model supports a large online sorted map that spans multiple nodes in

@@ -1,5 +1,8 @@
-Read and Write Data
--------------------
+---
+title: Read and Write Data
+tour_num: 4
+permalink: /tour/4/
+---
 
 The following example shows basic code for writing data using Fluo and then
 reading it back out.  To run this code modify `src/main/java/ft/Main.java` in

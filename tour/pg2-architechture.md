@@ -1,4 +1,0 @@
-Fluo Architechture
-------------------
-
-TODO picture

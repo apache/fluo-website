@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<div id="tour-header">
+  <h2><a href="/tour/">Fluo Tour</a>: {{ page.title }}</h2>
+  <p class="text-muted">Tour page {{ page.tour_num }} of {{ site.tour_pages }}</p>
+</div>
+<div id="tour-content">
+  {{ content }}
+</div>
+
+<div>
+  {% assign prev = page.tour_num | minus: 1 %}
+  {% assign next = page.tour_num | plus: 1 %}
+  <h2> 
+    {% if prev > 0 %}
+    <a href="/tour/{{ prev }}/">&lt;</a> 
+    {% endif %}
+
+    {{ page.tour_num }} / {{ site.tour_pages }} 
+    {% if next <= site.tour_pages %}
+    <a href="/tour/{{ next }}/">&gt;</a> 
+    {% endif %}
+  </h2>
+</div>
