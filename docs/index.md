@@ -3,26 +3,30 @@ layout: page
 title: Documentation
 ---
 
-[Fluo] and [Fluo Recipes] have seperate documentation as they are different repositories with their own release cycle.
+[Apache Fluo] and [Apache Fluo Recipes] have seperate documentation as they are different repositories with their own release cycle.
 
-## Fluo
+## Apache Fluo
 
-Latest release is `{{ site.latest_fluo_release }}` made on {{ site.latest_fluo_release_date }}.
+The first release of Apache Fluo has not been made yet.
 
-* Fluo documentation - [Latest][fluo-docs-latest] \| [Archive][fluo-docs-archive]
-* Fluo API - [Latest][fluo-api-latest] \| [Archive][fluo-api-archive]
-* Fluo release summary -  [Latest][fluo-sum-latest] \| [Archive][fluo-sum-archive]
-* Fluo release notes - [Latest][fluo-notes-latest] \| [Archive][fluo-notes-archive]
+Latest non-ASF release is `{{ site.latest_fluo_release }}` made on {{ site.latest_fluo_release_date }}.
 
-## Fluo Recipes
+* Documentation - [Latest][fluo-docs-latest] \| [Archive][fluo-docs-archive]
+* API - [Latest][fluo-api-latest] \| [Archive][fluo-api-archive]
+* Release summary -  [Latest][fluo-sum-latest] \| [Archive][fluo-sum-archive]
+* Release notes - [Latest][fluo-notes-latest] \| [Archive][fluo-notes-archive]
 
-Latest release is `{{ site.latest_recipes_release }}` made on {{ site.latest_recipes_release_date }}
+## Apache Fluo Recipes
 
-* Fluo Recipes documentation - [Latest][recipes-docs-latest] \| [Archive][recipes-docs-archive]
-* Fluo Recipes API - [Latest][recipes-api-latest] \| [Archive][recipes-api-archive]
+The first release of Apache Fluo Recipes has not been made yet.
 
-[Fluo]: https://github.com/apache/fluo
-[Fluo Recipes]: https://github.com/apache/fluo-recipes
+Latest non-ASF release is `{{ site.latest_recipes_release }}` made on {{ site.latest_recipes_release_date }}.
+
+* Documentation - [Latest][recipes-docs-latest] \| [Archive][recipes-docs-archive]
+* API - [Latest][recipes-api-latest] \| [Archive][recipes-api-archive]
+
+[Apache Fluo]: https://github.com/apache/fluo
+[Apache Fluo Recipes]: https://github.com/apache/fluo-recipes
 [fluo-docs-latest]: /docs/fluo/{{ site.latest_fluo_release }}/
 [fluo-api-latest]: /apidocs/fluo/{{ site.latest_fluo_release }}/
 [fluo-sum-latest]: /release-summaries/{{ site.latest_fluo_release }}/

@@ -4,7 +4,7 @@ title: Powered By
 permalink: /poweredby/
 ---
 
-Fluo is powered by:
+Apache Fluo is powered by:
 
 * [Apache Accumulo][accumulo]
 * [Apache Commons][commons]

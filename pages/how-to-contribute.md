@@ -4,7 +4,7 @@ title: How To Contribute
 permalink: /how-to-contribute/
 ---
 
-Contributions are welcome to all Fluo repositories ([Fluo][f], [Fluo Recipes][r]) and the [Fluo project website][w].  All repositories follow a [review-then-commit][rtc] process.
+Contributions are welcome to all Apache Fluo repositories ([Fluo][f], [Fluo Recipes][r]) and the [Fluo project website][w].  All repositories follow a [review-then-commit][rtc] process.
 This means that all contributions must pass any integration tests and be reviewed before being committed. Code reviews are done by commenting on a GitHub pull request.
 
 ### Contribution workflow
