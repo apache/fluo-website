@@ -15,7 +15,7 @@ The first release of Apache Fluo Recipes has not been made yet.
 
 ## Pre Apache Documentation
 
-Documentation about releases made before Apahce Fluo entered incubation at Apache has been moved [here](pre-asf)
+Documentation about releases made before Apache Fluo entered incubation at Apache has been moved [here](pre-asf)
 
 [Apache Fluo]: https://github.com/apache/fluo
 [Apache Fluo Recipes]: https://github.com/apache/fluo-recipes

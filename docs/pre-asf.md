@@ -3,7 +3,7 @@ layout: page
 title: Pre Apache Documentation
 ---
 
-<div class="alert alert-danger" role="alert">Please note - This is documentation related to non-ASF releases of Fluo.  These releases were made before Apahce Fluo became an ASF project.</div>
+<div class="alert alert-danger" role="alert">Please note - This is documentation related to non-ASF releases of Fluo.  These releases were made before Apache Fluo became an ASF project.</div>
 
 ## Fluo
 
