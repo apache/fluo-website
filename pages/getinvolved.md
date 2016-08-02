@@ -4,7 +4,7 @@ title: Get Involved
 permalink: /getinvolved/
 ---
 
-Below are some ways that you can get involved in Fluo:
+Below are some ways that you can get involved with Apache Fluo:
 
 ### Mailing list
 
@@ -12,7 +12,7 @@ Join our public mailing list by sending an email to ```dev-subscribe@fluo.incuba
 
 ### IRC
 
-Drop by and chat about Fluo at [#fluo][fnf] on [freenode][fn].  
+Drop by and chat about Apache Fluo at [#fluo][fnf] on [freenode][fn].  
 
 ### User feedback 
 
@@ -23,7 +23,7 @@ Users can provide feedback by:
 
 ### Contributions 
 
-Contributions are welcome to all Fluo projects! All projects follow a [review-then-commit][rtc] process. If you are interested in contributing, read our [How To Contribute][htc] page.
+Contributions are welcome to all Apache Fluo projects! All projects follow a [review-then-commit][rtc] process. If you are interested in contributing, read our [How To Contribute][htc] page.
 
 [f]: https://github.com/apache/fluo
 [r]: https://github.com/apache/fluo-recipes

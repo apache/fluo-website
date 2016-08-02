@@ -4,6 +4,8 @@ title: Release Process
 permalink: /release-process/
 ---
 
+<div class="alert alert-danger" role="alert">Please note - These instructions are for releasing Fluo before it became an ASF project.  After the first Apache release, they will be updated to reflect how to release Apache Fluo on ASF infrastructure</div>
+
 ### Initial Setup
 
 Before you can release Fluo or Fluo Recipes, you will need to set up a GPG client, create a [sonatype account], and have another Fluo committer request to give you deployment access for the Fluo project on sonatype.  Once you have a sonatype account, you should add your account details to your Maven settings.xml in the following format:

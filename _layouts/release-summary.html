@@ -5,6 +5,11 @@ layout: default
   <h2>{{ page.title }}</h1>
   <p class="text-muted">{{ page.date | date_to_string }}</p>
 </div>
+
+{% if page.historical %}
+  <div class="alert alert-danger" role="alert">This release summary is for a release of Fluo that made before Apache incubation.</div>
+{% endif %}
+
 <div class="post-content">
   {{ content }}
 </div>
