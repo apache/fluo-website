@@ -74,6 +74,10 @@
 
   
 
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
+  
+
   <header class="post-header">
     <h2 class="post-title">Accumulo Export Queue Specialization</h2>
   </header>
@@ -105,7 +109,7 @@ for Accumulo is provided in the Fluo Recipes Accumulo module.</p>
 <p>The following code shows how to configure an Export Queue that will write to an
 external Accumulo table.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>
 <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
 
 <span class="c1">//Configure an export queue to use the classes Fluo Recipes provides for</span>
@@ -122,7 +126,7 @@ external Accumulo table.</p>
 
 <span class="c1">//Configure the Accumulo table to export to.</span>
 <span class="n">AccumuloExporter</span><span class="o">.</span><span class="na">setExportTableInfo</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="n">EXPORT_QUEUE_ID</span><span class="o">,</span>
-    <span class="k">new</span> <span class="n">TableInfo</span><span class="o">(</span><span class="n">instance</span><span class="o">,</span> <span class="n">zookeepers</span><span class="o">,</span> <span class="n">user</span><span class="o">,</span> <span class="n">password</span><span class="o">,</span> <span class="n">exportTable</span><span class="o">));</span>
+    <span class="k">new</span> <span class="nf">TableInfo</span><span class="o">(</span><span class="n">instance</span><span class="o">,</span> <span class="n">zookeepers</span><span class="o">,</span> <span class="n">user</span><span class="o">,</span> <span class="n">password</span><span class="o">,</span> <span class="n">exportTable</span><span class="o">));</span>
 
 <span class="c1">//initialize Fluo using fluoConfig</span>
 

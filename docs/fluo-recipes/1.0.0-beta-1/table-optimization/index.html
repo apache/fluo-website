@@ -76,6 +76,10 @@
   <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-beta-2">latest docs</a>!</div>
   
 
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
+  
+
   <header class="post-header">
     <h2 class="post-title">Fluo Table Optimization</h2>
   </header>
@@ -92,7 +96,7 @@ want to use them in production.</p>
 
 <h2 id="java-example">Java Example</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConf</span> <span class="o">=</span> <span class="o">...</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConf</span> <span class="o">=</span> <span class="o">...</span>
 
 <span class="c1">//export queue configure method will return table optimizations it would like made</span>
 <span class="n">ExportQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConf</span><span class="o">,</span> <span class="o">...);</span>
@@ -123,7 +127,7 @@ selective optimizations is need look into using the following methods instead.</
 recipes from the command line.  This should be done after configuring reciped
 and initializing Fluo.  Below are example command for initializing in this way.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>
 <span class="c">#create application </span>
 fluo new app1
 

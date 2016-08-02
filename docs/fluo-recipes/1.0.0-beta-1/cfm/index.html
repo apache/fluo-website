@@ -76,6 +76,10 @@
   <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-beta-2">latest docs</a>!</div>
   
 
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
+  
+
   <header class="post-header">
     <h2 class="post-title">Collision Free Map Recipe</h2>
   </header>
@@ -148,7 +152,7 @@ Collision Free Map.</p>
 
 <p>The following snippet shows how to setup a collision free map.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
 
   <span class="kt">int</span> <span class="n">numBuckets</span> <span class="o">=</span> <span class="mi">119</span><span class="o">;</span>
 
@@ -163,22 +167,22 @@ Collision Free Map.</p>
 updated.  It examines new and old document content and determines changes in
 word counts.  These changes are pushed to a collision free map.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocumentObserver</span> <span class="kd">extends</span> <span class="n">TypedObserver</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocumentObserver</span> <span class="kd">extends</span> <span class="n">TypedObserver</span> <span class="o">{</span>
 
   <span class="n">CollisionFreeMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">wcm</span><span class="o">;</span>
 
   <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="n">init</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
     <span class="n">wcm</span> <span class="o">=</span> <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">WordCountMap</span><span class="o">.</span><span class="na">ID</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
   <span class="o">}</span>
 
   <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="n">ObservedColumn</span> <span class="n">getObservedColumn</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="n">ObservedColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"content"</span><span class="o">,</span> <span class="s">"new"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">);</span>
+  <span class="kd">public</span> <span class="n">ObservedColumn</span> <span class="nf">getObservedColumn</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ObservedColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"content"</span><span class="o">,</span> <span class="s">"new"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">);</span>
   <span class="o">}</span>
 
   <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="n">process</span><span class="o">(</span><span class="n">TypedTransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TypedTransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">String</span> <span class="n">newContent</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">col</span><span class="o">(</span><span class="n">col</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
     <span class="n">String</span> <span class="n">currentContent</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"content"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"current"</span><span class="o">).</span><span class="na">toString</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>
 
@@ -196,11 +200,11 @@ word counts.  These changes are pushed to a collision free map.</p>
     <span class="n">tx</span><span class="o">.</span><span class="na">mutate</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">col</span><span class="o">(</span><span class="n">col</span><span class="o">).</span><span class="na">delete</span><span class="o">();</span>
   <span class="o">}</span>
 
-  <span class="kd">private</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">getWordCounts</span><span class="o">(</span><span class="n">String</span> <span class="n">doc</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="nf">getWordCounts</span><span class="o">(</span><span class="n">String</span> <span class="n">doc</span><span class="o">)</span> <span class="o">{</span>
    <span class="c1">//TODO extract words from doc</span>
   <span class="o">}</span>
 
-  <span class="kd">private</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">calculateChanges</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">newCounts</span><span class="o">,</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="nf">calculateChanges</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">newCounts</span><span class="o">,</span>
       <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">currCounts</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">changes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
 
@@ -238,7 +242,7 @@ updated.  In <code class="highlighter-rouge">WordCountObserver</code>, updates a
 database.  The export is given the new and old value allowing it to delete the
 old value if needed.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
  * This class exists to provide a single place to put all code related to the
  * word count map.
  */</span>
@@ -249,14 +253,14 @@ old value if needed.</p>
   <span class="cm">/**
    * A helper method for configuring the word count map.
    */</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">configure</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">,</span> <span class="kt">int</span> <span class="n">numBuckets</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">,</span> <span class="kt">int</span> <span class="n">numBuckets</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="k">new</span> <span class="n">Options</span><span class="o">(</span><span class="n">ID</span><span class="o">,</span> <span class="n">WordCountCombiner</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> 
         <span class="n">WordCountObserver</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">numBuckets</span><span class="o">));</span>
   <span class="o">}</span>
 
   <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">WordCountCombiner</span> <span class="kd">implements</span> <span class="n">Combiner</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="o">{</span>
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">combine</span><span class="o">(</span><span class="n">String</span> <span class="n">key</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">updates</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="nf">combine</span><span class="o">(</span><span class="n">String</span> <span class="n">key</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">updates</span><span class="o">)</span> <span class="o">{</span>
       <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0L</span><span class="o">;</span>
 
       <span class="k">while</span> <span class="o">(</span><span class="n">updates</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
@@ -277,12 +281,12 @@ old value if needed.</p>
     <span class="kd">private</span> <span class="n">ExportQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">MyDatabaseExport</span><span class="o">&gt;</span> <span class="n">exportQ</span><span class="o">;</span>
 
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">init</span><span class="o">(</span><span class="n">String</span> <span class="n">mapId</span><span class="o">,</span> <span class="n">Context</span> <span class="n">observerContext</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">String</span> <span class="n">mapId</span><span class="o">,</span> <span class="n">Context</span> <span class="n">observerContext</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
       <span class="n">exportQ</span> <span class="o">=</span> <span class="n">ExportQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">MyExportQ</span><span class="o">.</span><span class="na">ID</span><span class="o">,</span> <span class="n">observerContext</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
     <span class="o">}</span>
 
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">updatingValues</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Update</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;&gt;</span> <span class="n">updates</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updatingValues</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Update</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;&gt;</span> <span class="n">updates</span><span class="o">)</span> <span class="o">{</span>
       <span class="k">while</span> <span class="o">(</span><span class="n">updates</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
         <span class="n">Update</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">update</span> <span class="o">=</span> <span class="n">updates</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
 

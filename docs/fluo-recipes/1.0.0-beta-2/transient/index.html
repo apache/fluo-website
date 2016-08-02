@@ -74,6 +74,10 @@
 
   
 
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
+  
+
   <header class="post-header">
     <h2 class="post-title">Transient data</h2>
   </header>
@@ -106,7 +110,7 @@ transient ranges when configured.  If you would like to register your own
 transient ranges, use <a href="/apidocs/fluo-recipes/1.0.0-beta-2/io/fluo/recipes/common/TransientRegistry.html">TransientRegistry</a>.  Below is a simple example of
 using this.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
 <span class="n">TransientRegistry</span> <span class="n">transientRegistry</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TransientRegistry</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
 <span class="n">transientRegistry</span><span class="o">.</span><span class="na">addTransientRange</span><span class="o">(</span><span class="k">new</span> <span class="n">RowRange</span><span class="o">(</span><span class="n">startRow</span><span class="o">,</span> <span class="n">endRow</span><span class="o">));</span>
 
@@ -122,7 +126,7 @@ need to periodically compact transient ranges if using a recipe that registers
 them.  Using <a href="/apidocs/fluo-recipes/1.0.0-beta-2/io/fluo/recipes/accumulo/ops/TableOperations.html">TableOperations</a> this can be done with one line of Java code
 like the following.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
 <span class="n">TableOperations</span><span class="o">.</span><span class="na">compactTransient</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">);</span>
 </code></pre>
 </div>

@@ -77,7 +77,7 @@
   </header>
 
   <article id="page-content">
-    <p>Contributions are welcome to all Fluo repositories (<a href="https://github.com/apache/fluo">Fluo</a>, <a href="https://github.com/apache/fluo-recipes">Fluo Recipes</a>) and the <a href="https://github.com/apache/incubator-fluo-website">Fluo project website</a>.  All repositories follow a <a href="http://www.apache.org/foundation/glossary.html#ReviewThenCommit">review-then-commit</a> process.
+    <p>Contributions are welcome to all Apache Fluo repositories (<a href="https://github.com/apache/fluo">Fluo</a>, <a href="https://github.com/apache/fluo-recipes">Fluo Recipes</a>) and the <a href="https://github.com/apache/incubator-fluo-website">Fluo project website</a>.  All repositories follow a <a href="http://www.apache.org/foundation/glossary.html#ReviewThenCommit">review-then-commit</a> process.
 This means that all contributions must pass any integration tests and be reviewed before being committed. Code reviews are done by commenting on a GitHub pull request.</p>
 
 <h3 id="contribution-workflow">Contribution workflow</h3>
@@ -88,7 +88,7 @@ This means that all contributions must pass any integration tests and be reviewe
   <li>
     <p>Create a branch in the local clone of your fork. An example branch name is <code class="highlighter-rouge">fluo-301</code> which describes the repo and issue number.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>git checkout -b fluo-301
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>git checkout -b fluo-301
 </code></pre>
     </div>
   </li>
@@ -96,7 +96,7 @@ This means that all contributions must pass any integration tests and be reviewe
   <li>
     <p>If your branch becomes stale, rebase it to master.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># checkout master</span>
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># checkout master</span>
 git checkout master
 <span class="c"># pull latest commits from upstream</span>
 git pull upstream master
@@ -114,7 +114,7 @@ git push -f origin fluo-301
   <li>
     <p>Push your branch <code class="highlighter-rouge">fluo-301</code> to your fork</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># add -f to command below if you squashed commits</span>
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># add -f to command below if you squashed commits</span>
 <span class="c"># and previously pushed branch to your fork</span>
 git push origin fluo-301
 </code></pre>

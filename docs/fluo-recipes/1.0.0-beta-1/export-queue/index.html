@@ -76,6 +76,10 @@
   <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-beta-2">latest docs</a>!</div>
   
 
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
+  
+
   <header class="post-header">
     <h2 class="post-title">Export Queue Recipe</h2>
   </header>
@@ -104,7 +108,7 @@ like Redis, Elasticsearch, MySQL, etc.</p>
 To understand what can go wrong consider the following example observer
 transaction.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">extends</span> <span class="n">AbstractObserver</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">extends</span> <span class="n">AbstractObserver</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">TYPEL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TypeLayer</span><span class="o">(</span><span class="k">new</span> <span class="n">StringEncoder</span><span class="o">());</span>
 
@@ -112,7 +116,7 @@ transaction.</p>
     <span class="n">QuerySystem</span> <span class="n">querySystem</span><span class="o">;</span>
 
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
 
         <span class="n">TypedTransactionBase</span> <span class="n">ttx</span> <span class="o">=</span> <span class="n">TYPEL</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span>
         <span class="kt">int</span> <span class="n">oldCount</span> <span class="o">=</span> <span class="n">ttx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"counter1"</span><span class="o">).</span><span class="na">toInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
@@ -202,11 +206,11 @@ optimization process</a>.</p>
 query system using an export queue.  The class below is simple POJO to hold the
 count update, this will be used as the value for the export queue.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">CountUpdate</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">CountUpdate</span> <span class="o">{</span>
   <span class="kd">public</span> <span class="kt">int</span> <span class="n">oldCount</span><span class="o">;</span>
   <span class="kd">public</span> <span class="kt">int</span> <span class="n">newCount</span><span class="o">;</span>
   
-  <span class="kd">public</span> <span class="n">CountUpdate</span><span class="o">(</span><span class="kt">int</span> <span class="n">oc</span><span class="o">,</span> <span class="kt">int</span> <span class="n">nc</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">CountUpdate</span><span class="o">(</span><span class="kt">int</span> <span class="n">oc</span><span class="o">,</span> <span class="kt">int</span> <span class="n">nc</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">this</span><span class="o">.</span><span class="na">oldCount</span> <span class="o">=</span> <span class="n">oc</span><span class="o">;</span>
     <span class="k">this</span><span class="o">.</span><span class="na">newCount</span> <span class="o">=</span> <span class="n">nc</span><span class="o">;</span>
   <span class="o">}</span>
@@ -219,7 +223,7 @@ modify the FluoConfiguration object with options needed for the export queue.
 This FluoConfiguration object should be used to initialize the fluo
 application.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>   <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>   <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
 
    <span class="c1">//queue id "ici" means inverted count index, would probably use static final in real application</span>
    <span class="n">String</span> <span class="n">exportQueueID</span> <span class="o">=</span> <span class="s">"ici"</span><span class="o">;</span>  
@@ -239,19 +243,19 @@ application.</p>
 <p>Below is updated version of the observer from above thats now using the export
 queue.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">extends</span> <span class="n">AbstractObserver</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">extends</span> <span class="n">AbstractObserver</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">TYPEL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TypeLayer</span><span class="o">(</span><span class="k">new</span> <span class="n">StringEncoder</span><span class="o">());</span>
 
     <span class="kd">private</span> <span class="n">ExportQueue</span><span class="o">&lt;</span><span class="n">Bytes</span><span class="o">,</span> <span class="n">CountUpdate</span><span class="o">&gt;</span> <span class="n">exportQueue</span><span class="o">;</span>
 
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">init</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
       <span class="n">exportQueue</span> <span class="o">=</span> <span class="n">ExportQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"ici"</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
     <span class="o">}</span>
 
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
 
         <span class="n">TypedTransactionBase</span> <span class="n">ttx</span> <span class="o">=</span> <span class="n">TYPEL</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span>
         <span class="kt">int</span> <span class="n">oldCount</span> <span class="o">=</span> <span class="n">ttx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"counter1"</span><span class="o">).</span><span class="na">toInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
@@ -280,12 +284,12 @@ arriving out of order and multiple times.  The purpose of the sequence number
 is to help systems receiving data from Fluo process out of order and redundant
 data.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CountExporter</span> <span class="kd">extends</span> <span class="n">Exporter</span><span class="o">&lt;</span><span class="n">Bytes</span><span class="o">,</span> <span class="n">CountUpdate</span><span class="o">&gt;</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CountExporter</span> <span class="kd">extends</span> <span class="n">Exporter</span><span class="o">&lt;</span><span class="n">Bytes</span><span class="o">,</span> <span class="n">CountUpdate</span><span class="o">&gt;</span> <span class="o">{</span>
     <span class="c1">//represents the external query system we want to update from Fluo</span>
     <span class="n">QuerySystem</span> <span class="n">querySystem</span><span class="o">;</span>
 
     <span class="nd">@Override</span>
-    <span class="kd">protected</span> <span class="kt">void</span> <span class="n">processExports</span><span class="o">(</span><span class="n">Iterator</span><span class="o">&lt;</span><span class="n">SequencedExport</span><span class="o">&lt;</span><span class="n">Bytes</span><span class="o">,</span> <span class="n">CountUpdate</span><span class="o">&gt;&gt;</span> <span class="n">exportIterator</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">processExports</span><span class="o">(</span><span class="n">Iterator</span><span class="o">&lt;</span><span class="n">SequencedExport</span><span class="o">&lt;</span><span class="n">Bytes</span><span class="o">,</span> <span class="n">CountUpdate</span><span class="o">&gt;&gt;</span> <span class="n">exportIterator</span><span class="o">)</span> <span class="o">{</span>
       <span class="n">BatchUpdater</span> <span class="n">batchUpdater</span> <span class="o">=</span> <span class="n">querySystem</span><span class="o">.</span><span class="na">getBatchUpdater</span><span class="o">();</span>
       <span class="k">while</span><span class="o">(</span><span class="n">exportIterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
         <span class="n">SequencedExport</span><span class="o">&lt;</span><span class="n">Bytes</span><span class="o">,</span> <span class="n">CountUpdate</span><span class="o">&gt;</span> <span class="n">exportEntry</span> <span class="o">=</span>  <span class="n">exportItertor</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>

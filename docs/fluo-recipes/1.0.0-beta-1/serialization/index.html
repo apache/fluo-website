@@ -76,6 +76,10 @@
   <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-beta-2">latest docs</a>!</div>
   
 
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
+  
+
   <header class="post-header">
     <h2 class="post-title">Serializing Data</h2>
   </header>
@@ -91,7 +95,7 @@ first step is to implement <a href="/apidocs/fluo-recipes/1.0.0-beta-1/io/fluo/r
 configure Fluo Recipes to use the custom implementation.  This needs to be done
 before initializing Fluo.  Below is an example of how to do this.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
   <span class="c1">//assume MySerializer implements SimpleSerializer</span>
   <span class="n">SimpleSerializer</span><span class="o">.</span><span class="na">setSetserlializer</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="n">MySerializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
   <span class="c1">//initialize Fluo using fluoConfig</span>
@@ -112,7 +116,7 @@ example below shows how to do this.</p>
 need to be registered with Kryo.  This could be done by creating a KryoFactory
 like the following.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>
 <span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">foo</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">com.esotericsoftware.kryo.Kryo</span><span class="o">;</span>
@@ -123,7 +127,7 @@ like the following.</p>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyKryoFactory</span> <span class="kd">implements</span> <span class="n">KryoFactory</span> <span class="o">{</span>
   <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="n">Kryo</span> <span class="n">create</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">Kryo</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
     <span class="n">Kryo</span> <span class="n">kryo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Kryo</span><span class="o">();</span>
     
     <span class="c1">//Explicitly assign each class a unique id here to ensure its stable over</span>
@@ -143,7 +147,7 @@ like the following.</p>
 <p>Fluo Recipes must be configured to use this factory.  The following code shows
 how to do this.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
   <span class="n">KryoSimplerSerializer</span><span class="o">.</span><span class="na">setKryoFactory</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="n">MyKryoFactory</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
   <span class="c1">//initialize Fluo using fluoConfig</span>
 </code></pre>

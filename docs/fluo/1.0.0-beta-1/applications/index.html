@@ -76,6 +76,10 @@
   <div class="alert alert-danger" role="alert">These docs are for Fluo 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo/1.0.0-beta-2/">latest docs</a>!</div>
   
 
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo made before Apache incubation.</div>
+  
+
   <header class="post-header">
     <h2 class="post-title">Creating Fluo applications</h2>
   </header>
@@ -89,7 +93,7 @@ you can create your own Fluo client or observer by the following the steps below
 
 <p>For both clients and observers, you will need to include the following in your Maven pom:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>fluo-api<span class="nt">&lt;/artifactId&gt;</span>
   <span class="nt">&lt;version&gt;</span>1.0.0-beta-1<span class="nt">&lt;/version&gt;</span>
@@ -117,13 +121,13 @@ to connect to your Fluo instance.</p>
 it to build a <a href="/apidocs/fluo/1.0.0-beta-1/io/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object with all necessary properties which are all properties with the 
 <code class="highlighter-rouge">io.fluo.client.*</code> prefix in <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"fluo.properties"</span><span class="o">));</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"fluo.properties"</span><span class="o">));</span>
 </code></pre>
 </div>
 
 <p>You can also create an empty <a href="/apidocs/fluo/1.0.0-beta-1/io/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object and set properties using Java:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">();</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">();</span>
 <span class="n">config</span><span class="o">.</span><span class="na">setAccumuloUser</span><span class="o">(</span><span class="s">"user"</span><span class="o">);</span>
 <span class="n">config</span><span class="o">.</span><span class="na">setAccumuloPassword</span><span class="o">(</span><span class="s">"pass"</span><span class="o">);</span>
 <span class="n">config</span><span class="o">.</span><span class="na">setAccumuloInstance</span><span class="o">(</span><span class="s">"instance"</span><span class="o">);</span>
@@ -132,7 +136,7 @@ it to build a <a href="/apidocs/fluo/1.0.0-beta-1/io/fluo/api/config/FluoConfigu
 
 <p>Once you have <a href="/apidocs/fluo/1.0.0-beta-1/io/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object, pass it to the <code class="highlighter-rouge">newClient()</code> method of <a href="/apidocs/fluo/1.0.0-beta-1/io/fluo/api/client/FluoFactory.html">FluoFactory</a> to create a <a href="/apidocs/fluo/1.0.0-beta-1/io/fluo/api/client/FluoClient.html">FluoClient</a>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">FluoClient</span> <span class="n">client</span> <span class="o">=</span> <span class="n">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">config</span><span class="o">)</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoClient</span> <span class="n">client</span> <span class="o">=</span> <span class="n">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">config</span><span class="o">)</span>
 </code></pre>
 </div>
 

@@ -77,11 +77,13 @@
   </header>
 
   <article id="page-content">
-    <h3 id="initial-setup">Initial Setup</h3>
+    <div class="alert alert-danger" role="alert">Please note - These instructions are for releasing Fluo before it became an ASF project.  After the first Apache release, they will be updated to reflect how to release Apache Fluo on ASF infrastructure</div>
+
+<h3 id="initial-setup">Initial Setup</h3>
 
 <p>Before you can release Fluo or Fluo Recipes, you will need to set up a GPG client, create a <a href="https://issues.sonatype.org/">sonatype account</a>, and have another Fluo committer request to give you deployment access for the Fluo project on sonatype.  Once you have a sonatype account, you should add your account details to your Maven settings.xml in the following format:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;servers&gt;</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;servers&gt;</span>
   <span class="nt">&lt;server&gt;</span>
     <span class="nt">&lt;id&gt;</span>sonatype-nexus-staging<span class="nt">&lt;/id&gt;</span>
     <span class="nt">&lt;username&gt;</span>USER<span class="nt">&lt;/username&gt;</span>
@@ -108,7 +110,7 @@
   <li>
     <p>Start a gpg-agent to cache your gpg key to avoid entering your passphrase multiple times.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>gpg-agent --daemon --use-standard-socket
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>gpg-agent --daemon --use-standard-socket
 </code></pre>
     </div>
   </li>
@@ -138,7 +140,7 @@
   <li>
     <p>Create an RC tag (i.e <code class="highlighter-rouge">&lt;version#&gt;-&lt;rc#&gt;</code>) from the tag created by the release plugin (a branch could work instead of a tag but the point is to remove the release tag because the codebase has not been released yet). This new branch/tag should have the non-snapshot version in the poms.  The RC tag can be pushed to a fork for others to view.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># Creates 1.0.0-beta-1-RC1 from 1.0.0-beta-1 </span>
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># Creates 1.0.0-beta-1-RC1 from 1.0.0-beta-1 </span>
 git tag 1.0.0-beta-1-RC1 1.0.0-beta-1
 <span class="c"># Delete 1.0.0-beta-1</span>
 git tag -d 1.0.0-beta-1
@@ -159,7 +161,7 @@ git push origin 1.0.0-beta-1-RC1
   <li>
     <p>Merge your RC branch into master and push those commits upstream.  Afterwards, you can delete your RC branch.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>git checkout master
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>git checkout master
 git merge 1.0.0-beta-RC
 git push upstream master
 git branch -d 1.0-0-beta-RC
@@ -172,7 +174,7 @@ git branch -d 1.0-0-beta-RC
   <li>
     <p>Create a signed tag for the release from the chosen RC tag and push to upstream repo:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># Create signed tag from RC2 tag.</span>
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># Create signed tag from RC2 tag.</span>
 <span class="c"># You may need to use -u &lt;key-id&gt; to specify GPG key</span>
 git tag -s 1.0.0-beta-1 1.0.0-beta-1-RC2
 <span class="c"># Push signed tag to upstream repo</span>
@@ -186,7 +188,7 @@ git push upstream 1.0.0-beta-1
   <li>
     <p>Remove all RC tags</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># Remove tag locally</span>
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># Remove tag locally</span>
 git tag -d 1.0.0-beta-1-RC1
 <span class="c"># Remove tag on fork</span>
 git push --delete origin 1.0.0-beta-1-RC1
