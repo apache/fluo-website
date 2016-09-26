@@ -1,11 +1,14 @@
 package ft;
 
+//Normally using * with imports is a bad practice, however in this case it makes experimenting with
+//Fluo easier.
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.*;
 
-// Normally using * with imports is a bad practice, however in this case it makes experimenting with
-// Fluo easier.
 import org.apache.fluo.api.client.*;
+import org.apache.fluo.api.client.scanner.*;
 import org.apache.fluo.api.config.*;
 import org.apache.fluo.api.data.*;
 import org.apache.fluo.api.mini.MiniFluo;
