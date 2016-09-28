@@ -41,6 +41,7 @@ defaults:
       type: "pages"
     values:
       layout: "tour"
+      permalink: "/tour/:basename/"
 
 # Number of posts displayed on the home page.
 num_home_posts: 5
@@ -53,9 +54,6 @@ latest_fluo_release: "1.0.0-beta-2"
 latest_fluo_release_date: "January 12, 2016"
 latest_recipes_release: "1.0.0-beta-2"
 latest_recipes_release_date: "March 29, 2016"
-
-# Fluo tour settings
-tour_pages: 4
 
 whitelist: [jekyll-redirect-from]
 gems: [jekyll-redirect-from]

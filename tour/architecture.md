@@ -1,7 +1,7 @@
 ---
 title: Architecture
-tour_num: 2
-permalink: /tour/2/
 ---
 
-TODO picture
+An [overview] of the Fluo Architecture can be found in Fluo's documentation.
+
+[overview]: /docs/fluo/{{ site.latest_fluo_release }}/architecture/

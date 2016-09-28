@@ -1,0 +1,28 @@
+docs:
+ - data-model
+ - architecture
+ - writing-code
+ - basic-read-write
+ - data-pojos
+ - snapshot-isolation
+ - snapshot-isolation-code
+ - collisions
+ - collision-code
+ - tx-logging
+ - write-skew
+ - write-skew-code
+ - scanning
+ - scanning-code
+ - multi-get
+ - loader-executer
+ - observers
+ - observer_example
+ - exercise-1
+ - row-locking
+ - weak-notifications
+ - weak-code
+ - application-configuration
+ - mem-self-ntfy
+ - mem-self-ntfy-code
+ - recipes
+
