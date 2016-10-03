@@ -2,8 +2,8 @@
 title: Weak Notification Exercise
 ---
 
-This exercise will use weak notification to update a shared counter.   The way the example works,
-many threads will concurrently try to update the counter.  However collisions will be avoided.
+This exercise will use weak notification to update a shared counter. In the example, many threads
+will concurrently try to update the counter but collisions will be avoided.
 
 Create an observer that observes column *ntfy:sum* and make it do the following.
 
@@ -14,7 +14,7 @@ Create an observer that observes column *ntfy:sum* and make it do the following.
 
 Create a loader that does the following and run it 5000 times :
 
- * Generate a random number in the range [0,10^7-1].  This will be refered to as *\<rand\>*.
+ * Generate a random number in the range [0,10^7-1].  This will be referred to as *\<rand\>*.
  * Add one to *counter001/\<rand\>:sum:update*
  * Weakly notify *counter001:nfty:sum*
 

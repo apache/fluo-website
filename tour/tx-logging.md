@@ -3,8 +3,8 @@ title: Transaction Logging
 ---
 
 Fluo can produce detailed logs about transactions if configured to do so.
-This can be useful debugging.  Modify `./src/main/resources/log4j.properties`
-and remove `#` on the line `#log4j.logger.fluo.tx=TRACE`.  After doing this
+This can be useful for debugging.  Modify `./src/main/resources/log4j.properties`
+and remove `#` on the line `#log4j.logger.fluo.tx=TRACE`.  After doing this,
 rerun the collision exercise on the previous page.
 
 With this configuration change, you should see output like the following.

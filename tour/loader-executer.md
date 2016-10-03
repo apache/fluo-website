@@ -3,7 +3,7 @@ title: Loader Executor
 ---
 
 Fluo provides a simple mechanism to help load data called the [LoaderExecutor][le].  Loading data
-into Fluo requires a transaction.  The LoaderExecutor manages creating , commiting, and retrying
+into Fluo requires a transaction.  The LoaderExecutor manages creating, committing, and retrying
 transactions when collisions occur.  It also runs transactions in multiple threads and batches
 commit processing of separate transactions for efficiency.  FluoConfiguration provides two methods
 for configuring LoaderExecutors [setLoaderQueueSize()][fcqs] and [setLoaderThreads()][fcst].
@@ -13,7 +13,7 @@ eventually be called on these objects at which point the passed in transactions 
 data.  When `close()` is called on a LoaderExecutor, it waits for all running and queued work to
 finish.
 
-There is no stand alone excercise for the LoaderExecutor.  Hands on experience with it can be
+There is no stand alone exercise for the LoaderExecutor.  Hands on experience with it can be
 obtained by completing the [word count exercise](/tour/exercise-1/) that is a few pages later in
 the tour.
 

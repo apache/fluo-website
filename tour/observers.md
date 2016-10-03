@@ -2,14 +2,14 @@
 title: Observer Concepts
 ---
 
-Fluo supports complex processing by running user provided Observers which are triggered by
-notifications.   An Observer request that the system run it when a certain column is modified.  When
+Fluo supports complex processing by running user provided code in Observers. Observers are triggered
+by notifications. An Observer requests that the system run it when a certain column is modified. When
 another transaction modifies an observed column, it will persist a notification that later causes
-the Observer to run.  When an Observers is run, its provided with the row and column that caused it
-to run along with a transaction.  Fluo worker processes running across a cluster will execute
+the Observer to run.  When an Observer is run, its provided with the row and column that caused it
+to run along with a transaction. Fluo worker processes running across a cluster will execute
 Observers.
 
-Since all transactions need to know which columns trigger observers, observer must be registered
+Since all transactions need to know which columns trigger observers, observers must be registered
 with Fluo at initialization time.
 
 Fluo supports two type of notifications :

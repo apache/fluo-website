@@ -21,9 +21,9 @@ column qualifier, and column visibility.
  * **Column Visibility** : In Accumulo this portion of the key is used to
    control access to data.
 
-This data model is schema-less, there is no need to predefine columns.  One
-thing that's defined in the Accumulo data modes that's not available in Fluo is
-timestamps.  When using Fluo the timestamp portion of the key is not available.
+This data model is schema-less so there is no need to predefine columns.  One
+thing that is defined in the Accumulo data model but is not available in Fluo is
+timestamps.  When using Fluo, the timestamp portion of the key is not available.
 
 In the subsequent pages of the tour the shorthand *\<row\>:\<family\>:\<qualifier\>*
 will be used.  For example, the following ...

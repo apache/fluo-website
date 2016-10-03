@@ -2,8 +2,8 @@
 title: Word count Exercise
 ---
 
-This Exercise will show you how to create a simple system that computes word
-counts for unique documents.   This system should do the following.
+This exercise will show you how to create a simple system that computes word counts for unique
+documents. This system should do the following.
 
  * Deduplicate content based on hash
  * Count how many URIs reference content
@@ -206,9 +206,9 @@ Make sure you handle the following scenario correctly.
  * content A becomes unreferenced
  * an observer runs on content A
 
-In this situation word counts were never incremented for content A, so there is
-no need to decrement the word counts.  One way to handle this is to have a
-column that tracks if word counts were incremented.
+In this situation, word counts were never incremented for content A so there is no need to decrement
+the word counts.  One way to handle this is to have a column that tracks if word counts were
+incremented.
 
 Below is a skeleton for an observer to compute word counts.
 
@@ -396,10 +396,8 @@ After implementing the Observer, the output of the program should look like the 
 **** end table dump ****
 ```
 
-
 ## Part 3 : Using Fluo Recipes
 
-The way to compute word counts above is very prone to transactional collisions.  One way to avoid
-these collisions would be use the CollisionFreeMap provided in Fluo Recipes.   Currently Fluo
-Recipes is not released, this sections will be updated with more information once it is.
-
+The way to compute word counts above is very prone to transactional collisions. One way to avoid
+these collisions is to use the CollisionFreeMap provided in Fluo Recipes. Currently Fluo Recipes is
+not released, this section will be updated with more information once it is.

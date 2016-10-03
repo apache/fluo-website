@@ -2,8 +2,8 @@
 title: Scanning
 ---
 
-In some situations you may want to read a range of data instead of specific rows and columns.  For
-this case Fluo supports [creating scanners][scanner] over ranges.   These scanners implement Java Iterable and
+In some situations, you may want to read a range of data instead of specific rows and columns.  For
+this case, Fluo supports [creating scanners][scanner] over ranges.   These scanners implement Java Iterable and
 can be used with foreach loops.  Scanners also support reading a subset of columns within a range.
 
 To specify a range, Fluo has a simple POJO called [Span].  The name was chosen so it would not
@@ -29,7 +29,7 @@ ranges, like a range over all rows with a given prefix.  Try the following exerc
  * **Using** *s1* **scan and print row** *kerbalnaut0002* **and column family** *name*
  * **Using** *s1* **scan rows with prefix** *kerbalnaut* **with columns** *name:first* **and** *attr:bravery*
 
-Scanners also read data using snapshot isolation.  To show this try modifying the exercise above to
+Scanners also read data using snapshot isolation.  To show this, try modifying the exercise above to
 change data after *s1* is created but before the scans happen.
 
 [Span]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Span.html

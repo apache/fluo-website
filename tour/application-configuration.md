@@ -48,13 +48,13 @@ table5
 
 If you want instances of an Observer to behave differently and share code, one way to accomplish
 this is with per observer configuration.  When setting up an observer call one of the
-[ObserverSpecification][ospec] methods that takes configuration.  When an observer is initalized it
+[ObserverSpecification][ospec] methods that takes configuration.  When an observer is initialized it
 can access this configuration by calling [Observer.Context.getObserverConfiguration()][ocgp].
 
 The code below shows an example of setting configuration for an Observer.  This example simulates an
 observer that can export rows to a mysql table. The example configures two instances of an observer
 using the same class with different configuration.  Even though the observers use the same class, the
-two instances must observe different columns.  Thats why the code derives the observed column based
+two instances must observe different columns.  That is why the code derives the observed column based
 on the observer configuration.  Notice the mysql database is obtained from application configuration by
 the observer and the table is obtained from observer configuration.
 
