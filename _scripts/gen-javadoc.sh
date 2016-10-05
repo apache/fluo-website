@@ -25,5 +25,5 @@ fi
 
 cd $CODE_PATH
 git checkout $RELEASE_VERSION
-mvn clean javadoc:aggregate
+mvn clean javadoc:aggregate -DskipTests
 cp -r target/site/apidocs $RELEASE_PATH

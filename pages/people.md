@@ -4,6 +4,9 @@ title: People
 permalink: /people/
 ---
 
+Github also has a [contributor list](https://github.com/apache/incubator-fluo/graphs/contributors)
+based on commits.
+
 ---
 
 ## PPMC/Committers

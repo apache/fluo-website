@@ -50,8 +50,8 @@ num_home_posts: 5
 color: default
 
 # Fluo specific settings
-latest_fluo_release: "1.0.0-beta-2"
-latest_fluo_release_date: "January 12, 2016"
+latest_fluo_release: "1.0.0-incubating"
+latest_fluo_release_date: "October 4, 2016"
 latest_recipes_release: "1.0.0-beta-2"
 latest_recipes_release_date: "March 29, 2016"
 
