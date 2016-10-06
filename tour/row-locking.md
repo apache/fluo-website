@@ -5,16 +5,41 @@ title: Row Locking
 Fluo relies on Accumulo's conditional mutations to implement cross node
 transactions.  Conditional mutations lock entire rows on the server side when
 checking conditions.  These row locks can impact the performance of your
-transactions, so its something to be aware of when designing a schema.
+transactions, so it's something to be aware of when designing a schema.
+
+For example, the following illustration shows multiple Fluo clients executing
+transactions.  These transactions update different columns in the same row.
+The transactions will not collide, however they may end up waiting on each
+other because Accumulo locks `Row 1` to process each update.   
+
+<!-- source for figure : https://docs.google.com/drawings/d/1CpUBE5kEGHoZUCUdO9MMyHksgZHylAUbQVJYlrp-DF0/edit?usp=sharing -->
+![fig1]
+
+Determining whether this problem will impact you depends on your schema and the
+probability of concurrent updates.  Mitigating action is only needed if the
+following criteria are met.
+
+ * Many transactions will update separate columns in a row.
+ * Those transactions are very likely to run concurrently.
+
+If both of the conditions above are met then transactions will likely wait
+unnecessarily.  One simple way to avoid the wait is to move some of the
+information that was in the column into the row.  In the example above the
+information in the column could be appended to the row.  Then the transactions
+would be updating rows `Row 1:U`, `Row 1:V`, `Row 1:W`, and `Row 1:X`.  Since
+these are separate rows, lock contention is avoided in Accumulo tablet servers.
+
+## Example
 
 The following code demonstrate the impact of schema design on performance. The
 code adds lots of edges to a single node in a graph using many transactions and
 threads. All of the edges are added to a single row.
 
+
 These performance problems may not occur on a single node with a single client,
 because Fluo clients batch a lot of operations related to committing.  To make
-the problem more apparent, the following code creates three clients and three
-loaders.
+the problem more apparent on a single node, the following code creates three
+clients and three loaders.
 
 ```java
   public static class EdgeLoader implements Loader {
@@ -75,4 +100,5 @@ the time it takes.  The change below spreads the edges over many rows.
 ```
 
 
+[fig1]: /resources/tour/RowLocking.png
 

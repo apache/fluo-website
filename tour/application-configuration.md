@@ -5,14 +5,14 @@ title: Application Configuration
 Fluo applications are distributed applications where code is running on many separate machines.
 Getting configuration to these distributed processes can be tricky and cumbersome.  Fluo provides
 two simple mechanisms to assists with this: application configuration and observer configuration.
-This configuration data is stored in zookeeper when an application is initialized.  After
+This configuration data is stored in ZooKeeper when an application is initialized.  After
 initialization any Fluo client or Observer can access the configuration.
 
 ## Application Configuration
 
 To use application configuration, set properties with the prefix `fluo.app` in your configuration
 file before initialization.  Alternatively use [FluoConfiguration.getAppConfiguration()][fcogac] to
-set these properties programmatically.  After fluo is initialized this information can be accessed
+set these properties programmatically.  After Fluo is initialized this information can be accessed
 anywhere by calling [FluoClient.getAppConfiguration()][fclgac],
 [Observer.Context.getAppConfigurtaion()][ocgac], or [Loader.Context.getAppConfiguration()][lcgac].
 

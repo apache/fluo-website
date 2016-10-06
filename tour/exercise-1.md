@@ -2,8 +2,12 @@
 title: Word count Exercise
 ---
 
-This exercise will show you how to create a simple system that computes word counts for unique
-documents. This system should do the following.
+This excercise gives you an opportunity to use everything you have learned so
+far to attempt writing a simple Fluo application.  A bare minimum of code,
+along with a conceptual sketch of a solution, is provided to get you started.
+
+The application should compute word counts for unique documents. This
+application should do the following.
 
  * Deduplicate content based on hash
  * Count how many URIs reference content
@@ -13,9 +17,6 @@ documents. This system should do the following.
    that content.
  * Partition different types of data using row prefixes.  Use *u:* for URIs, use *d:* for document
    content, and use *w:* for word counts.
-
-A skeleton of the code needed to implement this exercise is provided below along with some simple
-test data.
 
 ## Part 1 : Loading data.
 
