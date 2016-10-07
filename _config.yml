@@ -29,11 +29,11 @@ defaults:
       permalink: "/:categories/:title/"
   -
     scope:
-      path: "_posts/release-summaries"
+      path: "_posts/release"
       type: "posts"
     values:
-      layout: "release-summary"
-      category: "release-summaries"
+      layout: "release"
+      category: "release"
       permalink: "/:categories/:title/"
   - 
     scope:
@@ -54,6 +54,8 @@ latest_fluo_release: "1.0.0-incubating"
 latest_fluo_release_date: "October 4, 2016"
 latest_recipes_release: "1.0.0-beta-2"
 latest_recipes_release_date: "March 29, 2016"
+fluo_api_base: "https://javadoc.io/doc/org.apache.fluo/fluo-api"
+fluo_api_static: "https://static.javadoc.io/org.apache.fluo/fluo-api"
 
 whitelist: [jekyll-redirect-from]
 gems: [jekyll-redirect-from]

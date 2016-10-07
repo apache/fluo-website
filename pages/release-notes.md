@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Release Notes Archive
+title: Release Notes
 permalink: "/release-notes/"
 ---
 
-Apache Fluo release notes:
+#### Apache Fluo release notes
 
 {% for release in site.categories.release-notes %}
 {% unless release.historical %}
@@ -12,7 +12,7 @@ Apache Fluo release notes:
 {% endunless %}
 {% endfor %}
 
-Fluo release notes before Apache incubation:
+#### Release notes before Apache
 
 {% for release in site.categories.release-notes %}
 {% if release.historical %}

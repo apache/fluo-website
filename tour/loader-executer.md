@@ -17,8 +17,8 @@ There is no stand alone exercise for the LoaderExecutor.  Hands on experience wi
 obtained by completing the [word count exercise](/tour/exercise-1/) that is a few pages later in
 the tour.
 
-[le]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/LoaderExecutor.html
-[Loader]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/Loader.html
-[lm]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/Loader.html#load-org.apache.fluo.api.client.TransactionBase-org.apache.fluo.api.client.Loader.Context-
-[fcqs]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/config/FluoConfiguration.html#setLoaderQueueSize-int-
-[fcst]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/config/FluoConfiguration.html#setLoaderThreads-int-
+[le]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/LoaderExecutor.html
+[Loader]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/Loader.html
+[lm]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/Loader.html#load-org.apache.fluo.api.client.TransactionBase-org.apache.fluo.api.client.Loader.Context-
+[fcqs]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/config/FluoConfiguration.html#setLoaderQueueSize-int-
+[fcst]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/config/FluoConfiguration.html#setLoaderThreads-int-

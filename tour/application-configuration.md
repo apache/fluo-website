@@ -158,11 +158,11 @@ Exporting val:555 from row:e:99 to db/table:db1/table3
 Exporting val:999 from row:e:98 to db/table:db1/table9
 ```
 
-[fcogac]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/config/FluoConfiguration.html#getAppConfiguration--
-[fclgac]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/FluoClient.html#getAppConfiguration--
-[ocgac]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/observer/Observer.Context.html#getAppConfiguration--
-[lcgac]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/Loader.Context.html#getAppConfiguration--
-[ospec]: /apidocs/fluo/{{ site.latest_fluo_release}}/org/apache/fluo/api/config/ObserverSpecification.html
-[ocgp]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/observer/Observer.Context.html#getObserverConfiguration--
+[fcogac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/config/FluoConfiguration.html#getAppConfiguration--
+[fclgac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/FluoClient.html#getAppConfiguration--
+[ocgac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/observer/Observer.Context.html#getAppConfiguration--
+[lcgac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/Loader.Context.html#getAppConfiguration--
+[ospec]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release}}/org/apache/fluo/api/config/ObserverSpecification.html
+[ocgp]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/observer/Observer.Context.html#getObserverConfiguration--
 
 

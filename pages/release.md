@@ -1,0 +1,15 @@
+---
+layout: page
+title: Releases
+permalink: "/release/"
+---
+
+Apache Fluo and Apache Fluo Recipes are released seperately on their own schedule.
+
+{% for release in site.categories.release %}
+{% unless release.historical %}
+* [{{ release.version }}]({{ site.baseurl }}/release/{{ release.version }}/) - {{ release.date | date_to_string }}
+{% endunless %}
+{% endfor %}
+
+Releases before joining Apache are available in the [Pre-ASF release archive](/pre-asf-release/).

@@ -14,6 +14,8 @@ output_dir = sys.argv[2]
 
 args = output_dir.rpartition("/docs")
 url_prefix = args[1] + args[2]
+print url_prefix
+print args
 release_ver = url_prefix.split("/")[3]
 github_prefix = "https://github.com/apache/fluo/blob/{0}/modules/".format(release_ver)
 apidocs_prefix = "/apidocs/fluo/{0}/".format(release_ver)
@@ -32,6 +34,10 @@ def convert_file(inPath, outPath):
   print "Creating ", outPath
 
   with open(inPath) as fin:
+    # skip license
+    for x in range(0, 16):
+      fin.readline()
+
     title = fin.readline().strip()
     fin.readline()
 

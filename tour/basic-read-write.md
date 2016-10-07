@@ -40,6 +40,6 @@ Transactions and snapshots allocate resources and therefore have `close()` metho
 try-with-resources block will automatically call `close()`, even when exceptions occur.
 
 [1]: https://github.com/apache/incubator-fluo-website/tree/fluo-tour
-[get]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#get-org.apache.fluo.api.data.Bytes-org.apache.fluo.api.data.Column-
-[gets]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-
-[Bytes]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.html
+[get]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#get-org.apache.fluo.api.data.Bytes-org.apache.fluo.api.data.Column-
+[gets]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-
+[Bytes]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.html

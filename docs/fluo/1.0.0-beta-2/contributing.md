@@ -7,7 +7,7 @@ version: 1.0.0-beta-2
 Building Fluo
 -------------
 
-If you have [Git], [Maven], and [Java](version 7+) installed, run these commands
+If you have [Git], [Maven], and [Java][java] (version 7+) installed, run these commands
 to build Fluo:
 
     git clone https://github.com/fluo-io/fluo.git
@@ -25,6 +25,6 @@ a local Fluo instance (called MiniFluo) and run against it.
 * A [Stress test][Stress] application designed to run on a cluster.
 
 [Git]: http://git-scm.com/
-[Java]: https://www.oracle.com/java/index.html
+[java]: https://www.oracle.com/java/index.html
 [Maven]: http://maven.apache.org/
 [Stress]: https://github.com/fluo-io/fluo-stress

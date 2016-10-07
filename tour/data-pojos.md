@@ -14,8 +14,8 @@ like String is an immutable wrapper around `char[]`.  To make building [Bytes]
 more efficient and easier, there is a reusable [BytesBuilder] that is modeled
 after StringBuilder.  Call [Bytes.builder()][nb] to create a new [BytesBuilder].
 
-[data-pkg]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/package-summary.html
-[Bytes]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.html
-[BytesBuilder]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.BytesBuilder.html
-[nb]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.html#builder--
+[data-pkg]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/package-summary.html
+[Bytes]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.html
+[BytesBuilder]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.BytesBuilder.html
+[nb]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.html#builder--
 

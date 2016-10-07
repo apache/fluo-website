@@ -32,5 +32,5 @@ ranges, like a range over all rows with a given prefix.  Try the following exerc
 Scanners also read data using snapshot isolation.  To show this, try modifying the exercise above to
 change data after *s1* is created but before the scans happen.
 
-[Span]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Span.html
-[scanner]: /apidocs/fluo/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#scanner--
+[Span]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Span.html
+[scanner]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#scanner--

@@ -4,9 +4,6 @@ title: People
 permalink: /people/
 ---
 
-Github also has a [contributor list](https://github.com/apache/incubator-fluo/graphs/contributors)
-based on commits.
-
 ---
 
 ## PPMC/Committers
@@ -30,6 +27,9 @@ based on commits.
 | [Josh Elser](https://github.com/joshelser)         | [Hortonworks][hw]          | [ET][et] |
 
 ## Contributors
+
+GitHub also has a [contributor list](https://github.com/apache/incubator-fluo/graphs/contributors)
+based on commits.
 
 | Name                                                | Organization                        | Timezone   |
 ------------------------------------------------------|-------------------------------------|------------|
