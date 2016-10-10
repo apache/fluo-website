@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/tour/">
+    <link rel="canonical" href="http://fluo.io/tour/mem-self-ntfy/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Fluo Tour | Apache Fluo</title>
+    <title>Memory limits and self notify | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -70,107 +70,61 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="page">
+              
 
-  <header class="post-header">
-    <h2 class="post-title">Fluo Tour</h2>
-  </header>
 
-  <article id="page-content">
+<div id="tour-header">
+  <h2><a href="/tour/">Fluo Tour</a>: Memory limits and self notify</h2>
+  <p class="text-muted">Tour page 24 of 26</p>
+</div>
+<div id="tour-content">
+  <p>All modifications made as part of a transaction must fit into memory because the sets and deletes
+are buffered in memory until commit.  If there is more data to process that will fit in memory, one
+way to handle this is to process some data and self notify.</p>
+
+<p>As an exercise try modifying the <a href="/tour/weak-notifications/">weak notification exercise</a> and
+making it self notify.  Modify the observer such that it does the following :</p>
+
+<ul>
+  <li>Processes a maximum number of updates.  Could make this configurable using per observer
+configuration.</li>
+  <li>When the max is reached :
+    <ul>
+      <li>Stop processing.</li>
+      <li>Records the stop row.</li>
+      <li>Notify self.</li>
+    </ul>
+  </li>
+  <li>Use the row where it previously stopped when creating scan range.</li>
+  <li>Delete the stop row, if it exists, after scanning to the end of the range.</li>
+</ul>
+
+</div>
+
+<script>
+document.body.onkeyup = function(e){
+
+if (e.keyCode == '37') { window.location = '/tour/application-configuration/'; }
+
+
+
+if (e.keyCode == '39') { window.location = '/tour/mem-self-ntfy-code/'; }
+
+};
+</script>
+
+<div class="text-center">
+ 
+  <h2> 
     
-<p>Welcome to the Fluo tour! The tour starts by introducing Fluo’s <a href="/tour/data-model/">Data Model</a>.</p>
+    <a href="/tour/application-configuration/">&lt;</a> 
+    
 
-<p>We recommend following the tour in order. However, all pages are listed below for review.  When on a
-tour page, the left and right keys on the keyboard can be used to navigate.  If you have any
-questions or suggestions while going through the tour, please let us know.  There are multiple
-options for getting in touch : <a href="/getinvolved/">mailing list, IRC</a>, and <a href="https://github.com/apache/incubator-fluo-website/issues">Github Issues</a>.  Any
-thoughts, solutions, etc  related to this tour can also be tweeted using the hashtag
-<a href="https://twitter.com/hashtag/apachefluotour">#apachefluotour</a>.</p>
-
-<ol>
-  <li>
-    <p><a href="/tour/data-model/">Data Model</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/architecture/">Architecture</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/writing-code/">Writing and Running Fluo code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/basic-read-write/">Read and Write Data</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/data-pojos/">Basic Data Types</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/snapshot-isolation/">Snapshot Isolation</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/snapshot-isolation-code/">Snapshot Isolation Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/collisions/">Collisions</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/collision-code/">Collision code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/tx-logging/">Transaction Logging</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/write-skew/">Write Skew</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/write-skew-code/">Write Skew Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/scanning/">Scanning</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/scanning-code/">Scanning Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/multi-get/">Fetching multiple cells</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/loader-executer/">Loader Executor</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/observers/">Observer Concepts</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/observer_example/">Observer Example</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/exercise-1/">Word count Exercise</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/row-locking/">Row Locking</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/weak-notifications/">Weak Notification Exercise</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/weak-code/">Weak Notification Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/application-configuration/">Application Configuration</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/mem-self-ntfy/">Memory limits and self notify</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/mem-self-ntfy-code/">Memory limits and self notify code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/recipes/">Fluo Recipes</a></p>
-  </li>
-</ol>
-
-
-  </article>
-
+    24 / 26 
+    
+    <a href="/tour/mem-self-ntfy-code/">&gt;</a> 
+    
+  </h2>
 </div>
 
           </div>

@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/tour/">
+    <link rel="canonical" href="http://fluo.io/tour/tx-logging/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Fluo Tour | Apache Fluo</title>
+    <title>Transaction Logging | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -70,107 +70,80 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="page">
+              
 
-  <header class="post-header">
-    <h2 class="post-title">Fluo Tour</h2>
-  </header>
 
-  <article id="page-content">
+<div id="tour-header">
+  <h2><a href="/tour/">Fluo Tour</a>: Transaction Logging</h2>
+  <p class="text-muted">Tour page 10 of 26</p>
+</div>
+<div id="tour-content">
+  <p>Fluo can produce detailed logs about transactions if configured to do so.
+This can be useful for debugging.  Modify <code class="highlighter-rouge">./src/main/resources/log4j.properties</code>
+and remove <code class="highlighter-rouge">#</code> on the line <code class="highlighter-rouge">#log4j.logger.fluo.tx=TRACE</code>.  After doing this,
+rerun the collision exercise on the previous page.</p>
+
+<p>With this configuration change, you should see output like the following.
+Notice the logging shows what was read, set, and the collision information.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Starting MiniFluo ... started.
+TRACE: txid: 3 begin() thread: 10
+TRACE: txid: 3 set(kerbalnaut0001, name last , Kerma)
+TRACE: txid: 3 commit() -&gt; SUCCESSFUL commitTs: 4
+TRACE: txid: 3 close()
+TRACE: txid: 3 thread : 10 time: ... #ret: 0 #set: 1 #collisions: 0 waitTime: 0 committed: true class: N/A
+TRACE: txid: 5 begin() thread: 10
+TRACE: txid: 6 begin() thread: 10
+TRACE: txid: 5 get(kerbalnaut0001, name last ) -&gt; Kerma
+TRACE: txid: 5 set(kerbalnaut0001, name last , Kerman)
+TRACE: txid: 6 get(kerbalnaut0001, name last ) -&gt; Kerma
+TRACE: txid: 6 set(kerbalnaut0001, name last , KermaN)
+TRACE: txid: 5 commit() -&gt; SUCCESSFUL commitTs: 7
+TRACE: txid: 6 commit() -&gt; UNSUCCESSFUL commitTs: -1
+TRACE: txid: 6 collisions: {kerbalnaut0001=[name last ]}
+tx3 commit exception : org.apache.fluo.api.exceptions.CommitException
+TRACE: txid: 6 close()
+TRACE: txid: 6 thread : 10 time: ... #ret: 1 #set: 1 #collisions: 1 waitTime: 0 committed: false class: N/A
+TRACE: txid: 5 close()
+TRACE: txid: 5 thread : 10 time: ... #ret: 1 #set: 1 #collisions: 0 waitTime: 0 committed: true class: N/A
+TRACE: txid: 8 begin() thread: 10
+TRACE: txid: 8 get(kerbalnaut0001, name last ) -&gt; Kerman
+Kerman
+TRACE: txid: 8 close()
+TRACE: txid: 8 thread : 10 time: ... #ret: 1 #set: 0 #collisions: 0 waitTime: 0 committed: false class: N/A
+</code></pre>
+</div>
+
+<p>More information about configuring logging is available in <a href="/docs/fluo/1.0.0-beta-2/applications/#debugging-applications">the logging
+documentation</a>.</p>
+
+
+</div>
+
+<script>
+document.body.onkeyup = function(e){
+
+if (e.keyCode == '37') { window.location = '/tour/collision-code/'; }
+
+
+
+if (e.keyCode == '39') { window.location = '/tour/write-skew/'; }
+
+};
+</script>
+
+<div class="text-center">
+ 
+  <h2> 
     
-<p>Welcome to the Fluo tour! The tour starts by introducing Fluo’s <a href="/tour/data-model/">Data Model</a>.</p>
+    <a href="/tour/collision-code/">&lt;</a> 
+    
 
-<p>We recommend following the tour in order. However, all pages are listed below for review.  When on a
-tour page, the left and right keys on the keyboard can be used to navigate.  If you have any
-questions or suggestions while going through the tour, please let us know.  There are multiple
-options for getting in touch : <a href="/getinvolved/">mailing list, IRC</a>, and <a href="https://github.com/apache/incubator-fluo-website/issues">Github Issues</a>.  Any
-thoughts, solutions, etc  related to this tour can also be tweeted using the hashtag
-<a href="https://twitter.com/hashtag/apachefluotour">#apachefluotour</a>.</p>
-
-<ol>
-  <li>
-    <p><a href="/tour/data-model/">Data Model</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/architecture/">Architecture</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/writing-code/">Writing and Running Fluo code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/basic-read-write/">Read and Write Data</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/data-pojos/">Basic Data Types</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/snapshot-isolation/">Snapshot Isolation</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/snapshot-isolation-code/">Snapshot Isolation Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/collisions/">Collisions</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/collision-code/">Collision code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/tx-logging/">Transaction Logging</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/write-skew/">Write Skew</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/write-skew-code/">Write Skew Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/scanning/">Scanning</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/scanning-code/">Scanning Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/multi-get/">Fetching multiple cells</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/loader-executer/">Loader Executor</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/observers/">Observer Concepts</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/observer_example/">Observer Example</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/exercise-1/">Word count Exercise</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/row-locking/">Row Locking</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/weak-notifications/">Weak Notification Exercise</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/weak-code/">Weak Notification Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/application-configuration/">Application Configuration</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/mem-self-ntfy/">Memory limits and self notify</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/mem-self-ntfy-code/">Memory limits and self notify code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/recipes/">Fluo Recipes</a></p>
-  </li>
-</ol>
-
-
-  </article>
-
+    10 / 26 
+    
+    <a href="/tour/write-skew/">&gt;</a> 
+    
+  </h2>
 </div>
 
           </div>

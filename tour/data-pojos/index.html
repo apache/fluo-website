@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/tour/">
+    <link rel="canonical" href="http://fluo.io/tour/data-pojos/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Fluo Tour | Apache Fluo</title>
+    <title>Basic Data Types | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -70,107 +70,53 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="page">
+              
 
-  <header class="post-header">
-    <h2 class="post-title">Fluo Tour</h2>
-  </header>
 
-  <article id="page-content">
+<div id="tour-header">
+  <h2><a href="/tour/">Fluo Tour</a>: Basic Data Types</h2>
+  <p class="text-muted">Tour page 5 of 26</p>
+</div>
+<div id="tour-content">
+  <p>Fluo has a few simple POJOs that are used throughout the API.  These classes
+are found in <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/data/package-summary.html">org.apache.fluo.api.data</a>.  All of these types are
+immutable. Except for Span, all of the types are Comparable and have hash
+code and equals implementations.  These types work with <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/data/Bytes.html">Bytes</a> and Java
+Strings.  Internally, Fluo only works with bytes.  All API methods that deal
+with String will convert back and forth to and from bytes using UTF-8.</p>
+
+<p><a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/data/Bytes.html">Bytes</a> is modeled after Java String.  Its an immutable wrapper around <code class="highlighter-rouge">byte[]</code>
+like String is an immutable wrapper around <code class="highlighter-rouge">char[]</code>.  To make building <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/data/Bytes.html">Bytes</a>
+more efficient and easier, there is a reusable <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/data/Bytes.BytesBuilder.html">BytesBuilder</a> that is modeled
+after StringBuilder.  Call <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/data/Bytes.html#builder--">Bytes.builder()</a> to create a new <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/data/Bytes.BytesBuilder.html">BytesBuilder</a>.</p>
+
+
+</div>
+
+<script>
+document.body.onkeyup = function(e){
+
+if (e.keyCode == '37') { window.location = '/tour/basic-read-write/'; }
+
+
+
+if (e.keyCode == '39') { window.location = '/tour/snapshot-isolation/'; }
+
+};
+</script>
+
+<div class="text-center">
+ 
+  <h2> 
     
-<p>Welcome to the Fluo tour! The tour starts by introducing Fluo’s <a href="/tour/data-model/">Data Model</a>.</p>
+    <a href="/tour/basic-read-write/">&lt;</a> 
+    
 
-<p>We recommend following the tour in order. However, all pages are listed below for review.  When on a
-tour page, the left and right keys on the keyboard can be used to navigate.  If you have any
-questions or suggestions while going through the tour, please let us know.  There are multiple
-options for getting in touch : <a href="/getinvolved/">mailing list, IRC</a>, and <a href="https://github.com/apache/incubator-fluo-website/issues">Github Issues</a>.  Any
-thoughts, solutions, etc  related to this tour can also be tweeted using the hashtag
-<a href="https://twitter.com/hashtag/apachefluotour">#apachefluotour</a>.</p>
-
-<ol>
-  <li>
-    <p><a href="/tour/data-model/">Data Model</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/architecture/">Architecture</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/writing-code/">Writing and Running Fluo code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/basic-read-write/">Read and Write Data</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/data-pojos/">Basic Data Types</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/snapshot-isolation/">Snapshot Isolation</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/snapshot-isolation-code/">Snapshot Isolation Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/collisions/">Collisions</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/collision-code/">Collision code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/tx-logging/">Transaction Logging</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/write-skew/">Write Skew</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/write-skew-code/">Write Skew Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/scanning/">Scanning</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/scanning-code/">Scanning Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/multi-get/">Fetching multiple cells</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/loader-executer/">Loader Executor</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/observers/">Observer Concepts</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/observer_example/">Observer Example</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/exercise-1/">Word count Exercise</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/row-locking/">Row Locking</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/weak-notifications/">Weak Notification Exercise</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/weak-code/">Weak Notification Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/application-configuration/">Application Configuration</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/mem-self-ntfy/">Memory limits and self notify</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/mem-self-ntfy-code/">Memory limits and self notify code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/recipes/">Fluo Recipes</a></p>
-  </li>
-</ol>
-
-
-  </article>
-
+    5 / 26 
+    
+    <a href="/tour/snapshot-isolation/">&gt;</a> 
+    
+  </h2>
 </div>
 
           </div>

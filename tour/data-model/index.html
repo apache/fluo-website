@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/tour/">
+    <link rel="canonical" href="http://fluo.io/tour/data-model/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Fluo Tour | Apache Fluo</title>
+    <title>Data Model | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -70,107 +70,72 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="page">
+              
 
-  <header class="post-header">
-    <h2 class="post-title">Fluo Tour</h2>
-  </header>
 
-  <article id="page-content">
+<div id="tour-header">
+  <h2><a href="/tour/">Fluo Tour</a>: Data Model</h2>
+  <p class="text-muted">Tour page 1 of 26</p>
+</div>
+<div id="tour-content">
+  <p>Fluo uses Accumulo’s data model which is based on the BigTable data model.
+This data model supports a large online sorted map that spans multiple nodes in
+a cluster.   The keys in this map have four components : row, column family,
+column qualifier, and column visibility.</p>
+
+<ul>
+  <li><strong>Row</strong> : This portion of the key is used to partition data across nodes in
+a cluster.  All data in a row is guaranteed to be stored on single node in
+the cluster.  Different rows may be stored on different nodes.  Fluo
+supports cross row transactions, which mean cross node transactions.</li>
+  <li><strong>Column family</strong> :  This portion of the key is used to partition data
+within each node on the cluster.  The data model has locality groups which
+store column families in physically separate partitions on each node.  If
+locality groups are configured, then it allows scanning a subset of rows column
+families much more quickly.</li>
+  <li><strong>Column Qualifier</strong> : This portion of the key is used to define arbitrary
+columns within a column family.</li>
+  <li><strong>Column Visibility</strong> : In Accumulo this portion of the key is used to
+control access to data.</li>
+</ul>
+
+<p>This data model is schema-less so there is no need to predefine columns.  One
+thing that is defined in the Accumulo data model but is not available in Fluo is
+timestamps.  When using Fluo, the timestamp portion of the key is not available.</p>
+
+<p>In the subsequent pages of the tour the shorthand <em>&lt;row&gt;:&lt;family&gt;:&lt;qualifier&gt;</em>
+will be used.  For example, the following …</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>row       = kerbalnaut001
+family    = name
+qualifier = last
+</code></pre>
+</div>
+
+<p>… would be written as <em>kerbalnaut001:name:last</em>.</p>
+
+</div>
+
+<script>
+document.body.onkeyup = function(e){
+
+
+
+if (e.keyCode == '39') { window.location = '/tour/architecture/'; }
+
+};
+</script>
+
+<div class="text-center">
+ 
+  <h2> 
     
-<p>Welcome to the Fluo tour! The tour starts by introducing Fluo’s <a href="/tour/data-model/">Data Model</a>.</p>
 
-<p>We recommend following the tour in order. However, all pages are listed below for review.  When on a
-tour page, the left and right keys on the keyboard can be used to navigate.  If you have any
-questions or suggestions while going through the tour, please let us know.  There are multiple
-options for getting in touch : <a href="/getinvolved/">mailing list, IRC</a>, and <a href="https://github.com/apache/incubator-fluo-website/issues">Github Issues</a>.  Any
-thoughts, solutions, etc  related to this tour can also be tweeted using the hashtag
-<a href="https://twitter.com/hashtag/apachefluotour">#apachefluotour</a>.</p>
-
-<ol>
-  <li>
-    <p><a href="/tour/data-model/">Data Model</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/architecture/">Architecture</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/writing-code/">Writing and Running Fluo code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/basic-read-write/">Read and Write Data</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/data-pojos/">Basic Data Types</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/snapshot-isolation/">Snapshot Isolation</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/snapshot-isolation-code/">Snapshot Isolation Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/collisions/">Collisions</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/collision-code/">Collision code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/tx-logging/">Transaction Logging</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/write-skew/">Write Skew</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/write-skew-code/">Write Skew Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/scanning/">Scanning</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/scanning-code/">Scanning Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/multi-get/">Fetching multiple cells</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/loader-executer/">Loader Executor</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/observers/">Observer Concepts</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/observer_example/">Observer Example</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/exercise-1/">Word count Exercise</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/row-locking/">Row Locking</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/weak-notifications/">Weak Notification Exercise</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/weak-code/">Weak Notification Code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/application-configuration/">Application Configuration</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/mem-self-ntfy/">Memory limits and self notify</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/mem-self-ntfy-code/">Memory limits and self notify code</a></p>
-  </li>
-  <li>
-    <p><a href="/tour/recipes/">Fluo Recipes</a></p>
-  </li>
-</ol>
-
-
-  </article>
-
+    1 / 26 
+    
+    <a href="/tour/architecture/">&gt;</a> 
+    
+  </h2>
 </div>
 
           </div>
