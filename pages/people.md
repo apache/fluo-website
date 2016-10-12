@@ -28,10 +28,11 @@ permalink: /people/
 
 ## Contributors
 
-| Name                                          | Organization                        | Timezone   |
-------------------------------------------------|-------------------------------------|------------|
-| [Eric Newton](https://github.com/ericnewton)  |                                     | [ET][et]   |
-| [Garvit Bansal](https://github.com/Garvit244) | [Flipkart](http://www.flipkart.com) | [IST][ist] |
+| Name                                                | Organization                        | Timezone   |
+------------------------------------------------------|-------------------------------------|------------|
+| [Eric Newton](https://github.com/ericnewton)        |                                     | [ET][et]   |
+| [Garvit Bansal](https://github.com/Garvit244)       | [Flipkart](http://www.flipkart.com) | [IST][ist] |
+| [Christopher McTague](https://github.com/cjmctague) | [Peterson Technologies][pt]         | [ET][et]   |
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: http://hortonworks.com/
