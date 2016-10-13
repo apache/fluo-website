@@ -35,24 +35,16 @@ Below are the steps required to update the Fluo project website for a new releas
 
     ```bash
     cd fluo-website/
-    mkdir -p docs/1.0.0-beta-1
+    mkdir -p docs/fluo/1.0.0-beta-1
     ./_scripts/convert-docs.py /path/to/fluo/docs/ /path/to/fluo-website/docs/fluo/1.0.0-beta-1/
     ```
 
 2. Modify `docs/index.md` to point to new release and update the `latest_fluo_release` 
    variable in `_config.yml`.
 
-3. Run this command to generate Javadocs from your your Fluo release tag repo and 
-   copy them to this repo.  The command assumes that you have a tag in your Fluo
-   repo named after your release version (i.e 1.0.0-beta-1):
+3. Confirm that javadocs are hosted externally and modify `apidocs/index.md` to point to link to them.
 
-    ```bash
-    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo/modules/api /path/to/fluo-website/apidocs/fluo
-    ```
-
-4. Modify `apidocs/index.md` to point to the new javadocs that you just generated.
-
-5. Create a blog post announcing the release in `_posts/blog/`
+4. Create release-notes, release, and blog post announcing the release in `_posts/`
 
 ## Apache Fluo Recipes releases
 
@@ -68,15 +60,9 @@ Steps to update website for new Fluo Recipes release:
 
 2. Modify `docs/index.md` to point to new release and update the `latest_recipes_release` variable in `_config.yml`.
 
-3. Run this command to generate Javadocs from your Fluo release tag repo and 
-   copy them to this repo.  The command assumes that you have a tag in your Fluo
-   repo named after your release version (i.e 1.0.0-beta-1):
+3. Confirm that javadocs are hosted externally and modify `apidocs/index.md` to point to link to them.
 
-    ```bash
-    ./_scripts/gen-javadoc.sh 1.0.0-beta-1 /path/to/repo/fluo-recipes /path/to/fluo-website/apidocs/fluo-recipes
-    ```
-
-4. Modify `apidocs/index.md` to point to the new javadocs that you just generated.
+4. Create release-notes, release, and blog post announcing the release in `_posts/`
 
 [Jekyll]: http://jekyllrb.com/
 [Bundler]: http://bundler.io/

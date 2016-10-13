@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/release-summaries/">
+    <link rel="canonical" href="http://fluo.io/docs/fluo/1.0.0-incubating/grafana/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Release Summaries Archive | Apache Fluo</title>
+    <title>Fluo metrics in Grafana/InfluxDB | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -31,8 +31,10 @@
         </div>
         <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
           <ul class="navbar-nav nav">
-            <li><a href="/docs/">Documentation</a></li>
-            <li><a href="/download/">Download</a></li>
+            <li><a href="/release/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li><a href="/docs/">Docs</a></li>
+            <li><a href="/apidocs/">API</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -70,28 +72,99 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="page">
+            <div class="fluo-doc">
+
+  
+
+  
 
   <header class="post-header">
-    <h2 class="post-title">Release Summaries Archive</h2>
+    <h2 class="post-title">Fluo metrics in Grafana/InfluxDB</h2>
   </header>
 
   <article id="page-content">
-    <p>Apache Fluo release summaries:</p>
+    <p>This document describes how to send Fluo metrics to <a href="https://influxdb.com/">InfluxDB</a>, a time series database, and make
+them viewable in <a href="http://grafana.org/">Grafana</a>, a visualization tool. If you want general information on metrics, see
+the <a href="/docs/fluo/1.0.0-incubating/metrics/">Fluo metrics</a> documentation.</p>
 
-<p>Fluo release summaries before Apache incubation:</p>
+<h2 id="set-up-grafanainfluxdb-on-your-own">Set up Grafana/InfluxDB on your own</h2>
 
-<ul>
+<p>Follow the instructions below to setup InfluxDB and Grafana.</p>
+
+<ol>
   <li>
-    <p><a href="/release-summaries/1.0.0-beta-2/">1.0.0-beta-2</a> - 12 Jan 2016</p>
+    <p>Follow the standard installation instructions for <a href="https://influxdb.com/">InfluxDB</a> and <a href="http://grafana.org/">Grafana</a>. As for versions,
+the instructions below were written using InfluxDB v0.9.4.2 and Grafana v2.5.0.</p>
   </li>
   <li>
-    <p><a href="/release-summaries/1.0.0-beta-1/">1.0.0-beta-1</a> - 09 Jun 2015</p>
+    <p>Add the following to your InfluxDB configuration to configure it accept metrics in Graphite
+format from Fluo. The configuration below contains templates that transform the Graphite
+metrics into a format that is usable in InfluxDB.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>[[graphite]]
+  bind-address = ":2003"
+  enabled = true
+  database = "fluo_metrics"
+  protocol = "tcp"
+  consistency-level = "one"
+  separator = "_"
+  batch-size = 1000
+  batch-pending = 5
+  batch-timeout = "1s"
+  templates = [
+    "fluo.class.*.*.*.*.* ..app.host.measurement.observer.field",
+    "fluo.class.*.*.*.* ..app.host.measurement.observer",
+    "fluo.system.*.*.*.* ..app.host.measurement.field",
+    "fluo.system.*.*.* ..app.host.measurement",
+    "fluo.app.*.*.* ..host.measurement.field",
+    "fluo.app.*.* ..host.measurement",
+  ]
+</code></pre>
+    </div>
   </li>
   <li>
-    <p><a href="/release-summaries/1.0.0-alpha-1/">1.0.0-alpha-1</a> - 02 Oct 2014</p>
+    <p>Fluo distributes a file called <code class="highlighter-rouge">fluo_metrics_setup.txt</code> that contains a list of commands that
+setup InfluxDB. These commands will configure an InfluxDB user, retention policies, and
+continuous queries that downsample data for the historical dashboard in Grafana. Run the command
+below to execute the commands in this file:</p>
+
+    <p><code class="highlighter-rouge">
+ $INFLUXDB_HOME/bin/influx -import -path $FLUO_HOME/contrib/influxdb/fluo_metrics_setup.txt
+</code></p>
   </li>
-</ul>
+  <li>
+    <p>Configure <code class="highlighter-rouge">fluo.properties</code> in your Fluo app configuration to send Graphite metrics to InfluxDB.
+Below is example configuration. Remember to replace <code class="highlighter-rouge">&lt;INFLUXDB_HOST&gt;</code> with the actual host.</p>
+
+    <p><code class="highlighter-rouge">
+ fluo.metrics.reporter.graphite.enable=true
+ fluo.metrics.reporter.graphite.host=&lt;INFLUXDB_HOST&gt;
+ fluo.metrics.reporter.graphite.port=2003
+ fluo.metrics.reporter.graphite.frequency=30
+</code></p>
+
+    <p>The reporting frequency of 30 sec is required if you are using the provided Grafana dashboards
+ that are configured in the next step.</p>
+  </li>
+  <li>
+    <p>Grafana needs to be configured to load dashboard JSON templates from a directory. Fluo
+distributes two Grafana dashboard templates in its tarball distribution in the directory
+<code class="highlighter-rouge">contrib/grafana</code>. Before restarting Grafana, you should copy the templates from your Fluo
+installation to the <code class="highlighter-rouge">dashboards/</code> directory configured below.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>[dashboards.json]
+enabled = true
+path = &lt;GRAFANA_HOME&gt;/dashboards
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>If you restart Grafana, you will see the Fluo dashboards configured but all of their charts will
+be empty unless you have a Fluo application running and configured to send data to InfluxDB.
+When you start sending data, you may need to refresh the dashboard page in the browser to start
+viewing metrics.</p>
+  </li>
+</ol>
 
 
   </article>

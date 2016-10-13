@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/release-summaries/1.0.0-beta-2/">
+    <link rel="canonical" href="http://fluo.io/docs/fluo/1.0.0-incubating/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Fluo 1.0.0-beta-2 Release Summary | Apache Fluo</title>
+    <title>Fluo 1.0.0-incubating Documentation | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -31,8 +31,10 @@
         </div>
         <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
           <ul class="navbar-nav nav">
-            <li><a href="/docs/">Documentation</a></li>
-            <li><a href="/download/">Download</a></li>
+            <li><a href="/release/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li><a href="/docs/">Docs</a></li>
+            <li><a href="/apidocs/">API</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -70,50 +72,55 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="post-header">
-  <h2>Fluo 1.0.0-beta-2 Release Summary</h1>
-  <p class="text-muted">12 Jan 2016</p>
-</div>
+            <div class="fluo-doc">
 
+  
 
-  <div class="alert alert-danger" role="alert">This release summary is for a release of Fluo that made before Apache incubation.</div>
+  
 
+  <header class="post-header">
+    <h2 class="post-title">Fluo 1.0.0-incubating Documentation</h2>
+  </header>
 
-<div class="post-content">
-  <p>The <a href="https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-2">1.0.0-beta-2</a> release is the third release of Fluo and likely the final
-release before 1.0.0.</p>
+  <article id="page-content">
+    <p><strong>Apache Fluo lets users make incremental updates to large data sets stored in Apache Accumulo.</strong></p>
 
-<p>It contains the following significant improvements:</p>
+<p>Apache Fluo is an open source implementation of <a href="https://research.google.com/pubs/pub36726.html">Percolator</a> (which populates
+Google’s search index) for <a href="https://accumulo.apache.org">Apache Accumulo</a>. Fluo makes it possible to update the results
+of a large-scale computation, index, or analytic as new data is discovered.</p>
 
-<ul>
-  <li>Fluo metrics were improved and can now be sent to InfluxDB and viewed in Grafana.</li>
-  <li>Improvements were made to Fluo to make it work better with Apache Spark.</li>
-  <li>Several performances improvements were made to decrease transaction commit time.</li>
-  <li>Fluo administration was improved with bug fixes and the addition of new commands.</li>
-  <li>Several improvements were made to the Fluo API.</li>
-</ul>
-
-<p>Fluo is now at a point where its two cluster test suites, <a href="https://github.com/fluo-io/webindex">Webindex</a>
-and <a href="https://github.com/fluo-io/fluo-stress">Stress</a>, are running well for long periods on EC2.</p>
-
-<p>Below are resources for this release:</p>
+<h2 id="getting-started">Getting Started</h2>
 
 <ul>
-  <li>Read the <a href="/release-notes/1.0.0-beta-2/">release notes</a> for a full list of notable features and bug fixes.</li>
-  <li>View the <a href="/docs/fluo/1.0.0-beta-2/">documentation</a> for help getting started with Fluo.</li>
-  <li>Download the <a href="https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-2">Fluo binary tarball</a> for 1.0.0-beta-2 from GitHub.</li>
-  <li><a href="/apidocs/fluo/1.0.0-beta-2/">Javadocs</a> are available for this release.</li>
-  <li>A <a href="https://github.com/fluo-io/fluo/tree/1.0.0-beta-2">tag</a> of Fluo codebase for 1.0.0-beta-2 is available.</li>
-  <li>The <a href="https://github.com/fluo-io/fluo-quickstart">Quickstart</a> and <a href="https://github.com/fluo-io/phrasecount">Phrasecount</a> applications were updated to work with this release.</li>
+  <li>Take the <a href="/tour/">Fluo Tour</a> if you are completely new to Fluo.</li>
+  <li>Read the <a href="/docs/fluo/1.0.0-incubating/install/">install instructions</a> to install Fluo and start a Fluo application in YARN on a
+cluster where Accumulo, Hadoop &amp; Zookeeper are running. If you need help setting up these
+dependencies, see the <a href="/related-projects/">related projects page</a> for external projects that may help.</li>
+</ul>
+
+<h2 id="applications">Applications</h2>
+
+<p>Below are helpful resources for Fluo application developers:</p>
+
+<ul>
+  <li><a href="/docs/fluo/1.0.0-incubating/applications/">Instructions</a> for creating Fluo applications</li>
+  <li><a href="https://javadoc.io/doc/org.apache.fluo/fluo-api/1.0.0-incubating/">Fluo API</a> javadocs</li>
+  <li><a href="https://github.com/apache/incubator-fluo-recipes">Fluo Recipes</a> is a project that provides common code for Fluo application developers
+implemented using the Fluo API.</li>
+</ul>
+
+<h2 id="implementation">Implementation</h2>
+
+<ul>
+  <li><a href="/docs/fluo/1.0.0-incubating/architecture/">Architecture</a> - Overview of Fluo’s architecture</li>
+  <li><a href="/docs/fluo/1.0.0-incubating/contributing/">Contributing</a> - Documentation for developers who want to contribute to Fluo</li>
+  <li><a href="/docs/fluo/1.0.0-incubating/metrics/">Metrics</a> - Fluo metrics are visible via JMX by default but can be configured to send to Graphite
+or Ganglia</li>
 </ul>
 
 
-</div>
+  </article>
 
-<hr>
-
-<div>
-  <p>All Fluo release summaries can be found in the <a href="/release-summaries/">archive</a></p>
 </div>
 
           </div>

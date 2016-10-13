@@ -31,8 +31,10 @@
         </div>
         <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
           <ul class="navbar-nav nav">
-            <li><a href="/docs/">Documentation</a></li>
-            <li><a href="/download/">Download</a></li>
+            <li><a href="/release/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li><a href="/docs/">Docs</a></li>
+            <li><a href="/apidocs/">API</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -77,7 +79,7 @@
 <div id="post-content">
   <p>Another long run of <a href="https://github.com/fluo-io/webindex">Webindex</a> was done to test changes made since beta-2
 and it went well.  This run performed much better than the previous the
-<a href="/blog/2016/01/11/webindex-long-run/">previous long run of Webindex</a>.  The experiment was run on 21 EC2
+<a href="/blog/2016/01/10/webindex-long-run/">previous long run of Webindex</a>.  The experiment was run on 21 EC2
 m3-xlarge nodes (20 worker nodes).  Each node has 4 cores and 15G of RAM.
 273.6 million web pages and 3.54 billion links were processed from 8,000 common
 crawl files (each file is around 330M).  It took around 80 hours to load the
@@ -93,8 +95,8 @@ we hope to release new versions soon.</p>
 <h2 id="rate-limited-page-loading">Rate limited page loading</h2>
 
 <p>The plot below shows how many transactions per second were executed by
-different observers.  Please refer to the <a href="/blog/2016/01/11/webindex-long-run/#webindex-overview">overview in the last
-post</a> for a description of the observers and see the <a href="/blog/2016/01/11/webindex-long-run/#grafana-plots">previous
+different observers.  Please refer to the <a href="/blog/2016/01/10/webindex-long-run/#webindex-overview">overview in the last
+post</a> for a description of the observers and see the <a href="/blog/2016/01/10/webindex-long-run/#grafana-plots">previous
 plots</a>.  The transactions per second is very even compared to the
 last run.   The document load rate was limited to a maximum of 1,000 pages per
 second.  There was no limit in the last run, it just ran as fast as it could.</p>

@@ -31,8 +31,10 @@
         </div>
         <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
           <ul class="navbar-nav nav">
-            <li><a href="/docs/">Documentation</a></li>
-            <li><a href="/download/">Download</a></li>
+            <li><a href="/release/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li><a href="/docs/">Docs</a></li>
+            <li><a href="/apidocs/">API</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -78,13 +80,13 @@
   <p class="text-muted">Tour page 16 of 26</p>
 </div>
 <div id="tour-content">
-  <p>Fluo provides a simple mechanism to help load data called the <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a>.  Loading data
+  <p>Fluo provides a simple mechanism to help load data called the <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a>.  Loading data
 into Fluo requires a transaction.  The LoaderExecutor manages creating, committing, and retrying
 transactions when collisions occur.  It also runs transactions in multiple threads and batches
 commit processing of separate transactions for efficiency.  FluoConfiguration provides two methods
-for configuring LoaderExecutors <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/config/FluoConfiguration.html#setLoaderQueueSize-int-">setLoaderQueueSize()</a> and <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/config/FluoConfiguration.html#setLoaderThreads-int-">setLoaderThreads()</a>.</p>
+for configuring LoaderExecutors <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html#setLoaderQueueSize-int-">setLoaderQueueSize()</a> and <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html#setLoaderThreads-int-">setLoaderThreads()</a>.</p>
 
-<p>Objects that implement <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/client/Loader.html">Loader</a> are given to a LoaderExecutor.  The <a href="/apidocs/fluo/1.0.0-beta-2/org/apache/fluo/api/client/Loader.html#load-org.apache.fluo.api.client.TransactionBase-org.apache.fluo.api.client.Loader.Context-">load()</a> method will
+<p>Objects that implement <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/Loader.html">Loader</a> are given to a LoaderExecutor.  The <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/Loader.html#load-org.apache.fluo.api.client.TransactionBase-org.apache.fluo.api.client.Loader.Context-">load()</a> method will
 eventually be called on these objects at which point the passed in transactions can be used to load
 data.  When <code class="highlighter-rouge">close()</code> is called on a LoaderExecutor, it waits for all running and queued work to
 finish.</p>
