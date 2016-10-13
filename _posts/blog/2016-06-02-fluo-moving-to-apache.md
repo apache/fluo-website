@@ -1,11 +1,11 @@
 ---
-title:  "Fluo is moving to Apache"
-date:   2016-06-02 11:43:00
+title: "Fluo is moving to Apache"
+date: 2016-06-02 11:43:00 +0000
 ---
 
 Fluo was recently [proposed][1] as an Apache Podling.  The [vote][2] passed and
 now we are in the process of moving to Apache.  See [INFRA-11900][3] for more
-details.   
+details.
 
 Currently the only thing setup in Apache land is the mailing list.  If you
 would like to subscribe to the new list, send an email to

@@ -1,6 +1,6 @@
 ---
-title:  "First long stress test run on Fluo"
-date:   2014-12-30 17:00:00
+title: "First long stress test run on Fluo"
+date: 2014-12-30 17:00:00 +0000
 redirect_from: /stress-test-long-run/
 ---
 

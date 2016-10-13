@@ -2,9 +2,7 @@
 layout: page
 title: Download Apache Fluo
 permalink: /download/
+redirect_to: /release/fluo-{{ site.latest_fluo_release }}/
 ---
 
-Tarball distributions of Apache Fluo will be available on this page after its first release as an Apache project.  
-
-Information about downloading releases of Fluo made prior to Apache is available [here](/pre-asf-download/)
-
+This page should redirect to the latest Apache Fluo release.

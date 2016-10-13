@@ -1,6 +1,6 @@
 ---
-title: Fluo Recipes 1.0.0-beta-1 release
-date: 2016-01-13 15:30:00
+title: Fluo Recipes 1.0.0-beta-1 released
+date: 2016-01-13 15:30:00 +0000
 version: fluo-recipes-1.0.0-beta-1
 historical: true
 ---

@@ -177,5 +177,5 @@ the `\` character is escaped to make the output unambiguous.
 [FluoConfiguration]: /apidocs/fluo/1.0.0-beta-2/io/fluo/api/config/FluoConfiguration.html
 [AbstractObserver]: /apidocs/fluo/1.0.0-beta-2/io/fluo/api/observer/AbstractObserver.html
 [fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties
-[API]: http://fluo.io/apidocs/
+[API]: /apidocs/fluo/1.0.0-beta-2/
 [metrics]: /docs/fluo/1.0.0-beta-2/metrics/

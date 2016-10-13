@@ -145,5 +145,5 @@ shows that a transaction with a start timestamp of `106` and a class name of
 [FluoConfiguration]: /apidocs/fluo/1.0.0-beta-1/io/fluo/api/config/FluoConfiguration.html
 [AbstractObserver]: /apidocs/fluo/1.0.0-beta-1/io/fluo/api/observer/AbstractObserver.html
 [fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties
-[API]: http://fluo.io/apidocs/
+[API]: /apidocs/fluo/1.0.0-beta-1/
 [metrics]: /docs/fluo/1.0.0-beta-1/metrics/

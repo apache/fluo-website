@@ -27,7 +27,7 @@ Contributions are welcome to all Apache Fluo projects! All projects follow a [re
 
 [f]: https://github.com/apache/fluo
 [r]: https://github.com/apache/fluo-recipes
-[w]: https://github.com/fluo/fluo-io.github.io
+[w]: https://github.com/apache/incubator-fluo-website
 [fi]: https://github.com/apache/fluo/issues
 [ri]: https://github.com/apache/fluo-recipes/issues
 [wi]: https://github.com/apache/incubator-fluo-website/issues

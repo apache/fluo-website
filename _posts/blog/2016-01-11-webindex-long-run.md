@@ -1,6 +1,6 @@
 ---
-title:  "Running Webindex for 3 days on EC2"
-date:   2016-01-11 03:30:00
+title: "Running Webindex for 3 days on EC2"
+date: 2016-01-11 15:30:00 +0000
 redirect_from: /webindex-long-run/
 ---
 

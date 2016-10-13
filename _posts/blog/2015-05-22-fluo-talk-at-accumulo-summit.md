@@ -1,6 +1,6 @@
 ---
-title:  "Fluo talk at Accumulo Summit"
-date:   2015-05-22 14:27:00
+title: "Fluo talk at Accumulo Summit"
+date: 2015-05-22 14:27:00 +0000
 redirect_from: /fluo-talk-at-accumulo-summit/
 ---
 

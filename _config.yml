@@ -1,7 +1,8 @@
 # Site settings
-title: Fluo
+title: Apache Fluo
 baseurl: "" # the subpath of site
-url: "http://fluo.io" # the base hostname & protocol for your site
+url: "https://fluo.apache.org/" # the base hostname & protocol for your site
+timezone: Etc/UTC
 
 permalink: pretty
 
@@ -19,14 +20,6 @@ defaults:
     values:
       layout: "post"
       category: "blog"
-  - 
-    scope:
-      path: "_posts/release-notes"
-      type: "posts"
-    values:
-      layout: "release-notes"
-      category: "release-notes"
-      permalink: "/:categories/:title/"
   -
     scope:
       path: "_posts/release"

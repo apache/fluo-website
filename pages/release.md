@@ -12,4 +12,4 @@ Apache Fluo and Apache Fluo Recipes are released seperately on their own schedul
 {% endunless %}
 {% endfor %}
 
-Releases before joining Apache are available in the [Pre-ASF release archive](/pre-asf-release/).
+Releases before joining Apache have been [archived](/pre-asf-release/).

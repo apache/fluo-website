@@ -44,7 +44,7 @@ Below are the steps required to update the Fluo project website for a new releas
 
 3. Confirm that javadocs are hosted externally and modify `apidocs/index.md` to point to link to them.
 
-4. Create release-notes, release, and blog post announcing the release in `_posts/`
+4. Create a post in `_posts/release` with release notes and resources to announce release.
 
 ## Apache Fluo Recipes releases
 
@@ -62,7 +62,7 @@ Steps to update website for new Fluo Recipes release:
 
 3. Confirm that javadocs are hosted externally and modify `apidocs/index.md` to point to link to them.
 
-4. Create release-notes, release, and blog post announcing the release in `_posts/`
+4. Create a post in `_posts/release` with release notes and resources to announce release.
 
 [Jekyll]: http://jekyllrb.com/
 [Bundler]: http://bundler.io/

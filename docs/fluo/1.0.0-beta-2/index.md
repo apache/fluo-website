@@ -8,8 +8,7 @@ version: 1.0.0-beta-2
 **Fluo is transaction layer that enables incremental processing on big data.**
 
 Fluo is an implementation of [Percolator] built on [Accumulo] that runs in [YARN]. 
-It is not recommended for production use yet. Check out the Fluo [project website][fluo.io]
-for news and general information.
+It is not recommended for production use yet.
 
 ### Getting Started
 
@@ -34,7 +33,6 @@ application][applications] or configure your Fluo application to run an example 
 * [Contributing] - Documentation for developers who want to contribute to Fluo
 * [Metrics] - Fluo metrics are visible via JMX by default but can be configured to send to Graphite or Ganglia
 
-[fluo.io]: http://fluo.io/
 [Accumulo]: http://accumulo.apache.org
 [Percolator]: http://research.google.com/pubs/pub36726.html
 [YARN]: http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html
