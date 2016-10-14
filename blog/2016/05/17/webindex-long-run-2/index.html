@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/blog/2016/05/17/webindex-long-run-2/">
+    <link rel="canonical" href="https://fluo.apache.org//blog/2016/05/17/webindex-long-run-2/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     <title>Running Webindex for 3 days on EC2 Again | Apache Fluo</title>
     <!--[if lt IE 9]>
@@ -39,7 +39,7 @@
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/getinvolved/">Get Involved</a></li>
-                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/news/">News Archive</a></li>
                 <li><a href="/people/">People</a></li>
                 <li><a href="/related-projects/">Related Projects</a></li>
                 <li><a href="/poweredby/">Powered By</a></li>
@@ -79,7 +79,7 @@
 <div id="post-content">
   <p>Another long run of <a href="https://github.com/fluo-io/webindex">Webindex</a> was done to test changes made since beta-2
 and it went well.  This run performed much better than the previous the
-<a href="/blog/2016/01/10/webindex-long-run/">previous long run of Webindex</a>.  The experiment was run on 21 EC2
+<a href="/blog/2016/01/11/webindex-long-run/">previous long run of Webindex</a>.  The experiment was run on 21 EC2
 m3-xlarge nodes (20 worker nodes).  Each node has 4 cores and 15G of RAM.
 273.6 million web pages and 3.54 billion links were processed from 8,000 common
 crawl files (each file is around 330M).  It took around 80 hours to load the
@@ -95,8 +95,8 @@ we hope to release new versions soon.</p>
 <h2 id="rate-limited-page-loading">Rate limited page loading</h2>
 
 <p>The plot below shows how many transactions per second were executed by
-different observers.  Please refer to the <a href="/blog/2016/01/10/webindex-long-run/#webindex-overview">overview in the last
-post</a> for a description of the observers and see the <a href="/blog/2016/01/10/webindex-long-run/#grafana-plots">previous
+different observers.  Please refer to the <a href="/blog/2016/01/11/webindex-long-run/#webindex-overview">overview in the last
+post</a> for a description of the observers and see the <a href="/blog/2016/01/11/webindex-long-run/#grafana-plots">previous
 plots</a>.  The transactions per second is very even compared to the
 last run.   The document load rate was limited to a maximum of 1,000 pages per
 second.  There was no limit in the last run, it just ran as fast as it could.</p>
@@ -380,7 +380,7 @@ root@instance16&gt; du webindex_search
 </div>
 
 <div>
-  <p class="text-muted">View more posts in the <a href="/blog/">Blog archive</a></p>
+  <p class="text-muted">View all posts in the <a href="/news/">news archive</a></p>
 </div>
 
           </div>

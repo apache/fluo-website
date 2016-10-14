@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/release/fluo-1.0.0-beta-1/">
+    <link rel="canonical" href="https://fluo.apache.org//release/fluo-1.0.0-beta-1/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Fluo 1.0.0-beta-1 Release | Apache Fluo</title>
+    <title>Fluo 1.0.0-beta-1 released | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -39,7 +39,7 @@
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/getinvolved/">Get Involved</a></li>
-                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/news/">News Archive</a></li>
                 <li><a href="/people/">People</a></li>
                 <li><a href="/related-projects/">Related Projects</a></li>
                 <li><a href="/poweredby/">Powered By</a></li>
@@ -73,38 +73,151 @@
       <div class="row">
           <div class="col-sm-12">
             <div class="post-header">
-  <h2>Fluo 1.0.0-beta-1 Release</h1>
+  <h2>Fluo 1.0.0-beta-1 released</h1>
   <p class="text-muted">09 Jun 2015</p>
 </div>
 
 
-  <div class="alert alert-danger" role="alert">This release was made before Apache incubation.</div>
+  <div class="alert alert-danger" role="alert">This release was made before Apache incubation and is not endorsed by the ASF.</div>
 
 
 <div class="post-content">
-  <p>The <a href="https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-1">1.0.0-beta-1</a> release is the second release of Fluo.  It contains the following significant improvements:</p>
-
-<ul>
-  <li>Simplified administration of Fluo on a local machine or EC2 cluster</li>
-  <li>Transaction metrics are now viewable using common monitoring tools</li>
-  <li>Improved processing of notifications in Fluo workers</li>
-  <li>Easier management of Fluo from the command line</li>
-  <li>Support for running multiple Fluo applications on a single cluster</li>
-  <li>Improved the deletion of observer notifications</li>
-</ul>
-
-<p>This release is not recommended for production use.  There is no upgrade path from 1.0.0-alpha-1 to 1.0.0-beta-1.</p>
+  <p>Fluo 1.0.0-beta-1 is the second official release of Fluo. Fluo is an implementation of Google’s <a href="http://research.google.com/pubs/pub36726.html">percolator paper</a>, which adds large-scale incremental 
+processing of data using distributed transactions and notifications. It runs on <a href="http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html">YARN</a> and stores its data in <a href="https://accumulo.apache.org/">Accumulo</a>.</p>
 
 <p>Below are resources for this release:</p>
 
 <ul>
-  <li>Read the <a href="/release-notes/fluo-1.0.0-beta-1/">release notes</a> for a full list of notable features and bug fixes.</li>
-  <li>View the <a href="/docs/fluo/1.0.0-beta-1/">documentation</a> for help getting started with Fluo.</li>
   <li>Download the <a href="https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-1">Fluo binary tarball</a> for 1.0.0-beta-1 from GitHub.</li>
+  <li>View the <a href="/docs/fluo/1.0.0-beta-1/">documentation</a> for help getting started with Fluo.</li>
   <li><a href="/apidocs/fluo/1.0.0-beta-1/">Javadocs</a> are available for this release.</li>
   <li>A <a href="https://github.com/fluo-io/fluo/tree/1.0.0-beta-1">tag</a> of Fluo codebase for 1.0.0-beta-1 is available.</li>
+  <li>Fluo <a href="http://search.maven.org/#search%7Cga%7C1%7Cfluo">jars</a> have been deployed to Maven Central.</li>
   <li>The <a href="https://github.com/fluo-io/fluo-quickstart">Quickstart</a> and <a href="https://github.com/fluo-io/phrasecount">Phrasecount</a> applications were updated to work with this release.</li>
 </ul>
+
+<p>This release closed <a href="https://github.com/fluo-io/fluo/issues?q=milestone%3A1.0.0-beta-1+is%3Aclosed">133 tickets</a>. This release is not recommended for production use.
+There is no upgrade path from 1.0.0-alpha-1 to 1.0.0-beta-1.</p>
+
+<h2 id="significant-features">Significant features</h2>
+
+<p>This release contains many new features that makes it easier to run, develop, and monitor Fluo applications.</p>
+
+<h4 id="simplified-fluo-administration-on-a-local-machine-or-ec2-cluster">Simplified Fluo administration on a local machine or EC2 cluster</h4>
+
+<p>Developers can now run Fluo and its dependencies on their local machine (<a href="https://github.com/fluo-io/fluo/issues/92">#92</a>) or an AWS EC2 cluster (<a href="https://github.com/fluo-io/fluo/issues/356">#356</a>) using a few simple commands.
+This was done by creating two administration tools called <a href="https://github.com/fluo-io/fluo-dev">Fluo-dev</a> and <a href="https://github.com/fluo-io/fluo-deploy">Fluo-deploy</a> whose scripts and configuration reside in repos
+separate from the Fluo code base.  These tools allow developers to collaborate and share configuration for running Fluo.</p>
+
+<h4 id="transaction-metrics-are-viewable-using-common-monitoring-tools">Transaction metrics are viewable using common monitoring tools</h4>
+
+<p>Fluo now publishes metrics (<a href="https://github.com/fluo-io/fluo/issues/20">#20</a>) about transactions, collisions, and timestamps using <a href="https://dropwizard.github.io/metrics/3.1.0/">Dropwizard metrics</a>.  These metrics are by default published 
+using JMX and are viewable using JConsole or JVisualVM.  Fluo can also be configured to publish metrics to Graphite or Ganglia.  View the <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/docs/metrics.md">metrics documentation</a>
+for more information.</p>
+
+<h4 id="improved-processing-of-notifications-in-fluo-workers">Improved processing of notifications in Fluo workers</h4>
+
+<p>Fluo workers were refactored to separate the code used for finding and executing work.  Each worker uses a single thread for finding 
+work (<a href="https://github.com/fluo-io/fluo/issues/19">#19</a>).  A new method was introduced to partition work among workers using a hash+mod of notifications (<a href="https://github.com/fluo-io/fluo/issues/282">#282</a>).
+The commit message for <a href="https://github.com/fluo-io/fluo/commit/4100e236b8438350e30eda924a6360e2c722ae37">4100e23</a> contains a good description of some of the benefits and drawback of the current
+hashing approach.</p>
+
+<h4 id="improved-the-deletion-of-observer-notifications">Improved the deletion of observer notifications</h4>
+
+<p>When a cell is deleted in Accumulo, a delete marker is inserted.  Delete markers stay around until
+all files in a tablet are compacted.  For Fluo this could cause a lot of notification delete markers
+to build up over time.  To avoid this buildup, the way Fluo deletes notifications was changed in
+(<a href="https://github.com/fluo-io/fluo/issues/457">#457</a>).  Accumulo delete markers are no longer used, Fluo now uses a custom delete marker for
+notifications.  The custom deleter marker allows Fluo to do analysis when Accumulo flushes memory to
+disk and avoid writing many delete markers to persistent storage.</p>
+
+<h4 id="easier-management-of-fluo-from-the-command-line">Easier management of Fluo from the command line</h4>
+
+<p>Fluo now provides different scripts (<strong>fluo</strong>, <strong>mini-fluo</strong>, &amp; <strong>local-fluo</strong>) for managing Fluo using a YARN cluster, MiniFluo, or local processes.  Several commands
+were created for these scripts.  A <strong>scan</strong> command allows users to print a snapshot of a Fluo table (<a href="https://github.com/fluo-io/fluo/issues/319">#319</a>).  A <strong>info</strong> command shows locations of containers
+when running Fluo in YARN (<a href="https://github.com/fluo-io/fluo/issues/297">#297</a>).  A <strong>classpath</strong> command gives users a list of jars needed to execute Fluo client code (<a href="https://github.com/fluo-io/fluo/issues/436">#436</a>).  A <strong>wait</strong> command will
+sleep until all notifications are processed (<a href="https://github.com/fluo-io/fluo/issues/434">#434</a>).</p>
+
+<h4 id="support-for-running-multiple-fluo-applications-on-a-single-cluster">Support for running multiple Fluo applications on a single cluster</h4>
+
+<p>Users can now run multiple Fluo applications using a single cluster (<a href="https://github.com/fluo-io/fluo/issues/454">#454</a>).  This enables different Fluo users to share the same cluster.  Fluo applications
+can be started and stopped independently.  Each application has its own configuration.</p>
+
+<h4 id="fluo-build-improvements">Fluo build improvements</h4>
+
+<p>On each build, all Java code is automatically formatted based on Google Java Style (<a href="https://github.com/fluo-io/fluo/issues/479">#479</a>).  Also, checkstyle and findbugs will fail the build if certain
+standards are not reached (<a href="https://github.com/fluo-io/fluo/issues/185">#185</a>).  The POM is also sorted (<a href="https://github.com/fluo-io/fluo/issues/493">#493</a>).</p>
+
+<h4 id="organized-fluo-code-base">Organized Fluo code base</h4>
+
+<p>The Fluo stress test was moved to its own <a href="https://github.com/fluo-io/fluo-stress">repo</a> and is no longer a sub-module (<a href="https://github.com/fluo-io/fluo/issues/385">#385</a>).  MiniFluo was moved from fluo-core to the fluo-mini 
+module/jar (<a href="https://github.com/fluo-io/fluo/issues/439">#439</a>).  This reduced the number of dependencies in fluo-core.  However, developers will now need to include the fluo-mini jar in their Maven
+POM if they start MiniFluo.</p>
+
+<h4 id="fluo-testing-improvements">Fluo testing improvements</h4>
+
+<p>Integration tests can now be run from Eclipse (<a href="https://github.com/fluo-io/fluo/issues/322">#322</a>).  Several new <a href="https://github.com/fluo-io/fluo/issues?utf8=%E2%9C%93&amp;q=milestone%3A1.0.0-beta-1+is%3Aclosed+%22unit+test%22">unit tests</a> were created.</p>
+
+<h4 id="other-important-improvements-and-bug-fixes">Other important improvements and bug fixes</h4>
+
+<ul>
+  <li><a href="https://github.com/fluo-io/fluo/issues/470">#470</a> - Replaced FluoFileOutputFormat with an Accumulo Key/Value generator</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/460">#460</a> - Reduced Fluo API module dependencies</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/456">#456</a> - Fixed bug with notifications being lost when processes died</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/446">#446</a> - Simplified log configuration and configure rolling log files in YARN</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/442">#442</a> - Reduced the number of curator clients in FluoAdmin</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/383">#383</a> - Improved transaction logging to help users debug collisions. See <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/docs/applications.md#debugging-applications">debugging documentation</a>.</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/365">#365</a> - Analyze Fluo code to see what non-public Accumulo APIs are used</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/362">#362</a> - Made API data objects immutable</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/349">#349</a> - Support application level configuration in fluo.properties</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/342">#342</a> - Add a configurable retry timeout to Fluo clients</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/294">#294</a> - Fluo now uses chroot suffix in its Zookeeper connection.</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/293">#293</a> - Add argument checking to FluoConfiguration</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/244">#244</a> - Make re-initialization easier for user</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+
+<p>A successful long stress test run was conducted using Fluo built from commit
+<a href="https://github.com/fluo-io/fluo/commit/fb647dd6a470e8015654f8ed99b9196f5f49582a">fb647dd</a>.  The test ran very well and never fell behind like a
+<a href="/blog/2014/12/30/stress-test-long-run/">previous long run</a> of stress did.  The test had the following
+properties.</p>
+
+<ul>
+  <li>Initialized stress test using 1 billion random integers.</li>
+  <li>Ran 150 incremental loads of 100 thousand integers.  Slept 3 minutes between loads.</li>
+  <li>Used 19 m3.xlarge nodes on EC2.  16 workers and 3 masters</li>
+  <li>Configuration for the test committed and tagged in git : <a href="https://github.com/keith-turner/fluo-deploy/tree/beta-long-test-1">fluo-deploy tag</a> and <a href="https://github.com/keith-turner/fluo-stress/tree/beta-long-test-1">fluo-stress tag</a></li>
+  <li>Opened two issues as a result of test <a href="https://github.com/fluo-io/fluo/issues/499">#499</a> and <a href="https://github.com/fluo-io/fluo-stress/issues/30">fluo-stress#30</a></li>
+</ul>
+
+<p>Below is the trailing output from running the test.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>*****Generating and loading incremental data set 148*****
+*****Generating and loading incremental data set 149*****
+*****Generating and loading incremental data set 150*****
+*****Calculating # of unique integers using MapReduce*****
+                UNIQUE=1014486419
+*****Wait for Fluo to finish processing*****
+05:33:40.158 [main] INFO  io.fluo.cluster.runner.AppRunner - The wait command will exit when all notifications are processed
+05:33:40.417 [Thread-3] INFO  io.fluo.core.oracle.OracleClient - Connected to oracle at worker4:9913
+05:33:41.308 [main] INFO  io.fluo.cluster.runner.AppRunner - All processing has finished!
+*****Printing # of unique integers calculated by Fluo*****
+Total at root : 1014486419
+Nodes Scanned : 59605
+*****Verifying Fluo &amp; MapReduce results match*****
+Success! Fluo &amp; MapReduce both calculated 1014486419 unique integers
+</code></pre>
+</div>
+
+<p>The test ran for a little over 12 hours.  Below are two plots pulled from
+graphite showing the number of notifications queued and transaction rate over
+the entire test run.  Load transactions are not included in the rate.  The rate
+is transactions per second.  The accuracy of these plots is uncertain because
+no graphite configuration changes were made.  The plots do seem within the
+ballpark.</p>
+
+<p><img src="/resources/release/1.0.0-beta-1/queued.png" alt="Notifications Queued" title="Notifications Queued" /> <img src="/resources/release/1.0.0-beta-1/rate.png" alt="Transaction rate" title="Transaction Rate" /></p>
 
 
 </div>

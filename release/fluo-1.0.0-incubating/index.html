@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="http://fluo.io/release/fluo-1.0.0-incubating/">
+    <link rel="canonical" href="https://fluo.apache.org//release/fluo-1.0.0-incubating/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Fluo 1.0.0-incubating release | Apache Fluo</title>
+    <title>Apache Fluo 1.0.0-incubating released | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -39,7 +39,7 @@
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/getinvolved/">Get Involved</a></li>
-                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/news/">News Archive</a></li>
                 <li><a href="/people/">People</a></li>
                 <li><a href="/related-projects/">Related Projects</a></li>
                 <li><a href="/poweredby/">Powered By</a></li>
@@ -73,7 +73,7 @@
       <div class="row">
           <div class="col-sm-12">
             <div class="post-header">
-  <h2>Fluo 1.0.0-incubating release</h1>
+  <h2>Apache Fluo 1.0.0-incubating released</h1>
   <p class="text-muted">27 Sep 2016</p>
 </div>
 
@@ -84,17 +84,114 @@
 release for the project. Below are resources for this release:</p>
 
 <ul>
-  <li>Download release: <a href="https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo/1.0.0-incubating/fluo-1.0.0-incubating-bin.tar.gz">fluo-1.0.0-incubating-bin.tgz</a></li>
-  <li>Verify release: <a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/fluo-1.0.0-incubating-bin.tar.gz.asc">ASC</a> <a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/MD5SUM">MD5</a> <a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/SHA1SUM">SHA1</a></li>
-  <li><a href="/release-notes/fluo-1.0.0-incubating/">Release notes</a></li>
-  <li><a href="/docs/fluo/1.0.0-incubating/">Documentation</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.fluo/fluo-api/1.0.0-incubating/">Javadocs</a></li>
+  <li>
+    <p>Download a release tarball and verify by these <a href="https://www.apache.org/info/verification">procedures</a> using these <a href="https://www.apache.org/dist/incubator/fluo/KEYS">KEYS</a></p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo/1.0.0-incubating/fluo-1.0.0-incubating-bin.tar.gz">fluo-1.0.0-incubating-bin.tar.gz</a></td>
+          <td><a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/fluo-1.0.0-incubating-bin.tar.gz.asc">ASC</a> <a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/MD5SUM">MD5</a> <a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/SHA1SUM">SHA1</a></td>
+        </tr>
+        <tr>
+          <td><a href="https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo/1.0.0-incubating/fluo-1.0.0-incubating-source-release.tar.gz">fluo-1.0.0-incubating-source-release.tar.gz</a></td>
+          <td><a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/fluo-1.0.0-incubating-source-release.tar.gz.asc">ASC</a> <a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/MD5SUM">MD5</a> <a href="https://www.apache.org/dist/incubator/fluo/fluo/1.0.0-incubating/SHA1SUM">SHA1</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>View the <a href="/docs/fluo/1.0.0-incubating/">documentation</a> for this release.</li>
+  <li>Read the <a href="https://javadoc.io/doc/org.apache.fluo/fluo-api/1.0.0-incubating/">Javadocs</a>.</li>
 </ul>
 
-<p>Starting with 1.0.0-incubating, Apache Fluo will follow <a href="http://semver.org/">semver</a> for all API
-changes. The API consists of everything under the <strong>org.apache.fluo.api</strong> package. Code outside of this
+<p>Starting with 1.0.0-incubating, Apache Fluo will follow <a href="http://semver.org/">semver</a> for all future API
+changes. The API consists of everything under the <code class="highlighter-rouge">org.apache.fluo.api</code> package. Code outside of this
 package can change at any time. If your project is using Fluo code that falls outside of the API,
 then consider <a href="/getinvolved/">initiating a discussion</a> about adding it to the API.</p>
+
+<h2 id="significant-changes">Significant changes</h2>
+
+<p>The 1.0.0-incubating release includes <a href="https://github.com/apache/incubator-fluo/compare/1.0.0-beta-2...e1dbc60">167 commits</a> that were made since the last release 
+(1.0.0-beta-2).  The significant changes are summarized below. For information about changes
+before this release, see the <a href="/pre-asf-release/">archive</a> of Fluo releases before becoming an Apache
+project.</p>
+
+<h4 id="stabilized-api">Stabilized API</h4>
+
+<p>Starting with this release, Apache Fluo’s API will follow <a href="http://semver.org/">semver</a>.  The API is defined as
+everything under the org.apache.fluo.api Java package.  Given that the plan is to support this API
+for a long time, a lot of API improvements were made since the beta-2 release.  The following is a
+list of significant API changes since beta-2.</p>
+
+<ul>
+  <li><a href="https://github.com/fluo-io/fluo/issues/772">#772</a> : Get with default</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/770">#770</a> : Use varargs for Columns</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/768">#768</a> : Made Obsever and Application configuration consistent</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/743">#743</a> : Make data classes final</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/723">#723</a> : Removed FluoAdmin.InitOps()</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/714">#714</a> : Use Charsequence in API</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/695">#695</a> : Removed all 3rd party types from API</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/680">#680</a> : Changed package prefix from io.fluo to org.apache</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/647">#647</a> : Added Oracle and Worker to API</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/639">#639</a> : Improved scanning API</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/626">#626</a> : Added operation to get row+column pairs.  Further improved by <a href="https://github.com/fluo-io/fluo/issues/758">#758</a>.</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/119">#119</a> - Consistently offer String in API</li>
+</ul>
+
+<h4 id="configurable-classpath">Configurable classpath</h4>
+
+<p>The previous releases of Fluo contained specific versions of Accumulo, Hadoop, Zookeeper, and other
+Fluo dependencies.  However, the actual dependencies needed should be determined by the existing
+version of software where Fluo is run.  Fluo changed to a model of making its classpath be
+completely configurable by an administrator.  Example classpath configuration and download scripts
+ship with Fluo to help make setup easier.  These script were only tested with specific versions of
+Hadoop and Accumulo and may not work with all versions.  These changes were made in <a href="https://github.com/fluo-io/fluo/issues/706">#706</a> and
+<a href="https://github.com/fluo-io/fluo/issues/687">#687</a>.</p>
+
+<h4 id="new-fluo-version-command">New Fluo version command</h4>
+
+<p>Added a version command to the Fluo scripts in <a href="https://github.com/fluo-io/fluo/issues/779">#779</a>.  This makes it easy to automatically
+build shaded jars with the correct version of Fluo for use in Spark and Map Reduce.</p>
+
+<h4 id="user-and-historical-metrics">User and historical metrics</h4>
+
+<p>Two major improvements related to metrics were made.  Support for user metrics was added by
+<a href="https://github.com/fluo-io/fluo/issues/767">#767</a>.  This allows observers to easily report application specific metrics.  In <a href="https://github.com/fluo-io/fluo/issues/635">#635</a>
+the example InfluxDB and Grafana configurations were updated to show historical metrics.</p>
+
+<h4 id="improved-transaction-processing">Improved transaction processing</h4>
+
+<p>Transaction processing throughput was increased by changes in <a href="https://github.com/fluo-io/fluo/issues/593">#593</a> and some subsequent bug
+fixes.   These changes moved commit processing from the threads executing user code to an
+asynchronous background process.  This allows user threads to queue a transaction for commit an
+immediately start working on another notification.  This new process allows many more transactions
+to be working through the commit process concurrently.  Before the change a worker could only be
+committing up to a few hundred transactions at any time.   After the change, a single worker could
+easily be committing tens of thousands of transactions at a time.  These changes increase the latency of 
+individual transactions, which can have some drawbacks <a href="https://github.com/fluo-io/fluo/issues/650">#650</a>.   For this release changes were
+made in <a href="https://github.com/fluo-io/fluo/issues/654">#654</a> to use a priority queue for notifications in the worker.  The changes in
+<a href="https://github.com/fluo-io/fluo/issues/654">#654</a> partially solves the lock wait problem identified in <a href="https://github.com/fluo-io/fluo/issues/650">#650</a>.</p>
+
+<h4 id="improved-accumulo-scanning">Improved Accumulo scanning</h4>
+
+<p>Fluo utilizes server side Accumulo iterators.  For this release these iterators were modified to
+leverage seeking on the sever side.  Before these changes the iterators used to sequentially scan
+data.  For popular cells that had a lot versions, this could be slow.  These changes were made in
+<a href="https://github.com/fluo-io/fluo/issues/623">#623</a>.</p>
+
+<h2 id="other-changes-of-interest">Other changes of interest</h2>
+
+<ul>
+  <li><a href="https://github.com/fluo-io/fluo/issues/668">#668</a> - Added method to append byte to BytesBuilder</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/648">#648</a> - Added documentation to help users if YARN is killing containers</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/619">#619</a> <a href="https://github.com/fluo-io/fluo/issues/621">#621</a> - Created Fluo logo</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+
+<p>A two day run of Webindex was started on September 7th using the latest snapshot version of Fluo.
+This test used 11 EC2 m3.xlarge nodes.  The test ran without problem.   A good bit before that a <a href="/blog/2016/05/17/webindex-long-run-2/">3
+day run</a> of Webindex was conducted.</p>
 
 
 </div>
