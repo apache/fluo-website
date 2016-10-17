@@ -16,5 +16,5 @@ redirect_from:
 
 #### Fluo Recipes API documentation (before Apache)
 
-* **1.0.0-beta-2**: <a href="{{ site.old_api_base }}/fluo-recipes-core/1.0.0-beta-2/" target="_blank">core</a>, <a href="{{ site.old_api_base }}/fluo-recipes-accumulo/1.0.0-beta-2/" target="_blank">accumulo</a>, <a href="{{ site.old_api_base }}/fluo-recipes-kryo/1.0.0-beta-2/" target="_blank">kryo</a>, <a href="{{ site.old_api_base }}/fluo-recipes-spark/1.0.0-beta-2/" target="_blank">spark</a>, <a href="{{ site.old_api_base }}/fluo-recipes-test/1.0.0-beta-2/" target="_blank">test</a> - March 19, 2016
-* **1.0.0-beta-1**: <a href="{{ site.old_api_base }}/fluo-recipes-core/1.0.0-beta-1/" target="_blank">core</a>, <a href="{{ site.old_api_base }}/fluo-recipes-accumulo/1.0.0-beta-1/" target="_blank">accumulo</a> - January 13, 2016
+* 1.0.0-beta-2: <a href="{{ site.old_api_base }}/fluo-recipes-core/1.0.0-beta-2/" target="_blank">core</a>, <a href="{{ site.old_api_base }}/fluo-recipes-accumulo/1.0.0-beta-2/" target="_blank">accumulo</a>, <a href="{{ site.old_api_base }}/fluo-recipes-kryo/1.0.0-beta-2/" target="_blank">kryo</a>, <a href="{{ site.old_api_base }}/fluo-recipes-spark/1.0.0-beta-2/" target="_blank">spark</a>, <a href="{{ site.old_api_base }}/fluo-recipes-test/1.0.0-beta-2/" target="_blank">test</a> - March 19, 2016
+* 1.0.0-beta-1: <a href="{{ site.old_api_base }}/fluo-recipes-core/1.0.0-beta-1/" target="_blank">core</a>, <a href="{{ site.old_api_base }}/fluo-recipes-accumulo/1.0.0-beta-1/" target="_blank">accumulo</a> - January 13, 2016
