@@ -1,8 +1,0 @@
-io.fluo.api.client
-io.fluo.api.config
-io.fluo.api.data
-io.fluo.api.exceptions
-io.fluo.api.iterator
-io.fluo.api.mini
-io.fluo.api.observer
-io.fluo.api.types

@@ -1,9 +1,0 @@
-io.fluo.recipes.accumulo.cmds
-io.fluo.recipes.accumulo.export
-io.fluo.recipes.accumulo.ops
-io.fluo.recipes.common
-io.fluo.recipes.export
-io.fluo.recipes.impl
-io.fluo.recipes.map
-io.fluo.recipes.serialization
-io.fluo.recipes.transaction

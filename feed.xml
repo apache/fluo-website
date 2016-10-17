@@ -5,8 +5,8 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 14 Oct 2016 19:05:35 +0000</pubDate>
-    <lastBuildDate>Fri, 14 Oct 2016 19:05:35 +0000</lastBuildDate>
+    <pubDate>Mon, 17 Oct 2016 19:39:09 +0000</pubDate>
+    <lastBuildDate>Mon, 17 Oct 2016 19:39:09 +0000</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -470,13 +470,12 @@ root@instance16&amp;gt; du webindex_search
         <title>Fluo Recipes 1.0.0-beta-2 released</title>
         <description>&lt;p&gt;This is the second release of Fluo Recipes which provides common code for Fluo developers.&lt;/p&gt;
 
-&lt;p&gt;The jars for this release of Fluo Recipes are available in &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;.&lt;/p&gt;
-
 &lt;p&gt;Below are resources for this release:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;/docs/fluo-recipes/1.0.0-beta-2&quot;&gt;Documentation&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/apidocs/fluo-recipes/1.0.0-beta-2&quot;&gt;Javadocs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo-recipes/1.0.0-beta-2&quot;&gt;documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Read the javadocs: &lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-recipes-core/1.0.0-beta-2/&quot; target=&quot;_blank&quot;&gt;core&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-recipes-accumulo/1.0.0-beta-2/&quot; target=&quot;_blank&quot;&gt;accumulo&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-recipes-kryo/1.0.0-beta-2/&quot; target=&quot;_blank&quot;&gt;kryo&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-recipes-spark/1.0.0-beta-2/&quot; target=&quot;_blank&quot;&gt;spark&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-recipes-test/1.0.0-beta-2/&quot; target=&quot;_blank&quot;&gt;test&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Jars are available in &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
 </description>
@@ -493,13 +492,12 @@ root@instance16&amp;gt; du webindex_search
         <title>Fluo Recipes 1.0.0-beta-1 released</title>
         <description>&lt;p&gt;This is the first release of Fluo Recipes which provides common code for Fluo developers.&lt;/p&gt;
 
-&lt;p&gt;The jars for this release of Fluo Recipes are available in &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;.&lt;/p&gt;
-
 &lt;p&gt;Below are resources for this release:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;/docs/fluo-recipes/1.0.0-beta-1&quot;&gt;Documentation&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/apidocs/fluo-recipes/1.0.0-beta-1&quot;&gt;Javadocs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo-recipes/1.0.0-beta-1&quot;&gt;documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Read the javadocs:  &lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-recipes-core/1.0.0-beta-1/&quot; target=&quot;_blank&quot;&gt;core&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-recipes-accumulo/1.0.0-beta-1/&quot; target=&quot;_blank&quot;&gt;accumulo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Jars are available in &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
 </description>
@@ -523,7 +521,7 @@ Fluo is now at a point where its two cluster test suites, &lt;a href=&quot;https
 &lt;ul&gt;
   &lt;li&gt;Download the &lt;a href=&quot;https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-2&quot;&gt;Fluo binary tarball&lt;/a&gt; for 1.0.0-beta-2 from GitHub.&lt;/li&gt;
   &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.0.0-beta-2/&quot;&gt;documentation&lt;/a&gt; for help getting started with Fluo.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/apidocs/fluo/1.0.0-beta-2/&quot;&gt;Javadocs&lt;/a&gt; are available for this release.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-api/1.0.0-beta-2/&quot;&gt;Javadocs&lt;/a&gt; are available for this release.&lt;/li&gt;
   &lt;li&gt;A &lt;a href=&quot;https://github.com/fluo-io/fluo/tree/1.0.0-beta-2&quot;&gt;tag&lt;/a&gt; of Fluo codebase for 1.0.0-beta-2 is available.&lt;/li&gt;
   &lt;li&gt;The &lt;a href=&quot;https://github.com/fluo-io/fluo-quickstart&quot;&gt;Quickstart&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/phrasecount&quot;&gt;Phrasecount&lt;/a&gt; applications were updated to work with this release.&lt;/li&gt;
 &lt;/ul&gt;
@@ -942,7 +940,7 @@ processing of data using distributed transactions and notifications. It runs on 
 &lt;ul&gt;
   &lt;li&gt;Download the &lt;a href=&quot;https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-1&quot;&gt;Fluo binary tarball&lt;/a&gt; for 1.0.0-beta-1 from GitHub.&lt;/li&gt;
   &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.0.0-beta-1/&quot;&gt;documentation&lt;/a&gt; for help getting started with Fluo.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/apidocs/fluo/1.0.0-beta-1/&quot;&gt;Javadocs&lt;/a&gt; are available for this release.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-api/1.0.0-beta-1/&quot;&gt;Javadocs&lt;/a&gt; are available for this release.&lt;/li&gt;
   &lt;li&gt;A &lt;a href=&quot;https://github.com/fluo-io/fluo/tree/1.0.0-beta-1&quot;&gt;tag&lt;/a&gt; of Fluo codebase for 1.0.0-beta-1 is available.&lt;/li&gt;
   &lt;li&gt;Fluo &lt;a href=&quot;http://search.maven.org/#search%7Cga%7C1%7Cfluo&quot;&gt;jars&lt;/a&gt; have been deployed to Maven Central.&lt;/li&gt;
   &lt;li&gt;The &lt;a href=&quot;https://github.com/fluo-io/fluo-quickstart&quot;&gt;Quickstart&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/phrasecount&quot;&gt;Phrasecount&lt;/a&gt; applications were updated to work with this release.&lt;/li&gt;
