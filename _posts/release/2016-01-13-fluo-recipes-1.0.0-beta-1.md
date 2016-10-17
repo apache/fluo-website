@@ -7,13 +7,11 @@ historical: true
 
 This is the first release of Fluo Recipes which provides common code for Fluo developers.
 
-The jars for this release of Fluo Recipes are available in [Maven Central][central].
-
 Below are resources for this release:
 
-* [Documentation][docs]
-* [Javadocs][api]
+* View the [documentation][docs]
+* Read the javadocs:  <a href="{{ site.old_api_base }}/fluo-recipes-core/1.0.0-beta-1/" target="_blank">core</a>, <a href="{{ site.old_api_base }}/fluo-recipes-accumulo/1.0.0-beta-1/" target="_blank">accumulo</a>
+* Jars are available in [Maven Central][central].
 
-[central]: http://search.maven.org/#search|ga|1|fluo-recipes
 [docs]: /docs/fluo-recipes/1.0.0-beta-1
-[api]: /apidocs/fluo-recipes/1.0.0-beta-1
+[central]: http://search.maven.org/#search|ga|1|fluo-recipes

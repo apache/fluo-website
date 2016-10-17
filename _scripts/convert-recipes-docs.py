@@ -16,7 +16,7 @@ args = output_dir.rpartition("/docs")
 url_prefix = args[1] + args[2]
 release_ver = url_prefix.split("/")[3]
 github_prefix = "https://github.com/apache/fluo-recipes/blob/{0}/modules/".format(release_ver)
-apidocs_prefix = "/apidocs/fluo-recipes/{0}/".format(release_ver)
+javadocs_prefix = "{{ site.api_static }}/fluo-recipes-FIXME/" + release_ver + "/"
 
 def path_to_url(path):
   if path.find("#") != -1:
@@ -60,7 +60,7 @@ def convert_file(inPath, outPath):
             if line.strip().endswith(".java"):
               start = line.find("../modules/")
               end = line.find("io/fluo")
-              fout.write(line.replace(line[start:end], apidocs_prefix).replace(".java", ".html"))
+              fout.write(line.replace(line[start:end], javadocs_prefix).replace(".java", ".html"))
             else:
               fout.write(line.replace("../modules/", github_prefix))
           else:

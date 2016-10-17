@@ -18,7 +18,7 @@ print url_prefix
 print args
 release_ver = url_prefix.split("/")[3]
 github_prefix = "https://github.com/apache/fluo/blob/{0}/modules/".format(release_ver)
-apidocs_prefix = "/apidocs/fluo/{0}/".format(release_ver)
+javadocs_prefix = "{{ site.fluo_api_static }}/" + release_ver + "/"
 resources_prefix = "/docs/fluo/{0}/resources/".format(release_ver)
 
 def path_to_url(path):
@@ -67,7 +67,7 @@ def convert_file(inPath, outPath):
             if line.strip().endswith(".java"):
               start = line.find("../modules/")
               end = line.find("io/fluo")
-              fout.write(line.replace(line[start:end], apidocs_prefix).replace(".java", ".html"))
+              fout.write(line.replace(line[start:end], javadocs_prefix).replace(".java", ".html"))
             else:
               fout.write(line.replace("../modules/", github_prefix))
           elif line.find("resources/") and any(x in line for x in ('.png','.jpg','.pdf')):

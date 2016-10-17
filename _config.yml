@@ -47,8 +47,14 @@ latest_fluo_release: "1.0.0-incubating"
 latest_fluo_release_date: "October 4, 2016"
 latest_recipes_release: "1.0.0-beta-2"
 latest_recipes_release_date: "March 29, 2016"
+
+# Sets links to external API
+api_base: "https://javadoc.io/doc/org.apache.fluo"
+api_static: "https://static.javadoc.io/org.apache.fluo"
 fluo_api_base: "https://javadoc.io/doc/org.apache.fluo/fluo-api"
 fluo_api_static: "https://static.javadoc.io/org.apache.fluo/fluo-api"
+old_api_base: "https://javadoc.io/doc/io.fluo"
+old_api_static: "https://static.javadoc.io/io.fluo"
 
 whitelist: [jekyll-redirect-from]
 gems: [jekyll-redirect-from]

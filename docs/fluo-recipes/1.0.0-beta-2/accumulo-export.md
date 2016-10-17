@@ -55,6 +55,6 @@ pattern of deleting old data and inserting new data, consider extending
 [DifferenceExport][3].
 
 [1]: /docs/fluo-recipes/1.0.0-beta-2/export-queue/
-[2]: /apidocs/fluo-recipes/1.0.0-beta-2/io/fluo/recipes/accumulo/export/AccumuloExport.html
-[3]: /apidocs/fluo-recipes/1.0.0-beta-2/io/fluo/recipes/accumulo/export/DifferenceExport.html
+[2]: {{ site.old_api_static }}/fluo-recipes-accumulo/1.0.0-beta-2/io/fluo/recipes/accumulo/export/AccumuloExport.html
+[3]: {{ site.old_api_static }}/fluo-recipes-accumulo/1.0.0-beta-2/io/fluo/recipes/accumulo/export/DifferenceExport.html
 

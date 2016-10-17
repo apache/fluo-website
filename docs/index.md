@@ -12,13 +12,13 @@ For a general overview of Fluo, take the [Fluo tour](/tour/).
 
 ### Apache Fluo documentation
 
-* [1.0.0-incubating][fluo-1.0] - September 27, 2016
+* [1.0.0-incubating][fluo-1.0] - October 14, 2016
 
 ### Apache Fluo Recipes documentation
 
 * The first release of Apache Fluo Recipes has not been made yet.
 
-Documentation for releases before joining Apache are available in the [Pre-ASF archive](archive).
+Documentation for releases before joining Apache have been [archived](archive).
 
 [Apache Fluo]: https://github.com/apache/fluo
 [Apache Fluo Recipes]: https://github.com/apache/fluo-recipes

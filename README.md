@@ -36,13 +36,13 @@ Below are the steps required to update the Fluo project website for a new releas
     ```bash
     cd fluo-website/
     mkdir -p docs/fluo/1.0.0-beta-1
-    ./_scripts/convert-docs.py /path/to/fluo/docs/ /path/to/fluo-website/docs/fluo/1.0.0-beta-1/
+    ./_scripts/convert-fluo-docs.py /path/to/fluo/docs/ /path/to/fluo-website/docs/fluo/1.0.0-beta-1/
     ```
 
 2. Modify `docs/index.md` to point to new release and update the `latest_fluo_release` 
    variable in `_config.yml`.
 
-3. Confirm that javadocs are hosted externally and modify `apidocs/index.md` to point to link to them.
+3. Confirm that javadocs are hosted externally and modify `pages/api.md` to point to link to them.
 
 4. Create a post in `_posts/release` with release notes and resources to announce release.
 
@@ -55,12 +55,12 @@ Steps to update website for new Fluo Recipes release:
     ```bash
     cd fluo-website
     mkdir -p docs/1.0.0-beta-1
-    ./_scripts/convert-recipes.py /path/to/fluo-recipes/docs/ /path/to/fluo-website/docs/fluo-recipes/1.0.0-beta-1/
+    ./_scripts/convert-recipes-docs.py /path/to/fluo-recipes/docs/ /path/to/fluo-website/docs/fluo-recipes/1.0.0-beta-1/
     ```
 
 2. Modify `docs/index.md` to point to new release and update the `latest_recipes_release` variable in `_config.yml`.
 
-3. Confirm that javadocs are hosted externally and modify `apidocs/index.md` to point to link to them.
+3. Confirm that javadocs are hosted externally and modify `pages/api.md` to point to link to them.
 
 4. Create a post in `_posts/release` with release notes and resources to announce release.
 
