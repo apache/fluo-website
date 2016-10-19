@@ -5,9 +5,13 @@ permalink: /related-projects/
 ---
 
 This page list external projects that build on Apache Fluo and may be useful.
-These projects are not affiliated with or endorsed by the 
+These projects are not necessarily affiliated with or endorsed by the 
 [Apache Software Foundation][asf]. If you would like to add a project to this 
 list, please open an issue or submit a pull request [on Github][web-ghr].
+
+### Projects Using Fluo
+
+* [Apache Rya][Rya] - Uses Fluo to keep precomputed joins update to date as new data arrives.
 
 ### Tools for running Apache Fluo
 
@@ -33,3 +37,4 @@ list, please open an issue or submit a pull request [on Github][web-ghr].
 [Phrasecount]: https://github.com/astralway/phrasecount
 [Jaccard]: https://github.com/keith-turner/jaccard
 [web-ghr]: https://github.com/apache/incubator-fluo-website
+[Rya]: https://rya.apache.org

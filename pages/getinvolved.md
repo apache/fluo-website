@@ -6,9 +6,16 @@ permalink: /getinvolved/
 
 Below are some ways that you can get involved with Apache Fluo:
 
-### Mailing list
+### Mailing lists
 
-Join our public mailing list by sending an email to ```dev-subscribe@fluo.incubator.apache.org```. Discussions regarding issues and pull requests should remain on our GitHub pages ([Fluo][f], [Fluo Recipes][r], [Fluo website][w]). Our email list is for announcing releases, organizing meet ups, or any discussion that does not make sense for GitHub. 
+The `dev` mailing list is for general disscussion, announcing releases, organizing meet ups, etc.  For
+discussion regarding specific issues or pull request consider using Github ([Fluo][f], [Fluo
+Recipes][r], [Fluo website][w]).  The `notifications` and `commits` mailing lists receive email from automated
+services and can be used to observe project activity.
+
+dev@fluo.apache.org           | [Subscribe][dev-sub]     | [Unsubscribe][dev-unsub]    | [Archive][dev-arch]
+notifications@fluo.apache.org | [Subscribe][ntfy-sub]    | [Unsubscribe][ntfy-unsub]   | [Archive][ntfy-arch]
+commits@fluo.apache.org       | [Subscribe][commits-sub] | [Unsubscribe][commits-unsub]| [Archive][commits-arch]
 
 ### IRC
 
@@ -19,7 +26,7 @@ Drop by and chat about Apache Fluo at [#fluo][fnf] on [freenode][fn].
 Users can provide feedback by:
 
 * Creating an issue on our GitHub pages: [Fluo][fi], [Fluo Recipes][ri], [Fluo website][wi] 
-* Sending an email to our mailing list at ```dev@fluo.incubator.apache.org```
+* Sending an email to our mailing list at ```dev@fluo.apache.org```
 
 ### Contributions 
 
@@ -35,3 +42,12 @@ Contributions are welcome to all Apache Fluo projects! All projects follow a [re
 [fn]: https://freenode.net/
 [htc]: /how-to-contribute/
 [rtc]: http://www.apache.org/foundation/glossary.html#ReviewThenCommit
+[dev-arch]: https://lists.apache.org/list.html?dev@fluo.apache.org
+[ntfy-arch]: https://lists.apache.org/list.html?notifications@fluo.apache.org
+[commits-arch]: https://lists.apache.org/list.html?commits@fluo.apache.org
+[dev-sub]: mailto:dev-subscribe@fluo.apache.org
+[dev-unsub]: mailto:dev-unsubscribe@fluo.apache.org
+[ntfy-sub]: mailto:notifications-subscribe@fluo.apache.org
+[ntfy-unsub]: mailto:notifications-unsubscribe@fluo.apache.org
+[commits-sub]: mailto:commits-subscribe@fluo.apache.org
+[commits-unsub]: mailto:commits-unsubscribe@fluo.apache.org
