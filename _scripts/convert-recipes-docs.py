@@ -31,7 +31,18 @@ def convert_file(inPath, outPath):
   print "Creating ", outPath
 
   with open(inPath) as fin:
-    title = fin.readline().lstrip(' #').strip()
+
+    # skip license
+    line = ''
+    while not line.startswith('-->'):
+      line = fin.readline().strip()
+
+    # read title
+    title = ''
+    while len(title) == 0:
+      title = fin.readline().strip()
+    title = title.lstrip(' #').strip()
+
     fin.readline()
 
     if inPath.endswith("README.md"):
@@ -59,7 +70,7 @@ def convert_file(inPath, outPath):
           elif line.find("../modules") != -1:
             if line.strip().endswith(".java"):
               start = line.find("../modules/")
-              end = line.find("io/fluo")
+              end = line.find("apache/fluo")
               fout.write(line.replace(line[start:end], javadocs_prefix).replace(".java", ".html"))
             else:
               fout.write(line.replace("../modules/", github_prefix))

@@ -44,9 +44,7 @@ color: default
 
 # Fluo specific settings
 latest_fluo_release: "1.0.0-incubating"
-latest_fluo_release_date: "October 4, 2016"
-latest_recipes_release: "1.0.0-beta-2"
-latest_recipes_release_date: "March 29, 2016"
+latest_recipes_release: "1.0.0-incubating"
 
 # Sets links to external API
 api_base: "https://javadoc.io/doc/org.apache.fluo"
