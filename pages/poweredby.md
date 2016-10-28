@@ -26,7 +26,7 @@ This website was made using:
 * [Font Awesome][fontawesome]
 * [Jekyll][jekyll]
 * [JQuery][jquery]
-* [Shiori][shiori]
+* [Bootswatch][bootswatch]
 
 [accumulo]: https://accumulo.apache.org/
 [commons]: http://commons.apache.org/
@@ -44,5 +44,5 @@ This website was made using:
 [fontawesome]: http://fontawesome.io/
 [jekyll]: http://jekyllrb.com/
 [jquery]: http://jquery.com/
-[shiori]: http://ellekasai.github.io/shiori/
 [kryo]: https://github.com/EsotericSoftware/kryo
+[bootswatch]: https://bootswatch.com/
