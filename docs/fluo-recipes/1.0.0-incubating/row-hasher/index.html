@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-beta-2/row-hasher/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/row-hasher/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     <title>Row hash prefix recipe | Apache Fluo</title>
     <!--[if lt IE 9]>
@@ -75,11 +75,7 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-2 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-incubating">latest docs</a>!</div>
-  
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
   
 
   <header class="post-header">
@@ -116,16 +112,17 @@ balancing of the prefix.</p>
 
 <h2 id="example-use">Example Use</h2>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.fluo.api.data.Bytes</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.fluo.recipes.common.Pirtos</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.fluo.recipes.data.RowHasher</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.FluoConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.Bytes</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.data.RowHasher</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">RowHasherExample</span> <span class="o">{</span>
 
+
   <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">RowHasher</span> <span class="n">PAGE_ROW_HASHER</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RowHasher</span><span class="o">(</span><span class="s">"p"</span><span class="o">);</span>
 
-  <span class="c1">//Provide one place to obtain row hasher.  </span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="n">RowHasher</span> <span class="nf">getPageRowHasher</span><span class="o">(){</span>
+  <span class="c1">// Provide one place to obtain row hasher.</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">RowHasher</span> <span class="nf">getPageRowHasher</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">PAGE_ROW_HASHER</span><span class="o">;</span>
   <span class="o">}</span>
 
@@ -146,14 +143,23 @@ balancing of the prefix.</p>
     <span class="c1">// Generate table optimizations for the recipe. This can be called when setting up an</span>
     <span class="c1">// application that uses a hashed row.</span>
     <span class="kt">int</span> <span class="n">numTablets</span> <span class="o">=</span> <span class="mi">20</span><span class="o">;</span>
-    <span class="n">Pirtos</span> <span class="n">tableOptimizations</span> <span class="o">=</span> <span class="n">pageRowHasher</span><span class="o">.</span><span class="na">getTableOptimizations</span><span class="o">(</span><span class="n">numTablets</span><span class="o">);</span>
+
+    <span class="c1">// The following code would normally be called before initializing Fluo. This code</span>
+    <span class="c1">// registers table optimizations for your prefix+hash.</span>
+    <span class="n">FluoConfiguration</span> <span class="n">conf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">();</span>
+    <span class="n">RowHasher</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">conf</span><span class="o">,</span> <span class="n">PAGE_ROW_HASHER</span><span class="o">.</span><span class="na">getPrefix</span><span class="o">(),</span> <span class="n">numTablets</span><span class="o">);</span>
+
+    <span class="c1">// Normally you would not call the following code, it would be called automatically for you by</span>
+    <span class="c1">// TableOperations.optimizeTable(). Calling this code here to show what table optimization will</span>
+    <span class="c1">// be generated.</span>
+    <span class="n">TableOptimizations</span> <span class="n">tableOptimizations</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RowHasher</span><span class="o">.</span><span class="na">Optimizer</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">getTableOptimizations</span><span class="o">(</span><span class="n">PAGE_ROW_HASHER</span><span class="o">.</span><span class="na">getPrefix</span><span class="o">(),</span> <span class="n">conf</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
     <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Balance config : "</span> <span class="o">+</span> <span class="n">tableOptimizations</span><span class="o">.</span><span class="na">getTabletGroupingRegex</span><span class="o">());</span>
     <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Splits         : "</span><span class="o">);</span>
     <span class="n">tableOptimizations</span><span class="o">.</span><span class="na">getSplits</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
     <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
   <span class="o">}</span>
 <span class="o">}</span>
-
 </code></pre>
 </div>
 
@@ -189,7 +195,7 @@ p:~
 <p>The split points are used to create tablets in the Accumulo table used by Fluo.
 Data and computation will spread very evenly across these tablets.  The
 Balancing config will spread the tablets evenly across the tablet servers,
-which will spread the computation evenly. See the <a href="/docs/fluo-recipes/1.0.0-beta-2/table-optimization/">table optimizations</a>
+which will spread the computation evenly. See the <a href="/docs/fluo-recipes/1.0.0-incubating/table-optimization/">table optimizations</a>
 documentation for information on how to apply the optimizations.</p>
 
 

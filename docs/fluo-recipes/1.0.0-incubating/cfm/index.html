@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-beta-1/cfm/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/cfm/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     <title>Collision Free Map Recipe | Apache Fluo</title>
     <!--[if lt IE 9]>
@@ -75,11 +75,7 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-incubating">latest docs</a>!</div>
-  
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
   
 
   <header class="post-header">
@@ -141,6 +137,11 @@ updates for the following reasons :</p>
 
 <p>Which bucket a key goes to is decided using hash and modulus so that multiple
 updates for the same key always go to the same bucket.</p>
+
+<p>The initial number of tablets to create when applying table optimizations can be
+controlled by setting the buckets per tablet option when configuring a Collision
+Free Map.  For example if you have 20 tablet servers and 1000 buckets and want
+2 tablets per tserver initially then set buckets per tablet to 1000/(2*20)=25.</p>
 
 <h2 id="example-use">Example Use</h2>
 
@@ -254,10 +255,14 @@ old value if needed.</p>
 
   <span class="cm">/**
    * A helper method for configuring the word count map.
+   *
+   * @param numTablets the desired number of tablets to create when applying table optimizations
    */</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">,</span> <span class="kt">int</span> <span class="n">numBuckets</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="k">new</span> <span class="n">Options</span><span class="o">(</span><span class="n">ID</span><span class="o">,</span> <span class="n">WordCountCombiner</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> 
-        <span class="n">WordCountObserver</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">numBuckets</span><span class="o">));</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">,</span> <span class="kt">int</span> <span class="n">numBuckets</span><span class="o">,</span> <span class="kt">int</span> <span class="n">numTablets</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Options</span> <span class="n">cfmOpts</span> <span class="o">=</span>
+      <span class="k">new</span> <span class="nf">Options</span><span class="o">(</span><span class="n">ID</span><span class="o">,</span> <span class="n">WordCountCombiner</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>  <span class="n">WordCountObserver</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">numBuckets</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">setBucketsPerTablet</span><span class="o">(</span><span class="n">numBuckets</span><span class="o">/</span><span class="n">numTablets</span><span class="o">);</span>
+    <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="n">cfmOpts</span><span class="o">);</span>
   <span class="o">}</span>
 
   <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">WordCountCombiner</span> <span class="kd">implements</span> <span class="n">Combiner</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="o">{</span>

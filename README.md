@@ -54,7 +54,7 @@ Steps to update website for new Fluo Recipes release:
 
     ```bash
     cd fluo-website
-    mkdir -p docs/1.0.0-beta-1
+    mkdir -p docs/fluo-recipes/1.0.0-beta-1
     ./_scripts/convert-recipes-docs.py /path/to/fluo-recipes/docs/ /path/to/fluo-website/docs/fluo-recipes/1.0.0-beta-1/
     ```
 

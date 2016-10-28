@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-beta-2/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>Fluo Recipes 1.0.0-beta-2 Documentation | Apache Fluo</title>
+    <title>Fluo Recipes 1.0.0-incubating Documentation | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -75,84 +75,88 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-2 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-incubating">latest docs</a>!</div>
-  
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
   
 
   <header class="post-header">
-    <h2 class="post-title">Fluo Recipes 1.0.0-beta-2 Documentation</h2>
+    <h2 class="post-title">Fluo Recipes 1.0.0-incubating Documentation</h2>
   </header>
 
   <article id="page-content">
-    <p>Common code for Fluo application developers.</p>
+    <p><strong>Fluo Recipes are common code for <a href="https://fluo.apache.org/">Apache Fluo</a> application developers.</strong></p>
 
-<h3 id="available-recipes">Available Recipes</h3>
+<p>Fluo Recipes build on the <a href="/api/">Fluo API</a> to offer additinal functionality to
+developers. They are published seperately from Fluo on their own release schedule.
+This allows Fluo Recipes to iterate and innovate faster than Fluo (which will maintain
+a more minimal API on a slower release cycle).</p>
+
+<h3 id="documentation">Documentation</h3>
+
+<p>Recipes are documented below and in the <a href="/api/">Recipes API docs</a>.</p>
 
 <ul>
-  <li><a href="/docs/fluo-recipes/1.0.0-beta-2/cfm/">Collision Free Map</a> - A recipe for making many to many updates.</li>
-  <li><a href="/docs/fluo-recipes/1.0.0-beta-2/export-queue/">Export Queue</a> - A recipe for exporting data from Fluo to external systems.</li>
-  <li><a href="/docs/fluo-recipes/1.0.0-beta-2/row-hasher/">Row Hash Prefix</a> - A recipe for spreading data evenly in a row prefix.</li>
-  <li><a href="/docs/fluo-recipes/1.0.0-beta-2/recording-tx/">RecordingTransaction</a> - A wrapper for a Fluo transaction that records all transaction
+  <li><a href="/docs/fluo-recipes/1.0.0-incubating/cfm/">Collision Free Map</a> - A recipe for making many to many updates.</li>
+  <li><a href="/docs/fluo-recipes/1.0.0-incubating/export-queue/">Export Queue</a> - A recipe for exporting data from Fluo to external systems.</li>
+  <li><a href="/docs/fluo-recipes/1.0.0-incubating/row-hasher/">Row Hash Prefix</a> - A recipe for spreading data evenly in a row prefix.</li>
+  <li><a href="/docs/fluo-recipes/1.0.0-incubating/recording-tx/">RecordingTransaction</a> - A wrapper for a Fluo transaction that records all transaction
 operations to a log which can be used to export data from Fluo.</li>
-  <li><a href="/docs/fluo-recipes/1.0.0-beta-2/testing/">Testing</a> Some code to help write Fluo Integration test.</li>
+  <li><a href="/docs/fluo-recipes/1.0.0-incubating/testing/">Testing</a> Some code to help write Fluo Integration test.</li>
 </ul>
-
-<h3 id="common-functionality">Common Functionality</h3>
 
 <p>Recipes have common needs that are broken down into the following reusable components.</p>
 
 <ul>
-  <li><a href="/docs/fluo-recipes/1.0.0-beta-2/serialization/">Serialization</a> - Common code for serializing POJOs.</li>
-  <li><a href="/docs/fluo-recipes/1.0.0-beta-2/transient/">Transient Ranges</a> - Standardized process for dealing with transient data.</li>
-  <li><a href="/docs/fluo-recipes/1.0.0-beta-2/table-optimization/">Table optimization</a> - Standardized process for optimizing the Fluo table.</li>
+  <li><a href="/docs/fluo-recipes/1.0.0-incubating/serialization/">Serialization</a> - Common code for serializing POJOs.</li>
+  <li><a href="/docs/fluo-recipes/1.0.0-incubating/transient/">Transient Ranges</a> - Standardized process for dealing with transient data.</li>
+  <li><a href="/docs/fluo-recipes/1.0.0-incubating/table-optimization/">Table optimization</a> - Standardized process for optimizing the Fluo table.</li>
 </ul>
 
-<h3 id="modules-and-maven-imports">Modules and Maven Imports</h3>
+<h3 id="usage">Usage</h3>
 
-<p>Fluo Recipes provides multiple jars.  The primary reason its separated
-into multiple jars is to avoid pushing unneeded dependencies on users.   For
-example there is a Fluo Recipes spark module that depends on Spark.  If an
-application does not need to use Spark, then it can easily avoid a transitive
-dependency on Spark.</p>
+<p>The Fluo Recipes project publishes multiple jars to Maven Central for each release.
+The <code class="highlighter-rouge">fluo-recipes-core</code> jar is the primary jar. It is where most recipes live and where
+they are placed by default if they have minimal dependencies beyond the Fluo API.</p>
 
-<p>Below are Maven dependencies for Fluo Recipes.</p>
+<p>Fluo Recipes with dependencies that bring in many transitive dependencies publish
+their own jar. For example, recipes that depend on Apache Spark are published in the
+<code class="highlighter-rouge">fluo-recipes-spark</code> jar.  If you don’t plan on using code in the <code class="highlighter-rouge">fluo-recipes-spark</code>
+jar, you should avoid including it in your pom.xml to avoid a transitive dependency on
+Spark.</p>
+
+<p>Below is a sample Maven POM containing all possible Fluo Recipes dependencies:</p>
 
 <div class="language-xml highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;properties&gt;</span>
-    <span class="nt">&lt;fluo-recipes.version&gt;</span>1.0.0-beta-2<span class="nt">&lt;/fluo-recipes.version&gt;</span>
+    <span class="nt">&lt;fluo-recipes.version&gt;</span>1.0.0-incubating<span class="nt">&lt;/fluo-recipes.version&gt;</span>
   <span class="nt">&lt;/properties&gt;</span>
 
   <span class="nt">&lt;dependencies&gt;</span>
-    <span class="c">&lt;!-- Recipes core only has a transitive dependency on the Fluo API --&gt;</span>
+    <span class="c">&lt;!-- Required. Contains recipes that are only depend on the Fluo API --&gt;</span>
     <span class="nt">&lt;dependency&gt;</span>
-      <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.apache.fluo<span class="nt">&lt;/groupId&gt;</span>
       <span class="nt">&lt;artifactId&gt;</span>fluo-recipes-core<span class="nt">&lt;/artifactId&gt;</span>
       <span class="nt">&lt;version&gt;</span>${fluo-recipes.version}<span class="nt">&lt;/version&gt;</span>
     <span class="nt">&lt;/dependency&gt;</span>
-    <span class="c">&lt;!--optional dependency provides the default Fluo Recipes serialization
-        mechanism, which is based on Kryo  --&gt;</span>
+    <span class="c">&lt;!-- Optional. Serialization code that depends on Kryo --&gt;</span>
     <span class="nt">&lt;dependency&gt;</span>
-      <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.apache.fluo<span class="nt">&lt;/groupId&gt;</span>
       <span class="nt">&lt;artifactId&gt;</span>fluo-recipes-kryo<span class="nt">&lt;/artifactId&gt;</span>
       <span class="nt">&lt;version&gt;</span>${fluo-recipes.version}<span class="nt">&lt;/version&gt;</span>
     <span class="nt">&lt;/dependency&gt;</span>
-    <span class="c">&lt;!--optional dependency assist w/ intergrating Accumulo and Fluo  --&gt;</span>
+    <span class="c">&lt;!-- Optional. Common code for using Fluo with Accumulo --&gt;</span>
     <span class="nt">&lt;dependency&gt;</span>
-      <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.apache.fluo<span class="nt">&lt;/groupId&gt;</span>
       <span class="nt">&lt;artifactId&gt;</span>fluo-recipes-accumulo<span class="nt">&lt;/artifactId&gt;</span>
       <span class="nt">&lt;version&gt;</span>${fluo-recipes.version}<span class="nt">&lt;/version&gt;</span>
     <span class="nt">&lt;/dependency&gt;</span>
-    <span class="c">&lt;!--optional dependency assist w/ intergrating Spark and Fluo --&gt;</span>
+    <span class="c">&lt;!-- Optional. Common code for using Fluo with Spark --&gt;</span>
     <span class="nt">&lt;dependency&gt;</span>
-      <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.apache.fluo<span class="nt">&lt;/groupId&gt;</span>
       <span class="nt">&lt;artifactId&gt;</span>fluo-recipes-spark<span class="nt">&lt;/artifactId&gt;</span>
       <span class="nt">&lt;version&gt;</span>${fluo-recipes.version}<span class="nt">&lt;/version&gt;</span>
     <span class="nt">&lt;/dependency&gt;</span>
-    <span class="c">&lt;!--optional dependency helps when write Fluo intergeration test. --&gt;</span>
+    <span class="c">&lt;!-- Optional. Common code for writing Fluo integration tests --&gt;</span>
     <span class="nt">&lt;dependency&gt;</span>
-      <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.apache.fluo<span class="nt">&lt;/groupId&gt;</span>
       <span class="nt">&lt;artifactId&gt;</span>fluo-recipes-test<span class="nt">&lt;/artifactId&gt;</span>
       <span class="nt">&lt;version&gt;</span>${fluo-recipes.version}<span class="nt">&lt;/version&gt;</span>
       <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>

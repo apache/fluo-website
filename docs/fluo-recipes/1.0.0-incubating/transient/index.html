@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-beta-1/transient/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/transient/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     <title>Transient data | Apache Fluo</title>
     <!--[if lt IE 9]>
@@ -75,11 +75,7 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-incubating">latest docs</a>!</div>
-  
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
   
 
   <header class="post-header">
@@ -109,9 +105,9 @@ standard way.</p>
 
 <h2 id="registering-transient-ranges">Registering Transient Ranges</h2>
 
-<p>Recipes like <a href="../export-queue/">Export Queue</a> will automatically register
+<p>Recipes like <a href="export-queue.md">Export Queue</a> will automatically register
 transient ranges when configured.  If you would like to register your own
-transient ranges, use <a href="https://static.javadoc.io/io.fluo/fluo-recipes-core/1.0.0-beta-1/io/fluo/recipes/common/TransientRegistry.html">TransientRegistry</a>.  Below is a simple example of
+transient ranges, use <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html">TransientRegistry</a>.  Below is a simple example of
 using this.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
@@ -127,7 +123,7 @@ using this.</p>
 
 <p>Although you may never need to register transient ranges directly, you will
 need to periodically compact transient ranges if using a recipe that registers
-them.  Using <a href="https://static.javadoc.io/io.fluo/fluo-recipes-accumulo/1.0.0-beta-1/io/fluo/recipes/accumulo/ops/TableOperations.html">TableOperations</a> this can be done with one line of Java code
+them.  Using <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.0.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html">TableOperations</a> this can be done with one line of Java code
 like the following.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
@@ -135,17 +131,33 @@ like the following.</p>
 </code></pre>
 </div>
 
-<p>Fluo recipes provides and easy way to call <code class="highlighter-rouge">compactTransient()</code> from the
-command line using the <code class="highlighter-rouge">fluo exec</code> command as follows:</p>
+<p>Fluo recipes provides an easy way to compact transient ranges from the command line using the <code class="highlighter-rouge">fluo exec</code> command as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>fluo exec &lt;app name&gt; io.fluo.recipes.accumulo.cmds.CompactTransient [&lt;interval&gt; [&lt;count&gt;]]
+<div class="highlighter-rouge"><pre class="highlight"><code>fluo exec &lt;app name&gt; org.apache.fluo.recipes.accumulo.cmds.CompactTransient [&lt;interval&gt; [&lt;multiplier&gt;]]
 </code></pre>
 </div>
 
 <p>If no arguments are specified the command will call <code class="highlighter-rouge">compactTransient()</code> once.
-If only <code class="highlighter-rouge">&lt;interval&gt;</code> is specied the command will loop forever calling
-<code class="highlighter-rouge">compactTransient()</code> sleeping <code class="highlighter-rouge">&lt;interval&gt;</code> seconds between calls.  If <code class="highlighter-rouge">&lt;count&gt;</code>
-is additionally specified then the command will only loop <code class="highlighter-rouge">&lt;count&gt;</code> times.</p>
+If <code class="highlighter-rouge">&lt;interval&gt;</code> is specified the command will run forever compacting transient
+ranges sleeping <code class="highlighter-rouge">&lt;interval&gt;</code> seconds between compacting each transient ranges.</p>
+
+<p>In the case where Fluo is backed up in processing data a transient range could
+have a lot of data queued and compacting it too frequently would be
+counterproductive.  To avoid this the <code class="highlighter-rouge">CompactTransient</code> command will consider
+the time it took to compact a range when deciding when to compact that range
+next.  This is where the <code class="highlighter-rouge">&lt;multiplier&gt;</code> argument comes in, the time to sleep
+between compactions of a range is determined as follows.  If not specified, the
+multiplier defaults to 3.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>   <span class="n">sleepTime</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">compactTime</span> <span class="o">*</span> <span class="n">multiplier</span><span class="o">,</span> <span class="n">interval</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>For example assume a Fluo application has two transient ranges.  Also assume
+CompactTransient is run with an interval of 600 and a multiplier of 10.  If the
+first range takes 20 seconds to compact, then it will be compacted again in 600
+seconds.  If the second range takes 80 seconds to compact, then it will be
+compacted again in 800 seconds.</p>
 
 
   </article>

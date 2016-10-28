@@ -5,9 +5,63 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 28 Oct 2016 16:32:52 +0000</pubDate>
-    <lastBuildDate>Fri, 28 Oct 2016 16:32:52 +0000</lastBuildDate>
+    <pubDate>Fri, 28 Oct 2016 16:55:15 +0000</pubDate>
+    <lastBuildDate>Fri, 28 Oct 2016 16:55:15 +0000</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Apache Fluo Recipes 1.0.0-incubating released</title>
+        <description>&lt;p&gt;Apache Fluo Recipes builds on the Apache Fluo API to provide libraries of common code for Fluo developers.&lt;/p&gt;
+
+&lt;p&gt;Apache Fluo Recipes 1.0.0-incubating is the first release of Fluo Recipes as an Apache project and the third
+release for the project.&lt;/p&gt;
+
+&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download a release tarball and verify by these &lt;a href=&quot;https://www.apache.org/info/verification&quot;&gt;procedures&lt;/a&gt; using these &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/KEYS&quot;&gt;KEYS&lt;/a&gt;&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo-recipes/1.0.0-incubating/fluo-recipes-1.0.0-incubating-source-release.tar.gz&quot;&gt;fluo-recipes-1.0.0-incubating-source-release.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.0.0-incubating/fluo-recipes-1.0.0-incubating-source-release.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.0.0-incubating/MD5SUM&quot;&gt;MD5&lt;/a&gt; &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.0.0-incubating/SHA1SUM&quot;&gt;SHA1&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo-recipes/1.0.0-incubating&quot;&gt;documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Read the javadocs: &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/&quot; target=&quot;_blank&quot;&gt;core&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-accumulo/1.0.0-incubating/&quot; target=&quot;_blank&quot;&gt;accumulo&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-kryo/1.0.0-incubating/&quot; target=&quot;_blank&quot;&gt;kryo&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-spark/1.0.0-incubating/&quot; target=&quot;_blank&quot;&gt;spark&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-test/1.0.0-incubating/&quot; target=&quot;_blank&quot;&gt;test&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Jars are available in &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;changes-of-interest-since-last-release&quot;&gt;Changes of interest since last release&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/112&quot;&gt;#112&lt;/a&gt; - Avoid allocating collection in AccumuloExporter&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/107&quot;&gt;#107&lt;/a&gt; - Added standard way to setup per exporter configuration&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/102&quot;&gt;#102&lt;/a&gt; - Simplified Accumulo export queue recipe&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/92&quot;&gt;#92&lt;/a&gt; - Added dependency analysis plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/82&quot;&gt;#82&lt;/a&gt; - Moved TypeLayer from Fluo API to Fluo Recipes&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/76&quot;&gt;#76&lt;/a&gt; - Made compact transient command retry wehn calling compact throws an exception&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/75&quot;&gt;#75&lt;/a&gt; - Construct export queue row that falls in bucket&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/73&quot;&gt;#73&lt;/a&gt; - Make compact transient sleep for each range&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/70&quot;&gt;#70&lt;/a&gt; - Collision Free Map not behaving well when processing backs up&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/69&quot;&gt;#69&lt;/a&gt; - Compact transient command has negative impact when processing falls behind&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/67&quot;&gt;#67&lt;/a&gt; - Added option to control number of buckets per tablet&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/50&quot;&gt;#50&lt;/a&gt; - Renamed Pirto to TableOptimizations&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Fri, 28 Oct 2016 10:30:00 +0000</pubDate>
+        <link>https://fluo.apache.org//release/fluo-recipes-1.0.0-incubating/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-recipes-1.0.0-incubating/</guid>
+        
+        
+        <category>release</category>
+        
+      </item>
     
       <item>
         <title>Apache Fluo 1.0.0-incubating released</title>
@@ -1076,22 +1130,6 @@ ballpark.&lt;/p&gt;
         
         
         <category>release</category>
-        
-      </item>
-    
-      <item>
-        <title>Fluo talk at Accumulo Summit</title>
-        <description>&lt;p&gt;A talk on Fluo was given at the &lt;a href=&quot;http://accumulosummit.com/&quot;&gt;Accumulo Summit&lt;/a&gt; on April 29, 2015.  Below are the slides from the talk:&lt;/p&gt;
-
-&lt;iframe src=&quot;//www.slideshare.net/slideshow/embed_code/key/kBl6Jb591OhY9Y&quot; width=&quot;425&quot; height=&quot;355&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt;
-
-</description>
-        <pubDate>Fri, 22 May 2015 14:27:00 +0000</pubDate>
-        <link>https://fluo.apache.org//blog/2015/05/22/fluo-talk-at-accumulo-summit/</link>
-        <guid isPermaLink="true">https://fluo.apache.org//blog/2015/05/22/fluo-talk-at-accumulo-summit/</guid>
-        
-        
-        <category>blog</category>
         
       </item>
     

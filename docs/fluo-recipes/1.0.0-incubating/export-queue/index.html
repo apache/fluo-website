@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-beta-1/export-queue/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/export-queue/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     <title>Export Queue Recipe | Apache Fluo</title>
     <!--[if lt IE 9]>
@@ -75,11 +75,7 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo-recipes/1.0.0-incubating">latest docs</a>!</div>
-  
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
   
 
   <header class="post-header">
@@ -103,8 +99,9 @@ would not impede throughput but would impede the goal of latency.</p>
 to export that data to another system.  For example Fluo could be running
 cluster A, continually transforming a large data set, and exporting data to
 Accumulo tables on cluster B.  The tables on cluster B would service user
-queries.  This recipe could be used to export to systems other than Accumulo,
-like Redis, Elasticsearch, MySQL, etc.</p>
+queries.  Fluo Recipes has built in support for <a href="/docs/fluo-recipes/1.0.0-incubating/accumulo-export-queue/">exporting to Accumulo</a>,
+however recipe could be used to export to systems other than Accumulo, like
+Redis, Elasticsearch, MySQL, etc.</p>
 
 <p>Exporting data from Fluo is easy to get wrong which is why this recipe exists.
 To understand what can go wrong consider the following example observer
@@ -188,7 +185,7 @@ following elements:</p>
 <ul>
   <li>Must configure export queues before initializing a Fluo application.</li>
   <li>Transactions adding to an export queue must get an instance of the queue using its unique QID.</li>
-  <li>Must implement a class that extends <a href="https://javadoc.io/doc/io.fluo/fluo-recipes-core/1.0.0-beta-1/io/fluo/recipes/export/Exporter.html">Exporter</a> in order to process exports.</li>
+  <li>Must implement a class that extends <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/export/Exporter.html">Exporter</a> in order to process exports.</li>
 </ul>
 
 <h2 id="schema">Schema</h2>
@@ -198,9 +195,11 @@ This row range is defined by using the export queue id as a row prefix for all
 data in the export queue.  So the row range defined by the export queue id
 should not be used by anything else.</p>
 
-<p>All data stored in an export queue is <a href="../transient/">transient</a>. When an export
-queue is configured, it will recommend split points using the <a href="../table-optimization/">table
-optimization process</a>.</p>
+<p>All data stored in an export queue is <a href="transient.md">transient</a>. When an export
+queue is configured, it will recommend split points using the <a href="table-optimization.md">table
+optimization process</a>.  The number of splits generated
+by this process can be controlled by setting the number of buckets per tablet
+when configuring an export queue.</p>
 
 <h2 id="example-use">Example Use</h2>
 
@@ -233,9 +232,12 @@ application.</p>
    <span class="n">Class</span><span class="o">&lt;</span><span class="n">Bytes</span><span class="o">&gt;</span> <span class="n">keyType</span> <span class="o">=</span> <span class="n">Bytes</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
    <span class="n">Class</span><span class="o">&lt;</span><span class="n">CountUpdate</span><span class="o">&gt;</span> <span class="n">valueType</span> <span class="o">=</span> <span class="n">CountUpdate</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
    <span class="kt">int</span> <span class="n">numBuckets</span> <span class="o">=</span> <span class="mi">1009</span><span class="o">;</span>
+   <span class="c1">//the desired number of tablets to create when applying table optimizations</span>
+   <span class="kt">int</span> <span class="n">numTablets</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
 
    <span class="n">ExportQueue</span><span class="o">.</span><span class="na">Options</span> <span class="n">eqOptions</span> <span class="o">=</span>
-        <span class="k">new</span> <span class="n">ExportQueue</span><span class="o">.</span><span class="na">Options</span><span class="o">(</span><span class="n">exportQueueId</span><span class="o">,</span> <span class="n">exporterType</span><span class="o">,</span> <span class="n">keyType</span><span class="o">,</span> <span class="n">valueType</span><span class="o">,</span> <span class="n">numBuckets</span><span class="o">);</span>
+        <span class="k">new</span> <span class="n">ExportQueue</span><span class="o">.</span><span class="na">Options</span><span class="o">(</span><span class="n">exportQueueId</span><span class="o">,</span> <span class="n">exporterType</span><span class="o">,</span> <span class="n">keyType</span><span class="o">,</span> <span class="n">valueType</span><span class="o">,</span> <span class="n">numBuckets</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setsetBucketsPerTablet</span><span class="o">(</span><span class="n">numBuckets</span><span class="o">/</span><span class="n">numTablets</span><span class="o">);</span>
    <span class="n">ExportQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="n">eqOptions</span><span class="o">);</span>
 
    <span class="c1">//initialize Fluo using fluoConfig</span>

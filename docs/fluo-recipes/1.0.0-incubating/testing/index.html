@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
-    <link rel="canonical" href="https://fluo.apache.org//news/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/testing/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
-    <title>News Archive | Apache Fluo</title>
+    <title>Testing | Apache Fluo</title>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -72,93 +72,28 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div id="archive">
-  <h2 id="archive-header">News Archive</h2>
+            <div class="fluo-doc">
 
   
-  
-  
-  <h3 class="archive-section-header">October 2016</h3>
-  
-  <p><a href="/release/fluo-recipes-1.0.0-incubating/" class="post-title-archive">Apache Fluo Recipes 1.0.0-incubating released</a> <small class="text-muted">28 Oct 2016</small></p>
 
   
-  
-  
-  <p><a href="/release/fluo-1.0.0-incubating/" class="post-title-archive">Apache Fluo 1.0.0-incubating released</a> <small class="text-muted">14 Oct 2016</small></p>
 
-  
-  
-  
-  <h3 class="archive-section-header">June 2016</h3>
-  
-  <p><a href="/blog/2016/06/02/fluo-moving-to-apache/" class="post-title-archive">Fluo is moving to Apache</a> <small class="text-muted">02 Jun 2016</small></p>
+  <header class="post-header">
+    <h2 class="post-title">Testing</h2>
+  </header>
 
-  
-  
-  
-  <h3 class="archive-section-header">May 2016</h3>
-  
-  <p><a href="/blog/2016/05/17/webindex-long-run-2/" class="post-title-archive">Running Webindex for 3 days on EC2 Again</a> <small class="text-muted">17 May 2016</small></p>
+  <article id="page-content">
+    <p>Fluo includes MiniFluo which makes it possible to write an integeration test that
+runs against a real Fluo instance.  Fluo Recipes provides the following utility
+code for writing an integration test.</p>
 
-  
-  
-  
-  <h3 class="archive-section-header">March 2016</h3>
-  
-  <p><a href="/release/fluo-recipes-1.0.0-beta-2/" class="post-title-archive">Fluo Recipes 1.0.0-beta-2 released</a> <small class="text-muted">29 Mar 2016</small></p>
+<ul>
+  <li><a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-test/1.0.0-incubating/org/apache/fluo/recipes/test/FluoITHelper.html">FluoITHelper</a> A class with utility methods for comparing expected data with whats in Fluo.</li>
+  <li><a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-test/1.0.0-incubating/org/apache/fluo/recipes/test/AccumuloExportITBase.html">AccumuloExportITBase</a> A base class for writing an integration test that exports data from Fluo to an external Accumulo table.</li>
+</ul>
 
-  
-  
-  
-  <h3 class="archive-section-header">January 2016</h3>
-  
-  <p><a href="/release/fluo-recipes-1.0.0-beta-1/" class="post-title-archive">Fluo Recipes 1.0.0-beta-1 released</a> <small class="text-muted">13 Jan 2016</small></p>
 
-  
-  
-  
-  <p><a href="/release/fluo-1.0.0-beta-2/" class="post-title-archive">Fluo 1.0.0-beta-2 released</a> <small class="text-muted">12 Jan 2016</small></p>
-
-  
-  
-  
-  <p><a href="/blog/2016/01/11/webindex-long-run/" class="post-title-archive">Running Webindex for 3 days on EC2</a> <small class="text-muted">11 Jan 2016</small></p>
-
-  
-  
-  
-  <h3 class="archive-section-header">December 2015</h3>
-  
-  <p><a href="/blog/2015/12/22/beta-2-pre-release-stress-test/" class="post-title-archive">Beta 2 pre-release stress test</a> <small class="text-muted">22 Dec 2015</small></p>
-
-  
-  
-  
-  <h3 class="archive-section-header">June 2015</h3>
-  
-  <p><a href="/release/fluo-1.0.0-beta-1/" class="post-title-archive">Fluo 1.0.0-beta-1 released</a> <small class="text-muted">09 Jun 2015</small></p>
-
-  
-  
-  
-  <h3 class="archive-section-header">May 2015</h3>
-  
-  <p><a href="/blog/2015/05/22/fluo-talk-at-accumulo-summit/" class="post-title-archive">Fluo talk at Accumulo Summit</a> <small class="text-muted">22 May 2015</small></p>
-
-  
-  
-  
-  <h3 class="archive-section-header">December 2014</h3>
-  
-  <p><a href="/blog/2014/12/30/stress-test-long-run/" class="post-title-archive">First long stress test run on Fluo</a> <small class="text-muted">30 Dec 2014</small></p>
-
-  
-  
-  
-  <h3 class="archive-section-header">October 2014</h3>
-  
-  <p><a href="/release/fluo-1.0.0-alpha-1/" class="post-title-archive">Fluo 1.0.0-alpha-1 released</a> <small class="text-muted">02 Oct 2014</small></p>
+  </article>
 
 </div>
 
