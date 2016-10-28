@@ -1,12 +1,12 @@
 ---
 title: Apache Fluo Recipes 1.0.0-incubating released
-date: 2016-10-17 15:30:00 +0000
+date: 2016-10-28 10:30:00 +0000
 version: fluo-recipes-1.0.0-incubating
 ---
 
 Apache Fluo Recipes builds on the Apache Fluo API to provide libraries of common code for Fluo developers.
 
-Apache Fluo Recipes 1.0.0-incubating is the first release of Fluo Recipes as an Apache project and the second
+Apache Fluo Recipes 1.0.0-incubating is the first release of Fluo Recipes as an Apache project and the third
 release for the project.
 
 Below are resources for this release:
@@ -34,7 +34,7 @@ Below are resources for this release:
 * [#67][67] - Added option to control number of buckets per tablet
 * [#50][50] - Renamed Pirto to TableOptimizations
 
-
+[procedures]: https://www.apache.org/info/verification
 [KEYS]: https://www.apache.org/dist/incubator/fluo/KEYS
 [src-release]: https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo-recipes/1.0.0-incubating/fluo-recipes-1.0.0-incubating-source-release.tar.gz
 [src-asc]: https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.0.0-incubating/fluo-recipes-1.0.0-incubating-source-release.tar.gz.asc

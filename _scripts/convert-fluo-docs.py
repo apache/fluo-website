@@ -73,7 +73,7 @@ def convert_file(inPath, outPath):
           elif line.find("../modules") != -1:
             if line.strip().endswith(".java"):
               start = line.find("../modules/")
-              end = line.find("apache/fluo")
+              end = line.find("org/apache/fluo")
               fout.write(line.replace(line[start:end], javadocs_prefix).replace(".java", ".html"))
             else:
               fout.write(line.replace("../modules/", github_prefix))
