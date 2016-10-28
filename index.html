@@ -4,20 +4,34 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/stylesheets/fluo.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:700,400">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" >
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
     <link rel="canonical" href="https://fluo.apache.org//">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
     <title>Apache Fluo - Large-scale Incremental Processing</title>
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55360307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
   </head>
-  <body>
-    <div id="fluo-nav" class="navbar navbar-default navbar-static-top">
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <div class="navbar-toggle-wrapper visible-xs">
@@ -27,7 +41,7 @@
               <span class="icon-bar"></span>
             </button>
           </div>
-          <a href="/" class="navbar-brand"><img src="/resources/fluo-logo.png" alt="Apache Fluo"></a>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
         </div>
         <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
           <ul class="navbar-nav nav">
@@ -68,123 +82,113 @@
           </ul>
         </div>
       </div>
-    </div>
+    </nav>
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div id="welcome">
-  <div class="row">
-    <div class="col-sm-8">
-      <div id="welcome-jumbotron" class="jumbotron">
-        <h2 id="welcome-fluo"><b>Apache Fluo&trade;</b> lets users make incremental updates to large data sets stored in Apache Accumulo</h2>
-      </div>
-      <h2 style="padding-top: 0px">Overview</h2>
-      <p>Apache Fluo (incubating) is an open source implementation of <a href="https://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> 
-         (which populates Google's search index) for <a href="https://accumulo.apache.org/" target="_blank">Apache Accumulo</a>. Fluo makes it possible to update the results of a large-scale computation, index, or analytic as new data is discovered. For more information, take the <a href="/tour/">Fluo tour</a>.</p>
+            <div class="row">
+  <div class="col-sm-8">
+    <div id="welcome-jumbotron" class="jumbotron" style="text-align: center">
+      <h3>Apache Fluo&trade; lets users make incremental updates to large data sets stored in Apache Accumulo</h3>
+      <a style="margin-right: 20px" href="/release/fluo-1.0.0-incubating/" class="btn btn-success btn-sm navbar-btn"><i class="fa fa-download fa-lg"></i> Download</a>
+      <a href="https://github.com/apache/incubator-fluo" target="_blank" class="btn btn-primary btn-sm navbar-btn"><i class="fa fa-github fa-lg"></i> View on GitHub</a>
     </div>
-    <div class="col-sm-4">
-      <div class="row">
-        <div class="col-sm-12 panel panel-default">
-          <h2 id="news-header">Latest News</h2>
-          
-          <div class="post-header-home">
-            <div class="row">
-              <div class="col-sm-12">
-                <h5><a href="/release/fluo-recipes-1.0.0-incubating/">Apache Fluo Recipes 1.0.0-incubating released</a> <small class="text-muted">Oct 2016</small></h5>
-              </div>
+    <h3 style="padding-top: 0px">Overview</h3>
+    <p>Apache Fluo (incubating) is an open source implementation of <a href="https://research.google.com/pubs/pub36726.html" target="_blank">Percolator</a> 
+       (which populates Google's search index) for <a href="https://accumulo.apache.org/" target="_blank">Apache Accumulo</a>. Fluo makes it possible to update the results of a large-scale computation, index, or analytic as new data is discovered. For more information, take the <a href="/tour/">Fluo tour</a>.</p>
+  </div>
+  <div class="col-sm-4">
+    <div class="row">
+      <div class="col-sm-12 panel panel-default">
+        <h3 id="news-header">Latest News</h3>
+        
+        <div class="post-header-home">
+          <div class="row">
+            <div class="col-sm-12">
+              <p><a href="/release/fluo-recipes-1.0.0-incubating/">Apache Fluo Recipes 1.0.0-incubating released</a> &nbsp;<small class="text-muted">Oct 2016</small></p>
             </div>
-          </div>
-          
-          <div class="post-header-home">
-            <div class="row">
-              <div class="col-sm-12">
-                <h5><a href="/release/fluo-1.0.0-incubating/">Apache Fluo 1.0.0-incubating released</a> <small class="text-muted">Oct 2016</small></h5>
-              </div>
-            </div>
-          </div>
-          
-          <div class="post-header-home">
-            <div class="row">
-              <div class="col-sm-12">
-                <h5><a href="/blog/2016/06/02/fluo-moving-to-apache/">Fluo is moving to Apache</a> <small class="text-muted">Jun 2016</small></h5>
-              </div>
-            </div>
-          </div>
-          
-          <div class="post-header-home">
-            <div class="row">
-              <div class="col-sm-12">
-                <h5><a href="/blog/2016/05/17/webindex-long-run-2/">Running Webindex for 3 days on EC2 Again</a> <small class="text-muted">May 2016</small></h5>
-              </div>
-            </div>
-          </div>
-          
-          <div class="post-header-home">
-            <div class="row">
-              <div class="col-sm-12">
-                <h5><a href="/release/fluo-recipes-1.0.0-beta-2/">Fluo Recipes 1.0.0-beta-2 released</a> <small class="text-muted">Mar 2016</small></h5>
-              </div>
-            </div>
-          </div>
-          
-          <div id="news-archive-link">
-            View all posts in the <a href="/news/">news archive</a>
           </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-6">
-          <a href="https://github.com/apache/incubator-fluo" target="_blank" class="btn btn-primary btn-sm navbar-btn"><i class="fa fa-github fa-lg"></i> View on GitHub</a>
+        
+        <div class="post-header-home">
+          <div class="row">
+            <div class="col-sm-12">
+              <p><a href="/release/fluo-1.0.0-incubating/">Apache Fluo 1.0.0-incubating released</a> &nbsp;<small class="text-muted">Oct 2016</small></p>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-6">
-          <iframe src="https://ghbtns.com/github-btn.html?user=apache&repo=incubator-fluo&type=watch&count=true&size=large" 
-            allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" style="margin-top: 14px;"></iframe>
+        
+        <div class="post-header-home">
+          <div class="row">
+            <div class="col-sm-12">
+              <p><a href="/blog/2016/06/02/fluo-moving-to-apache/">Fluo is moving to Apache</a> &nbsp;<small class="text-muted">Jun 2016</small></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="post-header-home">
+          <div class="row">
+            <div class="col-sm-12">
+              <p><a href="/blog/2016/05/17/webindex-long-run-2/">Running Webindex for 3 days on EC2 Again</a> &nbsp;<small class="text-muted">May 2016</small></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="post-header-home">
+          <div class="row">
+            <div class="col-sm-12">
+              <p><a href="/release/fluo-recipes-1.0.0-beta-2/">Fluo Recipes 1.0.0-beta-2 released</a> &nbsp;<small class="text-muted">Mar 2016</small></p>
+            </div>
+          </div>
+        </div>
+        
+        <div id="news-archive-link">
+          View all posts in the <a href="/news/">news archive</a>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <h2 style="padding-top:0px;">Major Features</h2>
+<h3 style="padding-top:0px;">Major Features</h3>
 
-  <div class="row">
-    <div class="col-sm-4">
-      <h4>Reduced Latency</h4>
-      <p>When combining new data with existing data, Fluo offers reduced latency when compared to batch processing frameworks (e.g Spark, MapReduce).</p>
-    </div>
-    <div class="col-sm-4">
-      <h4>Reliable</h4>
-      <p>Incremental updates are implemented using transactions which allow thousands of updates to happen concurrently without corrupting data.</p>
-    </div>
-    <div class="col-sm-4">
-      <h4>Core API</h4>
-      <p>The core <a href="/docs/fluo/1.0.0-incubating/">Fluo API</a> supports simple, cross-node transactional updates using get/set methods.</p>
-    </div>
+<div class="row">
+  <div class="col-sm-4">
+    <h4>Reduced Latency</h4>
+    <p>When combining new data with existing data, Fluo offers reduced latency when compared to batch processing frameworks (e.g Spark, MapReduce).</p>
   </div>
-
-  <div class="row">
-    <div class="col-sm-4">
-      <h4>Avoid Reprocessing Data</h4>
-      <p>Combine new data with existing data without having to reprocess the entire dataset.</p>
-    </div>
-    <div class="col-sm-4">
-      <h4>General Purpose</h4>
-      <p>Fluo applications consist of a series of observers that execute user code when observed data is updated.</p>
-    </div>
-    <div class="col-sm-4">
-      <h4>Recipes API</h4>
-      <p>The <a href="/docs/fluo-recipes/1.0.0-incubating/">Fluo Recipes API</a> builds on the core API to offer complex transactional updates.</p>
-    </div>
+  <div class="col-sm-4">
+    <h4>Reliable</h4>
+    <p>Incremental updates are implemented using transactions which allow thousands of updates to happen concurrently without corrupting data.</p>
   </div>
+  <div class="col-sm-4">
+    <h4>Core API</h4>
+    <p>The core <a href="/docs/fluo/1.0.0-incubating/">Fluo API</a> supports simple, cross-node transactional updates using get/set methods.</p>
+  </div>
+</div>
 
-  <hr>
+<div class="row">
+  <div class="col-sm-4">
+    <h4>Avoid Reprocessing Data</h4>
+    <p>Combine new data with existing data without having to reprocess the entire dataset.</p>
+  </div>
+  <div class="col-sm-4">
+    <h4>General Purpose</h4>
+    <p>Fluo applications consist of a series of observers that execute user code when observed data is updated.</p>
+  </div>
+  <div class="col-sm-4">
+    <h4>Recipes API</h4>
+    <p>The <a href="/docs/fluo-recipes/1.0.0-incubating/">Fluo Recipes API</a> builds on the core API to offer complex transactional updates.</p>
+  </div>
+</div>
 
-  <a href="https://incubator.apache.org"><img src="https://incubator.apache.org/images/egg-logo2.png" alt="Apache Incubator"></a>
+<hr>
 
-  <div class="row">
-    <div class="col-sm-12">
-      <p>Apache Fluo is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator PMC. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.</p>
-    </div>
+<a href="https://incubator.apache.org"><img src="https://incubator.apache.org/images/egg-logo2.png" alt="Apache Incubator"></a>
+
+<div class="row">
+  <div class="col-sm-12">
+    <p>Apache Fluo is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator PMC. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.</p>
   </div>
 </div>
 
@@ -200,21 +204,5 @@
         </div>
       </div>
     </div>
-    <script src="/javascripts/jquery.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <!-- Place your <script> tags here. -->
-
-<!-- Google Analytics -->
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-55360307-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
   </body>
 </html>
