@@ -282,7 +282,7 @@ example of write skew mentioned in the Percolater paper.
  1. TH1 : tx1.set(`rowA`,`fam1:qual2`, val1)
  1. TH2 : tx2.set(`rowB`,`fam1:qual2`, val2)
 
-[1]: {{ site.api_static }}/fluo-recipes-core/1.0.0-incubating/apache/fluo/recipes/core/export/Exporter.html
+[1]: {{ site.api_static }}/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/export/Exporter.html
 [2]: https://en.wikipedia.org/wiki/Serializability
 [3]: /docs/fluo-recipes/1.0.0-incubating/accumulo-export-queue/
 

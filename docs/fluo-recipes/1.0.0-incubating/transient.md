@@ -79,5 +79,5 @@ first range takes 20 seconds to compact, then it will be compacted again in 600
 seconds.  If the second range takes 80 seconds to compact, then it will be
 compacted again in 800 seconds.
 
-[1]: {{ site.api_static }}/fluo-recipes-core/1.0.0-incubating/apache/fluo/recipes/core/common/TransientRegistry.html
-[2]: {{ site.api_static }}/fluo-recipes-accumulo/1.0.0-incubating/apache/fluo/recipes/accumulo/ops/TableOperations.html
+[1]: {{ site.api_static }}/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html
+[2]: {{ site.api_static }}/fluo-recipes-accumulo/1.0.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html

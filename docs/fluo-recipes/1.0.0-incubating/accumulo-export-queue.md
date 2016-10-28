@@ -93,6 +93,6 @@ Exporting to Accumulo is easy. Follow the steps below:
 [AccumuloReplicator] is a specialized [AccumuloExporter] that replicates a Fluo table to Accumulo.
 
 [1]: /docs/fluo-recipes/1.0.0-incubating/export-queue/
-[AccumuloExporter]: {{ site.api_static }}/fluo-recipes-accumulo/1.0.0-incubating/apache/fluo/recipes/accumulo/export/AccumuloExporter.html
-[AccumuloReplicator]: {{ site.api_static }}/fluo-recipes-accumulo/1.0.0-incubating/apache/fluo/recipes/accumulo/export/DifferenceExport.html
+[AccumuloExporter]: {{ site.api_static }}/fluo-recipes-accumulo/1.0.0-incubating/org/apache/fluo/recipes/accumulo/export/AccumuloExporter.html
+[AccumuloReplicator]: {{ site.api_static }}/fluo-recipes-accumulo/1.0.0-incubating/org/apache/fluo/recipes/accumulo/export/AccumuloReplicator.html
 

@@ -82,8 +82,8 @@ Below is a sample Maven POM containing all possible Fluo Recipes dependencies:
 ```
 
 [fluo]: https://fluo.apache.org/
-[fluo-api]: https://fluo.apache.org/api/
-[recipes-api]: https://fluo.apache.org/apidocs/fluo-recipes/
+[fluo-api]: /api/
+[recipes-api]: /api/
 [cfm]: /docs/fluo-recipes/1.0.0-incubating/cfm/
 [export-q]: /docs/fluo-recipes/1.0.0-incubating/export-queue/
 [recording-tx]: /docs/fluo-recipes/1.0.0-incubating/recording-tx/
