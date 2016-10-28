@@ -16,6 +16,7 @@ Apache Fluo is powered by:
 * [Dropwizard Metrics][dropwizard]
 * [Junit][junit]
 * [Guava][guava]
+* [Kryo][kryo]
 * [slf4j][slf4j]
 * [TravisCI][travisci]
 
@@ -44,3 +45,4 @@ This website was made using:
 [jekyll]: http://jekyllrb.com/
 [jquery]: http://jquery.com/
 [shiori]: http://ellekasai.github.io/shiori/
+[kryo]: https://github.com/EsotericSoftware/kryo
