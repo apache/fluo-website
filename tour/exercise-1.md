@@ -2,9 +2,12 @@
 title: Word count Exercise
 ---
 
-This excercise gives you an opportunity to use everything you have learned so
+This exercise gives you an opportunity to use everything you have learned so
 far to attempt writing a simple Fluo application.  A bare minimum of code,
 along with a conceptual sketch of a solution, is provided to get you started.
+After completing this exercise, consider tweeting a link to your solution to
+[#apachefluotour][aft].  If you have time, try to complete the exercise before
+looking at the solutions.
 
 The application should compute word counts for unique documents. This
 application should do the following.
@@ -402,3 +405,5 @@ After implementing the Observer, the output of the program should look like the 
 The way to compute word counts above is very prone to transactional collisions. One way to avoid
 these collisions is to use the CollisionFreeMap provided in Fluo Recipes. Currently Fluo Recipes is
 not released, this section will be updated with more information once it is.
+
+[aft]: https://twitter.com/hashtag/apachefluotour
