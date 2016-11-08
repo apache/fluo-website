@@ -3,8 +3,8 @@ layout: default
 ---
 <div class="post-header">
   <h2>{{ page.title }}</h2>
-  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}&via={{ site.twitter_username }}&related={{ site.twitter_username }}" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
   <p class="text-muted">{{ page.date | date_to_string }}</p>
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}&via={{ site.twitter_username }}&related={{ site.twitter_username }}" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
 </div>
 
 {% if page.historical %}
@@ -15,8 +15,6 @@ layout: default
   {{ content }}
 </div>
 
-<hr>
-
 <div>
-  <p>All releases can be found in the <a href="{{ site.baseurl }}/release/">release archive</a></p>
+  <p class="text-muted">View all releases in the <a href="{{ site.baseurl }}/release/">release archive</a></p>
 </div>
