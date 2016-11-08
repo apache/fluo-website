@@ -29,6 +29,23 @@
 
 </script>
 
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
   </head>
   <body style="padding-top: 100px">
     <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
@@ -87,8 +104,9 @@
       <div class="row">
           <div class="col-sm-12">
             <div class="post-header">
-  <h2>Apache Fluo Recipes 1.0.0-incubating released</h1>
+  <h2>Apache Fluo Recipes 1.0.0-incubating released</h2>
   <p class="text-muted">28 Oct 2016</p>
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Apache Fluo Recipes 1.0.0-incubating released&url=https://fluo.apache.org//release/fluo-recipes-1.0.0-incubating/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
 </div>
 
 
@@ -139,10 +157,8 @@ release for the project.</p>
 
 </div>
 
-<hr>
-
 <div>
-  <p>All releases can be found in the <a href="/release/">release archive</a></p>
+  <p class="text-muted">View all releases in the <a href="/release/">release archive</a></p>
 </div>
 
           </div>

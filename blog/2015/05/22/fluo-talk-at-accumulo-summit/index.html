@@ -29,6 +29,23 @@
 
 </script>
 
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
   </head>
   <body style="padding-top: 100px">
     <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
@@ -87,8 +104,9 @@
       <div class="row">
           <div class="col-sm-12">
             <div id="post-header">
-  <h2>Fluo talk at Accumulo Summit</h1>
+  <h2>Fluo talk at Accumulo Summit</h2>
   <p class="text-muted">22 May 2015</p>
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Fluo talk at Accumulo Summit&url=https://fluo.apache.org//blog/2015/05/22/fluo-talk-at-accumulo-summit/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
 </div>
 <div id="post-content">
   <p>A talk on Fluo was given at the <a href="http://accumulosummit.com/">Accumulo Summit</a> on April 29, 2015.  Below are the slides from the talk:</p>
