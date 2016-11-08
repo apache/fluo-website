@@ -57,6 +57,9 @@ old_api_static: "https://static.javadoc.io/io.fluo"
 whitelist: [jekyll-redirect-from]
 gems: [jekyll-redirect-from]
 
+#Social
+twitter_username: "ApacheFluo"
+
 kramdown:
   input: GFM
   syntax_highlighter: rouge
