@@ -1,6 +1,5 @@
 # Site settings
 title: Apache Fluo
-baseurl: "" # the subpath of site
 url: "https://fluo.apache.org/" # the base hostname & protocol for your site
 timezone: Etc/UTC
 
