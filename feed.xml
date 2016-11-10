@@ -5,9 +5,207 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 08 Nov 2016 17:16:42 +0000</pubDate>
-    <lastBuildDate>Tue, 08 Nov 2016 17:16:42 +0000</lastBuildDate>
+    <pubDate>Thu, 10 Nov 2016 20:43:33 +0000</pubDate>
+    <lastBuildDate>Thu, 10 Nov 2016 20:43:33 +0000</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Java needs an immutable byte string</title>
+        <description>&lt;h2 id=&quot;fluo-data-model-and-transactions&quot;&gt;Fluo Data Model and Transactions&lt;/h2&gt;
+
+&lt;p&gt;Fluo uses a &lt;a href=&quot;/tour/data-model/&quot;&gt;data model&lt;/a&gt; composed of key/values.  Each key has four fields :
+&lt;em&gt;row&lt;/em&gt;,&lt;em&gt;family&lt;/em&gt;,&lt;em&gt;qualifier&lt;/em&gt;,&lt;em&gt;visibility&lt;/em&gt;.  Each of these key fields is a sequence of bytes.  Fluo
+transactions read key/values from a snapshot of a table.  Any changes a transaction makes is
+buffered until commit.  At the time of commit the changes are only made if no other transaction
+modified any of the key values.&lt;/p&gt;
+
+&lt;p&gt;While designing the Fluo API we were uncertain about making Fluo’s basic &lt;a href=&quot;/tour/data-pojos/&quot;&gt;POJOs&lt;/a&gt; mutable or
+immutable.  In the end we decided to go with immutable types to make writing correct Fluo code
+easier.  One of the POJOs we created was &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/data/Bytes.html&quot;&gt;Bytes&lt;/a&gt;,  an immutable wrapper around a byte array.  We
+also created &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/data/Bytes.BytesBuilder.html&quot;&gt;BytesBuilder&lt;/a&gt;, which is analagous to StringBuilder, and makes it easy and efficient
+to construct Bytes.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-about-the-copies&quot;&gt;What about the copies?&lt;/h3&gt;
+
+&lt;p&gt;Bytes requires a defensive copy at creation time.  When we were designing Fluo’s API we were worried
+about this at first.  However a simple truth became apparent.  If the API took a mutable type, then
+all boundary points between the user and Fluo would require defensive copies.  For example assume
+Fluo’s API took byte arrays and consider the following code.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//A Fluo transaction&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Fluo will buffer changes until a transaction is committed.  In the example above since Fluo accepts
+a mutable row, it would be prudent to do a defensive copy each time &lt;code class=&quot;highlighter-rouge&quot;&gt;set()&lt;/code&gt; is called above.&lt;/p&gt;
+
+&lt;p&gt;In the code below where an immutable byte array wrapper is used, the calls to &lt;code class=&quot;highlighter-rouge&quot;&gt;set()&lt;/code&gt; do not need to
+do a defensive copy.  So when comparing the two examples, the immutable byte wrapper results in less
+defensive copies.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//A Fluo transaction&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Bytes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We really did not want to create Bytes and BytesBuilder types, however we could not find what we
+needed in Java’s standard libraries.  The following sections discuss some of the options we
+considered.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-not-use-string&quot;&gt;Why not use String?&lt;/h2&gt;
+
+&lt;p&gt;Java’s String type is an immutable wrapper around a char array.  In order to store a byte array in a
+String, Java must decode the byte array using a character set.  Some sequences of bytes do not map
+in some characters sets.  Therefore, trying to stuff arbitrary binary data in a String can corrupt
+the data.  The following little program shows this, it will print &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;String can be made to work by specifying an appropriate character set. The following program will
+print &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;.  However, this is error prone and inefficient.  It’s error prone in the case where the
+character set is wrong or omitted.  It’s inefficient because it results in copying from byte arrays
+to char arrays and visa versa.  Also, char arrays use twice as much memory.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ISO_8859_1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ISO_8859_1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;why-not-use-bytebuffer&quot;&gt;Why not use ByteBuffer?&lt;/h2&gt;
+
+&lt;p&gt;A read only ByteBuffer might seem like it would fit the bill of an immutable byte array wrapper.
+However, the following program shows two ways that ByteBuffer falls short.  ByteBuffers are great
+for I/O, but it would not be prudent to use them when immutability is desired.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ByteBuffer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ByteBuffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;wrap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asReadOnlyBuffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The program above prints the following, which is less than ideal :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;747721
+830367
+26786
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This little program shows two things.  First, the only guarantee we are getting from
+&lt;code class=&quot;highlighter-rouge&quot;&gt;asReadOnlyBuffer()&lt;/code&gt; is that &lt;code class=&quot;highlighter-rouge&quot;&gt;bb1&lt;/code&gt; can not be used to modify &lt;code class=&quot;highlighter-rouge&quot;&gt;bytes1&lt;/code&gt;.  However, the originator of
+the read only buffer can still modify the wrapped byte array.   Java’s String and Fluo’s Bytes avoid
+this by always copying data into an internal private array that never escapes.&lt;/p&gt;
+
+&lt;p&gt;The second issue is that &lt;code class=&quot;highlighter-rouge&quot;&gt;bb1&lt;/code&gt; has a position and calling &lt;code class=&quot;highlighter-rouge&quot;&gt;bb1.get()&lt;/code&gt; changes this position.
+Changing the position conceptually changes the contents of the ByteBuffer.  This is why &lt;code class=&quot;highlighter-rouge&quot;&gt;hashCode()&lt;/code&gt;
+returns something different after &lt;code class=&quot;highlighter-rouge&quot;&gt;bb1.get()&lt;/code&gt; is called.  So even though &lt;code class=&quot;highlighter-rouge&quot;&gt;bb1&lt;/code&gt; does not enable
+mutating &lt;code class=&quot;highlighter-rouge&quot;&gt;bytes1&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;bb1&lt;/code&gt; is itself mutable.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-not-use-protobufs-bytestring&quot;&gt;Why not use Protobuf’s ByteString?&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developers.google.com/protocol-buffers/&quot;&gt;Protocol Buffers&lt;/a&gt; has a beautiful implementation of an immutable byte array wrapper called
+&lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/ByteString&quot;&gt;ByteString&lt;/a&gt;.  I would encourage its use when possible.  I discovered this jewel after Bytes was
+implemented in Fluo.  Using it was considered, however in Fluo’s case its not really appropriate to
+use for two reasons.  First, any library designer should try to minimize what transitive dependencies
+they force on users.  Internally Fluo does not currently use Protocol Buffers in its implementation,
+so this would be a new dependency for Fluo users.  The second reason is going to require some
+background to explain.&lt;/p&gt;
+
+&lt;p&gt;Technologies like &lt;a href=&quot;https://www.osgi.org&quot;&gt;OSGI&lt;/a&gt; and &lt;a href=&quot;http://openjdk.java.net/projects/jigsaw/&quot;&gt;Jigsaw&lt;/a&gt; seek to modularize Java libraries and provide dependency
+isolation.  Dependency isolation allows a user to use a library without having to share a libraries
+dependencies.  For example, consider the following hypothetical scenario.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fluo’s implementation uses Protobuf version 2.5&lt;/li&gt;
+  &lt;li&gt;Fluo user code uses Protobuf version 1.8&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Without dependency isolation, the user must converge dependencies and make their application and
+Fluo use the same version of Protobuf.  Sometimes this works without issue, but sometimes things
+will break because Protobuf dropped, changed, or added a method.&lt;/p&gt;
+
+&lt;p&gt;With dependency isolation, Fluo’s implementation and Fluo user code can easily use different versions
+of Protobuf.  This is only true as long as Fluo’s API does not use Protobuf.  So, this is the second
+reason that Fluo should not use classes from Protobuf in its API.  If Fluo used Protobuf in its API
+then it forces the user to have to converge dependencies, even if they are using OSGI or Jigsaw.&lt;/p&gt;
+
+&lt;h2 id=&quot;java-should-have-an-immutable-byte-array-wrapper&quot;&gt;Java should have an immutable byte array wrapper&lt;/h2&gt;
+
+&lt;p&gt;So far, the following arguments have been presented:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An immutable byte array wrapper is useful and needed.&lt;/li&gt;
+  &lt;li&gt;Java does not provide a good immutable byte array wrapper.&lt;/li&gt;
+  &lt;li&gt;Using an immutable byte array wrapper from library X in library Y’s API may be problematic.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These arguments all point to the need for an immutable byte array wrapper to exist in Java. This
+need could also be satisfied by a library outside of Java with some restrictions. Assume a new
+library called Lib Immutable Byte Array Wrapper (libibaw) was created.  In order for libibaw to be
+used in other libraries APIs, it would need to promise the following.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;No dependencies other than Java.&lt;/li&gt;
+  &lt;li&gt;Backwards compatibility.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The reason backwards compatibility is important is that it would make dependency convergence super
+easy.  The following situation shows this.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fluo uses libibaw 1.2 in its API&lt;/li&gt;
+  &lt;li&gt;Fluo user code uses libibaw 1.1.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If libibaw promises backward compatibility, then all the user needs to do is use version 1.2 of
+libibaw.  With the promise of backwards compatibility, using version 1.2 will not break the users
+code.&lt;/p&gt;
+
+&lt;p&gt;Having a library would be nice, but having something in Java would minimize copies.  Outside
+of Java there will inevitably be multiple implementations and going between them will require a
+copy.  For example if a user uses Fluo and Protobuf they may be forced to copy Fluo’s Bytes to
+Protobuf’s ByteString. If Protobuf and Fluo both used an immutable byte sequence type from Java, this
+would not be needed.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 10 Nov 2016 11:43:00 +0000</pubDate>
+        <link>https://fluo.apache.org//blog/2016/11/10/immutable-bytes/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//blog/2016/11/10/immutable-bytes/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Apache Fluo Recipes 1.0.0-incubating released</title>
@@ -981,155 +1179,6 @@ done with an empty table.&lt;/p&gt;
         
         
         <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Fluo 1.0.0-beta-1 released</title>
-        <description>&lt;p&gt;Fluo 1.0.0-beta-1 is the second official release of Fluo. Fluo is an implementation of Google’s &lt;a href=&quot;http://research.google.com/pubs/pub36726.html&quot;&gt;percolator paper&lt;/a&gt;, which adds large-scale incremental 
-processing of data using distributed transactions and notifications. It runs on &lt;a href=&quot;http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html&quot;&gt;YARN&lt;/a&gt; and stores its data in &lt;a href=&quot;https://accumulo.apache.org/&quot;&gt;Accumulo&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Below are resources for this release:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Download the &lt;a href=&quot;https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-1&quot;&gt;Fluo binary tarball&lt;/a&gt; for 1.0.0-beta-1 from GitHub.&lt;/li&gt;
-  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.0.0-beta-1/&quot;&gt;documentation&lt;/a&gt; for help getting started with Fluo.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-api/1.0.0-beta-1/&quot;&gt;Javadocs&lt;/a&gt; are available for this release.&lt;/li&gt;
-  &lt;li&gt;A &lt;a href=&quot;https://github.com/fluo-io/fluo/tree/1.0.0-beta-1&quot;&gt;tag&lt;/a&gt; of Fluo codebase for 1.0.0-beta-1 is available.&lt;/li&gt;
-  &lt;li&gt;Fluo &lt;a href=&quot;http://search.maven.org/#search%7Cga%7C1%7Cfluo&quot;&gt;jars&lt;/a&gt; have been deployed to Maven Central.&lt;/li&gt;
-  &lt;li&gt;The &lt;a href=&quot;https://github.com/fluo-io/fluo-quickstart&quot;&gt;Quickstart&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/phrasecount&quot;&gt;Phrasecount&lt;/a&gt; applications were updated to work with this release.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This release closed &lt;a href=&quot;https://github.com/fluo-io/fluo/issues?q=milestone%3A1.0.0-beta-1+is%3Aclosed&quot;&gt;133 tickets&lt;/a&gt;. This release is not recommended for production use.
-There is no upgrade path from 1.0.0-alpha-1 to 1.0.0-beta-1.&lt;/p&gt;
-
-&lt;h2 id=&quot;significant-features&quot;&gt;Significant features&lt;/h2&gt;
-
-&lt;p&gt;This release contains many new features that makes it easier to run, develop, and monitor Fluo applications.&lt;/p&gt;
-
-&lt;h4 id=&quot;simplified-fluo-administration-on-a-local-machine-or-ec2-cluster&quot;&gt;Simplified Fluo administration on a local machine or EC2 cluster&lt;/h4&gt;
-
-&lt;p&gt;Developers can now run Fluo and its dependencies on their local machine (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/92&quot;&gt;#92&lt;/a&gt;) or an AWS EC2 cluster (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/356&quot;&gt;#356&lt;/a&gt;) using a few simple commands.
-This was done by creating two administration tools called &lt;a href=&quot;https://github.com/fluo-io/fluo-dev&quot;&gt;Fluo-dev&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/fluo-deploy&quot;&gt;Fluo-deploy&lt;/a&gt; whose scripts and configuration reside in repos
-separate from the Fluo code base.  These tools allow developers to collaborate and share configuration for running Fluo.&lt;/p&gt;
-
-&lt;h4 id=&quot;transaction-metrics-are-viewable-using-common-monitoring-tools&quot;&gt;Transaction metrics are viewable using common monitoring tools&lt;/h4&gt;
-
-&lt;p&gt;Fluo now publishes metrics (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/20&quot;&gt;#20&lt;/a&gt;) about transactions, collisions, and timestamps using &lt;a href=&quot;https://dropwizard.github.io/metrics/3.1.0/&quot;&gt;Dropwizard metrics&lt;/a&gt;.  These metrics are by default published 
-using JMX and are viewable using JConsole or JVisualVM.  Fluo can also be configured to publish metrics to Graphite or Ganglia.  View the &lt;a href=&quot;https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/docs/metrics.md&quot;&gt;metrics documentation&lt;/a&gt;
-for more information.&lt;/p&gt;
-
-&lt;h4 id=&quot;improved-processing-of-notifications-in-fluo-workers&quot;&gt;Improved processing of notifications in Fluo workers&lt;/h4&gt;
-
-&lt;p&gt;Fluo workers were refactored to separate the code used for finding and executing work.  Each worker uses a single thread for finding 
-work (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/19&quot;&gt;#19&lt;/a&gt;).  A new method was introduced to partition work among workers using a hash+mod of notifications (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/282&quot;&gt;#282&lt;/a&gt;).
-The commit message for &lt;a href=&quot;https://github.com/fluo-io/fluo/commit/4100e236b8438350e30eda924a6360e2c722ae37&quot;&gt;4100e23&lt;/a&gt; contains a good description of some of the benefits and drawback of the current
-hashing approach.&lt;/p&gt;
-
-&lt;h4 id=&quot;improved-the-deletion-of-observer-notifications&quot;&gt;Improved the deletion of observer notifications&lt;/h4&gt;
-
-&lt;p&gt;When a cell is deleted in Accumulo, a delete marker is inserted.  Delete markers stay around until
-all files in a tablet are compacted.  For Fluo this could cause a lot of notification delete markers
-to build up over time.  To avoid this buildup, the way Fluo deletes notifications was changed in
-(&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/457&quot;&gt;#457&lt;/a&gt;).  Accumulo delete markers are no longer used, Fluo now uses a custom delete marker for
-notifications.  The custom deleter marker allows Fluo to do analysis when Accumulo flushes memory to
-disk and avoid writing many delete markers to persistent storage.&lt;/p&gt;
-
-&lt;h4 id=&quot;easier-management-of-fluo-from-the-command-line&quot;&gt;Easier management of Fluo from the command line&lt;/h4&gt;
-
-&lt;p&gt;Fluo now provides different scripts (&lt;strong&gt;fluo&lt;/strong&gt;, &lt;strong&gt;mini-fluo&lt;/strong&gt;, &amp;amp; &lt;strong&gt;local-fluo&lt;/strong&gt;) for managing Fluo using a YARN cluster, MiniFluo, or local processes.  Several commands
-were created for these scripts.  A &lt;strong&gt;scan&lt;/strong&gt; command allows users to print a snapshot of a Fluo table (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/319&quot;&gt;#319&lt;/a&gt;).  A &lt;strong&gt;info&lt;/strong&gt; command shows locations of containers
-when running Fluo in YARN (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/297&quot;&gt;#297&lt;/a&gt;).  A &lt;strong&gt;classpath&lt;/strong&gt; command gives users a list of jars needed to execute Fluo client code (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/436&quot;&gt;#436&lt;/a&gt;).  A &lt;strong&gt;wait&lt;/strong&gt; command will
-sleep until all notifications are processed (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/434&quot;&gt;#434&lt;/a&gt;).&lt;/p&gt;
-
-&lt;h4 id=&quot;support-for-running-multiple-fluo-applications-on-a-single-cluster&quot;&gt;Support for running multiple Fluo applications on a single cluster&lt;/h4&gt;
-
-&lt;p&gt;Users can now run multiple Fluo applications using a single cluster (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/454&quot;&gt;#454&lt;/a&gt;).  This enables different Fluo users to share the same cluster.  Fluo applications
-can be started and stopped independently.  Each application has its own configuration.&lt;/p&gt;
-
-&lt;h4 id=&quot;fluo-build-improvements&quot;&gt;Fluo build improvements&lt;/h4&gt;
-
-&lt;p&gt;On each build, all Java code is automatically formatted based on Google Java Style (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/479&quot;&gt;#479&lt;/a&gt;).  Also, checkstyle and findbugs will fail the build if certain
-standards are not reached (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/185&quot;&gt;#185&lt;/a&gt;).  The POM is also sorted (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/493&quot;&gt;#493&lt;/a&gt;).&lt;/p&gt;
-
-&lt;h4 id=&quot;organized-fluo-code-base&quot;&gt;Organized Fluo code base&lt;/h4&gt;
-
-&lt;p&gt;The Fluo stress test was moved to its own &lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;repo&lt;/a&gt; and is no longer a sub-module (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/385&quot;&gt;#385&lt;/a&gt;).  MiniFluo was moved from fluo-core to the fluo-mini 
-module/jar (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/439&quot;&gt;#439&lt;/a&gt;).  This reduced the number of dependencies in fluo-core.  However, developers will now need to include the fluo-mini jar in their Maven
-POM if they start MiniFluo.&lt;/p&gt;
-
-&lt;h4 id=&quot;fluo-testing-improvements&quot;&gt;Fluo testing improvements&lt;/h4&gt;
-
-&lt;p&gt;Integration tests can now be run from Eclipse (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/322&quot;&gt;#322&lt;/a&gt;).  Several new &lt;a href=&quot;https://github.com/fluo-io/fluo/issues?utf8=%E2%9C%93&amp;amp;q=milestone%3A1.0.0-beta-1+is%3Aclosed+%22unit+test%22&quot;&gt;unit tests&lt;/a&gt; were created.&lt;/p&gt;
-
-&lt;h4 id=&quot;other-important-improvements-and-bug-fixes&quot;&gt;Other important improvements and bug fixes&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/470&quot;&gt;#470&lt;/a&gt; - Replaced FluoFileOutputFormat with an Accumulo Key/Value generator&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/460&quot;&gt;#460&lt;/a&gt; - Reduced Fluo API module dependencies&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/456&quot;&gt;#456&lt;/a&gt; - Fixed bug with notifications being lost when processes died&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/446&quot;&gt;#446&lt;/a&gt; - Simplified log configuration and configure rolling log files in YARN&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/442&quot;&gt;#442&lt;/a&gt; - Reduced the number of curator clients in FluoAdmin&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/383&quot;&gt;#383&lt;/a&gt; - Improved transaction logging to help users debug collisions. See &lt;a href=&quot;https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/docs/applications.md#debugging-applications&quot;&gt;debugging documentation&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/365&quot;&gt;#365&lt;/a&gt; - Analyze Fluo code to see what non-public Accumulo APIs are used&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/362&quot;&gt;#362&lt;/a&gt; - Made API data objects immutable&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/349&quot;&gt;#349&lt;/a&gt; - Support application level configuration in fluo.properties&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/342&quot;&gt;#342&lt;/a&gt; - Add a configurable retry timeout to Fluo clients&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/294&quot;&gt;#294&lt;/a&gt; - Fluo now uses chroot suffix in its Zookeeper connection.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/293&quot;&gt;#293&lt;/a&gt; - Add argument checking to FluoConfiguration&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/244&quot;&gt;#244&lt;/a&gt; - Make re-initialization easier for user&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
-
-&lt;p&gt;A successful long stress test run was conducted using Fluo built from commit
-&lt;a href=&quot;https://github.com/fluo-io/fluo/commit/fb647dd6a470e8015654f8ed99b9196f5f49582a&quot;&gt;fb647dd&lt;/a&gt;.  The test ran very well and never fell behind like a
-&lt;a href=&quot;/blog/2014/12/30/stress-test-long-run/&quot;&gt;previous long run&lt;/a&gt; of stress did.  The test had the following
-properties.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Initialized stress test using 1 billion random integers.&lt;/li&gt;
-  &lt;li&gt;Ran 150 incremental loads of 100 thousand integers.  Slept 3 minutes between loads.&lt;/li&gt;
-  &lt;li&gt;Used 19 m3.xlarge nodes on EC2.  16 workers and 3 masters&lt;/li&gt;
-  &lt;li&gt;Configuration for the test committed and tagged in git : &lt;a href=&quot;https://github.com/keith-turner/fluo-deploy/tree/beta-long-test-1&quot;&gt;fluo-deploy tag&lt;/a&gt; and &lt;a href=&quot;https://github.com/keith-turner/fluo-stress/tree/beta-long-test-1&quot;&gt;fluo-stress tag&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Opened two issues as a result of test &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/499&quot;&gt;#499&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/fluo-stress/issues/30&quot;&gt;fluo-stress#30&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Below is the trailing output from running the test.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;*****Generating and loading incremental data set 148*****
-*****Generating and loading incremental data set 149*****
-*****Generating and loading incremental data set 150*****
-*****Calculating # of unique integers using MapReduce*****
-                UNIQUE=1014486419
-*****Wait for Fluo to finish processing*****
-05:33:40.158 [main] INFO  io.fluo.cluster.runner.AppRunner - The wait command will exit when all notifications are processed
-05:33:40.417 [Thread-3] INFO  io.fluo.core.oracle.OracleClient - Connected to oracle at worker4:9913
-05:33:41.308 [main] INFO  io.fluo.cluster.runner.AppRunner - All processing has finished!
-*****Printing # of unique integers calculated by Fluo*****
-Total at root : 1014486419
-Nodes Scanned : 59605
-*****Verifying Fluo &amp;amp; MapReduce results match*****
-Success! Fluo &amp;amp; MapReduce both calculated 1014486419 unique integers
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The test ran for a little over 12 hours.  Below are two plots pulled from
-graphite showing the number of notifications queued and transaction rate over
-the entire test run.  Load transactions are not included in the rate.  The rate
-is transactions per second.  The accuracy of these plots is uncertain because
-no graphite configuration changes were made.  The plots do seem within the
-ballpark.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/resources/release/1.0.0-beta-1/queued.png&quot; alt=&quot;Notifications Queued&quot; title=&quot;Notifications Queued&quot; /&gt; &lt;img src=&quot;/resources/release/1.0.0-beta-1/rate.png&quot; alt=&quot;Transaction rate&quot; title=&quot;Transaction Rate&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 09 Jun 2015 18:30:00 +0000</pubDate>
-        <link>https://fluo.apache.org//release/fluo-1.0.0-beta-1/</link>
-        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-1.0.0-beta-1/</guid>
-        
-        
-        <category>release</category>
         
       </item>
     

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//blog/2016/11/10/immutable-bytes/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Java needs an immutable byte string | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55360307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/release/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li><a href="/docs/">Docs</a></li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/getinvolved/">Get Involved</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div id="post-header">
+  <h1>Java needs an immutable byte string</h1>
+  <p class="text-muted">
+     Author : Keith Turner <br>  
+     Reviewer(s) : Christopher Tubbs, Mike Walch <br> 
+    10 Nov 2016
+  </p> 
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Java needs an immutable byte string&url=https://fluo.apache.org//blog/2016/11/10/immutable-bytes/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
+</div>
+<div id="post-content">
+  <h2 id="fluo-data-model-and-transactions">Fluo Data Model and Transactions</h2>
+
+<p>Fluo uses a <a href="/tour/data-model/">data model</a> composed of key/values.  Each key has four fields :
+<em>row</em>,<em>family</em>,<em>qualifier</em>,<em>visibility</em>.  Each of these key fields is a sequence of bytes.  Fluo
+transactions read key/values from a snapshot of a table.  Any changes a transaction makes is
+buffered until commit.  At the time of commit the changes are only made if no other transaction
+modified any of the key values.</p>
+
+<p>While designing the Fluo API we were uncertain about making Fluo’s basic <a href="/tour/data-pojos/">POJOs</a> mutable or
+immutable.  In the end we decided to go with immutable types to make writing correct Fluo code
+easier.  One of the POJOs we created was <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/data/Bytes.html">Bytes</a>,  an immutable wrapper around a byte array.  We
+also created <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/data/Bytes.BytesBuilder.html">BytesBuilder</a>, which is analagous to StringBuilder, and makes it easy and efficient
+to construct Bytes.</p>
+
+<h3 id="what-about-the-copies">What about the copies?</h3>
+
+<p>Bytes requires a defensive copy at creation time.  When we were designing Fluo’s API we were worried
+about this at first.  However a simple truth became apparent.  If the API took a mutable type, then
+all boundary points between the user and Fluo would require defensive copies.  For example assume
+Fluo’s API took byte arrays and consider the following code.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//A Fluo transaction</span>
+<span class="n">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="o">...</span>
+<span class="kt">byte</span><span class="o">[]</span> <span class="n">row</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">column1</span><span class="o">,</span> <span class="n">value1</span><span class="o">);</span>
+<span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">column2</span><span class="o">,</span> <span class="n">value2</span><span class="o">);</span>
+<span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">column3</span><span class="o">,</span> <span class="n">value3</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>Fluo will buffer changes until a transaction is committed.  In the example above since Fluo accepts
+a mutable row, it would be prudent to do a defensive copy each time <code class="highlighter-rouge">set()</code> is called above.</p>
+
+<p>In the code below where an immutable byte array wrapper is used, the calls to <code class="highlighter-rouge">set()</code> do not need to
+do a defensive copy.  So when comparing the two examples, the immutable byte wrapper results in less
+defensive copies.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//A Fluo transaction</span>
+<span class="n">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">Bytes</span> <span class="n">row</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">column1</span><span class="o">,</span> <span class="n">value1</span><span class="o">);</span>
+<span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">column2</span><span class="o">,</span> <span class="n">value2</span><span class="o">);</span>
+<span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">column3</span><span class="o">,</span> <span class="n">value3</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>We really did not want to create Bytes and BytesBuilder types, however we could not find what we
+needed in Java’s standard libraries.  The following sections discuss some of the options we
+considered.</p>
+
+<h2 id="why-not-use-string">Why not use String?</h2>
+
+<p>Java’s String type is an immutable wrapper around a char array.  In order to store a byte array in a
+String, Java must decode the byte array using a character set.  Some sequences of bytes do not map
+in some characters sets.  Therefore, trying to stuff arbitrary binary data in a String can corrupt
+the data.  The following little program shows this, it will print <code class="highlighter-rouge">false</code>.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kt">byte</span> <span class="n">bytes1</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">256</span><span class="o">];</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">255</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+      <span class="n">bytes1</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span><span class="n">i</span><span class="o">;</span>
+
+    <span class="kt">byte</span> <span class="n">bytes2</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">bytes1</span><span class="o">).</span><span class="na">getBytes</span><span class="o">();</span>
+
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">bytes1</span><span class="o">,</span> <span class="n">bytes2</span><span class="o">));</span>
+</code></pre>
+</div>
+
+<p>String can be made to work by specifying an appropriate character set. The following program will
+print <code class="highlighter-rouge">true</code>.  However, this is error prone and inefficient.  It’s error prone in the case where the
+character set is wrong or omitted.  It’s inefficient because it results in copying from byte arrays
+to char arrays and visa versa.  Also, char arrays use twice as much memory.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kt">byte</span> <span class="n">bytes1</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">256</span><span class="o">];</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">255</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+      <span class="n">bytes1</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span><span class="n">i</span><span class="o">;</span>
+
+    <span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">bytes1</span><span class="o">,</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">ISO_8859_1</span><span class="o">);</span>
+    <span class="kt">byte</span> <span class="n">bytes2</span><span class="o">[]</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="n">StandardCharsets</span><span class="o">.</span><span class="na">ISO_8859_1</span><span class="o">);</span>
+
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">bytes1</span><span class="o">,</span> <span class="n">bytes2</span><span class="o">));</span>
+</code></pre>
+</div>
+
+<h2 id="why-not-use-bytebuffer">Why not use ByteBuffer?</h2>
+
+<p>A read only ByteBuffer might seem like it would fit the bill of an immutable byte array wrapper.
+However, the following program shows two ways that ByteBuffer falls short.  ByteBuffers are great
+for I/O, but it would not be prudent to use them when immutability is desired.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes1</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[]</span> <span class="o">{</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,(</span><span class="kt">byte</span><span class="o">)</span><span class="mi">250</span><span class="o">};</span>
+    <span class="n">ByteBuffer</span> <span class="n">bb1</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">bytes1</span><span class="o">).</span><span class="na">asReadOnlyBuffer</span><span class="o">();</span>
+
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">bb1</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+    <span class="n">bytes1</span><span class="o">[</span><span class="mi">2</span><span class="o">]=</span><span class="mi">89</span><span class="o">;</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">bb1</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+    <span class="n">bb1</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">bb1</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+</code></pre>
+</div>
+
+<p>The program above prints the following, which is less than ideal :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>747721
+830367
+26786
+</code></pre>
+</div>
+
+<p>This little program shows two things.  First, the only guarantee we are getting from
+<code class="highlighter-rouge">asReadOnlyBuffer()</code> is that <code class="highlighter-rouge">bb1</code> can not be used to modify <code class="highlighter-rouge">bytes1</code>.  However, the originator of
+the read only buffer can still modify the wrapped byte array.   Java’s String and Fluo’s Bytes avoid
+this by always copying data into an internal private array that never escapes.</p>
+
+<p>The second issue is that <code class="highlighter-rouge">bb1</code> has a position and calling <code class="highlighter-rouge">bb1.get()</code> changes this position.
+Changing the position conceptually changes the contents of the ByteBuffer.  This is why <code class="highlighter-rouge">hashCode()</code>
+returns something different after <code class="highlighter-rouge">bb1.get()</code> is called.  So even though <code class="highlighter-rouge">bb1</code> does not enable
+mutating <code class="highlighter-rouge">bytes1</code>, <code class="highlighter-rouge">bb1</code> is itself mutable.</p>
+
+<h2 id="why-not-use-protobufs-bytestring">Why not use Protobuf’s ByteString?</h2>
+
+<p><a href="https://developers.google.com/protocol-buffers/">Protocol Buffers</a> has a beautiful implementation of an immutable byte array wrapper called
+<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/ByteString">ByteString</a>.  I would encourage its use when possible.  I discovered this jewel after Bytes was
+implemented in Fluo.  Using it was considered, however in Fluo’s case its not really appropriate to
+use for two reasons.  First, any library designer should try to minimize what transitive dependencies
+they force on users.  Internally Fluo does not currently use Protocol Buffers in its implementation,
+so this would be a new dependency for Fluo users.  The second reason is going to require some
+background to explain.</p>
+
+<p>Technologies like <a href="https://www.osgi.org">OSGI</a> and <a href="http://openjdk.java.net/projects/jigsaw/">Jigsaw</a> seek to modularize Java libraries and provide dependency
+isolation.  Dependency isolation allows a user to use a library without having to share a libraries
+dependencies.  For example, consider the following hypothetical scenario.</p>
+
+<ul>
+  <li>Fluo’s implementation uses Protobuf version 2.5</li>
+  <li>Fluo user code uses Protobuf version 1.8</li>
+</ul>
+
+<p>Without dependency isolation, the user must converge dependencies and make their application and
+Fluo use the same version of Protobuf.  Sometimes this works without issue, but sometimes things
+will break because Protobuf dropped, changed, or added a method.</p>
+
+<p>With dependency isolation, Fluo’s implementation and Fluo user code can easily use different versions
+of Protobuf.  This is only true as long as Fluo’s API does not use Protobuf.  So, this is the second
+reason that Fluo should not use classes from Protobuf in its API.  If Fluo used Protobuf in its API
+then it forces the user to have to converge dependencies, even if they are using OSGI or Jigsaw.</p>
+
+<h2 id="java-should-have-an-immutable-byte-array-wrapper">Java should have an immutable byte array wrapper</h2>
+
+<p>So far, the following arguments have been presented:</p>
+
+<ul>
+  <li>An immutable byte array wrapper is useful and needed.</li>
+  <li>Java does not provide a good immutable byte array wrapper.</li>
+  <li>Using an immutable byte array wrapper from library X in library Y’s API may be problematic.</li>
+</ul>
+
+<p>These arguments all point to the need for an immutable byte array wrapper to exist in Java. This
+need could also be satisfied by a library outside of Java with some restrictions. Assume a new
+library called Lib Immutable Byte Array Wrapper (libibaw) was created.  In order for libibaw to be
+used in other libraries APIs, it would need to promise the following.</p>
+
+<ul>
+  <li>No dependencies other than Java.</li>
+  <li>Backwards compatibility.</li>
+</ul>
+
+<p>The reason backwards compatibility is important is that it would make dependency convergence super
+easy.  The following situation shows this.</p>
+
+<ul>
+  <li>Fluo uses libibaw 1.2 in its API</li>
+  <li>Fluo user code uses libibaw 1.1.</li>
+</ul>
+
+<p>If libibaw promises backward compatibility, then all the user needs to do is use version 1.2 of
+libibaw.  With the promise of backwards compatibility, using version 1.2 will not break the users
+code.</p>
+
+<p>Having a library would be nice, but having something in Java would minimize copies.  Outside
+of Java there will inevitably be multiple implementations and going between them will require a
+copy.  For example if a user uses Fluo and Protobuf they may be forced to copy Fluo’s Bytes to
+Protobuf’s ByteString. If Protobuf and Fluo both used an immutable byte sequence type from Java, this
+would not be needed.</p>
+
+
+</div>
+
+<div>
+  <p class="text-muted">View all posts in the <a href="/news/">news archive</a></p>
+</div>
+
+          </div>
+      </div>
+      <hr>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <div class="center-block">
+          <a href="https://apache.org"><img src="/resources/feather.png" alt="Apache"></a>
+          Copyright &copy; 2016 The Apache Software Foundation. Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
