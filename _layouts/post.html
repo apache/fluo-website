@@ -2,8 +2,12 @@
 layout: default
 ---
 <div id="post-header">
-  <h2>{{ page.title }}</h2>
-  <p class="text-muted">{{ page.date | date_to_string }}</p>
+  <h1>{{ page.title }}</h1>
+  <p class="text-muted">
+    {% if page.author %} Author : {{ page.author }} <br> {% endif %} 
+    {% if page.reviewers %} Reviewer(s) : {{ page.reviewers }} <br> {% endif %}
+    {{ page.date | date_to_string }}
+  </p> 
   <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}&via={{ site.twitter_username }}&related={{ site.twitter_username }}" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
 </div>
 <div id="post-content">
