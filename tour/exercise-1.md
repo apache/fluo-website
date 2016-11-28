@@ -1,5 +1,5 @@
 ---
-title: Word count Exercise
+title: Word counts for unique documents exercise
 ---
 
 This exercise gives you an opportunity to use everything you have learned so
@@ -138,11 +138,8 @@ Add the following to the ft.Main class.
     //line.
     mini.waitForObservers();
 
-    System.out.println("**** begin table dump ****");
-    try (Snapshot snap = client.newSnapshot()) {
-      snap.scanner().build().forEach(rcv -> System.out.println("  " + rcv));
-    }
-    System.out.println("**** end table dump ****\n");
+    FluoITHelper.printFluoTable(client);
+    System.out.println();
   }
 
   private static void excercise(MiniFluo mini, FluoClient client) {
@@ -155,46 +152,46 @@ Add the following to the ft.Main class.
 Once the TODOs in the DocLoader class are implemented, running Main should print out the following.
 
 ```
-**** begin table dump ****
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc refc  1
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc refc  1
-  d:cf8ddc0 doc refs  referenced
-  u:http://news.com/a23 uri hash  a6c4d1f
-  u:http://news.com/a24 uri hash  cf8ddc0
-**** end table dump ****
+== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+=== fluo end ===
 
-**** begin table dump ****
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc refc  2
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc refc  1
-  d:cf8ddc0 doc refs  referenced
-  u:http://news.com/a23 uri hash  a6c4d1f
-  u:http://news.com/a24 uri hash  cf8ddc0
-  u:http://oldnews.com/a23 uri hash  a6c4d1f
-**** end table dump ****
+== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	2
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+=== fluo end ===
 
-**** begin table dump ****
-  d:2732ebc doc content  Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
-  d:2732ebc doc refc  1
-  d:2732ebc doc refs  referenced
-  d:6658252 doc content  Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
-  d:6658252 doc refc  1
-  d:6658252 doc refs  referenced
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc refc  1
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc refc  0
-  d:cf8ddc0 doc refs  unreferenced
-  u:http://news.com/a23 uri hash  6658252
-  u:http://news.com/a24 uri hash  2732ebc
-  u:http://oldnews.com/a23 uri hash  a6c4d1f
-**** end table dump ****
+== fluo start ==
+d:2732ebc doc content	Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
+d:2732ebc doc refc	1
+d:2732ebc doc refs	referenced
+d:6658252 doc content	Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
+d:6658252 doc refc	1
+d:6658252 doc refs	referenced
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	0
+d:cf8ddc0 doc refs	unreferenced
+u:http://news.com/a23 uri hash	6658252
+u:http://news.com/a24 uri hash	2732ebc
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+=== fluo end ===
 ```
 
 ## Part 2 : Computing word counts.
@@ -240,14 +237,15 @@ public class ContentObserver extends AbstractObserver {
   /**
    * Utility method to tokenize the content of a document into unique words.
    */
-  private Set<String> tokenize(String content) {
-    return new HashSet<String>(Arrays.asList(content.split("[ .!,]+")));
+  private List<String> tokenize(String content) {
+    return Arrays.asList(content.split("[\\W]+"));
   }
 
   /**
    *  Adds the passed to delta to the values for each word.
    */
-  private void adjustCounts(TransactionBase tx, int delta, Set<String> words) {
+  private void adjustCounts(TransactionBase tx, int delta, List<String> words) {
+     Set<String> uniqueWords = new HashSet<String>(words);
     // TODO make a single call to get all of the current word counts.  Could use
     //tx.gets(Collection<RowColumn>)
 
@@ -297,113 +295,355 @@ observer as follows.
 After implementing the Observer, the output of the program should look like the following.
 
 ```
-**** begin table dump ****
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc processed  true
-  d:a6c4d1f doc refc  1
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc processed  true
-  d:cf8ddc0 doc refc  1
-  d:cf8ddc0 doc refs  referenced
-  u:http://news.com/a23 uri hash  a6c4d1f
-  u:http://news.com/a24 uri hash  cf8ddc0
-  w:35 word docCount  1
-  w:Bill word docCount  1
-  w:Jebediah word docCount  2
-  w:Minimus word docCount  1
-  w:Mun word docCount  1
-  w:No word docCount  1
-  w:after word docCount  1
-  w:days word docCount  1
-  w:for word docCount  1
-  w:forgot word docCount  1
-  w:orbits word docCount  1
-  w:panels word docCount  1
-  w:plans word docCount  1
-  w:power word docCount  1
-  w:rescue word docCount  1
-  w:solar word docCount  1
-  w:taking word docCount  1
-  w:to word docCount  1
-  w:tourist word docCount  1
-**** end table dump ****
+== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc processed	true
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+w:35 word docCount	1
+w:Bill word docCount	1
+w:Jebediah word docCount	2
+w:Minimus word docCount	1
+w:Mun word docCount	1
+w:No word docCount	1
+w:after word docCount	1
+w:days word docCount	1
+w:for word docCount	1
+w:forgot word docCount	1
+w:orbits word docCount	1
+w:panels word docCount	1
+w:plans word docCount	1
+w:power word docCount	1
+w:rescue word docCount	1
+w:solar word docCount	1
+w:taking word docCount	1
+w:to word docCount	1
+w:tourist word docCount	1
+=== fluo end ===
 
-**** begin table dump ****
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc processed  true
-  d:a6c4d1f doc refc  2
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc processed  true
-  d:cf8ddc0 doc refc  1
-  d:cf8ddc0 doc refs  referenced
-  u:http://news.com/a23 uri hash  a6c4d1f
-  u:http://news.com/a24 uri hash  cf8ddc0
-  u:http://oldnews.com/a23 uri hash  a6c4d1f
-  w:35 word docCount  1
-  w:Bill word docCount  1
-  w:Jebediah word docCount  2
-  w:Minimus word docCount  1
-  w:Mun word docCount  1
-  w:No word docCount  1
-  w:after word docCount  1
-  w:days word docCount  1
-  w:for word docCount  1
-  w:forgot word docCount  1
-  w:orbits word docCount  1
-  w:panels word docCount  1
-  w:plans word docCount  1
-  w:power word docCount  1
-  w:rescue word docCount  1
-  w:solar word docCount  1
-  w:taking word docCount  1
-  w:to word docCount  1
-  w:tourist word docCount  1
-**** end table dump ****
+== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	2
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc processed	true
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+w:35 word docCount	1
+w:Bill word docCount	1
+w:Jebediah word docCount	2
+w:Minimus word docCount	1
+w:Mun word docCount	1
+w:No word docCount	1
+w:after word docCount	1
+w:days word docCount	1
+w:for word docCount	1
+w:forgot word docCount	1
+w:orbits word docCount	1
+w:panels word docCount	1
+w:plans word docCount	1
+w:power word docCount	1
+w:rescue word docCount	1
+w:solar word docCount	1
+w:taking word docCount	1
+w:to word docCount	1
+w:tourist word docCount	1
+=== fluo end ===
 
-**** begin table dump ****
-  d:2732ebc doc content  Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
-  d:2732ebc doc processed  true
-  d:2732ebc doc refc  1
-  d:2732ebc doc refs  referenced
-  d:6658252 doc content  Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
-  d:6658252 doc processed  true
-  d:6658252 doc refc  1
-  d:6658252 doc refs  referenced
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc processed  true
-  d:a6c4d1f doc refc  1
-  d:a6c4d1f doc refs  referenced
-  u:http://news.com/a23 uri hash  6658252
-  u:http://news.com/a24 uri hash  2732ebc
-  u:http://oldnews.com/a23 uri hash  a6c4d1f
-  w:35 word docCount  1
-  w:38 word docCount  1
-  w:Bill word docCount  1
-  w:Crisis word docCount  1
-  w:Jebediah word docCount  2
-  w:KSC word docCount  1
-  w:Minimus word docCount  1
-  w:Mun word docCount  2
-  w:No word docCount  2
-  w:Tourist word docCount  1
-  w:at word docCount  1
-  w:days word docCount  2
-  w:for word docCount  2
-  w:forgot word docCount  3
-  w:orbits word docCount  2
-  w:panels word docCount  3
-  w:power word docCount  2
-  w:solar word docCount  3
-  w:stuck word docCount  1
-**** end table dump ****
+== fluo start ==
+d:2732ebc doc content	Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
+d:2732ebc doc processed	true
+d:2732ebc doc refc	1
+d:2732ebc doc refs	referenced
+d:6658252 doc content	Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
+d:6658252 doc processed	true
+d:6658252 doc refc	1
+d:6658252 doc refs	referenced
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+u:http://news.com/a23 uri hash	6658252
+u:http://news.com/a24 uri hash	2732ebc
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+w:35 word docCount	1
+w:38 word docCount	1
+w:Bill word docCount	1
+w:Crisis word docCount	1
+w:Jebediah word docCount	2
+w:KSC word docCount	1
+w:Minimus word docCount	1
+w:Mun word docCount	2
+w:No word docCount	2
+w:Tourist word docCount	1
+w:at word docCount	1
+w:days word docCount	2
+w:for word docCount	2
+w:forgot word docCount	3
+w:orbits word docCount	2
+w:panels word docCount	3
+w:power word docCount	2
+w:solar word docCount	3
+w:stuck word docCount	1
+=== fluo end ===
 ```
 
 ## Part 3 : Using Fluo Recipes
 
 The way to compute word counts above is very prone to transactional collisions. One way to avoid
-these collisions is to use the CollisionFreeMap provided in Fluo Recipes. Currently Fluo Recipes is
-not released, this section will be updated with more information once it is.
+these collisions is to use the CollisionFreeMap(CFM) provided in Fluo Recipes.  The CFM will queue
+updates for words and notify another observer to process the queued updates.  The updates are queued
+in a way that will not cause collisions.  The CFM has its own Observer which will call two functions
+you provide.  The code below shows an example of these two functions and how to configure the CFM to
+call them.
+
+To try using a CFM, first add the following class.
+
+```java
+package ft;
+
+import java.util.*;
+
+import org.apache.fluo.api.client.TransactionBase;
+import org.apache.fluo.api.config.FluoConfiguration;
+import org.apache.fluo.api.config.SimpleConfiguration;
+import org.apache.fluo.recipes.core.map.CollisionFreeMap;
+import org.apache.fluo.recipes.core.map.Combiner;
+import org.apache.fluo.recipes.core.map.Update;
+import org.apache.fluo.recipes.core.map.UpdateObserver;
+
+import static ft.ContentObserver.WORD_COUNT;
+
+/**
+ * This class contains all of the code related to the {@link CollisionFreeMap} that keeps track of
+ * word counts.  It also generates an inverted index of word counts as an example follow on action.
+ */
+public class WordCounter {
+
+  /**
+   * the {@link CollisionFreeMap} Observer calls this combiner to processes the queued updates for
+   * a word.
+   */
+  public static class LongCombiner implements Combiner<String, Long>{
+
+    @Override
+    public Optional<Long> combine(String k, Iterator<Long> counts) {
+      long sum = 0;
+      while(counts.hasNext()) {
+        sum += counts.next();
+      }
+
+      if(sum == 0) {
+        return Optional.empty();
+      } else {
+        return Optional.of(sum);
+      }
+    }
+  }
+
+  /**
+   * The {@link CollisionFreeMap} Observer will call this class when the counts for a word change.
+   */
+  public static class WordObserver extends UpdateObserver<String, Long> {
+    @Override
+    public void updatingValues(TransactionBase tx, Iterator<Update<String, Long>> updates) {
+      System.out.println("== begin CFM updates ==");  //this print to show per bucket processing
+      while(updates.hasNext()) {
+        Update<String, Long> u = updates.next();
+
+        long oldCount = u.getOldValue().orElse(0l);
+        long newCount = u.getNewValue().orElse(0l);
+
+        //create an inverted index of word counts
+        if(u.getOldValue().isPresent()) {
+          tx.delete(String.format("ic:%06d:%s", oldCount, u.getKey()), WORD_COUNT);
+        }
+
+        if(u.getNewValue().isPresent()) {
+          tx.set(String.format("ic:%06d:%s", newCount, u.getKey()), WORD_COUNT, "");
+        }
+
+        System.out.printf("  update %s %d -> %d\n", u.getKey(), oldCount , newCount);
+      }
+      System.out.println("== end CFM updates ==");
+    }
+  }
+
+  /**
+   * Code to setup a CFM's Observer and configure it to call your functions.
+   */
+  public static void configure(FluoConfiguration fluoConfig, int numBuckets) {
+    CollisionFreeMap.configure(fluoConfig, new CollisionFreeMap.Options("wc", LongCombiner.class,
+        WordObserver.class, String.class, Long.class, 3));
+  }
+
+  private CollisionFreeMap<String, Long> cfm;
+
+  WordCounter(SimpleConfiguration appConfig){
+    cfm = CollisionFreeMap.getInstance("wc", appConfig);
+  }
+
+  /**
+   * This method will queue updates for each word to be processed later by the CFM Observer.
+   */
+  void adjustCounts(TransactionBase tx, int delta, List<String> words){
+    HashMap<String, Long> wcUpdates = new HashMap<>();
+
+    for (String word : words) {
+      wcUpdates.put(word, (long)delta);
+    }
+
+    cfm.update(tx, wcUpdates);
+  }
+}
+```
+
+Then modify `preInit()` in `Main` to the following.
+
+```java
+  private static void preInit(FluoConfiguration fluoConfig) {
+    fluoConfig.addObserver(new ObserverSpecification(ContentObserver.class.getName()));
+    WordCounter.configure(fluoConfig, 3);
+  }
+```
+
+After that add the following `init()` method to `ContentObserver` and modify `adjustCounts()` to the
+following.
+
+```java
+  private WordCounter wordCounter;
+
+  @Override
+  public void init(Context context) throws Exception {
+    //get an instance of the CFM based on application config
+    wordCounter = new WordCounter(context.getAppConfiguration());
+  }
+
+  private void adjustCounts(TransactionBase tx, int delta, String[] words) {
+    wordCounter.adjustCounts(tx, delta, words);
+  }
+```
+
+The CFM groups key values into buckets for efficiency and processes the updates for entire bucket in
+a single transaction.  When you run this new code, that is why `== begin CFM updates ==` is seen at
+least three times for each group of documents loaded.
+
+When you run this example you will also notice two new prefixes in the output of the table scan.  First
+the `wc:` prefix is where the CFM stores its data.  By default the CFM uses Kryo for serialization
+and therefore the key values with this prefix contain non-ASCII characters.  The utility function
+`FluoITHelper.printFluoTable()` escapes non-ASCII characters with `\x<HEX>`.   Second the `ic:`
+prefix contains an inverted index of word counts.  This was created simply to show an example of a
+follow on action when word counts change.  Ideally this follow on action would have a low chance of
+collisions.  Creating the inverted index will not cause collisions because each word is in a single
+CFM bucket and each bucket is processed independently.
+
+## Part 4 : Running this example on a real instance.
+
+Everything in the tour so far has used MiniFluo to run code.  The following
+instructions show how to run the code in this excercise on a real Fluo
+instance.  [Uno] can be used to quickly setup Fluo on a single node.
+
+The following two helper classes will be needed to run on a real instance.
+
+```java
+package ft;
+
+import org.apache.fluo.api.config.FluoConfiguration;
+
+/**
+ * Generates application config.
+ */
+public class GenConfig {
+  public static void main(String[] args) {
+    FluoConfiguration conf = new FluoConfiguration();
+    Main.preInit(conf);
+    conf.save(System.out);
+  }
+}
+```
+
+
+```java
+package ft;
+
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import javax.inject.Inject;
+import org.apache.fluo.api.client.*;
+import org.apache.fluo.api.config.FluoConfiguration;
+
+/**
+ * Loads one or more document passed in on the command line.
+ */
+public class Load {
+  // when run with fluo exec command, the applications configuration will be injected
+  @Inject
+  private static FluoConfiguration fluoConfig;
+
+  public static void main(String[] args) throws Exception {
+    try (FluoClient client = FluoFactory.newClient(fluoConfig);
+        LoaderExecutor loaderExecutor = client.newLoaderExecutor()) 
+    {
+      for (String filename : args) {
+        Path path = Paths.get(filename);
+        byte[] encoded = Files.readAllBytes(path);
+        String docContent = new String(encoded, StandardCharsets.UTF_8);
+        String uri = path.toAbsolutePath().normalize().toUri().toString();
+        Document doc = new Document(uri, docContent);
+        loaderExecutor.execute(new DocLoader(doc));
+      }
+    }
+  }
+}
+```
+
+The following command will run this application on a Fluo instance, assuming
+`$FLUO_HOME` is set and `fluo` is on the path.
+
+```bash
+cd <your fluo tour dir>
+
+#create a new Fluo application named wordCount
+fluo new wordCount
+
+#populate applications lib directory
+mvn clean package
+cp target/fluo-tour-0.0.1-SNAPSHOT.jar $FLUO_HOME/apps/wordCount/lib
+mvn dependency:copy-dependencies -DincludeArtifactIds="fluo-recipes-core,fluo-recipes-accumulo,fluo-recipes-kryo,kryo,minlog,reflectasm,objenesis" -DoutputDirectory=$FLUO_HOME/apps/wordCount/lib
+
+#add app specific config to properties file that Fluo init will use
+fluo exec wordCount ft.GenConfig >> $FLUO_HOME/apps/wordCount/conf/fluo.properties
+
+#initialize and start Fluo application
+fluo init wordCount
+fluo start wordCount
+fluo info wordCount
+
+#load some text files
+fluo exec wordCount ft.Load <some filename> <some filename> ...
+
+#wait for all notifications to process
+fluo wait wordCount
+
+#scan data in Fluo
+fluo scan wordCount
+fluo scan wordCount -p ic:
+
+#Could try changing a file and reloading it
+
+#stop Fluo application
+fluo stop wordCount
+```
 
 [aft]: https://twitter.com/hashtag/apachefluotour
+[Uno]: https://github.com/astralway/uno
