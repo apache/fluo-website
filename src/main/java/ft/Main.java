@@ -13,6 +13,7 @@ import org.apache.fluo.api.config.*;
 import org.apache.fluo.api.data.*;
 import org.apache.fluo.api.mini.MiniFluo;
 import org.apache.fluo.api.observer.*;
+import org.apache.fluo.recipes.test.FluoITHelper;
 
 public class Main {
   public static void main(String[] args) throws Exception {
@@ -37,7 +38,7 @@ public class Main {
     }
   }
 
-  private static void preInit(FluoConfiguration fluoConfig) {
+  static void preInit(FluoConfiguration fluoConfig) {
     //this method does not need to be changed for earlier excercises in tour
   }
 
