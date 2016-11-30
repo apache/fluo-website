@@ -523,7 +523,7 @@ following.
     wordCounter = new WordCounter(context.getAppConfiguration());
   }
 
-  private void adjustCounts(TransactionBase tx, int delta, String[] words) {
+  private void adjustCounts(TransactionBase tx, int delta, List<String> words) {
     wordCounter.adjustCounts(tx, delta, words);
   }
 ```
