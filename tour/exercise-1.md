@@ -437,6 +437,7 @@ public class WordCounter {
       }
 
       if(sum == 0) {
+        //returning emtpy will cause the CFM to delete the key in Fluo's table
         return Optional.empty();
       } else {
         return Optional.of(sum);
