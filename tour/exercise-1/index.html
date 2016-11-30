@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://fluo.apache.org//tour/exercise-1/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Word count Exercise | Apache Fluo</title>
+    <title>Word counts for unique documents exercise | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -107,7 +107,7 @@
 
 
 <div id="tour-header">
-  <h2><a href="/tour/">Fluo Tour</a>: Word count Exercise</h2>
+  <h2><a href="/tour/">Fluo Tour</a>: Word counts for unique documents exercise</h2>
   <p class="text-muted">Tour page 19 of 26</p>
 </div>
 <div id="tour-content">
@@ -250,11 +250,8 @@ column.</li>
     <span class="c1">//line.</span>
     <span class="n">mini</span><span class="o">.</span><span class="na">waitForObservers</span><span class="o">();</span>
 
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"**** begin table dump ****"</span><span class="o">);</span>
-    <span class="k">try</span> <span class="o">(</span><span class="n">Snapshot</span> <span class="n">snap</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newSnapshot</span><span class="o">())</span> <span class="o">{</span>
-      <span class="n">snap</span><span class="o">.</span><span class="na">scanner</span><span class="o">().</span><span class="na">build</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">rcv</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"  "</span> <span class="o">+</span> <span class="n">rcv</span><span class="o">));</span>
-    <span class="o">}</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"**** end table dump ****\n"</span><span class="o">);</span>
+    <span class="n">FluoITHelper</span><span class="o">.</span><span class="na">printFluoTable</span><span class="o">(</span><span class="n">client</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
   <span class="o">}</span>
 
   <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">excercise</span><span class="o">(</span><span class="n">MiniFluo</span> <span class="n">mini</span><span class="o">,</span> <span class="n">FluoClient</span> <span class="n">client</span><span class="o">)</span> <span class="o">{</span>
@@ -267,46 +264,46 @@ column.</li>
 
 <p>Once the TODOs in the DocLoader class are implemented, running Main should print out the following.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>**** begin table dump ****
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc refc  1
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc refc  1
-  d:cf8ddc0 doc refs  referenced
-  u:http://news.com/a23 uri hash  a6c4d1f
-  u:http://news.com/a24 uri hash  cf8ddc0
-**** end table dump ****
+<div class="highlighter-rouge"><pre class="highlight"><code>== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+=== fluo end ===
 
-**** begin table dump ****
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc refc  2
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc refc  1
-  d:cf8ddc0 doc refs  referenced
-  u:http://news.com/a23 uri hash  a6c4d1f
-  u:http://news.com/a24 uri hash  cf8ddc0
-  u:http://oldnews.com/a23 uri hash  a6c4d1f
-**** end table dump ****
+== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	2
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+=== fluo end ===
 
-**** begin table dump ****
-  d:2732ebc doc content  Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
-  d:2732ebc doc refc  1
-  d:2732ebc doc refs  referenced
-  d:6658252 doc content  Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
-  d:6658252 doc refc  1
-  d:6658252 doc refs  referenced
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc refc  1
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc refc  0
-  d:cf8ddc0 doc refs  unreferenced
-  u:http://news.com/a23 uri hash  6658252
-  u:http://news.com/a24 uri hash  2732ebc
-  u:http://oldnews.com/a23 uri hash  a6c4d1f
-**** end table dump ****
+== fluo start ==
+d:2732ebc doc content	Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
+d:2732ebc doc refc	1
+d:2732ebc doc refs	referenced
+d:6658252 doc content	Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
+d:6658252 doc refc	1
+d:6658252 doc refs	referenced
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	0
+d:cf8ddc0 doc refs	unreferenced
+u:http://news.com/a23 uri hash	6658252
+u:http://news.com/a24 uri hash	2732ebc
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+=== fluo end ===
 </code></pre>
 </div>
 
@@ -354,14 +351,15 @@ incremented.</p>
   <span class="cm">/**
    * Utility method to tokenize the content of a document into unique words.
    */</span>
-  <span class="kd">private</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">tokenize</span><span class="o">(</span><span class="n">String</span> <span class="n">content</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">content</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">"[ .!,]+"</span><span class="o">)));</span>
+  <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">tokenize</span><span class="o">(</span><span class="n">String</span> <span class="n">content</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">content</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">"[\\W]+"</span><span class="o">));</span>
   <span class="o">}</span>
 
   <span class="cm">/**
    *  Adds the passed to delta to the values for each word.
    */</span>
-  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+     <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">uniqueWords</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;(</span><span class="n">words</span><span class="o">);</span>
     <span class="c1">// TODO make a single call to get all of the current word counts.  Could use</span>
     <span class="c1">//tx.gets(Collection&lt;RowColumn&gt;)</span>
 
@@ -411,115 +409,355 @@ observer as follows.</p>
 
 <p>After implementing the Observer, the output of the program should look like the following.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>**** begin table dump ****
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc processed  true
-  d:a6c4d1f doc refc  1
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc processed  true
-  d:cf8ddc0 doc refc  1
-  d:cf8ddc0 doc refs  referenced
-  u:http://news.com/a23 uri hash  a6c4d1f
-  u:http://news.com/a24 uri hash  cf8ddc0
-  w:35 word docCount  1
-  w:Bill word docCount  1
-  w:Jebediah word docCount  2
-  w:Minimus word docCount  1
-  w:Mun word docCount  1
-  w:No word docCount  1
-  w:after word docCount  1
-  w:days word docCount  1
-  w:for word docCount  1
-  w:forgot word docCount  1
-  w:orbits word docCount  1
-  w:panels word docCount  1
-  w:plans word docCount  1
-  w:power word docCount  1
-  w:rescue word docCount  1
-  w:solar word docCount  1
-  w:taking word docCount  1
-  w:to word docCount  1
-  w:tourist word docCount  1
-**** end table dump ****
+<div class="highlighter-rouge"><pre class="highlight"><code>== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc processed	true
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+w:35 word docCount	1
+w:Bill word docCount	1
+w:Jebediah word docCount	2
+w:Minimus word docCount	1
+w:Mun word docCount	1
+w:No word docCount	1
+w:after word docCount	1
+w:days word docCount	1
+w:for word docCount	1
+w:forgot word docCount	1
+w:orbits word docCount	1
+w:panels word docCount	1
+w:plans word docCount	1
+w:power word docCount	1
+w:rescue word docCount	1
+w:solar word docCount	1
+w:taking word docCount	1
+w:to word docCount	1
+w:tourist word docCount	1
+=== fluo end ===
 
-**** begin table dump ****
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc processed  true
-  d:a6c4d1f doc refc  2
-  d:a6c4d1f doc refs  referenced
-  d:cf8ddc0 doc content  Bill plans to rescue Jebediah after taking tourist to Minimus.
-  d:cf8ddc0 doc processed  true
-  d:cf8ddc0 doc refc  1
-  d:cf8ddc0 doc refs  referenced
-  u:http://news.com/a23 uri hash  a6c4d1f
-  u:http://news.com/a24 uri hash  cf8ddc0
-  u:http://oldnews.com/a23 uri hash  a6c4d1f
-  w:35 word docCount  1
-  w:Bill word docCount  1
-  w:Jebediah word docCount  2
-  w:Minimus word docCount  1
-  w:Mun word docCount  1
-  w:No word docCount  1
-  w:after word docCount  1
-  w:days word docCount  1
-  w:for word docCount  1
-  w:forgot word docCount  1
-  w:orbits word docCount  1
-  w:panels word docCount  1
-  w:plans word docCount  1
-  w:power word docCount  1
-  w:rescue word docCount  1
-  w:solar word docCount  1
-  w:taking word docCount  1
-  w:to word docCount  1
-  w:tourist word docCount  1
-**** end table dump ****
+== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	2
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc processed	true
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+w:35 word docCount	1
+w:Bill word docCount	1
+w:Jebediah word docCount	2
+w:Minimus word docCount	1
+w:Mun word docCount	1
+w:No word docCount	1
+w:after word docCount	1
+w:days word docCount	1
+w:for word docCount	1
+w:forgot word docCount	1
+w:orbits word docCount	1
+w:panels word docCount	1
+w:plans word docCount	1
+w:power word docCount	1
+w:rescue word docCount	1
+w:solar word docCount	1
+w:taking word docCount	1
+w:to word docCount	1
+w:tourist word docCount	1
+=== fluo end ===
 
-**** begin table dump ****
-  d:2732ebc doc content  Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
-  d:2732ebc doc processed  true
-  d:2732ebc doc refc  1
-  d:2732ebc doc refs  referenced
-  d:6658252 doc content  Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
-  d:6658252 doc processed  true
-  d:6658252 doc refc  1
-  d:6658252 doc refs  referenced
-  d:a6c4d1f doc content  Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
-  d:a6c4d1f doc processed  true
-  d:a6c4d1f doc refc  1
-  d:a6c4d1f doc refs  referenced
-  u:http://news.com/a23 uri hash  6658252
-  u:http://news.com/a24 uri hash  2732ebc
-  u:http://oldnews.com/a23 uri hash  a6c4d1f
-  w:35 word docCount  1
-  w:38 word docCount  1
-  w:Bill word docCount  1
-  w:Crisis word docCount  1
-  w:Jebediah word docCount  2
-  w:KSC word docCount  1
-  w:Minimus word docCount  1
-  w:Mun word docCount  2
-  w:No word docCount  2
-  w:Tourist word docCount  1
-  w:at word docCount  1
-  w:days word docCount  2
-  w:for word docCount  2
-  w:forgot word docCount  3
-  w:orbits word docCount  2
-  w:panels word docCount  3
-  w:power word docCount  2
-  w:solar word docCount  3
-  w:stuck word docCount  1
-**** end table dump ****
+== fluo start ==
+d:2732ebc doc content	Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
+d:2732ebc doc processed	true
+d:2732ebc doc refc	1
+d:2732ebc doc refs	referenced
+d:6658252 doc content	Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
+d:6658252 doc processed	true
+d:6658252 doc refc	1
+d:6658252 doc refs	referenced
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+u:http://news.com/a23 uri hash	6658252
+u:http://news.com/a24 uri hash	2732ebc
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+w:35 word docCount	1
+w:38 word docCount	1
+w:Bill word docCount	1
+w:Crisis word docCount	1
+w:Jebediah word docCount	2
+w:KSC word docCount	1
+w:Minimus word docCount	1
+w:Mun word docCount	2
+w:No word docCount	2
+w:Tourist word docCount	1
+w:at word docCount	1
+w:days word docCount	2
+w:for word docCount	2
+w:forgot word docCount	3
+w:orbits word docCount	2
+w:panels word docCount	3
+w:power word docCount	2
+w:solar word docCount	3
+w:stuck word docCount	1
+=== fluo end ===
 </code></pre>
 </div>
 
 <h2 id="part-3--using-fluo-recipes">Part 3 : Using Fluo Recipes</h2>
 
 <p>The way to compute word counts above is very prone to transactional collisions. One way to avoid
-these collisions is to use the CollisionFreeMap provided in Fluo Recipes. Currently Fluo Recipes is
-not released, this section will be updated with more information once it is.</p>
+these collisions is to use the CollisionFreeMap(CFM) provided in Fluo Recipes.  The CFM will queue
+updates for words and notify another observer to process the queued updates.  The updates are queued
+in a way that will not cause collisions.  The CFM has its own Observer which will call two functions
+you provide.  The code below shows an example of these two functions and how to configure the CFM to
+call them.</p>
+
+<p>To try using a CFM, first add the following class.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.TransactionBase</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.FluoConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.SimpleConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.map.CollisionFreeMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.map.Combiner</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.map.Update</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.map.UpdateObserver</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">ft</span><span class="o">.</span><span class="na">ContentObserver</span><span class="o">.</span><span class="na">WORD_COUNT</span><span class="o">;</span>
+
+<span class="cm">/**
+ * This class contains all of the code related to the {@link CollisionFreeMap} that keeps track of
+ * word counts.  It also generates an inverted index of word counts as an example follow on action.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WordCounter</span> <span class="o">{</span>
+
+  <span class="cm">/**
+   * the {@link CollisionFreeMap} Observer calls this combiner to processes the queued updates for
+   * a word.
+   */</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LongCombiner</span> <span class="kd">implements</span> <span class="n">Combiner</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="nf">combine</span><span class="o">(</span><span class="n">String</span> <span class="n">k</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">counts</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+      <span class="k">while</span><span class="o">(</span><span class="n">counts</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">counts</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+      <span class="o">}</span>
+
+      <span class="k">if</span><span class="o">(</span><span class="n">sum</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">sum</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**
+   * The {@link CollisionFreeMap} Observer will call this class when the counts for a word change.
+   */</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">WordObserver</span> <span class="kd">extends</span> <span class="n">UpdateObserver</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updatingValues</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Update</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;&gt;</span> <span class="n">updates</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"== begin CFM updates =="</span><span class="o">);</span>  <span class="c1">//this print to show per bucket processing</span>
+      <span class="k">while</span><span class="o">(</span><span class="n">updates</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">Update</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">u</span> <span class="o">=</span> <span class="n">updates</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+
+        <span class="kt">long</span> <span class="n">oldCount</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0</span><span class="n">l</span><span class="o">);</span>
+        <span class="kt">long</span> <span class="n">newCount</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0</span><span class="n">l</span><span class="o">);</span>
+
+        <span class="c1">//create an inverted index of word counts</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+          <span class="n">tx</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"ic:%06d:%s"</span><span class="o">,</span> <span class="n">oldCount</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="na">getKey</span><span class="o">()),</span> <span class="n">WORD_COUNT</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+          <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"ic:%06d:%s"</span><span class="o">,</span> <span class="n">newCount</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="na">getKey</span><span class="o">()),</span> <span class="n">WORD_COUNT</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"  update %s %d -&gt; %d\n"</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="na">getKey</span><span class="o">(),</span> <span class="n">oldCount</span> <span class="o">,</span> <span class="n">newCount</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"== end CFM updates =="</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**
+   * Code to setup a CFM's Observer and configure it to call your functions.
+   */</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">,</span> <span class="kt">int</span> <span class="n">numBuckets</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="k">new</span> <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">Options</span><span class="o">(</span><span class="s">"wc"</span><span class="o">,</span> <span class="n">LongCombiner</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+        <span class="n">WordObserver</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">3</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="n">CollisionFreeMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">cfm</span><span class="o">;</span>
+
+  <span class="n">WordCounter</span><span class="o">(</span><span class="n">SimpleConfiguration</span> <span class="n">appConfig</span><span class="o">){</span>
+    <span class="n">cfm</span> <span class="o">=</span> <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"wc"</span><span class="o">,</span> <span class="n">appConfig</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**
+   * This method will queue updates for each word to be processed later by the CFM Observer.
+   */</span>
+  <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">words</span><span class="o">){</span>
+    <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">wcUpdates</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">wcUpdates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">delta</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="n">cfm</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">wcUpdates</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Then modify <code class="highlighter-rouge">preInit()</code> in <code class="highlighter-rouge">Main</code> to the following.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">addObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">ObserverSpecification</span><span class="o">(</span><span class="n">ContentObserver</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">()));</span>
+    <span class="n">WordCounter</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre>
+</div>
+
+<p>After that add the following <code class="highlighter-rouge">init()</code> method to <code class="highlighter-rouge">ContentObserver</code> and modify <code class="highlighter-rouge">adjustCounts()</code> to the
+following.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">private</span> <span class="n">WordCounter</span> <span class="n">wordCounter</span><span class="o">;</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">//get an instance of the CFM based on application config</span>
+    <span class="n">wordCounter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WordCounter</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">wordCounter</span><span class="o">.</span><span class="na">adjustCounts</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">delta</span><span class="o">,</span> <span class="n">words</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre>
+</div>
+
+<p>The CFM groups key values into buckets for efficiency and processes the updates for entire bucket in
+a single transaction.  When you run this new code, that is why <code class="highlighter-rouge">== begin CFM updates ==</code> is seen at
+least three times for each group of documents loaded.</p>
+
+<p>When you run this example you will also notice two new prefixes in the output of the table scan.  First
+the <code class="highlighter-rouge">wc:</code> prefix is where the CFM stores its data.  By default the CFM uses Kryo for serialization
+and therefore the key values with this prefix contain non-ASCII characters.  The utility function
+<code class="highlighter-rouge">FluoITHelper.printFluoTable()</code> escapes non-ASCII characters with <code class="highlighter-rouge">\x&lt;HEX&gt;</code>.   Second the <code class="highlighter-rouge">ic:</code>
+prefix contains an inverted index of word counts.  This was created simply to show an example of a
+follow on action when word counts change.  Ideally this follow on action would have a low chance of
+collisions.  Creating the inverted index will not cause collisions because each word is in a single
+CFM bucket and each bucket is processed independently.</p>
+
+<h2 id="part-4--running-this-example-on-a-real-instance">Part 4 : Running this example on a real instance.</h2>
+
+<p>Everything in the tour so far has used MiniFluo to run code.  The following
+instructions show how to run the code in this excercise on a real Fluo
+instance.  <a href="https://github.com/astralway/uno">Uno</a> can be used to quickly setup Fluo on a single node.</p>
+
+<p>The following two helper classes will be needed to run on a real instance.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.FluoConfiguration</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Generates application config.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GenConfig</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">FluoConfiguration</span> <span class="n">conf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">();</span>
+    <span class="n">Main</span><span class="o">.</span><span class="na">preInit</span><span class="o">(</span><span class="n">conf</span><span class="o">);</span>
+    <span class="n">conf</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.nio.charset.StandardCharsets</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.nio.file.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.inject.Inject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.FluoConfiguration</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Loads one or more document passed in on the command line.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Load</span> <span class="o">{</span>
+  <span class="c1">// when run with fluo exec command, the applications configuration will be injected</span>
+  <span class="nd">@Inject</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">(</span><span class="n">FluoClient</span> <span class="n">client</span> <span class="o">=</span> <span class="n">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">);</span>
+        <span class="n">LoaderExecutor</span> <span class="n">loaderExecutor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newLoaderExecutor</span><span class="o">())</span> 
+    <span class="o">{</span>
+      <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">filename</span> <span class="o">:</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Path</span> <span class="n">path</span> <span class="o">=</span> <span class="n">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">filename</span><span class="o">);</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">encoded</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">readAllBytes</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">docContent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">encoded</span><span class="o">,</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">uri</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="na">toAbsolutePath</span><span class="o">().</span><span class="na">normalize</span><span class="o">().</span><span class="na">toUri</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">Document</span> <span class="n">doc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Document</span><span class="o">(</span><span class="n">uri</span><span class="o">,</span> <span class="n">docContent</span><span class="o">);</span>
+        <span class="n">loaderExecutor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">DocLoader</span><span class="o">(</span><span class="n">doc</span><span class="o">));</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>The following command will run this application on a Fluo instance, assuming
+<code class="highlighter-rouge">$FLUO_HOME</code> is set and <code class="highlighter-rouge">fluo</code> is on the path.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">cd</span> &lt;your fluo tour dir&gt;
+
+<span class="c">#create a new Fluo application named wordCount</span>
+fluo new wordCount
+
+<span class="c">#populate applications lib directory</span>
+mvn clean package
+cp target/fluo-tour-0.0.1-SNAPSHOT.jar <span class="nv">$FLUO_HOME</span>/apps/wordCount/lib
+mvn dependency:copy-dependencies -DincludeArtifactIds<span class="o">=</span><span class="s2">"fluo-recipes-core,fluo-recipes-accumulo,fluo-recipes-kryo,kryo,minlog,reflectasm,objenesis"</span> -DoutputDirectory<span class="o">=</span><span class="nv">$FLUO_HOME</span>/apps/wordCount/lib
+
+<span class="c">#add app specific config to properties file that Fluo init will use</span>
+fluo <span class="nb">exec </span>wordCount ft.GenConfig &gt;&gt; <span class="nv">$FLUO_HOME</span>/apps/wordCount/conf/fluo.properties
+
+<span class="c">#initialize and start Fluo application</span>
+fluo init wordCount
+fluo start wordCount
+fluo info wordCount
+
+<span class="c">#load some text files</span>
+fluo <span class="nb">exec </span>wordCount ft.Load &lt;some filename&gt; &lt;some filename&gt; ...
+
+<span class="c">#wait for all notifications to process</span>
+fluo <span class="nb">wait </span>wordCount
+
+<span class="c">#scan data in Fluo</span>
+fluo scan wordCount
+fluo scan wordCount -p ic:
+
+<span class="c">#Could try changing a file and reloading it</span>
+
+<span class="c">#stop Fluo application</span>
+fluo stop wordCount
+</code></pre>
+</div>
 
 
 </div>
