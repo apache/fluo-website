@@ -330,17 +330,10 @@ incremented.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">ft</span><span class="o">;</span>
 
-<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">java.util.Collection</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">java.util.HashSet</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
 
-<span class="kn">import</span> <span class="nn">com.google.common.collect.ImmutableSet</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.TransactionBase</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.Bytes</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.Column</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.RowColumn</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.*</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.apache.fluo.api.observer.AbstractObserver</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContentObserver</span> <span class="kd">extends</span> <span class="n">AbstractObserver</span> <span class="o">{</span>
@@ -558,6 +551,7 @@ call them.</p>
       <span class="o">}</span>
 
       <span class="k">if</span><span class="o">(</span><span class="n">sum</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//returning emtpy will cause the CFM to delete the key in Fluo's table</span>
         <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
       <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
         <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">sum</span><span class="o">);</span>
