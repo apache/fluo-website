@@ -216,17 +216,10 @@ Below is a skeleton for an observer to compute word counts.
 ```java
 package ft;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import com.google.common.collect.ImmutableSet;
 import org.apache.fluo.api.client.TransactionBase;
-import org.apache.fluo.api.data.Bytes;
-import org.apache.fluo.api.data.Column;
-import org.apache.fluo.api.data.RowColumn;
+import org.apache.fluo.api.data.*;
 import org.apache.fluo.api.observer.AbstractObserver;
 
 public class ContentObserver extends AbstractObserver {
