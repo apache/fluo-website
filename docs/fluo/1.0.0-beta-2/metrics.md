@@ -10,7 +10,7 @@ reporters.  While dropwizard can be configured to report Fluo metrics to many
 different tools, below are some tools that have been used with Fluo.
 
 1. [Grafana/InfluxDB][3] - Fluo has [documentation][3] for sending metrics to
-   InfluxDB and viewing them in Grafana. The [fluo-dev] tool can also set up
+   InfluxDB and viewing them in Grafana. The [Uno] tool can also set up
    these tools for you and configure Fluo to send to them.
 
 2. JMX - Fluo can be configured to reports metrics via JMX which can be viewed
@@ -78,4 +78,4 @@ be 2 and the mean would be (5+3)/2.
 [H]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms
 [G]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#gauges
 [M]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#meters
-[fluo-dev]: https://github.com/fluo-io/fluo-dev
+[Uno]: https://github.com/astralway/uno

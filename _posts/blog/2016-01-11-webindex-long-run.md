@@ -4,7 +4,7 @@ date: 2016-01-11 15:30:00 +0000
 redirect_from: /webindex-long-run/
 ---
 
-In preparation for the Fluo beta 2 release, [Webindex][webindex], an example
+In preparation for the Fluo beta 2 release, [WebIndex], an example
 Fluo application, was run on 24 EC2 m3-xlarge nodes (20 worker node) for 3
 days.  The experiment went well as Webindex indexed 178 million web pages and
 2.32 billion links. The average rate for the entire test was 698 pages/sec and
@@ -110,7 +110,7 @@ would have been nice.
 
 The Spark load jobs have to parse, validate, and clean up all of the links.
 This seems to be very CPU intensive and may be the current bottleneck (see
-[fluo-io/webindex#41][webindex-41]). It seems that as Accumulo's CPU load
+[astralway/webindex#41][webindex-41]). It seems that as Accumulo's CPU load
 increased (because of compactions) that the load rate dropped.  As an
 experiment during the 2nd day of the test, loaders were stopped and two loaders
 per node were started.  This resulted in a higher load rate of around 1000
@@ -118,14 +118,14 @@ pages/sec.  In order to ensure the test would run over night, this was only
 done for a brief period before reverting to one loader per node.  Again, more
 cores would have been nice.  In place of more cores, looking into optimizing this
 and getting a higher load rate would nice.  Another issue noticed with loading
-was [fluo-io/webindex#39][webindex-39].
+was [astralway/webindex#39][webindex-39].
 
 While monitoring the test it became apparent that split points for the Fluo
 table were not equally spreading computation across all tablet servers. See
-[fluo-io/fluo-recipes#44][fr-44] for more information.  Somewhere around the
+[apache/incubator-fluo-recipes#44][fr-44] for more information.  Somewhere around the
 2nd day of the test, tablets were merged and new splits points were added while
 the test was running.  This worked really well.  Another issue found relating
-to split points was [fluo-io/webindex#40][webindex-40].
+to split points was [astralway/webindex#40][webindex-40].
 
 The lack of metrics about Conditional mutations from Accumulo tablet servers
 makes it hard to track down problems where many Fluo transactions are hitting a
@@ -138,12 +138,12 @@ caused by coordination task displacing CPU intensive task.  For example
 Fluo has three task types that run in YARN : Oracle, Twill Application manager,
 and Workers.  Ideally there would be one Worker per node. However, because of
 the Oracle and Application task, YARN may place two workers on a single node.
-Opened [fluo-io/fluo#600][fluo-600].
+Opened [apache/incubator-fluo#600][fluo-600].
 
 During the test, worker task were dying or being killed because of memory
 overuse.  Twill/YARN automatically restarted the workers and the test kept
 running w/o much problem.  It would be good to avoid this since this causes
-transaction recovery or rollback.  See [fluo-io/webindex#42][webindex-42].
+transaction recovery or rollback.  See [astralway/webindex#42][webindex-42].
 
 The test identified a possible need for [HashedRow recipe][fr-45] to more
 evenly distribute processing of page related transactions.
@@ -160,7 +160,7 @@ The following configuration and software were used for this test.
  * Accumulo 1.8.0-SNAPSHOT with [ACCUMULO-4066] patches
  * Fluo beta-2-SNAPSHOT 78bcdb7
  * Fluo recipes beta-1-SNAPSHOT 96858d0
- * Fluo deploy 43bf08f
+ * Muchos 43bf08f
  * 2G data cache and 768M index cache in Accumulo
  * 64 threads in Accumulo client pool and readahead pool
  * 128 worker threads and 4G per worker (initially went to 5G and 6G as test was running).
@@ -185,12 +185,12 @@ Future Work
 -----------
 
 Most Fluo scale testing to date has been on EC2.  It would be really nice to
-test Fluo on bare metal.  We are going to experiment with getting [Fluo
-Deploy](https://github.com/fluo-io/fluo-deploy) to work on bare metal where
+test Fluo on bare metal.  We are going to experiment with getting
+[Muchos](https://github.com/astralway/muchos) to work on bare metal where
 CentOS 7 is already installed.
 
 Seeing Application level stats plotted in Grafana, as outlined in
-[fluo-io/fluo#534][fluo-534], would be really nice.  For webindex this would
+[apache/incubator-fluo#534][fluo-534], would be really nice.  For webindex this would
 include things like URLs exported per second, domains exported per second, etc.
 This issue was not identified during this test, it just would have been really
 nice to have this information while running the test.
@@ -202,17 +202,17 @@ this test would run on bare metal.
 [accumulo]: http://accumulo.apache.org/
 [ACCUMULO-4066]: https://issues.apache.org/jira/browse/ACCUMULO-4066
 [ACCUMULO-4107]: https://issues.apache.org/jira/browse/ACCUMULO-4107
-[webindex]: http://github.com/fluo-io/webindex
-[recipes]: http://github.com/fluo-io/fluo-recipes
+[WebIndex]: http://github.com/astralway/webindex
+[recipes]: http://github.com/apache/incubator-fluo-recipes
 [CC]: https://commoncrawl.org/
 [pageres-cli]: https://github.com/sindresorhus/pageres-cli
-[fluo-534]: https://github.com/fluo-io/fluo/issues/534
-[fluo-600]: https://github.com/fluo-io/fluo/issues/600
-[fr-44]: https://github.com/fluo-io/fluo-recipes/issues/44
-[fr-45]: https://github.com/fluo-io/fluo-recipes/issues/45
-[webindex-39]: https://github.com/fluo-io/webindex/issues/39
-[webindex-40]: https://github.com/fluo-io/webindex/issues/40
-[webindex-41]: https://github.com/fluo-io/webindex/issues/41
-[webindex-42]: https://github.com/fluo-io/webindex/issues/42
+[fluo-534]: https://github.com/apache/incubator-fluo/issues/534
+[fluo-600]: https://github.com/apache/incubator-fluo/issues/600
+[fr-44]: https://github.com/apache/incubator-fluo-recipes/issues/44
+[fr-45]: https://github.com/apache/incubator-fluo-recipes/issues/45
+[webindex-39]: https://github.com/astralway/webindex/issues/39
+[webindex-40]: https://github.com/astralway/webindex/issues/40
+[webindex-41]: https://github.com/astralway/webindex/issues/41
+[webindex-42]: https://github.com/astralway/webindex/issues/42
 
 

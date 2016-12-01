@@ -241,4 +241,4 @@ calls `updatingValues()` on an `UpdateObserver`.
  * The old value will always be what was reported as the new value in the
    previous transaction that called `updatingValues()`.  
  
-[phrasecount]: https://github.com/fluo-io/phrasecount
+[phrasecount]: https://github.com/astralway/phrasecount

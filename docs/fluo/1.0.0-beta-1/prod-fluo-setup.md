@@ -6,7 +6,7 @@ version: 1.0.0-beta-1
 
 Below are instructions for running Fluo in a production environment where Accumulo,
 Hadoop & Zookeeper are installed and running.  If you want to avoid setting up
-these dependencies, consider using [fluo-dev] or [MiniFluo]. 
+these dependencies, consider using [Uno] or [MiniFluo].
 
 Requirements
 ------------
@@ -30,7 +30,7 @@ different environment or one built from the master branch, follow these steps:
 
 First, clone Fluo:
 
-    git clone https://github.com/fluo-io/fluo.git
+    git clone https://github.com/apache/incubator-fluo.git
     cd fluo/
 
 Optionally, check out a stable tag (if you don't want to build a release from master):
@@ -202,11 +202,11 @@ In a distributed environment, you will need to deploy and configure a Fluo
 distribution on every node in your cluster.
 
 [MiniFluo]: /docs/fluo/1.0.0-beta-1/mini-fluo-setup/
-[fluo-dev]: https://github.com/fluo-io/fluo-dev
+[Uno]: https://github.com/astralway/uno
 [Accumulo]: https://accumulo.apache.org/
 [Hadoop]: http://hadoop.apache.org/
 [Zookeeper]: http://zookeeper.apache.org/
 [Java]: https://www.oracle.com/java/index.html
-[release]: https://github.com/fluo-io/fluo/releases
-[phrasecount]: https://github.com/fluo-io/phrasecount
-[fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties
+[release]: https://github.com/apache/incubator-fluo/releases
+[phrasecount]: https://github.com/astralway/phrasecount
+[fluo.properties]: https://github.com/apache/incubator-fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties

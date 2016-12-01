@@ -22,7 +22,7 @@ by following these steps:
 
 First, clone Fluo:
 
-    git clone https://github.com/fluo-io/fluo.git
+    git clone https://github.com/apache/incubator-fluo.git
     cd fluo/
 
 Optionally, check out a stable tag (if you don't want to build a release from master):
@@ -141,6 +141,6 @@ If MiniFluo started its own Accumulo cluster, it will also remove the `mini/` da
 directory and any data in your instance will be lost.
 
 [prod-fluo]: /docs/fluo/1.0.0-beta-2/prod-fluo-setup/
-[release]: https://github.com/fluo-io/fluo/releases
-[phrasecount]: https://github.com/fluo-io/phrasecount
-[fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties
+[release]: https://github.com/apache/incubator-fluo/releases
+[phrasecount]: https://github.com/astralway/phrasecount
+[fluo.properties]: https://github.com/apache/incubator-fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties

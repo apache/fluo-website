@@ -204,7 +204,7 @@ node in your cluster.
 [Java]: http://openjdk.java.net/
 [related]: https://fluo.apache.org/related-projects/
 [release]: https://fluo.apache.org/download/
-[phrasecount]: https://github.com/fluo-io/phrasecount
+[phrasecount]: https://github.com/astralway/phrasecount
 [fluo.properties]: https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties
 [fluo-env.sh]:     https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo-env.sh
 [lib/ahz/pom.xml]: https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/lib/ahz/pom.xml

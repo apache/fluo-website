@@ -3,7 +3,7 @@ title: "Running Webindex for 3 days on EC2 Again"
 date: 2016-05-17 08:44:00 +0000
 ---
 
-Another long run of [Webindex] was done to test changes made since beta-2
+Another long run of [WebIndex] was done to test changes made since beta-2
 and it went well.  This run performed much better than the previous the
 [previous long run of Webindex][lr1].  The experiment was run on 21 EC2
 m3-xlarge nodes (20 worker nodes).  Each node has 4 cores and 15G of RAM.
@@ -105,7 +105,7 @@ rolled back.  With the new asynchronous commit changes discussed below a lot of
 committing transactions could be in flight.  Frequently killing processes with
 lots of committing transactions would cause lots of rollbacks.
 
-This problem was remedied in [fluo-593] and [zetten-139].  For this run the
+This problem was remedied in [fluo-593] and [muchos-139].  For this run the
 workers were given 5.5G with 1.5G reserved.  With these settings no workers
 were killed by YARN.  When workers are killed it causes upward spikes in the
 memory plots.  There are no spikes of individual workers like this in the
@@ -264,10 +264,10 @@ Software used
  * Hadoop 2.6.3
  * Zookeeper 3.4.8
  * Accumulo 1.7.1
- * Fluo [82301a1](https://github.com/fluo-io/fluo/commit/82301a143140a55dae52f308e218e69edc7ec963)
- * Fluo Recipes [dd1c373](https://github.com/fluo-io/fluo-recipes/commit/dd1c37313d272ff7647040e43ed4261c70939a9b)
- * Webindex [1f9462d](https://github.com/fluo-io/webindex/commit/1f9462d0938c7ca98d26de911ddb57e270a6a75f)
- * Zetten [43e9cde](https://github.com/fluo-io/zetten/commit/43e9cdea8d3c37d532796a994011e579f7495767)
+ * Fluo [82301a1](https://github.com/apache/incubator-fluo/commit/82301a143140a55dae52f308e218e69edc7ec963)
+ * Fluo Recipes [dd1c373](https://github.com/apache/incubator-fluo-recipes/commit/dd1c37313d272ff7647040e43ed4261c70939a9b)
+ * Webindex [1f9462d](https://github.com/astralway/webindex/commit/1f9462d0938c7ca98d26de911ddb57e270a6a75f)
+ * Muchos [43e9cde](https://github.com/astralway/muchos/commit/43e9cdea8d3c37d532796a994011e579f7495767)
 
 [ACCUMULO-1124]: https://issues.apache.org/jira/browse/ACCUMULO-1124
 [ACCUMULO-4314]: https://issues.apache.org/jira/browse/ACCUMULO-4314
@@ -275,18 +275,18 @@ Software used
 [lr1]: /blog/2016/01/11/webindex-long-run/
 [lr1-overview]: /blog/2016/01/11/webindex-long-run/#webindex-overview
 [lr1-plots]: /blog/2016/01/11/webindex-long-run/#grafana-plots
-[fluo-623]: https://github.com/fluo-io/fluo/issues/623
-[fluo-648]: https://github.com/fluo-io/fluo/issues/648
-[fluo-593]: https://github.com/fluo-io/fluo/issues/593
-[fluo-650]: https://github.com/fluo-io/fluo/issues/650
-[fluo-653]: https://github.com/fluo-io/fluo/issues/653
-[fluo-654]: https://github.com/fluo-io/fluo/issues/654
-[fluo-671]: https://github.com/fluo-io/fluo/issues/671
-[zetten-139]: https://github.com/fluo-io/zetten/pull/139
-[fluo-593-performance]: https://github.com/fluo-io/fluo/issues/593#issuecomment-213630145
-[fluo-recipes-45]: https://github.com/fluo-io/fluo-recipes/issues/45
-[Webindex]: https://github.com/fluo-io/webindex
-[webindex-49]: https://github.com/fluo-io/webindex/issues/49
-[webindex-54]: https://github.com/fluo-io/webindex/issues/54
-[webindex-70]: https://github.com/fluo-io/webindex/issues/70
-[webindex-71]: https://github.com/fluo-io/webindex/issues/71
+[fluo-623]: https://github.com/apache/incubator-fluo/issues/623
+[fluo-648]: https://github.com/apache/incubator-fluo/issues/648
+[fluo-593]: https://github.com/apache/incubator-fluo/issues/593
+[fluo-650]: https://github.com/apache/incubator-fluo/issues/650
+[fluo-653]: https://github.com/apache/incubator-fluo/issues/653
+[fluo-654]: https://github.com/apache/incubator-fluo/issues/654
+[fluo-671]: https://github.com/apache/incubator-fluo/issues/671
+[muchos-139]: https://github.com/astralway/muchos/pull/139
+[fluo-593-performance]: https://github.com/apache/incubator-fluo/issues/593#issuecomment-213630145
+[fluo-recipes-45]: https://github.com/apache/incubator-fluo-recipes/issues/45
+[WebIndex]: https://github.com/astralway/webindex
+[webindex-49]: https://github.com/astralway/webindex/issues/49
+[webindex-54]: https://github.com/astralway/webindex/issues/54
+[webindex-70]: https://github.com/astralway/webindex/issues/70
+[webindex-71]: https://github.com/astralway/webindex/issues/71

@@ -10,7 +10,7 @@ Building Fluo
 If you have [Git], [Maven], and [Java][java] (version 7+) installed, run these commands
 to build Fluo:
 
-    git clone https://github.com/fluo-io/fluo.git
+    git clone https://github.com/apache/incubator-fluo.git
     cd fluo
     mvn package
 
@@ -27,4 +27,4 @@ a local Fluo instance (called MiniFluo) and run against it.
 [Git]: http://git-scm.com/
 [java]: https://www.oracle.com/java/index.html
 [Maven]: http://maven.apache.org/
-[Stress]: https://github.com/fluo-io/fluo-stress
+[Stress]: https://github.com/astralway/stresso

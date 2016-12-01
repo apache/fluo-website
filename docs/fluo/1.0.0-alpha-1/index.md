@@ -25,7 +25,7 @@ Building Fluo
 
 Using Maven, you can build Fluo with the following steps.
 
-    git clone https://github.com/fluo-io/fluo.git
+    git clone https://github.com/apache/incubator-fluo.git
     cd fluo
     mvn package
 
@@ -135,4 +135,4 @@ Additional Documentation
 [2]: http://research.google.com/pubs/pub36726.html
 [3]: https://issues.apache.org/jira/browse/ACCUMULO-1000
 [5]: https://issues.apache.org/jira/browse/ACCUMULO-112
-[7]: https://github.com/fluo-io/phrasecount
+[7]: https://github.com/astralway/phrasecount

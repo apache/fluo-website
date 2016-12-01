@@ -146,7 +146,7 @@ Further experiments could be done adjusting various Accumulo and Fluo settings,
 like number of threads.  Also, it will be interesting to see what impact
 implementing issues like [#12][3] will have. 
 
-[1]: https://github.com/fluo-io/fluo/blob/acf1ea7d8d6bc74eef7e311008e5e8fc0fd94d30/modules/stress/README.md
+[1]: https://github.com/apache/incubator-fluo/blob/acf1ea7d8d6bc74eef7e311008e5e8fc0fd94d30/modules/stress/README.md
 [2]: https://github.com/keith-turner/stress-balancer
-[3]: https://github.com/fluo-io/fluo/issues/12
-[4]: https://github.com/fluo-io/fluo/issues/356
+[3]: https://github.com/apache/incubator-fluo/issues/12
+[4]: https://github.com/apache/incubator-fluo/issues/356

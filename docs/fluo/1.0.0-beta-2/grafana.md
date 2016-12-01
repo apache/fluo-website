@@ -11,15 +11,15 @@ This document describes how to send Fluo metrics to [InfluxDB], a time series da
 them viewable in [Grafana], a visualization tool.  If you want general information on metrics, see the 
 [Fluo metrics][2] documentation. 
 
-## Set up Grafana/InfluxDB using fluo-dev
+## Set up Grafana/InfluxDB using Uno
 
-The easiest way to view the metrics coming from Fluo is to use [fluo-dev] which
+The easiest way to view the metrics coming from Fluo is to use [Uno] which
 can be configured to setup InfluxDB and Grafana as well have Fluo send data to
-them.  Fluo-dev will also set up a Fluo dashboard in Grafana.
+them.  Uno will also set up a Fluo dashboard in Grafana.
 
 ## Set up Grafana/InfluxDB on your own
 
-If cannot use [fluo-dev], you can follow the instructions below to setup InfluxDB and 
+If cannot use [Uno], you can follow the instructions below to setup InfluxDB and
 Grafana on your own.
 
 1.  Follow the standard installation instructions for [InfluxDB] and [Grafana].  As for versions, 
@@ -77,6 +77,6 @@ Grafana on your own.
 
 [1]: https://dropwizard.github.io/metrics/3.1.0/
 [2]: /docs/fluo/1.0.0-beta-2/metrics/
-[fluo-dev]: https://github.com/fluo-io/fluo-dev
+[Uno]: https://github.com/astralway/uno
 [Grafana]: http://grafana.org/
 [InfluxDB]: https://influxdb.com/

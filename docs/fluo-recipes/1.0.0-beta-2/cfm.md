@@ -235,4 +235,4 @@ calls `updatingValues()` on an `UpdateObserver`.
 
 
  
-[phrasecount]: https://github.com/fluo-io/phrasecount
+[phrasecount]: https://github.com/astralway/phrasecount

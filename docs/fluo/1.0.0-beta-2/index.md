@@ -16,8 +16,8 @@ There are several ways to run Fluo (listed in order of increasing difficulty):
 
 * [quickstart] - Starts a MiniFluo instance that is configured to run a word count application
 * [MiniFluo] - Sets up a minimal Fluo instance that writes its data to single directory
-* [fluo-dev] - Command-line tool for running Fluo and its dependencies on a single machine
-* [Zetten] - Command-line tool that launches an AWS cluster and deploys Fluo and its dependencies to it
+* [Uno] - Command-line tool for running Fluo and its dependencies on a single machine
+* [Muchos] - Command-line tool that launches an AWS cluster and deploys Fluo and its dependencies to it
 * [Production] - Sets up Fluo on a cluster where Accumulo, Hadoop & Zookeeper are running
 
 Except for [quickstart], all above will set up a Fluo application that will be idle unless you
@@ -25,7 +25,7 @@ create client & observer code for your application.  You can either [create your
 application][applications] or configure your Fluo application to run an example below:
 
 * [phrasecount] - Computes phrase counts for unique documents
-* [fluo-stress] - Computes the number of unique integers by building bitwise trie
+* [Stresso] - Computes the number of unique integers by building bitwise trie
 
 ### Implementation
 
@@ -36,11 +36,11 @@ application][applications] or configure your Fluo application to run an example 
 [Accumulo]: http://accumulo.apache.org
 [Percolator]: http://research.google.com/pubs/pub36726.html
 [YARN]: http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html
-[quickstart]: https://github.com/fluo-io/fluo-quickstart
-[fluo-dev]: https://github.com/fluo-io/fluo-dev
-[Zetten]: https://github.com/fluo-io/zetten
-[phrasecount]: https://github.com/fluo-io/phrasecount
-[fluo-stress]: https://github.com/fluo-io/fluo-stress
+[quickstart]: https://github.com/astralway/quickstart
+[Uno]: https://github.com/astralway/uno
+[Muchos]: https://github.com/astralway/muchos
+[phrasecount]: https://github.com/astralway/phrasecount
+[Stresso]: https://github.com/astralway/stresso
 [MiniFluo]: /docs/fluo/1.0.0-beta-2/mini-fluo-setup/
 [Production]: /docs/fluo/1.0.0-beta-2/prod-fluo-setup/
 [applications]: /docs/fluo/1.0.0-beta-2/applications/

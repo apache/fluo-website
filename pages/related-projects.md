@@ -23,7 +23,7 @@ list, please open an issue or submit a pull request [on Github][web-ghr].
 * [Quickstart] - Enables you to quickly get started writing code that uses Apache Fluo
 * [Phrasecount] - Example Apache Fluo application that counts phrases in documents
 * [Jaccard] - Example Apache Fluo application that computes and indexes the Jaccard between all pairs in a bipartite graph.
-* [Webindex] - Apache Fluo application that creates web index using Common Crawl data
+* [WebIndex] - Apache Fluo application that creates web index using Common Crawl data
 * [Stresso] - An example application designed to stress Apache Fluo
 
 [asf]: https://www.apache.org/
@@ -31,7 +31,7 @@ list, please open an issue or submit a pull request [on Github][web-ghr].
 [Fluo Recipes]: https://github.com/apache/incubator-fluo-recipes
 [Muchos]: https://github.com/astralway/muchos
 [Uno]: https://github.com/astralway/uno
-[Webindex]: https://github.com/astralway/webindex
+[WebIndex]: https://github.com/astralway/webindex
 [Stresso]: https://github.com/astralway/stresso
 [Quickstart]: https://github.com/astralway/quickstart
 [Phrasecount]: https://github.com/astralway/phrasecount

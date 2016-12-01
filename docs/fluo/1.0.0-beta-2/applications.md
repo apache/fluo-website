@@ -171,11 +171,11 @@ well.  In order to make the trace logs human readable, non ASCII chars are
 escaped using hex.  The convention used it `\xDD`  where D is a hex digit. Also
 the `\` character is escaped to make the output unambiguous.
 
-[phrasecount]: https://github.com/fluo-io/phrasecount
+[phrasecount]: https://github.com/astralway/phrasecount
 [FluoFactory]: {{ site.old_api_static }}/fluo-api/1.0.0-beta-2/io/fluo/api/client/FluoFactory.html
 [FluoClient]: {{ site.old_api_static }}/fluo-api/1.0.0-beta-2/io/fluo/api/client/FluoClient.html
 [FluoConfiguration]: {{ site.old_api_static }}/fluo-api/1.0.0-beta-2/io/fluo/api/config/FluoConfiguration.html
 [AbstractObserver]: {{ site.old_api_static }}/fluo-api/1.0.0-beta-2/io/fluo/api/observer/AbstractObserver.html
-[fluo.properties]: https://github.com/fluo-io/fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties
+[fluo.properties]: https://github.com/apache/incubator-fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties
 [API]: {{ site.old_api_base }}/fluo-api/1.0.0-beta-2/
 [metrics]: /docs/fluo/1.0.0-beta-2/metrics/

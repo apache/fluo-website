@@ -44,7 +44,7 @@ being able to see it now is really useful.
 ![Grafana long run](/resources/blog/stress_3/grafana-1.png)
 
 Notifications were building up during the test. A better method than sleeping
-between loads, as mentioned in [fluo-io/fluo-stress#30][7], is still needed.
+between loads, as mentioned in [astralway/stresso#30][7], is still needed.
 
 Short runs
 ----------
@@ -61,9 +61,9 @@ A long run of webindex will also be run on EC2 before releasing beta-2.
 
 [1]: /blog/2014/12/30/stress-test-long-run/
 [2]: /release/fluo-1.0.0-beta-1/
-[3]: https://github.com/fluo-io/fluo-stress
-[4]: https://github.com/fluo-io/fluo/commit/c4789b3100092683b37c57c48ddd87993e84972c
-[5]: https://github.com/fluo-io/fluo-stress/commit/32edaf91138bb13b442632262c23e7f13f8fb17c
+[3]: https://github.com/astralway/stresso
+[4]: https://github.com/apache/incubator-fluo/commit/c4789b3100092683b37c57c48ddd87993e84972c
+[5]: https://github.com/astralway/stresso/commit/32edaf91138bb13b442632262c23e7f13f8fb17c
 [6]: https://issues.apache.org/jira/browse/ACCUMULO-4066
-[7]: https://github.com/fluo-io/fluo-stress/issues/30
+[7]: https://github.com/astralway/stresso/issues/30
 
