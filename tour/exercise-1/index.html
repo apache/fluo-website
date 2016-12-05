@@ -637,7 +637,7 @@ following.</p>
     <span class="n">wordCounter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WordCounter</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
   <span class="o">}</span>
 
-  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">wordCounter</span><span class="o">.</span><span class="na">adjustCounts</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">delta</span><span class="o">,</span> <span class="n">words</span><span class="o">);</span>
   <span class="o">}</span>
 </code></pre>
