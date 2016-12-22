@@ -5,9 +5,244 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 05 Dec 2016 16:43:17 +0000</pubDate>
-    <lastBuildDate>Mon, 05 Dec 2016 16:43:17 +0000</lastBuildDate>
+    <pubDate>Thu, 22 Dec 2016 18:12:05 +0000</pubDate>
+    <lastBuildDate>Thu, 22 Dec 2016 18:12:05 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Loading data into Fluo using Apache Spark</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://spark.apache.org&quot;&gt;Apache Spark&lt;/a&gt; can be used to preprocess and load batches of data into Fluo.  For example
+Spark could be used to group data within a batch and then Fluo transactions could load groups of
+related data. This blog post offers some tips to help you get started writing to Fluo from Spark.&lt;/p&gt;
+
+&lt;h3 id=&quot;executing-load-transactions-in-spark&quot;&gt;Executing load transactions in Spark&lt;/h3&gt;
+
+&lt;p&gt;Spark automatically serializes Java objects that are needed for remote execution.  When trying to
+use Fluo with Spark its important to understand what will serialize properly and what will not.
+Classes used to load data into Fluo like &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html&quot;&gt;FluoClient&lt;/a&gt; and &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html&quot;&gt;LoaderExecutor&lt;/a&gt; are not suitable for
+serialization.  These classes may have thread pools, resources in Zookeeper, transactions that are
+committing in the background, etc .  Therefore these classes must be instantiated at each remote process
+Spark creates.  One way to do this is with Spark’s &lt;code class=&quot;highlighter-rouge&quot;&gt;foreachParition&lt;/code&gt; method.  This method will
+execute code locally at each RDD partition. Within each partition, a &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html&quot;&gt;LoaderExecutor&lt;/a&gt;
+can be created.  That’s what the example below shows.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dedupeAndLoad&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JavaRDD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Document&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numPartitions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;  
+
+  &lt;span class=&quot;c1&quot;&gt;// Remove duplicate documents.&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;distinct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numPartitions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  
+  &lt;span class=&quot;c1&quot;&gt;// Execute load transactions for unique documents.  Iin Java 8 lambda syntax below, &lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// iter is of type Iterator&amp;lt;String&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;foreachPartition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Assume fluo.properties file was submitted with application&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;FluoConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fconf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FluoConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fluo.properties&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FluoClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FluoFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fconf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; 
+        &lt;span class=&quot;n&quot;&gt;LoaderExecutor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;le&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newLoaderExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hasNext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;le&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DocumentLoader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The example above requires that &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo.properties&lt;/code&gt; is available locally for each
+partition.  This can be accomplished with &lt;code class=&quot;highlighter-rouge&quot;&gt;--files&lt;/code&gt; option when launching a Spark job.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark-submit --class myApp.Load --files &amp;lt;fluo props dir&amp;gt;/fluo.properties myApp.jar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If FluoConfiguration were serializable, then Spark could automatically serialize and make a
+FluoConfiguration object available for each partition.  However, FluoConfiguration is not
+serializable as of Fluo 1.0.0.  This will be fixed in future releases of Fluo.  See &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/813&quot;&gt;#813&lt;/a&gt;
+for details and workarounds for 1.0.0.&lt;/p&gt;
+
+&lt;h3 id=&quot;initializing-fluo-table&quot;&gt;Initializing Fluo table&lt;/h3&gt;
+
+&lt;p&gt;If you have a lot of existing data, then you could use Spark to initialize your Fluo table with
+historical data. There are two general ways to do this.  The simplest way is to use the
+&lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/client/mapred/AccumuloOutputFormat.html&quot;&gt;AccumuloOutputFormat&lt;/a&gt; to write &lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Mutation.html&quot;&gt;Mutation&lt;/a&gt; objects to Accumulo.  However, you need to write data
+using the Fluo data format.  Fluo provides an easy way to do this using the &lt;a href=&quot;https://github.com/apache/incubator-fluo/blob/rel/fluo-1.0.0-incubating/modules/mapreduce/src/main/java/org/apache/fluo/mapreduce/FluoMutationGenerator.java&quot;&gt;FluoMutationGenerator&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;A slightly more complex way to initialize a Fluo table is using Accumulo’s bulk load mechanism.
+Bulk load is the process of generating Accumulo RFile’s containing Key/Values in a Spark job. Those
+files are then loaded into an Accumulo table.   This can be faster, but its more complex because it
+requires the user to properly partition data in their Spark job.  Ideally, these partitions would
+consist of non-overlapping ranges of Accumulo keys with roughly even amounts of data.  The default
+partitioning methods in Spark will not accomplish this.&lt;/p&gt;
+
+&lt;p&gt;When following the bulk load approach, you would write &lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Key.html&quot;&gt;Key&lt;/a&gt; and &lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Value.html&quot;&gt;Value&lt;/a&gt; objects using the
+&lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/client/mapred/AccumuloFileOutputFormat.html&quot;&gt;AccumuloFileOutputFormat&lt;/a&gt;. Fluo provides the &lt;a href=&quot;https://github.com/apache/incubator-fluo/blob/rel/fluo-1.0.0-incubating/modules/mapreduce/src/main/java/org/apache/fluo/mapreduce/FluoKeyValueGenerator.java&quot;&gt;FluoKeyValueGenerator&lt;/a&gt; to create key/values in the
+Fluo data format.  Fluo Recipes builds on this and provides code that makes it easy to bulk import
+into Accumulo.  The &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-recipes-spark/1.0.0-incubating/org/apache/fluo/recipes/spark/FluoSparkHelper.html#bulkImportRcvToFluo-org.apache.spark.api.java.JavaPairRDD-org.apache.fluo.recipes.spark.FluoSparkHelper.BulkImportOptions-&quot;&gt;FluoSparkHelper.bulkImportRcvToFluo()&lt;/a&gt; method will do the following :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Repartition data using the split points in the Fluo table&lt;/li&gt;
+  &lt;li&gt;Convert data into expected format for a Fluo table&lt;/li&gt;
+  &lt;li&gt;Create an RFile for each partition in a specified temp dir&lt;/li&gt;
+  &lt;li&gt;Bulk import the RFiles into the Fluo table&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/astralway/webindex&quot;&gt;Webindex&lt;/a&gt; example uses bulk load to initialize its Fluo table using the code in Fluo Recipes.
+Webindex uses multiple &lt;a href=&quot;/docs/fluo-recipes/1.0.0-incubating/cfm/&quot;&gt;Collision Free Maps&lt;/a&gt; and initializes them using
+&lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/map/CollisionFreeMap.html#getInitializer-java.lang.String-int-org.apache.fluo.recipes.core.serialization.SimpleSerializer-&quot;&gt;CollisionFreeMap.getInitializer()&lt;/a&gt;.  Webindex uses Spark to initialize the Fluo table with
+historical data.  Webindex also uses Spark to execute load transactions in parallel for
+incrementally loading data.&lt;/p&gt;
+
+&lt;h3 id=&quot;packaging-your-code-to-run-in-spark&quot;&gt;Packaging your code to run in Spark&lt;/h3&gt;
+
+&lt;p&gt;One simple way to execute your Spark code is to create a shaded jar.  This shaded jar should contain
+: Accumulo client code, Fluo client code, Zookeeper client code, and your Application code.  It
+would be best if the shaded jar contained the versions of Accumulo, Fluo, and Zookeeper running on
+the target system.  One way to achieve this goal is to make it easy for users of your Fluo
+application to build the shaded jar themselves.  The examples below shows a simple bash script and
+Maven pom file that achieve this goal.&lt;/p&gt;
+
+&lt;p&gt;There is no need to include Spark code in the shaded jar as this will be provided by the Spark
+runtime environment.   Depending on your Spark environment, Hadoop client code may also be provided.
+Therefore, Hadoop may not need to be included in the shaded jar. One way to exclude these from the
+shaded jars is to make the scope of these dependencies &lt;code class=&quot;highlighter-rouge&quot;&gt;provided&lt;/code&gt;, which is what the example does.
+You may also want to consider excluding other libraries that are provided in the Spark env like
+Guava, log4j, etc.&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;project&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;xmlns:xsi=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;xsi:schemaLocation=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;modelVersion&amp;gt;&lt;/span&gt;4.0.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/modelVersion&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.foo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluoAppShaded&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;0.0.1-SNAPSHOT&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;packaging&amp;gt;&lt;/span&gt;jar&lt;span class=&quot;nt&quot;&gt;&amp;lt;/packaging&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;Shaded Fluo App&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;accumulo.version&amp;gt;&lt;/span&gt;1.7.2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/accumulo.version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;fluo.version&amp;gt;&lt;/span&gt;1.0.0-incubating&lt;span class=&quot;nt&quot;&gt;&amp;lt;/fluo.version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;zookeeper.version&amp;gt;&lt;/span&gt;3.4.9&lt;span class=&quot;nt&quot;&gt;&amp;lt;/zookeeper.version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-shade-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;shade&lt;span class=&quot;nt&quot;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;package&lt;span class=&quot;nt&quot;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;shadedArtifactAttached&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/shadedArtifactAttached&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;shadedClassifierName&amp;gt;&lt;/span&gt;shaded&lt;span class=&quot;nt&quot;&gt;&amp;lt;/shadedClassifierName&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;filters&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;filter&amp;gt;&lt;/span&gt;
+                  &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifact&amp;gt;&lt;/span&gt;*:*&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifact&amp;gt;&lt;/span&gt;
+                  &lt;span class=&quot;nt&quot;&gt;&amp;lt;excludes&amp;gt;&lt;/span&gt;
+                    &lt;span class=&quot;nt&quot;&gt;&amp;lt;exclude&amp;gt;&lt;/span&gt;META-INF/*.SF&lt;span class=&quot;nt&quot;&gt;&amp;lt;/exclude&amp;gt;&lt;/span&gt;
+                    &lt;span class=&quot;nt&quot;&gt;&amp;lt;exclude&amp;gt;&lt;/span&gt;META-INF/*.DSA&lt;span class=&quot;nt&quot;&gt;&amp;lt;/exclude&amp;gt;&lt;/span&gt;
+                    &lt;span class=&quot;nt&quot;&gt;&amp;lt;exclude&amp;gt;&lt;/span&gt;META-INF/*.RSA&lt;span class=&quot;nt&quot;&gt;&amp;lt;/exclude&amp;gt;&lt;/span&gt;
+                  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/excludes&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;/filter&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;/filters&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!--
+       The provided scope is used for dependencies that should not end up in
+       the shaded jar.  The shaded jar is used to run Spark jobs. The Spark 
+       launcher will provided Spark and Hadoop dependencies, so they are not
+       needed in the shaded jar.
+  --&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- The dependency on your Fluo application code.  Version of your app could be made configurable. --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.foo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluoApp&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.2.3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.fluo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluo-api&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${fluo.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.fluo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluo-core&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${fluo.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.accumulo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;accumulo-core&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${accumulo.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.zookeeper&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;zookeeper&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${zookeeper.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.hadoop&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;hadoop-client&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.7.2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;provided&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.spark&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spark-core_2.10&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.6.2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;provided&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The following bash script can use the pom above to build a shaded jar.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Get the versions of Accumulo and Fluo running on the system.  Could let the&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# user of your Fluo application configure this and have this script read that&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# config.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ACCUMULO_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;accumulo version&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;FLUO_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;fluo version&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Could not find an easy way to get zookeeper version automatically&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ZOOKEEPER_SERVER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;localhost
+&lt;span class=&quot;nv&quot;&gt;ZOOKEEPER_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;status | nc &lt;span class=&quot;nv&quot;&gt;$ZOOKEEPER_SERVER&lt;/span&gt; 2181 | grep version: | sed &lt;span class=&quot;s1&quot;&gt;'s/.*version: \([0-9.]*\).*/\1/'&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Build the shaded jar&lt;/span&gt;
+mvn package -Daccumulo.version&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ACCUMULO_VERSION&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            -Dfluo.version&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$FLUO_VERSION&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            -Dzookeeper.version&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ZOOKEEPER_VERSION&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are other possible ways to package and run your Fluo application for Spark.  This section
+suggested one possible way.  The core concept of this method is late binding of the Accumulo, Fluo,
+Hadoop, Spark, and Zookeeper libraries.  When choosing a method to create a shaded jar, the
+implications of early vs late binding is something to consider.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 22 Dec 2016 11:43:00 +0000</pubDate>
+        <link>https://fluo.apache.org//blog/2016/12/22/spark-load/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//blog/2016/12/22/spark-load/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Java needs an immutable byte string</title>
@@ -1110,72 +1345,6 @@ this test would run on bare metal.&lt;/p&gt;
         <pubDate>Mon, 11 Jan 2016 15:30:00 +0000</pubDate>
         <link>https://fluo.apache.org//blog/2016/01/11/webindex-long-run/</link>
         <guid isPermaLink="true">https://fluo.apache.org//blog/2016/01/11/webindex-long-run/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Beta 2 pre-release stress test</title>
-        <description>&lt;p&gt;In preperation for a beta 2 release, the &lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;stress test&lt;/a&gt; was run again on EC2.
-The test went well outperforming the &lt;a href=&quot;/blog/2014/12/30/stress-test-long-run/&quot;&gt;first stress test&lt;/a&gt; and &lt;a href=&quot;/release/fluo-1.0.0-beta-1/&quot;&gt;beta-1 stress
-test&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;For this test run, initially ~1 billion random integers were generated and
-loaded into Fluo via map reduce.  After that, 1 million random integers were
-repeatedly loaded 20 times, sleeping 10 minutes between loads.  After
-everything finished, the test was a success. The number of unique integers
-computed independently by MapReduce matched the number computed by Fluo.  Both
-computed 1,019,481,332 unique integers.&lt;/p&gt;
-
-&lt;p&gt;The test took a total of 7 hours 30 minutes and 30 seconds.  Over this time
-period 61.7 million NodeObserver and 20 million NodeLoader transactions were
-executed.  The average rate of transactions per second for the entire test was
-2,968 tansactions per second.  At the conclusion of the test, the stress table
-had 3.87 billion entries.&lt;/p&gt;
-
-&lt;p&gt;The test was run with the following environment.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;18 m3.xlarge worker nodes&lt;/li&gt;
-  &lt;li&gt;18 Fluo workers, each having had 4G memory and 128 threads&lt;/li&gt;
-  &lt;li&gt;18 Map reduce load task, each with 32 threads&lt;/li&gt;
-  &lt;li&gt;18 Tablet servers, each with 3G (1.5G for data cache, .5G for index cache, and .5G for in memory map)&lt;/li&gt;
-  &lt;li&gt;Fluo built from &lt;a href=&quot;https://github.com/fluo-io/fluo/commit/c4789b3100092683b37c57c48ddd87993e84972c&quot;&gt;c4789b3&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Fluo stress built from &lt;a href=&quot;https://github.com/fluo-io/fluo-stress/commit/32edaf91138bb13b442632262c23e7f13f8fb17c&quot;&gt;32edaf9&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Accumulo 1.8.0-SNAPSHOT with &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4066&quot;&gt;ACCUMULO-4066&lt;/a&gt; patch.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;grafana-plots&quot;&gt;Grafana plots&lt;/h2&gt;
-
-&lt;p&gt;An exciting new development in the Fluo eco-system for beta-2 is the
-utilization of Grafana and InfluxDB to plot metrics.  Also metrics
-configuration was simplified making it possible to report metrics from Map
-Reduce and Spark. In the plots below we can see metrics from the load
-transactions executing in Map Reduce.  In previous test, this was not visible,
-being able to see it now is really useful.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/resources/blog/stress_3/grafana-1.png&quot; alt=&quot;Grafana long run&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Notifications were building up during the test. A better method than sleeping
-between loads, as mentioned in &lt;a href=&quot;https://github.com/fluo-io/fluo-stress/issues/30&quot;&gt;fluo-io/fluo-stress#30&lt;/a&gt;, is still needed.&lt;/p&gt;
-
-&lt;h2 id=&quot;short-runs&quot;&gt;Short runs&lt;/h2&gt;
-
-&lt;p&gt;Before starting the long run, a few short runs loading 1 million few times were
-done with an empty table.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/resources/blog/stress_3/grafana-2.png&quot; alt=&quot;Grafana short run&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;further-testing&quot;&gt;Further testing&lt;/h2&gt;
-
-&lt;p&gt;A long run of webindex will also be run on EC2 before releasing beta-2.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 22 Dec 2015 15:30:00 +0000</pubDate>
-        <link>https://fluo.apache.org//blog/2015/12/22/beta-2-pre-release-stress-test/</link>
-        <guid isPermaLink="true">https://fluo.apache.org//blog/2015/12/22/beta-2-pre-release-stress-test/</guid>
         
         
         <category>blog</category>
