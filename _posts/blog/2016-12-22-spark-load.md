@@ -28,7 +28,7 @@ public void dedupeAndLoad(JavaRDD<Document> docRdd, int numPartitions) {
   docRdd = docRdd.distinct(numPartitions);
   
   // Execute load transactions for unique documents.  Iin Java 8 lambda syntax below, 
-  // iter is of type Iterator<String>
+  // iter is of type Iterator<Document>
   docRdd.foreachPartition(iter->{
     // Assume fluo.properties file was submitted with application
     FluoConfiguration fconf = new FluoConfiguration(new File("fluo.properties"));
