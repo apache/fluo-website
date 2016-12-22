@@ -5,8 +5,8 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 22 Dec 2016 18:12:05 +0000</pubDate>
-    <lastBuildDate>Thu, 22 Dec 2016 18:12:05 +0000</lastBuildDate>
+    <pubDate>Thu, 22 Dec 2016 19:54:22 +0000</pubDate>
+    <lastBuildDate>Thu, 22 Dec 2016 19:54:22 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -33,7 +33,7 @@ can be created.  That’s what the example below shows.&lt;/p&gt;
   &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;distinct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numPartitions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
   
   &lt;span class=&quot;c1&quot;&gt;// Execute load transactions for unique documents.  Iin Java 8 lambda syntax below, &lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// iter is of type Iterator&amp;lt;String&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// iter is of type Iterator&amp;lt;Document&amp;gt;&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;foreachPartition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;{&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;// Assume fluo.properties file was submitted with application&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;FluoConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fconf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FluoConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fluo.properties&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;

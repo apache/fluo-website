@@ -135,7 +135,7 @@ can be created.  That’s what the example below shows.</p>
   <span class="n">docRdd</span> <span class="o">=</span> <span class="n">docRdd</span><span class="o">.</span><span class="na">distinct</span><span class="o">(</span><span class="n">numPartitions</span><span class="o">);</span>
   
   <span class="c1">// Execute load transactions for unique documents.  Iin Java 8 lambda syntax below, </span>
-  <span class="c1">// iter is of type Iterator&lt;String&gt;</span>
+  <span class="c1">// iter is of type Iterator&lt;Document&gt;</span>
   <span class="n">docRdd</span><span class="o">.</span><span class="na">foreachPartition</span><span class="o">(</span><span class="n">iter</span><span class="o">-&gt;{</span>
     <span class="c1">// Assume fluo.properties file was submitted with application</span>
     <span class="n">FluoConfiguration</span> <span class="n">fconf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"fluo.properties"</span><span class="o">));</span>
