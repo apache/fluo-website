@@ -5,9 +5,29 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 22 Dec 2016 19:54:22 +0000</pubDate>
-    <lastBuildDate>Thu, 22 Dec 2016 19:54:22 +0000</lastBuildDate>
+    <pubDate>Tue, 10 Jan 2017 17:54:17 +0000</pubDate>
+    <lastBuildDate>Tue, 10 Jan 2017 17:54:17 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Fluo talks at Accumulo Summit 2016</title>
+        <description>&lt;p&gt;Two Fluo talks were given at the &lt;a href=&quot;http://accumulosummit.com/&quot;&gt;2016 Accumulo Summit&lt;/a&gt; on October 11, 2016.  Below are links to
+the talks.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;Tips For Writing Fluo Applications&lt;/em&gt; : &lt;a href=&quot;http://accumulosummit.com/program/talks/tips-for-writing-fluo-applications/&quot;&gt;Summit page&lt;/a&gt;, &lt;a href=&quot;http://www.slideshare.net/AccumuloSummit/accumulo-summit-2016-tips-for-writing-fluo-applications&quot;&gt;Slides&lt;/a&gt;, &lt;a href=&quot;https://youtu.be/06KC0QvmiNk?list=PLRV6DJeV4e-VFbWRNO1QerVPwIlXS1P3f&quot;&gt;Video&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Accumulo Indexing Strategies for Searching Semantic Networks&lt;/em&gt; : &lt;a href=&quot;http://accumulosummit.com/program/talks/indexing-strategies-for-searching-semantic-networks/&quot;&gt;Summit page&lt;/a&gt;, &lt;a href=&quot;http://www.slideshare.net/AccumuloSummit/accumulo-summit-2016-accumulo-indexing-strategies-for-searching-semantic-networks&quot;&gt;Slides&lt;/a&gt;, &lt;a href=&quot;https://youtu.be/6b8-iyi3fws?list=PLRV6DJeV4e-VFbWRNO1QerVPwIlXS1P3f&quot;&gt;Video&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 10 Jan 2017 11:50:00 +0000</pubDate>
+        <link>https://fluo.apache.org//blog/2017/01/10/accumulo-summit-17/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//blog/2017/01/10/accumulo-summit-17/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Loading data into Fluo using Apache Spark</title>
@@ -1138,216 +1158,6 @@ made.  The following API changes happened between beta-1 and beta-2.&lt;/p&gt;
         
         
         <category>release</category>
-        
-      </item>
-    
-      <item>
-        <title>Running Webindex for 3 days on EC2</title>
-        <description>&lt;p&gt;In preparation for the Fluo beta 2 release, &lt;a href=&quot;http://github.com/fluo-io/webindex&quot;&gt;Webindex&lt;/a&gt;, an example
-Fluo application, was run on 24 EC2 m3-xlarge nodes (20 worker node) for 3
-days.  The experiment went well as Webindex indexed 178 million web pages and
-2.32 billion links. The average rate for the entire test was 698 pages/sec and
-8,943 links/sec.  A few problems with &lt;a href=&quot;http://github.com/fluo-io/fluo-recipes&quot;&gt;Fluo Recipes&lt;/a&gt; and Webindex were
-discovered during the course of the test.&lt;/p&gt;
-
-&lt;h2 id=&quot;webindex-overview&quot;&gt;Webindex Overview&lt;/h2&gt;
-
-&lt;p&gt;Webindex indexes URLs from &lt;a href=&quot;https://commoncrawl.org/&quot;&gt;Common Crawl&lt;/a&gt; data in multiple ways into an
-external &lt;a href=&quot;http://accumulo.apache.org/&quot;&gt;Accumulo&lt;/a&gt; table. Webindex offers a simple web application
-for querying this external Accumulo table.  The following three questions can
-be answered from this web page.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Which page is the most linked to?&lt;/li&gt;
-  &lt;li&gt;Which page in a domain is the most linked to and how many pages were seen for a domain?&lt;/li&gt;
-  &lt;li&gt;For a given page, what links to it and how many links are there?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In order to answer these questions, Webindex continually updates the following
-three indexes in an external Accumulo table.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A per domain index containing linked to counts in descending order.&lt;/li&gt;
-  &lt;li&gt;A total index containing linked to counts for all pages in descending order.&lt;/li&gt;
-  &lt;li&gt;A per page index containing the pages incoming and outgoing links and incoming link count.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The following is a simple example of some of what Webindex does.  In order to
-keep it simple, the example below does not show everything Webindex does.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Content for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://A.com&lt;/code&gt; that links to &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is loaded.&lt;/li&gt;
-  &lt;li&gt;Content for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://C.com&lt;/code&gt; that links to &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is loaded.&lt;/li&gt;
-  &lt;li&gt;The inbound link count for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is computed as 2.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(2,http://B.org)&lt;/code&gt; is inserted into the external domain index, total index, and page count.&lt;/li&gt;
-  &lt;li&gt;Content for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://C.com&lt;/code&gt; that links to &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is loaded.&lt;/li&gt;
-  &lt;li&gt;The inbound link count for &lt;code class=&quot;highlighter-rouge&quot;&gt;http://B.org&lt;/code&gt; is computed as 3.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(2,http://B.org)&lt;/code&gt; is deleted from all the external indexes and &lt;code class=&quot;highlighter-rouge&quot;&gt;(3, http://B.org)&lt;/code&gt; is inserted.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;videos-from-run&quot;&gt;Videos from run&lt;/h2&gt;
-
-&lt;p&gt;During the course of the 3 day run, screenshots of different queries in the
-Webindex web application were taken every 6 minutes.  From these screenshots,
-the following videos were created showing Fluo in action. Keep in mind that as
-the counts are changing, the old count is deleted and a new count is inserted.
-If Fluo ever dropped the ball on this, it would leave both entries in the
-external index causing the same URL to show up twice with different counts.&lt;/p&gt;
-
-&lt;p&gt;The video below shows querying for the most linked to page every 6 minutes.&lt;/p&gt;
-
-&lt;iframe width=&quot;715&quot; height=&quot;402&quot; src=&quot;https://www.youtube.com/embed/Munsucq1KXo&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;The video below shows querying for which pages at stackoverflow.com are the most
-linked to.  The count at the top is the total number of pages seen in the
-wikipedia.org domain.&lt;/p&gt;
-
-&lt;iframe width=&quot;715&quot; height=&quot;402&quot; src=&quot;https://www.youtube.com/embed/mJJNJbPN2EI&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;Videos were also created for &lt;a href=&quot;http://youtu.be/9kvYzgg72Es&quot;&gt;apache&lt;/a&gt;,
-&lt;a href=&quot;https://youtu.be/a-9_hnRprpQ&quot;&gt;wikipedia&lt;/a&gt;,
-&lt;a href=&quot;https://youtu.be/IlJ95dVkLnk&quot;&gt;github&lt;/a&gt;, and &lt;a href=&quot;https://youtu.be/D66nBP5QKS8&quot;&gt;cnn&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Some custom scripts and &lt;a href=&quot;https://github.com/sindresorhus/pageres-cli&quot;&gt;pageres-cli&lt;/a&gt; were used to generate the screenshots.
-Videos with a screenshot every minute are also available.  If interested in
-seeing these, contact the Fluo dev list.&lt;/p&gt;
-
-&lt;h2 id=&quot;grafana-plots&quot;&gt;Grafana plots&lt;/h2&gt;
-
-&lt;p&gt;The Grafana plots below are from the three day run. No plot of notifications
-queued is shown because processing of pages kept up and never fell behind. To
-understand the plots, below is a simple description of what the different
-observers do.  Observers are written by Fluo users, run by Fluo workers,  and
-respond to notifications and execute transactions.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The PageLoader runs in a Spark job and loads pages parsed from a CommonCrawl
-data file.&lt;/li&gt;
-  &lt;li&gt;The PageObserver processes updates to pages, determines what links changed,
-and pushes link updates to other observers.&lt;/li&gt;
-  &lt;li&gt;The CollisionFreeMapObserver computes linked to counts and pushes the counts
-to the ExportObserver.  This observer also rolls up domain counts and pushes
-those for export (calling different code and operating on a different part of
-the table).&lt;/li&gt;
-  &lt;li&gt;The ExportObserver updates the external Accumulo index table in a fault
-tolerant manner.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/resources/blog/webindex_run_201601/grafana-1.png&quot; alt=&quot;Grafana long run&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;problems-found&quot;&gt;Problems Found&lt;/h2&gt;
-
-&lt;p&gt;The test was useful in that it showed Fluo is probably ready for another
-release. While no show stoppers were found, it was also useful in that many
-areas where improvements could be made were found.&lt;/p&gt;
-
-&lt;p&gt;During the first day of the test, it was noticed that major compactions in
-Accumulo were sucking up a lot of resources.  Each node only had four cores.
-Before the test were started, compaction ratios were adjusted.   Fluo’s table
-was set to 1.5 and the external index table was set to 2.  These ratios coupled
-with the fact that the compactions were using gzip caused really high load,
-which eventually caused processing to drop to around 500 pages/sec.  While the
-test was running the compaction ratios were adjusted to 2 and 3, and compaction
-was set use snappy.  This caused performance to increase.  A few more cores
-would have been nice.&lt;/p&gt;
-
-&lt;p&gt;The Spark load jobs have to parse, validate, and clean up all of the links.
-This seems to be very CPU intensive and may be the current bottleneck (see
-&lt;a href=&quot;https://github.com/fluo-io/webindex/issues/41&quot;&gt;fluo-io/webindex#41&lt;/a&gt;). It seems that as Accumulo’s CPU load
-increased (because of compactions) that the load rate dropped.  As an
-experiment during the 2nd day of the test, loaders were stopped and two loaders
-per node were started.  This resulted in a higher load rate of around 1000
-pages/sec.  In order to ensure the test would run over night, this was only
-done for a brief period before reverting to one loader per node.  Again, more
-cores would have been nice.  In place of more cores, looking into optimizing this
-and getting a higher load rate would nice.  Another issue noticed with loading
-was &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/39&quot;&gt;fluo-io/webindex#39&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;While monitoring the test it became apparent that split points for the Fluo
-table were not equally spreading computation across all tablet servers. See
-&lt;a href=&quot;https://github.com/fluo-io/fluo-recipes/issues/44&quot;&gt;fluo-io/fluo-recipes#44&lt;/a&gt; for more information.  Somewhere around the
-2nd day of the test, tablets were merged and new splits points were added while
-the test was running.  This worked really well.  Another issue found relating
-to split points was &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/40&quot;&gt;fluo-io/webindex#40&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The lack of metrics about Conditional mutations from Accumulo tablet servers
-makes it hard to track down problems where many Fluo transactions are hitting a
-few tablet servers.  The bad split points mentioned in the previous paragraph
-are one example of this type of problem.  &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4107&quot;&gt;ACCUMULO-4107&lt;/a&gt; was
-created to address this issue.&lt;/p&gt;
-
-&lt;p&gt;Some skew was noticed as a result of YARN’s placement decisions.  This was
-caused by coordination task displacing CPU intensive task.  For example
-Fluo has three task types that run in YARN : Oracle, Twill Application manager,
-and Workers.  Ideally there would be one Worker per node. However, because of
-the Oracle and Application task, YARN may place two workers on a single node.
-Opened &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/600&quot;&gt;fluo-io/fluo#600&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;During the test, worker task were dying or being killed because of memory
-overuse.  Twill/YARN automatically restarted the workers and the test kept
-running w/o much problem.  It would be good to avoid this since this causes
-transaction recovery or rollback.  See &lt;a href=&quot;https://github.com/fluo-io/webindex/issues/42&quot;&gt;fluo-io/webindex#42&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The test identified a possible need for &lt;a href=&quot;https://github.com/fluo-io/fluo-recipes/issues/45&quot;&gt;HashedRow recipe&lt;/a&gt; to more
-evenly distribute processing of page related transactions.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-environment&quot;&gt;Test environment&lt;/h2&gt;
-
-&lt;p&gt;The following configuration and software were used for this test.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;24 m3.xlarge EC2 nodes. 15G ram, 4 cores, and 2x35G SSD.&lt;/li&gt;
-  &lt;li&gt;Centos 7&lt;/li&gt;
-  &lt;li&gt;Hadoop 2.6.0&lt;/li&gt;
-  &lt;li&gt;Zookeeper 3.4.7&lt;/li&gt;
-  &lt;li&gt;Accumulo 1.8.0-SNAPSHOT with &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4066&quot;&gt;ACCUMULO-4066&lt;/a&gt; patches&lt;/li&gt;
-  &lt;li&gt;Fluo beta-2-SNAPSHOT 78bcdb7&lt;/li&gt;
-  &lt;li&gt;Fluo recipes beta-1-SNAPSHOT 96858d0&lt;/li&gt;
-  &lt;li&gt;Fluo deploy 43bf08f&lt;/li&gt;
-  &lt;li&gt;2G data cache and 768M index cache in Accumulo&lt;/li&gt;
-  &lt;li&gt;64 threads in Accumulo client pool and readahead pool&lt;/li&gt;
-  &lt;li&gt;128 worker threads and 4G per worker (initially went to 5G and 6G as test was running).&lt;/li&gt;
-  &lt;li&gt;20 Load task running in Spark&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;storage-statistics&quot;&gt;Storage statistics&lt;/h2&gt;
-
-&lt;p&gt;After the three day run completed, the external index table had 4.71 billion
-entries and used 191G in HDFS.   A compaction was forced on the Accumulo table,
-which caused old versions and deleted data to be dropped.  After the compaction
-the table had 4.02 billion entries and used 159G in HDFS.  The table was being
-frequently updated by Fluo and that’s why so much data was dropped by the
-compaction.  The way Accumulo works, compactions were continually happening
-while test was running.  So the total amount of data dropped from the table as
-a result of updates is unknown.&lt;/p&gt;
-
-&lt;p&gt;The table used by Fluo had 1.46 billion entries at the conclusion of the test
-and used 93G in HDFS.&lt;/p&gt;
-
-&lt;h2 id=&quot;future-work&quot;&gt;Future Work&lt;/h2&gt;
-
-&lt;p&gt;Most Fluo scale testing to date has been on EC2.  It would be really nice to
-test Fluo on bare metal.  We are going to experiment with getting &lt;a href=&quot;https://github.com/fluo-io/fluo-deploy&quot;&gt;Fluo
-Deploy&lt;/a&gt; to work on bare metal where
-CentOS 7 is already installed.&lt;/p&gt;
-
-&lt;p&gt;Seeing Application level stats plotted in Grafana, as outlined in
-&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/534&quot;&gt;fluo-io/fluo#534&lt;/a&gt;, would be really nice.  For webindex this would
-include things like URLs exported per second, domains exported per second, etc.
-This issue was not identified during this test, it just would have been really
-nice to have this information while running the test.&lt;/p&gt;
-
-&lt;p&gt;Eventually this test needs to be run on 10, 20, and 40 nodes to measure the
-relative performance increase as the number of nodes is increased.  Ideally
-this test would run on bare metal.&lt;/p&gt;
-
-</description>
-        <pubDate>Mon, 11 Jan 2016 15:30:00 +0000</pubDate>
-        <link>https://fluo.apache.org//blog/2016/01/11/webindex-long-run/</link>
-        <guid isPermaLink="true">https://fluo.apache.org//blog/2016/01/11/webindex-long-run/</guid>
-        
-        
-        <category>blog</category>
         
       </item>
     
