@@ -226,8 +226,8 @@ This row range is defined by using the export queue id as a row prefix for all
 data in the export queue.  So the row range defined by the export queue id
 should not be used by anything else.</p>
 
-<p>All data stored in an export queue is <a href="transient.md">transient</a>. When an export
-queue is configured, it will recommend split points using the <a href="table-optimization.md">table
+<p>All data stored in an export queue is <a href="/docs/fluo-recipes/1.0.0-incubating/transient/">transient</a>. When an export
+queue is configured, it will recommend split points using the <a href="/docs/fluo-recipes/1.0.0-incubating/table-optimization/">table
 optimization process</a>.  The number of splits generated
 by this process can be controlled by setting the number of buckets per tablet
 when configuring an export queue.</p>
