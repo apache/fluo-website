@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
-
-gem 'github-pages', '104'
+gem 'github-pages', '110', group: :jekyll_plugins
+gem 'therubyracer'
