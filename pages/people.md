@@ -36,6 +36,7 @@ based on commits.
 | [Eric Newton](https://github.com/ericnewton)        |                                     | [ET][et]   |
 | [Garvit Bansal](https://github.com/Garvit244)       | [Flipkart](http://www.flipkart.com) | [IST][ist] |
 | [Christopher McTague](https://github.com/cjmctague) | [Peterson Technologies][pt]         | [ET][et]   |
+| [Michael Wall](https://github.com/mjwall)           |                                     | [ET][et]   |
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: http://hortonworks.com/
