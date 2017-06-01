@@ -4,7 +4,7 @@ date: 2017-01-10 11:50:00 +0000
 author: Keith Turner
 ---
 
-Two Fluo talks were given at the [2016 Accumulo Summit][1] on October 11, 2016.  Below are links to
+Two Apache Fluo talks were given at the [2016 Accumulo Summit][1] on October 11, 2016.  Below are links to
 the talks.  
 
  * *Tips For Writing Fluo Applications* : [Summit page][2], [Slides][3], [Video][4]
