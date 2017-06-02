@@ -4,108 +4,110 @@ title: Release Process
 permalink: /release-process/
 ---
 
-<div class="alert alert-danger" role="alert">Please note - These instructions are for releasing Fluo before it became an ASF project.  After the first Apache release, they will be updated to reflect how to release Apache Fluo on ASF infrastructure</div>
-
 ### Initial Setup
 
-Before you can release Fluo or Fluo Recipes, you will need to set up a GPG client, create a [sonatype account], and have another Fluo committer request to give you deployment access for the Fluo project on sonatype.  Once you have a sonatype account, you should add your account details to your Maven settings.xml in the following format:
+Before you can release Fluo or Fluo Recipes, you will need a GPG key. For information on generating
+a key look at this [ASF GPG page](https://www.apache.org/dev/openpgp.html).  After generating a key,
+add it to the [KEYS](https://www.apache.org/dist/incubator/fluo/KEYS) file.
+
+The maven release plugin will need credentials to stage artifacts.  You can provide the credentials
+by adding the following to your `~/.m2/settings.xml` file.  You may want remove your password after
+running maven.
 
 ```xml
 <servers>
   <server>
-    <id>sonatype-nexus-staging</id>
-    <username>USER</username>
-    <password>PASS</password>
-  </server>
-  <server>
-    <id>sonatype-nexus-snapshots</id>
-    <username>USER</username>
-    <password>PASS</password>
+    <id>apache.releases.https</id>
+    <username>your-apache-id</username>
+    <password>your-apache-password</password>
   </server>
 </servers>
 ```
 
-See this [documentation] for more information on setting up your environment.
-
 ### Release Fluo
 
 Before starting the release process below, the following tasks should be complete:
- 
+
  * Create release notes for project website using GitHub issues.
  * Perform testing and document results
  * Start a gpg-agent to cache your gpg key to avoid entering your passphrase multiple times.
 
    ```shell
-   gpg-agent --daemon --use-standard-socket
+   gpg-connect-agent reloadagent /bye
    ```
 
-Next, repeat the steps below until a good release candidate (RC) is found:
+Next, repeat the steps below until a good release candidate (RC) is found.  The script in
+`contrib/create-release-candidate.sh` automates this process.  However there is no guarantee that it
+works correctly.  Before using the script ensure you understand the process and inspect the script.
+In the following steps `RCV` is short for release candidate version.
 
- 1. Branch master (or the current snapshot) and call the branch `<releaseVersion>-RC`
+ 1. Branch master (or the current snapshot) and call the branch `<releaseVersion>-rc<RCV>-next`
 
  2. Except in Maven POMs (which will be updated by the next step), change any version references in docs and code from `<releaseVersion>-SNAPSHOT` to `<releaseVersion>`.  Commit changes to branch.
 
- 3. Run integration tests using `mvn clean verify`
+ 3. Prepare the release which will verify that all tests pass: `mvn release:prepare`
 
- 4. Prepare the release which will verify that all tests pass: `mvn release:prepare`
+ 4. Perform the release: `mvn release:perform`
+    * This step will create a staging repository viewable only to you when login to https://repository.apache.org
+    * When `release:perform` finishes, you will need to close the staging repository to make it viewable to anyone at  https://repository.apache.org/content/repositories/orgapachefluo-REPO_ID
 
- 5. Perform the release: `mvn release:perform`
-    * This step will create a staging repository viewable only to you when login to https://oss.sonatype.org/#stagingRepositories
-    * When `release:perform` finishes, you will need to close the staging repository to make it viewable to anyone at https://oss.sonatype.org/content/repositories/iofluo-REPO_ID
-
- 6. Create an RC tag (i.e `<version#>-<rc#>`) from the tag created by the release plugin (a branch could work instead of a tag but the point is to remove the release tag because the codebase has not been released yet). This new branch/tag should have the non-snapshot version in the poms.  The RC tag can be pushed to a fork for others to view.
+ 5. Delete the tag created by Maven in previous step.  This tag should not be pushed to Apache until the vote passes.  Also, a signed tag should be created instead of the one created by Maven.  So out of an abundance of caution its best to delete it now and create the signed tag after the vote passes.
 
     ```shell
-    # Creates 1.0.0-beta-1-RC1 from 1.0.0-beta-1 
-    git tag 1.0.0-beta-1-RC1 1.0.0-beta-1
-    # Delete 1.0.0-beta-1
-    git tag -d 1.0.0-beta-1
-    # Push RC tag to fork
-    git push origin 1.0.0-beta-1-RC1
+    git tag -D rel/fluo-<releaseVersion>
     ```
 
- 7. The artifacts will be staged in nexus OSS. Send a message to the devs to let them know a release is staged. 
+ 6. Push the `<releaseVersion>-rc<RCV>-next` to apache.
 
- 8. Give enough time (Apache recommends 72 hours) for everyone to check out the distribution tarball from Sonatype OSS and verify signatures, hashes, functional tests, etc... Sonatype OSS does have it's own validation of the artifacts which includes verifying a valid GPG signature, though I do not believe it verifies that it belonged to a trusted committer so that'll need to be done by other committers.
+    ```shell
+    git checkout <releaseVersion>-rc<RCV>-next
+    git push apache-remote <releaseVersion>-rc<RCV>-next
+    ```
 
-When consensus has been reached on a release candidate, follow the steps below to complete the release using the chosen RC:
+ 7. Create the release candidate branch `<releaseVersion>-rc<RCV>` and push it.  This branch should be one commit behind `<releaseVersion>-rc<RCV>-next`
+
+    ```shell
+    git checkout -b <releaseVersion>-rc<RCV> <releaseVersion>-rc<RCV>-next~1
+    git push -u apache-remote <releaseVersion>-rc<RCV>
+    ```
+
+ 8. Send a message to the devs to let them know a release is staged. This [example][example-email] for the Fluo 1.0.0 release can be used as template.  The script `contrib/create-release-candidate.sh` can be used to generate this email.
+
+When the vote passes on a release candidate, follow the steps below to complete the release using the chosen RC:
 
  1. Merge your RC branch into master and push those commits upstream.  Afterwards, you can delete your RC branch.
 
     ```shell
     git checkout master
-    git merge 1.0.0-beta-RC
-    git push upstream master
-    git branch -d 1.0-0-beta-RC
+    git merge <releaseVersion>-rc<RCV>-next
+    git push apache-remote master
     ```
 
- 2. [Release the artifacts] in Sonatype OSS so that they get published in Maven Central.  You can drop any staging repos for RCs that were not chosen. 
+ 2. Release the artifacts at https://repository.apache.org so that they get published in Maven Central.  You can drop any staging repos for RCs that were not chosen.
 
  3. Create a signed tag for the release from the chosen RC tag and push to upstream repo:
 
     ```shell
     # Create signed tag from RC2 tag.
     # You may need to use -u <key-id> to specify GPG key
-    git tag -s 1.0.0-beta-1 1.0.0-beta-1-RC2
+    git tag  -f -m 'Apache Fluo <releaseVersion>' -s rel/fluo-<releaseVersion> <releaseVersion>-rc<RCV>
+    # Verify the tag is the expected commit
+    git log -1 rel/fluo-<releaseVersion>
     # Push signed tag to upstream repo
-    git push upstream 1.0.0-beta-1
+    git push apache-remote rel/fluo-<releaseVersion>
     ```
 
- 4. Attach Fluo tarball to GitHub release page.
-
- 5. Remove all RC tags
+ 5. Delete all RC branches.
 
     ```shell
-    # Remove tag locally
-    git tag -d 1.0.0-beta-1-RC1
-    # Remove tag on fork
-    git push --delete origin 1.0.0-beta-1-RC1
+    git push apache-remote --delete <releaseVersion>-rc<RCV>-next
+    git branch -d <releaseVersion>-rc<RCV>-next
+    git push apache-remote --delete <releaseVersion>-rc<RCV>
+    git branch -d <releaseVersion>-rc<RCV>
     ```
  6.  View the [website README] for instructions on how to generate Javadocs and documentation using the released tag.  Submit PR to the website repo to publish.
- 
+
  7.  Send an email to `dev@fluo.incubator.apache.org` announcing new release.
 
 [website README]: https://github.com/apache/incubator-fluo-website/blob/master/README.md
-[documentation]: http://central.sonatype.org/pages/apache-maven.html
-[sonatype account]: https://issues.sonatype.org/
-[Release the artifacts]: http://central.sonatype.org/pages/releasing-the-deployment.html
+[example-email]: https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E
