@@ -9,7 +9,8 @@ permalink: /release-process/
 Before you can release Fluo or Fluo Recipes, you will need a GPG key. For information on generating
 a key look at this [ASF GPG page](https://www.apache.org/dev/openpgp.html).  After generating a key,
 add it to the [KEYS] file.  The [KEYS] files contains instructions for adding to itself.  Use the 
-following command to checkout the svn repository.
+following command to checkout the svn repository that contains the KEY files.  Updates to this
+repository will eventually sync to the website.
 
 ```bash
 svn co https://dist.apache.org/repos/dist/release/incubator/fluo/
