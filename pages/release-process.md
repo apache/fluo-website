@@ -8,7 +8,12 @@ permalink: /release-process/
 
 Before you can release Fluo or Fluo Recipes, you will need a GPG key. For information on generating
 a key look at this [ASF GPG page](https://www.apache.org/dev/openpgp.html).  After generating a key,
-add it to the [KEYS] file.  The [KEYS] files contains instructions for adding to itself.
+add it to the [KEYS] file.  The [KEYS] files contains instructions for adding to itself.  Use the 
+following command to checkout the svn repository.
+
+```bash
+svn co https://dist.apache.org/repos/dist/release/incubator/fluo/
+```
 
 The maven release plugin will need credentials to stage artifacts.  You can provide the credentials
 by adding the following to your `~/.m2/settings.xml` file.  Maven offers documentation about [securing
