@@ -9,7 +9,7 @@ permalink: /release-process/
 Before you can release Fluo or Fluo Recipes, you will need a GPG key. For information on generating
 a key look at this [ASF GPG page](https://www.apache.org/dev/openpgp.html).  After generating a key,
 add it to the [KEYS] file.  The [KEYS] files contains instructions for adding to itself.  Use the 
-following command to checkout the svn repository that contains the KEY files.  Updates to this
+following command to checkout the svn repository that contains the KEYS files.  Updates to this
 repository will eventually sync to the website.
 
 ```bash
@@ -35,7 +35,7 @@ your credentials](https://maven.apache.org/guides/mini/guide-encryption.html).
 
 Before starting the release process below, the following tasks should be complete:
 
- * Ensure the NOTICE.md file has the correct year.
+ * Ensure the NOTICE file has the correct year.
  * Create release notes for project website using GitHub issues.
  * Perform testing and document results.
  * Start a gpg-agent to cache your gpg key to avoid entering your passphrase multiple times.  How
@@ -66,13 +66,13 @@ for `RCV`.
       the artifacts to Maven central and this can not be undone.  Promotion is done after a successful vote.
     * When closing, add a comment like `Apache Fluo (incubating) 1.1.0-rc3`
 
- 4. Delete the tag created by `mvn release:perform`.  This tag should not be pushed to Apache until
+ 4. Delete the tag created by `mvn release:pepare`.  This tag should not be pushed to Apache until
     the vote passes.  Also, a signed tag should be created instead of the one created by Maven.  So out
     of an abundance of caution its best to delete it now and create the signed tag after the vote
     passes.
 
     ```shell
-    git tag -D rel/fluo-<releaseVersion>
+    git tag -d rel/fluo-<releaseVersion>
     ```
 
  5. Push the `<releaseVersion>-rc<RCV>-next` to apache.
