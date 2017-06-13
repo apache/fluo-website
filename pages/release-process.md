@@ -138,8 +138,13 @@ When the vote passes on a release candidate, follow the steps below to complete 
  6.  View the [website README] for instructions on how to generate Javadocs and documentation using
      the released tag.  Submit PR to the website repo to publish.
 
- 7.  Send an email to `dev@fluo.incubator.apache.org` announcing new release.
+ 7.  Place the source and binary tarballs in the svn distribution repo under `fluo/<releaseVersion>`.
+     This is the same svn repo mentioned earlier for the KEYS file.  Follow the [ASF guidance][sigs] for
+     hashes and signatures.  This step publishes the files to the ASF mirrors.
+
+ 8.  Send an email to `dev@fluo.incubator.apache.org` announcing new release.
 
 [website README]: https://github.com/apache/incubator-fluo-website/blob/master/README.md
 [example-email]: https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E
-[KEYS]: https://www.apache.org/dist/incubator/fluo/KEYS 
+[KEYS]: https://www.apache.org/dist/incubator/fluo/KEYS
+[sigs]: http://www.apache.org/dev/release-distribution.html#sigs-and-sums
