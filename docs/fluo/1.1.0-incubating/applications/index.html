@@ -228,7 +228,7 @@ register multiple observers.</p>
     <span class="n">or</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"obs"</span><span class="o">,</span> <span class="s">"data"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">)</span>
       <span class="o">.</span><span class="na">useObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">InvertObserver</span><span class="o">());</span>
         
-    <span class="c1">//Observer is a Functional interface.  So Obsevers can be written as lambdas.</span>
+    <span class="c1">//Observer is a Functional interface.  So Observers can be written as lambdas.</span>
     <span class="n">or</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"new"</span><span class="o">,</span><span class="s">"data"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">WEAK</span><span class="o">)</span>
       <span class="o">.</span><span class="na">useObserver</span><span class="o">((</span><span class="n">tx</span><span class="o">,</span><span class="n">row</span><span class="o">,</span><span class="n">col</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
          <span class="n">Bytes</span> <span class="n">combined</span> <span class="o">=</span> <span class="n">combineNewAndOld</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span><span class="n">row</span><span class="o">);</span>
@@ -239,7 +239,7 @@ register multiple observers.</p>
 </code></pre>
     </div>
   </li>
-  <li>Build a jar containing thses classes and include this jar in the <code class="highlighter-rouge">lib/</code> directory of your Fluo
+  <li>Build a jar containing these classes and include this jar in the <code class="highlighter-rouge">lib/</code> directory of your Fluo
 application.</li>
   <li>Configure your Fluo instance to use this observer provider by modifying the Observer section of
 <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>.</li>
