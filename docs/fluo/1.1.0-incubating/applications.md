@@ -86,9 +86,9 @@ public class AppCommand {
 
 To create an observer, follow these steps:
 
-1. Create one or more classes that extend [Observer] like the example below. Please use [slf4j] for
-   any logging in observers as [slf4j] supports multiple logging implementations. This is
-   necessary as Fluo applications have a hard requirement on [logback] when running in YARN.
+1.  Create one or more classes that extend [Observer] like the example below. Please use [slf4j] for
+    any logging in observers as [slf4j] supports multiple logging implementations. This is
+    necessary as Fluo applications have a hard requirement on [logback] when running in YARN.
 
     ```java
     public class InvertObserver implements Observer {
@@ -102,6 +102,7 @@ To create an observer, follow these steps:
       }
     }
     ```
+
 2.  Create a class that implements [ObserverProvider] like the example below.  The purpose of this
     class is associate a set Observers with columns that trigger the observers.  The class can
     register multiple observers.
