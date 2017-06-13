@@ -14,10 +14,8 @@ output_dir = sys.argv[2]
 
 args = output_dir.rpartition("/docs")
 url_prefix = args[1] + args[2]
-print url_prefix
-print args
 release_ver = url_prefix.split("/")[3]
-github_prefix = "https://github.com/apache/fluo/blob/{0}/modules/".format(release_ver)
+github_prefix = "https://github.com/apache/fluo/blob/rel/fluo-{0}/modules/".format(release_ver)
 javadocs_prefix = "{{ site.fluo_api_static }}/" + release_ver + "/"
 resources_prefix = "/docs/fluo/{0}/resources/".format(release_ver)
 
