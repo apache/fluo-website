@@ -112,11 +112,11 @@
 </div>
 <div id="tour-content">
   <p>In some situations, you may want to read a range of data instead of specific rows and columns.  For
-this case, Fluo supports <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#scanner--">creating scanners</a> over ranges.   These scanners implement Java Iterable and
+this case, Fluo supports <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#scanner--">creating scanners</a> over ranges.   These scanners implement Java Iterable and
 can be used with foreach loops.  Scanners also support reading a subset of columns within a range.</p>
 
-<p>To specify a range, Fluo has a simple POJO called <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/data/Span.html">Span</a>.  The name was chosen so it would not
-conflict with Accumulo’s Range. <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/data/Span.html">Span</a> has multiple static helper methods for creating common
+<p>To specify a range, Fluo has a simple POJO called <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Span.html">Span</a>.  The name was chosen so it would not
+conflict with Accumulo’s Range. <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Span.html">Span</a> has multiple static helper methods for creating common
 ranges, like a range over all rows with a given prefix.  Try the following exercise using scanners.</p>
 
 <ul>

@@ -8,7 +8,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.0.0-incubating/install/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.1.0-incubating/install/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
     <title>Fluo Install Instructions | Apache Fluo</title>
@@ -106,8 +106,6 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo 1.0.0-incubating which is an old version! Check out the <a href="/docs/fluo/1.1.0-incubating/">latest docs</a>!</div>
-  
 
   
 
@@ -177,7 +175,7 @@ mvn package
   <li>
     <p>Choose a directory with plenty of space and untar the distribution:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>tar -xvzf fluo-1.0.0-incubating-bin.tar.gz
+    <div class="highlighter-rouge"><pre class="highlight"><code>tar -xvzf fluo-1.x.x-incubating-bin.tar.gz
 </code></pre>
     </div>
   </li>
@@ -192,7 +190,7 @@ configuration for your Fluo install:</p>
     <p>The default configuration will be used as the base configuration for each new application.</p>
   </li>
   <li>
-    <p>Modify <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for your environment. However, you should not configure any
+    <p>Modify <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for your environment. However, you should not configure any
 application settings (like observers).</p>
 
     <p>NOTE - All properties that have a default are set with it. Uncomment a property if you want
@@ -206,11 +204,11 @@ to Fluo:</p>
 
     <ul>
       <li>Set <code class="highlighter-rouge">HADOOP_PREFIX</code>, <code class="highlighter-rouge">ACCUMULO_HOME</code>, and <code class="highlighter-rouge">ZOOKEEPER_HOME</code> in your environment or configure
- these variables in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo-env.sh">fluo-env.sh</a>. Fluo will look in these locations for jars.</li>
+ these variables in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo-env.sh">fluo-env.sh</a>. Fluo will look in these locations for jars.</li>
       <li>
         <p>Run <code class="highlighter-rouge">./lib/fetch.sh ahz</code> to download Hadoop, Accumulo, and Zookeeper jars to <code class="highlighter-rouge">lib/ahz</code> and
- configure <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo-env.sh">fluo-env.sh</a> to look in this directory. By default, this command will download the
- default versions set in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/lib/ahz/pom.xml">lib/ahz/pom.xml</a>. If you are not using the default versions, you can
+ configure <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo-env.sh">fluo-env.sh</a> to look in this directory. By default, this command will download the
+ default versions set in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/lib/ahz/pom.xml">lib/ahz/pom.xml</a>. If you are not using the default versions, you can
  override them:</p>
 
         <div class="highlighter-rouge"><pre class="highlight"><code>  ./lib/fetch.sh ahz -Daccumulo.version=1.7.2 -Dhadoop.version=2.7.2 -Dzookeeper.version=3.4.8
@@ -239,7 +237,7 @@ invoked by this script.</p>
 <p>Modify and add the following to your <code class="highlighter-rouge">~/.bashrc</code> if you want to be able to execute the fluo script
 from any directory:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>export PATH=/path/to/fluo-1.0.0-incubating/bin:$PATH
+<div class="highlighter-rouge"><pre class="highlight"><code>export PATH=/path/to/fluo-1.x.x-incubating/bin:$PATH
 </code></pre>
 </div>
 
@@ -282,7 +280,7 @@ example for instructions. You can also choose not to configure any observers but
 be idle when started.</p>
 
 <p>The <code class="highlighter-rouge">apps/myapp/lib</code> directory should contain any observer jars for your application. If you
-configured <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for observers, copy any jars containing these observer classes to this
+configured <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for observers, copy any jars containing these observer classes to this
 directory.</p>
 
 <h2 id="initialize-your-application">Initialize your application</h2>
@@ -298,7 +296,7 @@ directory.</p>
 <h2 id="start-your-application">Start your application</h2>
 
 <p>A Fluo application consists of one oracle process and multiple worker processes. Before starting
-your application, you can configure the number of worker process in your <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> file.</p>
+your application, you can configure the number of worker process in your <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> file.</p>
 
 <p>When you are ready to start your Fluo application on your YARN cluster, run the command below:</p>
 
@@ -321,10 +319,42 @@ need to deploy the Fluo binaries to every node on your cluster or start processe
 </code></pre>
 </div>
 
-<p>You can also use <code class="highlighter-rouge">yarn application -list</code> to check the status of your Fluo instance in YARN. Logs
-are viewable within YARN.</p>
+<p>You can also use <code class="highlighter-rouge">yarn application -list</code> to check the status of your Fluo instance in YARN.</p>
 
-<p>When you have data in your fluo instance, you can view it using the command <code class="highlighter-rouge">fluo scan</code>. Pipe the
+<h2 id="view-fluo-application-logs">View Fluo application logs</h2>
+
+<p>Fluo application logs are viewable within YARN using the methods below:</p>
+
+<ol>
+  <li>
+    <p>View logs using the web interface of the the YARN resource manager
+(<code class="highlighter-rouge">http://&lt;resource manager&gt;:8088/cluster</code>). First, click on the application ID (i.e <code class="highlighter-rouge">application_*</code>)
+of your Fluo application and then click on the latest attempt ID (i.e <code class="highlighter-rouge">appattempt_*</code>). You should
+see a list of containers. There should be a container for the application master (typically
+container 1), a Fluo oracle (typically container 2), and Fluo workers (containers 3+). You can view
+the log files produced by a container by clicking on its ‘logs’ link. Logs from Fluo observers will
+be in the <code class="highlighter-rouge">worker_*.log</code> file for each of your worker containers.</p>
+  </li>
+  <li>
+    <p>View logs on disk in the directory specified by the YARN property <code class="highlighter-rouge">yarn.nodemanager.log-dirs</code> in
+your YARN configuration <code class="highlighter-rouge">yarn-site.xml</code> (see <a href="https://hadoop.apache.org/docs/r2.7.0/hadoop-yarn/hadoop-yarn-common/yarn-default.xml">yarn-default.xml</a> for more info about this property).
+If you are running Fluo on single machine, this method works well. If you are running Fluo on a
+cluster, your containers and their logs will be spread across the cluster.</p>
+  </li>
+</ol>
+
+<p>When running Fluo in YARN, Fluo must use <a href="http://logback.qos.ch/">logback</a> for logging (due to a hard requirement by Twill).
+Logback is configured using <code class="highlighter-rouge">/path/to/fluo/apps/&lt;app_name&gt;/conf/logback.xml</code>. You should review this
+configuration but the root logger is configured by default to print any message that is debug level
+or higher.</p>
+
+<p>In addition the <code class="highlighter-rouge">*.log</code> files, Fluo oracle and worker containers will have <code class="highlighter-rouge">stdout</code> and <code class="highlighter-rouge">stderr</code>
+files. These files may have helpful error messages. Especially, if a process failed to start
+or calls were made to <code class="highlighter-rouge">System.out</code> or <code class="highlighter-rouge">System.err</code> in your application.</p>
+
+<h2 id="view-fluo-application-data">View Fluo application data</h2>
+
+<p>When you have data in your Fluo application, you can view it using the command <code class="highlighter-rouge">fluo scan</code>. Pipe the
 output to <code class="highlighter-rouge">less</code> using the command <code class="highlighter-rouge">fluo scan | less</code> if you want to page through the data.</p>
 
 <h2 id="stop-your-fluo-application">Stop your Fluo application</h2>
@@ -357,10 +387,10 @@ probably increase the <code class="highlighter-rouge">tserver.server.threads.min
 <h2 id="tuning-yarn">Tuning YARN</h2>
 
 <p>When running Fluo oracles and workers in YARN, the number of instances, max memory, and number of
-cores for Fluo processes can be configured in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>. If YARN is killing processes
+cores for Fluo processes can be configured in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>. If YARN is killing processes
 consider increasing <code class="highlighter-rouge">twill.java.reserved.memory.mb</code> (which defaults to 200 and is set in
 yarn-site.xml). The <code class="highlighter-rouge">twill.java.reserved.memory.mb</code> config determines the gap between the YARN
-memory limit set in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> and the java -Xmx setting. For example, if max memory is 1024
+memory limit set in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> and the java -Xmx setting. For example, if max memory is 1024
 and twill reserved memory is 200, the java -Xmx setting will be 1024-200 = 824 MB.</p>
 
 <h2 id="run-locally-without-yarn">Run locally without YARN</h2>

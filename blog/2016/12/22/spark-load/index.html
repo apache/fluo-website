@@ -121,11 +121,11 @@ related data. This blog post offers some tips to help you get started writing to
 
 <p>Spark automatically serializes Java objects that are needed for remote execution.  When trying to
 use Fluo with Spark its important to understand what will serialize properly and what will not.
-Classes used to load data into Fluo like <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a> and <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a> are not suitable for
+Classes used to load data into Fluo like <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a> and <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a> are not suitable for
 serialization.  These classes may have thread pools, resources in Zookeeper, transactions that are
 committing in the background, etc .  Therefore these classes must be instantiated at each remote process
 Spark creates.  One way to do this is with Spark’s <code class="highlighter-rouge">foreachParition</code> method.  This method will
-execute code locally at each RDD partition. Within each partition, a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a>
+execute code locally at each RDD partition. Within each partition, a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a>
 can be created.  That’s what the example below shows.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code> 

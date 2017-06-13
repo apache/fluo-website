@@ -122,21 +122,21 @@ difference.  The example code performs the following task.</p>
 columns.  Uses integers for the row and columns names.</li>
   <li>Gets 100 columns from a single row in the following ways.  Times each way.
     <ul>
-      <li>In a loop calls  <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-">gets(CharSequence, Column)</a>.</li>
-      <li>Calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-java.util.Set-">gets(CharSequence, Set&lt;Column&gt;)</a> once</li>
+      <li>In a loop calls  <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-">gets(CharSequence, Column)</a>.</li>
+      <li>Calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-java.util.Set-">gets(CharSequence, Set&lt;Column&gt;)</a> once</li>
     </ul>
   </li>
   <li>Gets 100 columns from 3 rows in the following ways.  Times each way.
     <ul>
-      <li>For three rows, loops over 100 columns calling  <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-">gets(CharSequence, Column)</a></li>
-      <li>Calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.util.Collection-java.util.Set-">gets(Collection&lt;? extends CharSequence&gt;, Set&lt;Column&gt;)</a> once</li>
+      <li>For three rows, loops over 100 columns calling  <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-">gets(CharSequence, Column)</a></li>
+      <li>Calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.util.Collection-java.util.Set-">gets(Collection&lt;? extends CharSequence&gt;, Set&lt;Column&gt;)</a> once</li>
     </ul>
   </li>
   <li>Generates 100 row column pairs, where each pair is a random row and a random column. Gets each</li>
   <li>pair in the following ways.  Times each way.
     <ul>
-      <li>For each pair calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-">gets(CharSequence, Column)</a></li>
-      <li>Calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.util.Collection-">gets(Collection&lt;RowColumn&gt;)</a> once</li>
+      <li>For each pair calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-">gets(CharSequence, Column)</a></li>
+      <li>Calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.util.Collection-">gets(Collection&lt;RowColumn&gt;)</a> once</li>
     </ul>
   </li>
 </ul>

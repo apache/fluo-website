@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.0.0-beta-1/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.1.0-incubating/contributing/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Fluo 1.0.0-beta-1 Documentation | Apache Fluo</title>
+    <title>Contributing to Fluo | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -106,50 +106,39 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo/1.1.0-incubating/">latest docs</a>!</div>
-  
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo made before Apache incubation.</div>
   
 
   <header class="post-header">
-    <h2 class="post-title">Fluo 1.0.0-beta-1 Documentation</h2>
+    <h2 class="post-title">Contributing to Fluo</h2>
   </header>
 
   <article id="page-content">
-    <p><strong>Fluo is transaction layer that enables incremental processsing on big data.</strong></p>
+    <h2 id="building-fluo">Building Fluo</h2>
 
-<p>Fluo is an implementation of <a href="http://research.google.com/pubs/pub36726.html">Percolator</a> built on <a href="http://accumulo.apache.org">Accumulo</a> that runs in <a href="http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html">YARN</a>. 
-It is not recommended for production use yet.</p>
+<p>If you have <a href="http://git-scm.com/">Git</a>, <a href="http://maven.apache.org/">Maven</a>, and <a href="http://openjdk.java.net/">Java</a> (version 8+) installed, run these commands to build
+Fluo:</p>
 
-<h3 id="getting-started">Getting Started</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>git clone https://github.com/apache/incubator-fluo.git
+cd fluo
+mvn package
+</code></pre>
+</div>
 
-<p>There are several ways to run Fluo (listed in order of increasing difficulty):</p>
+<h2 id="testing-fluo">Testing Fluo</h2>
+
+<p>Fluo has a test suite that consists of the following:</p>
 
 <ul>
-  <li><a href="https://github.com/fluo-io/fluo-quickstart">quickstart</a> - Starts a MiniFluo instance that is configured to run a word count application</li>
-  <li><a href="/docs/fluo/1.0.0-beta-1/mini-fluo-setup/">MiniFluo</a> - Sets up a minimal Fluo instance that writes its data to single directory</li>
-  <li><a href="https://github.com/fluo-io/fluo-dev">fluo-dev</a> - Command-line tool for running Fluo and its dependencies on a single machine</li>
-  <li><a href="https://github.com/fluo-io/fluo-deploy">fluo-deploy</a> - Command-line tool that launches an AWS cluster and deploys Fluo and its dependencies to it</li>
-  <li><a href="/docs/fluo/1.0.0-beta-1/prod-fluo-setup/">Production</a> - Sets up Fluo on a cluster where Accumulo, Hadoop &amp; Zookeeper are running</li>
+  <li>Units tests which are run by <code class="highlighter-rouge">mvn package</code></li>
+  <li>Integration tests which are run using <code class="highlighter-rouge">mvn verify</code>. These tests start a local Fluo instance
+(called MiniFluo) and run against it.</li>
 </ul>
 
-<p>Except for <a href="https://github.com/fluo-io/fluo-quickstart">quickstart</a>, all above will set up a Fluo application that will be idle unless you
-create client &amp; observer code for your application.  You can either <a href="/docs/fluo/1.0.0-beta-1/applications/">create your own
-application</a> or configure your Fluo application to run an example below:</p>
+<h2 id="see-also">See Also</h2>
 
 <ul>
-  <li><a href="https://github.com/fluo-io/phrasecount">phrasecount</a> - Computes phrase counts for unique documents</li>
-  <li><a href="https://github.com/fluo-io/fluo-stress">fluo-stress</a> - Computes the number of unique integers by building bitwise trie</li>
-</ul>
-
-<h3 id="implementation">Implementation</h3>
-
-<ul>
-  <li><a href="/docs/fluo/1.0.0-beta-1/architecture/">Architecture</a> - Overview of Fluo’s architecture</li>
-  <li><a href="/docs/fluo/1.0.0-beta-1/contributing/">Contributing</a> - Documentation for developers who want to contribute to Fluo</li>
-  <li><a href="/docs/fluo/1.0.0-beta-1/metrics/">Metrics</a> - Fluo metrics are visible via JMX by default but can be configured to send to Graphite or Ganglia</li>
+  <li><a href="https://fluo.apache.org/how-to-contribute/">How to Contribute</a> on Apache Fluo project website</li>
 </ul>
 
 

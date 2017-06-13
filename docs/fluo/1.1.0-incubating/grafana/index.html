@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.0.0-beta-1/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.1.0-incubating/grafana/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Fluo 1.0.0-beta-1 Documentation | Apache Fluo</title>
+    <title>Fluo metrics in Grafana/InfluxDB | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -106,51 +106,96 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo/1.1.0-incubating/">latest docs</a>!</div>
-  
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo made before Apache incubation.</div>
   
 
   <header class="post-header">
-    <h2 class="post-title">Fluo 1.0.0-beta-1 Documentation</h2>
+    <h2 class="post-title">Fluo metrics in Grafana/InfluxDB</h2>
   </header>
 
   <article id="page-content">
-    <p><strong>Fluo is transaction layer that enables incremental processsing on big data.</strong></p>
+    <p>This document describes how to send Fluo metrics to <a href="https://influxdb.com/">InfluxDB</a>, a time series database, and make
+them viewable in <a href="http://grafana.org/">Grafana</a>, a visualization tool. If you want general information on metrics, see
+the <a href="/docs/fluo/1.1.0-incubating/metrics/">Fluo metrics</a> documentation.</p>
 
-<p>Fluo is an implementation of <a href="http://research.google.com/pubs/pub36726.html">Percolator</a> built on <a href="http://accumulo.apache.org">Accumulo</a> that runs in <a href="http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html">YARN</a>. 
-It is not recommended for production use yet.</p>
+<h2 id="set-up-grafanainfluxdb-on-your-own">Set up Grafana/InfluxDB on your own</h2>
 
-<h3 id="getting-started">Getting Started</h3>
+<p>Follow the instructions below to setup InfluxDB and Grafana.</p>
 
-<p>There are several ways to run Fluo (listed in order of increasing difficulty):</p>
+<ol>
+  <li>
+    <p>Follow the standard installation instructions for <a href="https://influxdb.com/">InfluxDB</a> and <a href="http://grafana.org/">Grafana</a>. As for versions,
+the instructions below were written using InfluxDB v0.9.4.2 and Grafana v2.5.0.</p>
+  </li>
+  <li>
+    <p>Add the following to your InfluxDB configuration to configure it accept metrics in Graphite
+format from Fluo. The configuration below contains templates that transform the Graphite
+metrics into a format that is usable in InfluxDB.</p>
 
-<ul>
-  <li><a href="https://github.com/fluo-io/fluo-quickstart">quickstart</a> - Starts a MiniFluo instance that is configured to run a word count application</li>
-  <li><a href="/docs/fluo/1.0.0-beta-1/mini-fluo-setup/">MiniFluo</a> - Sets up a minimal Fluo instance that writes its data to single directory</li>
-  <li><a href="https://github.com/fluo-io/fluo-dev">fluo-dev</a> - Command-line tool for running Fluo and its dependencies on a single machine</li>
-  <li><a href="https://github.com/fluo-io/fluo-deploy">fluo-deploy</a> - Command-line tool that launches an AWS cluster and deploys Fluo and its dependencies to it</li>
-  <li><a href="/docs/fluo/1.0.0-beta-1/prod-fluo-setup/">Production</a> - Sets up Fluo on a cluster where Accumulo, Hadoop &amp; Zookeeper are running</li>
-</ul>
+    <div class="highlighter-rouge"><pre class="highlight"><code>[[graphite]]
+  bind-address = ":2003"
+  enabled = true
+  database = "fluo_metrics"
+  protocol = "tcp"
+  consistency-level = "one"
+  separator = "_"
+  batch-size = 1000
+  batch-pending = 5
+  batch-timeout = "1s"
+  templates = [
+    "fluo.class.*.*.*.*.* ..app.host.measurement.observer.field",
+    "fluo.class.*.*.*.* ..app.host.measurement.observer",
+    "fluo.system.*.*.*.* ..app.host.measurement.field",
+    "fluo.system.*.*.* ..app.host.measurement",
+    "fluo.app.*.*.* ..host.measurement.field",
+    "fluo.app.*.* ..host.measurement",
+  ]
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Fluo distributes a file called <code class="highlighter-rouge">fluo_metrics_setup.txt</code> that contains a list of commands that
+setup InfluxDB. These commands will configure an InfluxDB user, retention policies, and
+continuous queries that downsample data for the historical dashboard in Grafana. Run the command
+below to execute the commands in this file:</p>
 
-<p>Except for <a href="https://github.com/fluo-io/fluo-quickstart">quickstart</a>, all above will set up a Fluo application that will be idle unless you
-create client &amp; observer code for your application.  You can either <a href="/docs/fluo/1.0.0-beta-1/applications/">create your own
-application</a> or configure your Fluo application to run an example below:</p>
+    <p><code class="highlighter-rouge">
+ $INFLUXDB_HOME/bin/influx -import -path $FLUO_HOME/contrib/influxdb/fluo_metrics_setup.txt
+</code></p>
+  </li>
+  <li>
+    <p>Configure <code class="highlighter-rouge">fluo.properties</code> in your Fluo app configuration to send Graphite metrics to InfluxDB.
+Below is example configuration. Remember to replace <code class="highlighter-rouge">&lt;INFLUXDB_HOST&gt;</code> with the actual host.</p>
 
-<ul>
-  <li><a href="https://github.com/fluo-io/phrasecount">phrasecount</a> - Computes phrase counts for unique documents</li>
-  <li><a href="https://github.com/fluo-io/fluo-stress">fluo-stress</a> - Computes the number of unique integers by building bitwise trie</li>
-</ul>
+    <p><code class="highlighter-rouge">
+ fluo.metrics.reporter.graphite.enable=true
+ fluo.metrics.reporter.graphite.host=&lt;INFLUXDB_HOST&gt;
+ fluo.metrics.reporter.graphite.port=2003
+ fluo.metrics.reporter.graphite.frequency=30
+</code></p>
 
-<h3 id="implementation">Implementation</h3>
+    <p>The reporting frequency of 30 sec is required if you are using the provided Grafana dashboards
+ that are configured in the next step.</p>
+  </li>
+  <li>
+    <p>Grafana needs to be configured to load dashboard JSON templates from a directory. Fluo
+distributes two Grafana dashboard templates in its tarball distribution in the directory
+<code class="highlighter-rouge">contrib/grafana</code>. Before restarting Grafana, you should copy the templates from your Fluo
+installation to the <code class="highlighter-rouge">dashboards/</code> directory configured below.</p>
 
-<ul>
-  <li><a href="/docs/fluo/1.0.0-beta-1/architecture/">Architecture</a> - Overview of Fluo’s architecture</li>
-  <li><a href="/docs/fluo/1.0.0-beta-1/contributing/">Contributing</a> - Documentation for developers who want to contribute to Fluo</li>
-  <li><a href="/docs/fluo/1.0.0-beta-1/metrics/">Metrics</a> - Fluo metrics are visible via JMX by default but can be configured to send to Graphite or Ganglia</li>
-</ul>
+    <div class="highlighter-rouge"><pre class="highlight"><code>[dashboards.json]
+enabled = true
+path = &lt;GRAFANA_HOME&gt;/dashboards
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>If you restart Grafana, you will see the Fluo dashboards configured but all of their charts will
+be empty unless you have a Fluo application running and configured to send data to InfluxDB.
+When you start sending data, you may need to refresh the dashboard page in the browser to start
+viewing metrics.</p>
+  </li>
+</ol>
 
 
   </article>

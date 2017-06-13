@@ -5,9 +5,189 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 13 Jun 2017 03:09:11 +0000</pubDate>
-    <lastBuildDate>Tue, 13 Jun 2017 03:09:11 +0000</lastBuildDate>
+    <pubDate>Tue, 13 Jun 2017 16:53:56 +0000</pubDate>
+    <lastBuildDate>Tue, 13 Jun 2017 16:53:56 +0000</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
+    
+      <item>
+        <title>Apache Fluo 1.1.0-incubating released</title>
+        <description>&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download a release tarball and verify by these &lt;a href=&quot;https://www.apache.org/info/verification&quot;&gt;procedures&lt;/a&gt; using these &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/KEYS&quot;&gt;KEYS&lt;/a&gt;&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-bin.tar.gz&quot;&gt;fluo-1.1.0-incubating-bin.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-bin.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-bin.tar.gz.md5&quot;&gt;MD5&lt;/a&gt; &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-bin.tar.gz.sha&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-source-release.tar.gz&quot;&gt;fluo-1.1.0-incubating-source-release.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-source-release.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-source-release.tar.gz.md5&quot;&gt;MD5&lt;/a&gt; &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-source-release.tar.gz.sha&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.1.0-incubating/&quot;&gt;documentation&lt;/a&gt; for this release.&lt;/li&gt;
+  &lt;li&gt;Read the &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-api/1.1.0-incubating/&quot;&gt;Javadocs&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Apache Fluo follows &lt;a href=&quot;http://semver.org/&quot;&gt;semver&lt;/a&gt; for its API . The API consists
+of everything under the &lt;code class=&quot;highlighter-rouge&quot;&gt;org.apache.fluo.api&lt;/code&gt; package. Code outside of this
+package can change at any time. If your project is using Fluo code that falls
+outside of the API, then consider &lt;a href=&quot;/getinvolved/&quot;&gt;initiating a discussion&lt;/a&gt;
+about adding it to the API.&lt;/p&gt;
+
+&lt;h2 id=&quot;significant-changes&quot;&gt;Significant changes&lt;/h2&gt;
+
+&lt;p&gt;The major changes in 1.1.0 are highlighted here, for the complete list of changes, see the &lt;a href=&quot;https://github.com/apache/incubator-fluo/milestone/5?closed=1&quot;&gt;1.1.0
+Milestone&lt;/a&gt; on Github.&lt;/p&gt;
+
+&lt;h3 id=&quot;new-api-for-configuring-observers&quot;&gt;New API for configuring observers.&lt;/h3&gt;
+
+&lt;p&gt;The 1.0.0 API for providing Observers required configuring an Observer class for each observed
+column.  This API was cumbersome to use and made using lambdas impossible.  For &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/816&quot;&gt;#816&lt;/a&gt; a better API
+was introduced.   The new API only requires configuring a single class that provides all Observers.
+This single class can register lambdas to observe a column.  This new API makes writing Fluo
+applications faster and easier.  Below is an example of using the new API to register two observers
+that compute the number of URLs that reference a document.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppObserverProvider&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ObserverProvider&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_CURR_COL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;doc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;curr&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_NEW_COL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;doc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;new&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_URL_CHANGE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;doc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;urlChange&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_REF_COUNT_COL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;doc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;refCount&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// Each Fluo worker will call this method to create the observers it needs.&lt;/span&gt;
+  &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provide&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Registry&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// This could be used to pass application specific configuration to observers. Its not used in&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// this example.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;SimpleConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appConfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getAppConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Register an observer that processes new content for a document.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forColumn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOC_NEW_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STRONG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;useObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ContentObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Register a lambda that processes notifications for the column DOC_URL_CHANGE.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forColumn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOC_URL_CHANGE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WEAK&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;useStrObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Compute the number of URLs that refer to this URL.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;CellScanner&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;refScanner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;over&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Span&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;exact&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ref&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numRefs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Iterables&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;refScanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Do something interesting with count.  This is not interesting, but keeps the example short.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_REF_COUNT_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numRefs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;cm&quot;&gt;/**
+   * Compute the change in a documents URLs and propagate those to other documents.
+   */&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ContentObserver&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StringObserver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TransactionBase&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Retrieve the new and current document content.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colVals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_CURR_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_NEW_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newContent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colVals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getOrDefault&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOC_NEW_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currContent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colVals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getOrDefault&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOC_CURR_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Extract the URLs in the new and current document content.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newUrls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;extractUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currUrls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;extractUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;currContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// For URLs that only exist in new content, update the document they reference.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;Sets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;difference&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ref&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setWeakNotification&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_URL_CHANGE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// For URLs that are no longer present, update the document they reference.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;Sets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;difference&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;currUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ref&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setWeakNotification&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_URL_CHANGE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Update the current document content.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_CURR_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOC_NEW_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;extractUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// TODO implement extracting URLs from content&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Before initializing a Fluo App, the ObserverProvider above would be added to configuration as follows.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;FluoConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fluoConf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fluoConf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setObserverProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AppObserverProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// initialize Fluo app using fluoConf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The old API is still present but has been deprecated and may be removed in the future.&lt;/p&gt;
+
+&lt;h3 id=&quot;improved-fluo-scalability&quot;&gt;Improved Fluo scalability&lt;/h3&gt;
+
+&lt;p&gt;In the previous release each worker scanned the entire table looking for notifications that hashed
+to it.  This strategy for finding notifications is O(N*W) where  N is the number of notification and
+W is the number of workers.&lt;/p&gt;
+
+&lt;p&gt;For &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/500&quot;&gt;#500&lt;/a&gt; a different strategy was used to find notifications.  Workers divide themselves into
+groups and each group scans a subset of the table for notifications.  Every worker in a group scans
+the groups entire subset of a table  looking for notifications that hash to it. The new strategy results
+in O(N*G) work where N is the number of notifications and G is the group size.  By default the group
+size is 7, but this is configurable.  The group size may need to be increased if portion of a table
+is popular and assigned to one group that can not processes it.&lt;/p&gt;
+
+&lt;p&gt;To compare the old and new ways assume we have 10&lt;sup&gt;9&lt;/sup&gt; notifications and 100 workers.  The
+old method would have scanned 10&lt;sup&gt;11&lt;/sup&gt; entries to to find all notifications.  Assuming a group
+size of 7, the new strategy scans 7 * 10&lt;sup&gt;9&lt;/sup&gt; entries to find all notifications.  A
+nice feature of the new strategy is that the amount of scanning is independent of the number of workers.
+For the old strategy if the number of workers increases by factor of 10, then the amount scanning
+will increase by a factor of 10.  So for 1,000 workers the old strategy would scan
+10&lt;sup&gt;12&lt;/sup&gt; entries to find all notifications.  The new strategy will still only scan 7 *
+10&lt;sup&gt;9&lt;/sup&gt; entries with 1,000 workers.&lt;/p&gt;
+
+&lt;h3 id=&quot;improved-bytes&quot;&gt;Improved Bytes&lt;/h3&gt;
+
+&lt;p&gt;Fluo’s API has an immutable wrapper for a byte array.  Multiple improvements were made to this byte
+wrapper.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;startsWith(Bytes)&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;endsWith(Bytes)&lt;/code&gt; methods were added in &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/823&quot;&gt;#823&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;copyTo(byte[])&lt;/code&gt; method was added for &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/827&quot;&gt;#827&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Internal performance improvements were made in &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/826&quot;&gt;#826&lt;/a&gt; and &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/799&quot;&gt;#799&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;improved-spark-integration&quot;&gt;Improved Spark integration&lt;/h3&gt;
+
+&lt;p&gt;For &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/813&quot;&gt;#813&lt;/a&gt; improvements were made that allow easy passing of FluoConfiguration objects to remote Spark
+processes.&lt;/p&gt;
+
+&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
+
+&lt;p&gt;Long runs of &lt;a href=&quot;https://lists.apache.org/thread.html/2381a0b315e8e81871b6caf41e2f1462aa513b9cb24d3ddd92724674@%3Cdev.fluo.apache.org%3E&quot;&gt;Stresso&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/ApacheFluo/status/870045298424512512&quot;&gt;Webindex&lt;/a&gt; were successfully completed on EC2 using multiple nodes.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 12 Jun 2017 15:00:00 +0000</pubDate>
+        <link>https://fluo.apache.org//release/fluo-1.1.0-incubating/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-1.1.0-incubating/</guid>
+        
+        
+        <category>release</category>
+        
+      </item>
     
       <item>
         <title>Fluo talks at Accumulo Summit 2016</title>
@@ -39,11 +219,11 @@ related data. This blog post offers some tips to help you get started writing to
 
 &lt;p&gt;Spark automatically serializes Java objects that are needed for remote execution.  When trying to
 use Fluo with Spark its important to understand what will serialize properly and what will not.
-Classes used to load data into Fluo like &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html&quot;&gt;FluoClient&lt;/a&gt; and &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html&quot;&gt;LoaderExecutor&lt;/a&gt; are not suitable for
+Classes used to load data into Fluo like &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html&quot;&gt;FluoClient&lt;/a&gt; and &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html&quot;&gt;LoaderExecutor&lt;/a&gt; are not suitable for
 serialization.  These classes may have thread pools, resources in Zookeeper, transactions that are
 committing in the background, etc .  Therefore these classes must be instantiated at each remote process
 Spark creates.  One way to do this is with Spark’s &lt;code class=&quot;highlighter-rouge&quot;&gt;foreachParition&lt;/code&gt; method.  This method will
-execute code locally at each RDD partition. Within each partition, a &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html&quot;&gt;LoaderExecutor&lt;/a&gt;
+execute code locally at each RDD partition. Within each partition, a &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html&quot;&gt;LoaderExecutor&lt;/a&gt;
 can be created.  That’s what the example below shows.&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 
@@ -276,8 +456,8 @@ modified any of the key values.&lt;/p&gt;
 
 &lt;p&gt;While designing the Fluo API we were uncertain about making Fluo’s basic &lt;a href=&quot;/tour/data-pojos/&quot;&gt;POJOs&lt;/a&gt; mutable or
 immutable.  In the end we decided to go with immutable types to make writing correct Fluo code
-easier.  One of the POJOs we created was &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/data/Bytes.html&quot;&gt;Bytes&lt;/a&gt;,  an immutable wrapper around a byte array.  We
-also created &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/data/Bytes.BytesBuilder.html&quot;&gt;BytesBuilder&lt;/a&gt;, which is analagous to StringBuilder, and makes it easy and efficient
+easier.  One of the POJOs we created was &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Bytes.html&quot;&gt;Bytes&lt;/a&gt;,  an immutable wrapper around a byte array.  We
+also created &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Bytes.BytesBuilder.html&quot;&gt;BytesBuilder&lt;/a&gt;, which is analagous to StringBuilder, and makes it easy and efficient
 to construct Bytes.&lt;/p&gt;
 
 &lt;h3 id=&quot;what-about-the-copies&quot;&gt;What about the copies?&lt;/h3&gt;
@@ -1011,150 +1191,6 @@ root@instance16&amp;gt; du webindex_search
         <pubDate>Wed, 13 Jan 2016 15:30:00 +0000</pubDate>
         <link>https://fluo.apache.org//release/fluo-recipes-1.0.0-beta-1/</link>
         <guid isPermaLink="true">https://fluo.apache.org//release/fluo-recipes-1.0.0-beta-1/</guid>
-        
-        
-        <category>release</category>
-        
-      </item>
-    
-      <item>
-        <title>Fluo 1.0.0-beta-2 released</title>
-        <description>&lt;p&gt;Fluo 1.0.0-beta-2 is the third release of Fluo and likely the final release before 1.0.0.
-Fluo is now at a point where its two cluster test suites, &lt;a href=&quot;https://github.com/fluo-io/webindex&quot;&gt;Webindex&lt;/a&gt; and
-&lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;Stress&lt;/a&gt;, are running well for long periods on EC2.&lt;/p&gt;
-
-&lt;p&gt;Below are resources for this release:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Download the &lt;a href=&quot;https://github.com/fluo-io/fluo/releases/tag/1.0.0-beta-2&quot;&gt;Fluo binary tarball&lt;/a&gt; for 1.0.0-beta-2 from GitHub.&lt;/li&gt;
-  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.0.0-beta-2/&quot;&gt;documentation&lt;/a&gt; for help getting started with Fluo.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://javadoc.io/doc/io.fluo/fluo-api/1.0.0-beta-2/&quot;&gt;Javadocs&lt;/a&gt; are available for this release.&lt;/li&gt;
-  &lt;li&gt;A &lt;a href=&quot;https://github.com/fluo-io/fluo/tree/1.0.0-beta-2&quot;&gt;tag&lt;/a&gt; of Fluo codebase for 1.0.0-beta-2 is available.&lt;/li&gt;
-  &lt;li&gt;The &lt;a href=&quot;https://github.com/fluo-io/fluo-quickstart&quot;&gt;Quickstart&lt;/a&gt; and &lt;a href=&quot;https://github.com/fluo-io/phrasecount&quot;&gt;Phrasecount&lt;/a&gt; applications were updated to work with this release.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This release closed &lt;a href=&quot;https://github.com/fluo-io/fluo/issues?q=milestone%3A1.0.0-beta-2+is%3Aclosed&quot;&gt;48 tickets&lt;/a&gt;. There is no upgrade path from 1.0.0-beta-1 to
-1.0.0-beta-2. Many improvements in this release were driven by the creation of two new
-Fluo related projects:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo-recipes&quot;&gt;Fluo recipes&lt;/a&gt; is a collection of common development patterns
-designed to make Fluo application development easier.  Creating Fluo recipes
-required new Fluo functionality and updates to the Fluo API.  The first release
-of Fluo recipes has been made and is available in &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://github.com/fluo-io/webindex&quot;&gt;WebIndex&lt;/a&gt; is an example Fluo application that indexes links to web
-pages in multiple ways.  Webindex enabled the testing of Fluo on real data at
-scale.  It also inspired improvements to Fluo to allow it to work better with
-Apache Spark.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;significant-features&quot;&gt;Significant features&lt;/h2&gt;
-
-&lt;p&gt;This release contains many new features that makes it easier to run, develop, and monitor Fluo applications.&lt;/p&gt;
-
-&lt;h4 id=&quot;improved-fluo-metrics-that-can-be-sent-to-influxdb-and-viewed-in-grafana&quot;&gt;Improved Fluo metrics that can be sent to InfluxDB and viewed in Grafana&lt;/h4&gt;
-
-&lt;p&gt;In &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/569&quot;&gt;#569&lt;/a&gt;, &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/570&quot;&gt;#570&lt;/a&gt;, &amp;amp; &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/580&quot;&gt;#580&lt;/a&gt;, Fluo metrics and monitoring were refactored to fix several
-bugs and allow metrics to be sent to &lt;a href=&quot;https://github.com/influxdata/influxdb&quot;&gt;InfluxDB&lt;/a&gt; and viewed in &lt;a href=&quot;http://grafana.org/&quot;&gt;Grafana&lt;/a&gt;.  Fluo metrics 
-are still instrumented using &lt;a href=&quot;https://dropwizard.github.io/metrics/3.1.0/&quot;&gt;Dropwizard metrics&lt;/a&gt; but in &lt;a href=&quot;https://github.com/fluo-io/fluo/issues/574&quot;&gt;#574&lt;/a&gt; metrics configuration was 
-moved from its own file and to now reside in &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo.properties&lt;/code&gt;.  While Fluo metrics can still be sent to 
-many different tools (i.e Graphite, Ganglia), Fluo now ships with configuration that can be used to configure 
-a Fluo dashboard in Grafana that queries InfluxDB.  To set up the sending of Fluo metrics to InfluxDB/Grafana,
-view this &lt;a href=&quot;/docs/fluo/1.0.0-beta-2/grafana/&quot;&gt;documentation&lt;/a&gt; or consider using &lt;a href=&quot;https://github.com/fluo-io/fluo-dev&quot;&gt;Fluo-dev&lt;/a&gt; or &lt;a href=&quot;https://github.com/fluo-io/zetten&quot;&gt;Zetten&lt;/a&gt;
-to run Fluo as they can install InfluxDB+Grafana and setup metrics for you.&lt;/p&gt;
-
-&lt;h4 id=&quot;improved-fluo-administration&quot;&gt;Improved Fluo administration&lt;/h4&gt;
-
-&lt;p&gt;Several commands were added to the &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo&lt;/code&gt; script which is used to administer Fluo.  A &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo exec&lt;/code&gt; command
-(&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/581&quot;&gt;#581&lt;/a&gt;) was created to provide an easy way to execute application code using Fluo classes and dependencies.
-A &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo list&lt;/code&gt; command (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/523&quot;&gt;#523&lt;/a&gt;) was created to let users list all Fluo applications within a Fluo instance.
-The &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo scan&lt;/code&gt; command now has a &lt;code class=&quot;highlighter-rouge&quot;&gt;--raw&lt;/code&gt; option (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/597&quot;&gt;#597&lt;/a&gt;) that prints Fluo data as stored in Accumulo. This
-was accomplished by moving the Fluo formatter from Accumulo shell to the scan command.  The scan command can now
-format non-ascii characters as hex (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/568&quot;&gt;#568&lt;/a&gt;).  The &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo new&lt;/code&gt; command was improved to prevent users from
-setting invalid Fluo application names (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/510&quot;&gt;#510&lt;/a&gt;).  A bug was fixed in the &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo start&lt;/code&gt; command that was causing
-time outs when starting applications (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/562&quot;&gt;#562&lt;/a&gt;).  Finally, the &lt;code class=&quot;highlighter-rouge&quot;&gt;fluo&lt;/code&gt; command can now be run without the &lt;code class=&quot;highlighter-rouge&quot;&gt;apps/&lt;/code&gt;
-directory configured for an application for most commands (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/524&quot;&gt;#524&lt;/a&gt;). Only the &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;start&lt;/code&gt; commands need
-this directory configured.  All other commands only require the default properties file to be configured at 
-&lt;code class=&quot;highlighter-rouge&quot;&gt;conf/fluo.properties&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h4 id=&quot;made-fluo-work-better-with-spark&quot;&gt;Made Fluo work better with Spark&lt;/h4&gt;
-
-&lt;p&gt;Several changes were made to Fluo to allow it work better with Apache Spark.  All Fluo data types now implement
-&lt;code class=&quot;highlighter-rouge&quot;&gt;Serializable&lt;/code&gt; and can be use in Spark RDDs (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/539&quot;&gt;#539&lt;/a&gt;).  Fluo data types also now implement &lt;code class=&quot;highlighter-rouge&quot;&gt;Comparable&lt;/code&gt; which
-allows RDDs of Fluo data types to be sorted (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/544&quot;&gt;#544&lt;/a&gt;).  Also, a no args constructor was created for the
-MutableBytes data type to enable Kryo serialization in Spark (&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/549&quot;&gt;#549&lt;/a&gt;).  Finally, a new InputFormat called
-&lt;code class=&quot;highlighter-rouge&quot;&gt;FluoEntryInputFormat&lt;/code&gt; was created that returns key/value entries and the existing &lt;code class=&quot;highlighter-rouge&quot;&gt;FluoInputFormat&lt;/code&gt; that returns
-rows was renamed &lt;code class=&quot;highlighter-rouge&quot;&gt;FluoRowInputFormat&lt;/code&gt; (&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/538&quot;&gt;#538&lt;/a&gt;,&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/540&quot;&gt;#540&lt;/a&gt;).&lt;/p&gt;
-
-&lt;h4 id=&quot;performance-improvements&quot;&gt;Performance improvements&lt;/h4&gt;
-
-&lt;p&gt;A good bit of time was spent analyzing Fluo while it was running to determine
-where time is spent when executing transactions.   Based on this analysis, it
-was found that a good bit of time was spent committing transactions.  Changes
-were made in Fluo and Accumulo in order to decrease commit time.  For Fluo, the
-following changes were made :&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/591&quot;&gt;#591&lt;/a&gt; - Shared batch writer increases transaction history&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/590&quot;&gt;#590&lt;/a&gt; - Increased batch writer threads and made configurable&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/589&quot;&gt;#589&lt;/a&gt; - Added 2nd conditional writer and logging of commit times&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/584&quot;&gt;#584&lt;/a&gt; - Adjust number of conditional writer threads based on cluster size&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For Accumulo, changes are being made in &lt;a href=&quot;https://issues.apache.org/jira/browse/ACCUMULO-4066&quot;&gt;ACCUMULO-4066&lt;/a&gt; to decrease the time it
-takes to process conditional mutations.  Conditional mutations are used when
-Fluo commits a transaction.&lt;/p&gt;
-
-&lt;p&gt;These changes resulted in nice improvements over beta-1 in testing.  However there
-is probably still room for improvement.  More analysis is needed.&lt;/p&gt;
-
-&lt;h4 id=&quot;api-changes&quot;&gt;API Changes&lt;/h4&gt;
-
-&lt;p&gt;Once Fluo 1.0.0 is released, all releases after that will follow
-&lt;a href=&quot;http://semver.org/&quot;&gt;semver&lt;/a&gt;.  For now some small API changes are still being
-made.  The following API changes happened between beta-1 and beta-2.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/566&quot;&gt;#566&lt;/a&gt; - Added RowColumnValue and made Accumulo init code use it&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/551&quot;&gt;#551&lt;/a&gt; - Added method to get start timestamp of transaction&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/550&quot;&gt;#550&lt;/a&gt; - Changed setObservers() to addObservers()&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;other-important-improvements-and-bug-fixes&quot;&gt;Other important improvements and bug fixes&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/598&quot;&gt;#598&lt;/a&gt; - Upgraded Hadoop to 2.6.3 and Accumulo to 1.6.4&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/587&quot;&gt;#587&lt;/a&gt; - Specified datasource for all graphs in fluo’s Grafana dashboard&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/586&quot;&gt;#586&lt;/a&gt; - Added efficient and easy way to build Bytes objects&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/578&quot;&gt;#578&lt;/a&gt; - Plot nothing in Grafana when no data exists&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/573&quot;&gt;#573&lt;/a&gt; - Fixed issues building against Accumulo 1.8.0-SNAPSHOT&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/561&quot;&gt;#561&lt;/a&gt; - Stopped checkstyle mvn plugin from running at validate&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/559&quot;&gt;#559&lt;/a&gt; - Eventually drop deleted data&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/558&quot;&gt;#558&lt;/a&gt; - Added arguments to deploy command to skip findbugs, checkstyle, and auto-formatting&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/556&quot;&gt;#556&lt;/a&gt; - Make TravisCI deploy snapshot jars after successful builds&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/552&quot;&gt;#552&lt;/a&gt; - Made eclipse stop complaining about unknown plugins&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/547&quot;&gt;#547&lt;/a&gt; - Provide better documentation for LoaderExecutor&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/pull/535&quot;&gt;#535&lt;/a&gt; - Upgraded Twill to 0.6.0-incubating&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/520&quot;&gt;#520&lt;/a&gt; - Consolidate all implementation properties into FluoConfigurationImpl&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/518&quot;&gt;#518&lt;/a&gt; - Make Oracle run on a random port&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/513&quot;&gt;#513&lt;/a&gt; - Unable to pass spaces to scan command&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fluo-io/fluo/issues/495&quot;&gt;#495&lt;/a&gt; - Add support for notifications to Fluo formatter&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
-
-&lt;p&gt;For this release, a long run of the &lt;a href=&quot;https://github.com/fluo-io/webindex&quot;&gt;Webindex&lt;/a&gt; application was performed and is documented in
-&lt;a href=&quot;/blog/2016/01/11/webindex-long-run/&quot;&gt;a blog post&lt;/a&gt;.  A long run of &lt;a href=&quot;https://github.com/fluo-io/fluo-stress&quot;&gt;Fluo stress&lt;/a&gt; was run and documented in 
-&lt;a href=&quot;/blog/2015/12/22/beta-2-pre-release-stress-test/&quot;&gt;another blog post&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 12 Jan 2016 15:30:00 +0000</pubDate>
-        <link>https://fluo.apache.org//release/fluo-1.0.0-beta-2/</link>
-        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-1.0.0-beta-2/</guid>
         
         
         <category>release</category>

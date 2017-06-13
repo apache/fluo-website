@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.0.0-beta-2/applications/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.1.0-incubating/applications/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Creating Fluo applications | Apache Fluo</title>
+    <title>Fluo Applications | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -106,59 +106,51 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo 1.0.0-beta-2 which is an old version! Check out the <a href="/docs/fluo/1.1.0-incubating/">latest docs</a>!</div>
-  
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo made before Apache incubation.</div>
   
 
   <header class="post-header">
-    <h2 class="post-title">Creating Fluo applications</h2>
+    <h2 class="post-title">Fluo Applications</h2>
   </header>
 
   <article id="page-content">
-    <p>Once you have Fluo installed and running on your cluster, you can now run Fluo applications which consist of 
-clients and observers.</p>
-
-<p>If you are new to Fluo, consider first running the <a href="https://github.com/fluo-io/phrasecount">phrasecount</a> application on your Fluo instance.  Otherwise,
-you can create your own Fluo client or observer by the following the steps below.</p>
+    <p>Once you have Fluo installed and running on your cluster, you can now run Fluo applications which
+consist of clients and observers.</p>
 
 <p>For both clients and observers, you will need to include the following in your Maven pom:</p>
 
 <div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.apache.fluo<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>fluo-api<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>1.0.0-beta-2<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.x.x-incubating<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 <span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.apache.fluo<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>fluo-core<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>1.0.0-beta-2<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.x.x-incubating<span class="nt">&lt;/version&gt;</span>
   <span class="nt">&lt;scope&gt;</span>runtime<span class="nt">&lt;/scope&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </code></pre>
 </div>
 
-<p>Fluo provides a classpath command to help users build a runtime classpath.
-This command along with the <code class="highlighter-rouge">hadoop jar</code> command is useful when writing
-scripts to run Fluo client code.  These command allow the scripts to use the
-versions of Hadoop, Accumulo, and Zookeeper installed on a cluster.</p>
+<p>Fluo provides a classpath command to help users build a runtime classpath. This command along with
+the <code class="highlighter-rouge">hadoop jar</code> command is useful when writing scripts to run Fluo client code. These commands
+allow the scripts to use the versions of Hadoop, Accumulo, and Zookeeper installed on a cluster.</p>
 
 <h2 id="creating-a-fluo-client">Creating a Fluo client</h2>
 
-<p>To create a <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/client/FluoClient.html">FluoClient</a>, you will need to provide it with a <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object that is configured
-to connect to your Fluo instance.</p>
+<p>To create a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>, you will need to provide it with a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object that is
+configured to connect to your Fluo instance.</p>
 
-<p>If you have access to the <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> file that was used to configure your Fluo instance, you can use
-it to build a <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object with all necessary properties which are all properties with the 
-<code class="highlighter-rouge">io.fluo.client.*</code> prefix in <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>:</p>
+<p>If you have access to the <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> file that was used to configure your Fluo instance, you
+can use it to build a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object with all necessary properties which are all
+properties with the <code class="highlighter-rouge">fluo.client.*</code> prefix in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>:</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"fluo.properties"</span><span class="o">));</span>
 </code></pre>
 </div>
 
-<p>You can also create an empty <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object and set properties using Java:</p>
+<p>You can also create an empty <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object and set properties using Java:</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">();</span>
 <span class="n">config</span><span class="o">.</span><span class="na">setAccumuloUser</span><span class="o">(</span><span class="s">"user"</span><span class="o">);</span>
@@ -167,22 +159,22 @@ it to build a <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/i
 </code></pre>
 </div>
 
-<p>Once you have <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object, pass it to the <code class="highlighter-rouge">newClient()</code> method of <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/client/FluoFactory.html">FluoFactory</a> to create a <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/client/FluoClient.html">FluoClient</a>:</p>
+<p>Once you have <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object, pass it to the <code class="highlighter-rouge">newClient()</code> method of <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoFactory.html">FluoFactory</a> to
+create a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>:</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoClient</span> <span class="n">client</span> <span class="o">=</span> <span class="n">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">config</span><span class="o">)</span>
 </code></pre>
 </div>
 
-<p>It may help to reference the <a href="https://javadoc.io/doc/io.fluo/fluo-api/1.0.0-beta-2/">API javadocs</a> while you are learning the Fluo API.</p>
+<p>It may help to reference the <a href="https://fluo.apache.org/apidocs/">API javadocs</a> while you are learning the Fluo API.</p>
 
 <h2 id="running-application-code">Running application code</h2>
 
-<p>The <code class="highlighter-rouge">fluo exec &lt;app name&gt; &lt;class&gt; {arguments}</code> provides an easy way to execute
-application code.  It will execute a class with a main method if a jar
-containing the class is placed in the lib directory of the application.  When
-the class is run, Fluo classes and dependencies will be on the classpath.  The
-<code class="highlighter-rouge">fluo exec</code> command can inject the applications configuration if the class is
-written in the following way.  Defining the injection point is optional.</p>
+<p>The <code class="highlighter-rouge">fluo exec &lt;app name&gt; &lt;class&gt; {arguments}</code> provides an easy way to execute application code. It
+will execute a class with a main method if a jar containing the class is placed in the lib directory
+of the application. When the class is run, Fluo classes and dependencies will be on the classpath.
+The <code class="highlighter-rouge">fluo exec</code> command can inject the applications configuration if the class is written in the
+following way. Defining the injection point is optional.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">javax.inject.Inject</span><span class="o">;</span>
 
@@ -206,27 +198,68 @@ written in the following way.  Defining the injection point is optional.</p>
 <p>To create an observer, follow these steps:</p>
 
 <ol>
-  <li>Create a class that extends <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/observer/AbstractObserver.html">AbstractObserver</a>.</li>
-  <li>Build a jar containing this class and include this jar in the <code class="highlighter-rouge">lib/</code> directory of your Fluo application.</li>
-  <li>Configure your Fluo instance to use this observer by modifying the Observer section of <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-2/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>.</li>
-  <li>Restart your Fluo instance so that your Fluo workers load the new observer.</li>
+  <li>
+    <p>Create one or more classes that extend <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/Observer.html">Observer</a> like the example below. Please use <a href="http://www.slf4j.org/">slf4j</a> for
+any logging in observers as <a href="http://www.slf4j.org/">slf4j</a> supports multiple logging implementations. This is
+necessary as Fluo applications have a hard requirement on <a href="http://logback.qos.ch/">logback</a> when running in YARN.</p>
+
+    <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">InvertObserver</span> <span class="kd">implements</span> <span class="n">Observer</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">// read value</span>
+    <span class="n">Bytes</span> <span class="n">value</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">col</span><span class="o">);</span>
+    <span class="c1">// invert row and value</span>
+    <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"inv"</span><span class="o">,</span> <span class="s">"data"</span><span class="o">),</span> <span class="n">row</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Create a class that implements <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/ObserverProvider.html">ObserverProvider</a> like the example below.  The purpose of this
+class is associate a set Observers with columns that trigger the observers.  The class can
+register multiple observers.</p>
+
+    <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">AppObserverProvider</span> <span class="kd">implements</span> <span class="n">ObserverProvider</span> <span class="o">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="n">Registry</span> <span class="n">or</span><span class="o">,</span> <span class="n">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//setup InvertObserver to be triggered when the column obs:data is modified</span>
+    <span class="n">or</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"obs"</span><span class="o">,</span> <span class="s">"data"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">useObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">InvertObserver</span><span class="o">());</span>
+        
+    <span class="c1">//Observer is a Functional interface.  So Obsevers can be written as lambdas.</span>
+    <span class="n">or</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"new"</span><span class="o">,</span><span class="s">"data"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">WEAK</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">useObserver</span><span class="o">((</span><span class="n">tx</span><span class="o">,</span><span class="n">row</span><span class="o">,</span><span class="n">col</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+         <span class="n">Bytes</span> <span class="n">combined</span> <span class="o">=</span> <span class="n">combineNewAndOld</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span><span class="n">row</span><span class="o">);</span>
+         <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"current"</span><span class="o">,</span><span class="s">"data"</span><span class="o">),</span> <span class="n">combined</span><span class="o">);</span>
+       <span class="o">});</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+    </div>
+  </li>
+  <li>Build a jar containing thses classes and include this jar in the <code class="highlighter-rouge">lib/</code> directory of your Fluo
+application.</li>
+  <li>Configure your Fluo instance to use this observer provider by modifying the Observer section of
+<a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>.</li>
+  <li>Initialize Fluo.  During initialization Fluo will obtain the observed columns from the 
+ObserverProvider and persist the columns in Zookeeper.  These columns persisted in Zookeeper
+are used by transactions to know when to trigger observers.</li>
+  <li>Start your Fluo instance so that your Fluo workers load the new observer.</li>
 </ol>
 
 <h2 id="application-configuration">Application Configuration</h2>
 
-<p>Each observer can have its own configuration.  This is useful for the case of
-using the same observer code w/ different parameters.  However for the case of
-sharing the same configuration across observers, fluo provides a simple
-mechanism to set and access application specific configuration.  See the
-javadoc on <a href="https://static.javadoc.io/io.fluo/fluo-api/1.0.0-beta-2/io/fluo/api/client/FluoClient.html">FluoClient</a>.getAppConfiguration() for more details.</p>
+<p>For configuring observers, fluo provides a simple mechanism to set and access application specific
+configuration.  See the javadoc on <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>.getAppConfiguration() for more details.</p>
 
-<h1 id="debugging-applications">Debugging Applications</h1>
+<h2 id="debugging-applications">Debugging Applications</h2>
 
-<p>While monitoring <a href="/docs/fluo/1.0.0-beta-2/metrics/">Fluo metrics</a> can detect problems (like too many
-transaction collisions) in a Fluo application, <a href="/docs/fluo/1.0.0-beta-2/metrics/">metrics</a> may not
-provide enough information to debug the root cause of the problem.  To help
-debug Fluo applications, low-level logging of transactions can be turned on by
-setting the following loggers to TRACE:</p>
+<p>While monitoring <a href="/docs/fluo/1.1.0-incubating/metrics/">Fluo metrics</a> can detect problems (like too many transaction collisions)
+in a Fluo application, <a href="/docs/fluo/1.1.0-incubating/metrics/">metrics</a> may not provide enough information to debug the root cause
+of the problem. To help debug Fluo applications, low-level logging of transactions can be turned on
+by setting the following loggers to TRACE:</p>
 
 <table>
   <thead>
@@ -238,25 +271,30 @@ setting the following loggers to TRACE:</p>
   </thead>
   <tbody>
     <tr>
-      <td><code class="highlighter-rouge">io.fluo.tx</code></td>
+      <td>fluo.tx</td>
       <td>TRACE</td>
       <td>Provides detailed information about what transactions read and wrote</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">io.fluo.tx.summary</code></td>
+      <td>fluo.tx.summary</td>
       <td>TRACE</td>
       <td>Provides a one line summary about each transaction executed</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">io.fluo.tx.collisions</code></td>
+      <td>fluo.tx.collisions</td>
       <td>TRACE</td>
       <td>Provides details about what data was involved When a transaction collides with another transaction</td>
+    </tr>
+    <tr>
+      <td>fluo.tx.scan</td>
+      <td>TRACE</td>
+      <td>Provides logging for each cell read by a scan.  Scan summary logged at <code class="highlighter-rouge">fluo.tx</code> level.  This allows suppression of <code class="highlighter-rouge">fluo.tx.scan</code> while still seeing summary.</td>
     </tr>
   </tbody>
 </table>
 
-<p>Below is an example log after setting <code class="highlighter-rouge">io.fluo.tx</code> to TRACE.   The number
-following <code class="highlighter-rouge">txid: </code> is the transactions start timestamp from the Oracle.</p>
+<p>Below is an example log after setting <code class="highlighter-rouge">fluo.tx</code> to TRACE. The number following <code class="highlighter-rouge">txid: </code> is the
+transactions start timestamp from the Oracle.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>2015-02-11 18:24:05,341 [fluo.tx ] TRACE: txid: 3 begin() thread: 198
 2015-02-11 18:24:05,343 [fluo.tx ] TRACE: txid: 3 class: com.SimpleLoader
@@ -287,22 +325,19 @@ following <code class="highlighter-rouge">txid: </code> is the transactions star
   <li>T2 commits successfully with a commit timestamp of <code class="highlighter-rouge">6</code></li>
 </ul>
 
-<p>Below is an example log after only setting <code class="highlighter-rouge">io.fluo.tx.collisions</code> to TRACE.
-This setting will only log trace information when a collision occurs.  Unlike
-the previous example, what the transaction read and wrote is not logged.  This
-shows that a transaction with a start timestamp of <code class="highlighter-rouge">106</code> and a class name of
-<code class="highlighter-rouge">com.SimpleLoader</code> collided with another transaction on row <code class="highlighter-rouge">r1</code> and column
-<code class="highlighter-rouge">fam1 qual1</code>.</p>
+<p>Below is an example log after only setting <code class="highlighter-rouge">fluo.tx.collisions</code> to TRACE. This setting will only log
+trace information when a collision occurs. Unlike the previous example, what the transaction read
+and wrote is not logged. This shows that a transaction with a start timestamp of <code class="highlighter-rouge">106</code> and a class
+name of <code class="highlighter-rouge">com.SimpleLoader</code> collided with another transaction on row <code class="highlighter-rouge">r1</code> and column <code class="highlighter-rouge">fam1 qual1</code>.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>2015-02-11 18:17:02,639 [tx.collisions] TRACE: txid: 106 class: com.SimpleLoader
 2015-02-11 18:17:02,639 [tx.collisions] TRACE: txid: 106 collisions: {r1=[fam1 qual1 ]}
 </code></pre>
 </div>
 
-<p>When applications read and write arbitrary binary data, this does not log so
-well.  In order to make the trace logs human readable, non ASCII chars are
-escaped using hex.  The convention used it <code class="highlighter-rouge">\xDD</code>  where D is a hex digit. Also
-the <code class="highlighter-rouge">\</code> character is escaped to make the output unambiguous.</p>
+<p>When applications read and write arbitrary binary data, this does not log so well. In order to make
+the trace logs human readable, non ASCII chars are escaped using hex. The convention used it <code class="highlighter-rouge">\xDD</code>
+where D is a hex digit. Also the <code class="highlighter-rouge">\</code> character is escaped to make the output unambiguous.</p>
 
 
   </article>

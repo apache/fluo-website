@@ -8,7 +8,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.0.0-incubating/metrics/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.1.0-incubating/metrics/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
     <title>Fluo Metrics | Apache Fluo</title>
@@ -106,8 +106,6 @@
             <div class="fluo-doc">
 
   
-  <div class="alert alert-danger" role="alert">These docs are for Fluo 1.0.0-incubating which is an old version! Check out the <a href="/docs/fluo/1.1.0-incubating/">latest docs</a>!</div>
-  
 
   
 
@@ -116,19 +114,19 @@
   </header>
 
   <article id="page-content">
-    <p>A Fluo application can be configured (in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>) to report metrics. When metrics are
+    <p>A Fluo application can be configured (in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>) to report metrics. When metrics are
 configured, Fluo will report some ‘default’ metrics about an application that help users monitor its
 performance. Users can also write code to report ‘application-specific’ metrics from their
 applications. Both ‘application-specific’ and ‘default’ metrics share the same reporter configured
-by <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> and are described in detail below.</p>
+by <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> and are described in detail below.</p>
 
 <h2 id="configuring-reporters">Configuring reporters</h2>
 
 <p>Fluo metrics are not published by default. To publish metrics, configure a reporter in the ‘metrics’
-section of <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>. There are several different reporter types (i.e Console, CSV,
+section of <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>. There are several different reporter types (i.e Console, CSV,
 Graphite, JMX, SLF4J) that are implemented using <a href="https://dropwizard.github.io/metrics/3.1.0/">Dropwizard</a>. The choice of which reporter to use
 depends on the visualization tool used. If you are not currently using a visualization tool, there
-is <a href="/docs/fluo/1.0.0-incubating/grafana/">documentation</a> for reporting Fluo metrics to Grafana/InfluxDB.</p>
+is <a href="/docs/fluo/1.1.0-incubating/grafana/">documentation</a> for reporting Fluo metrics to Grafana/InfluxDB.</p>
 
 <h2 id="metrics-names">Metrics names</h2>
 
@@ -165,8 +163,8 @@ below.</p>
 
 <h2 id="application-specific-metrics">Application-specific metrics</h2>
 
-<p>Application metrics are implemented by retrieving a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/metrics/MetricsReporter.html">MetricsReporter</a> from an <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/observer/Observer.html">Observer</a>, <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/Loader.html">Loader</a>,
-or <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>.  These metrics are named using the format <code class="highlighter-rouge">fluo.app.REPORTER_ID.METRIC</code>.</p>
+<p>Application metrics are implemented by retrieving a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/metrics/MetricsReporter.html">MetricsReporter</a> from an <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/Observer.html">Observer</a>, <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/Loader.html">Loader</a>,
+or <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>.  These metrics are named using the format <code class="highlighter-rouge">fluo.app.REPORTER_ID.METRIC</code>.</p>
 
 <h2 id="default-metrics">Default metrics</h2>
 
