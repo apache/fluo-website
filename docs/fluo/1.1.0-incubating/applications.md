@@ -115,7 +115,7 @@ To create an observer, follow these steps:
         or.forColumn(new Column("obs", "data"), NotificationType.STRONG)
           .useObserver(new InvertObserver());
         
-        //Observer is a Functional interface.  So Obsevers can be written as lambdas.
+        //Observer is a Functional interface.  So Observers can be written as lambdas.
         or.forColumn(new Column("new","data"), NotificationType.WEAK)
           .useObserver((tx,row,col) -> {
              Bytes combined = combineNewAndOld(tx,row);
@@ -125,7 +125,7 @@ To create an observer, follow these steps:
     }
     ```
 
-3.  Build a jar containing thses classes and include this jar in the `lib/` directory of your Fluo
+3.  Build a jar containing these classes and include this jar in the `lib/` directory of your Fluo
     application.
 4.  Configure your Fluo instance to use this observer provider by modifying the Observer section of
     [fluo.properties].

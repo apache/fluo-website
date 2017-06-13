@@ -12,6 +12,7 @@ redirect_from:
 
 #### Apache Fluo API
 
+* <a href="{{ site.fluo_api_base }}/1.1.0-incubating/" target="_blank">1.1.0-incubating</a> - June 12, 2017
 * <a href="{{ site.fluo_api_base }}/1.0.0-incubating/" target="_blank">1.0.0-incubating</a> - October 14, 2016
 
 #### Apache Fluo Recipes API
