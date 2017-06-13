@@ -59,11 +59,11 @@ for `RCV`.
  2. Prepare the release which will verify that all tests pass: `mvn release:prepare`
 
  3. Perform the release: `mvn release:perform`
-    * This step will create a staging repository viewable only to you when login to https://repository.apache.org
-    * When `release:perform` finishes, you will need to close the staging repository to make the artifacts available 
+    * This step will create a staging repository at https://repository.apache.org
+    * When `release:perform` finishes, login and close the staging repository to make the artifacts available 
       for download at `https://repository.apache.org/content/repositories/orgapachefluo-REPO_ID`
-    * Its very important to only close the staging repository and not promote it at this point. Promoting publishes 
-      the artifacts to Maven central and this can not be undone.  Promotion is done after a successful vote.
+    * Its very important to only close the staging repository and not release or promote it at this point.  Releasing publishes
+      the artifacts to Maven central and this can not be undone.  Releasing is done after a successful vote.
     * When closing, add a comment like `Apache Fluo (incubating) 1.1.0-rc3`
 
  4. Delete the tag created by `mvn release:pepare`.  This tag should not be pushed to Apache until
@@ -83,7 +83,7 @@ for `RCV`.
     ```
 
  6. Create the release candidate branch `<releaseVersion>-rc<RCV>` and push it.  This branch should
-    be one commit behind `<releaseVersion>-rc<RCV>-next` and one commit behind the branch point.
+    be one commit behind `<releaseVersion>-rc<RCV>-next` and one commit ahead of the branch point.
 
     ```shell
     git checkout -b <releaseVersion>-rc<RCV> <releaseVersion>-rc<RCV>-next~1
@@ -105,9 +105,9 @@ When the vote passes on a release candidate, follow the steps below to complete 
     git push apache-remote master
     ```
 
- 2. Promote the artifacts at https://repository.apache.org so that they get published in Maven
+ 2. Release the artifacts at https://repository.apache.org so that they get published in Maven
     Central.  You can drop any staging repos for RCs that were not chosen.  Add a comment like `Vote
-    failed for Apache Fluo 1.1.0-rc3` when dropping or `Apache Fluo 1.1.0` when promoting. 
+    failed for Apache Fluo 1.1.0-rc3` when dropping or `Apache Fluo 1.1.0` when releasing. 
 
  3. Create a signed tag for the release from the chosen RC tag and push to upstream repo:
 
