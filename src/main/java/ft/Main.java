@@ -39,10 +39,10 @@ public class Main {
   }
 
   static void preInit(FluoConfiguration fluoConfig) {
-    //this method does not need to be changed for earlier excercises in tour
+    //this method does not need to be changed for earlier exercises in tour
   }
 
   private static void exercise(MiniFluo mini, FluoClient client) {
-    //TODO Do all Fluo Tour excercises
+    //TODO Do all Fluo Tour exercises
   }
 }
