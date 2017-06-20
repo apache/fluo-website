@@ -3,7 +3,7 @@ title: Collision code
 ---
 
 ```java
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
 
     String row = "kerbalnaut0001";
     Column lName = new Column("name", "last");

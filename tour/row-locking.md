@@ -58,7 +58,7 @@ clients and three loaders.
     }
   }
 
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
 
     String node1 = "n00000";
 

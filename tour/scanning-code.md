@@ -4,7 +4,7 @@ title: Scanning Code
 
 
 ```java
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
     Column fName = new Column("name", "first");
     Column lName = new Column("name", "last");
     Column bravery = new Column("attr","bravery");
@@ -47,7 +47,7 @@ title: Scanning Code
        //scan over two columns
        cellScanner = s1.scanner().over(Span.prefix("kerbalnaut")).fetch(fName, bravery).build();
        System.out.println("\nScan 3 :");
-       //use Java lamda's to print instead of foreach loop
+       //use Java lambda's to print instead of foreach loop
        cellScanner.forEach(rcv -> System.out.println("\t"+rcv));
     }
   }

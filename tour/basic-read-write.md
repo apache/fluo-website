@@ -8,7 +8,7 @@ following the instructions in the repository.
 
 
 ```java
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercises(MiniFluo mini, FluoClient client) {
     String row = "kerbalnaut0001";
     Column fName = new Column("name", "first");
     Column lName = new Column("name", "last");
@@ -19,9 +19,9 @@ following the instructions in the repository.
       tx.commit();
     }
 
-    try (Snapshot snaphot = client.newSnapshot()) {
-      System.out.println("First name : " + snaphot.gets(row, fName));
-      System.out.println("Last name  : " + snaphot.gets(row, lName));
+    try (Snapshot snapshot = client.newSnapshot()) {
+      System.out.println("First name : " + snapshot.gets(row, fName));
+      System.out.println("Last name  : " + snapshot.gets(row, lName));
     }
   }
 ```

@@ -3,7 +3,7 @@ title: Write Skew Code
 ---
 
 ```java
- private static void excercise(MiniFluo mini, FluoClient client) {
+ private static void exercise(MiniFluo mini, FluoClient client) {
 
     Column sumCol = new Column("data", "sum");
 

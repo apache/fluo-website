@@ -8,7 +8,7 @@ redirect_from:
 
 For a general overview of Fluo, take the [Fluo tour](/tour/).
 
-[Apache Fluo] and [Apache Fluo Recipes] have seperate documentation as they are different repositories with their own release cycle.
+[Apache Fluo] and [Apache Fluo Recipes] have separate documentation as they are different repositories with their own release cycle.
 
 ### Apache Fluo documentation
 

@@ -134,7 +134,7 @@ Add the following to the ft.Main class.
       }
     } // this will close loaderExecutor and wait for all load transactions to complete
 
-    //This line is not needed in this step of the excercise.  However the next step will need this
+    //This line is not needed in this step of the exercise.  However the next step will need this
     //line.
     mini.waitForObservers();
 
@@ -142,7 +142,7 @@ Add the following to the ft.Main class.
     System.out.println();
   }
 
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
     loadAndPrint(mini, client, docs1);
     loadAndPrint(mini, client, docs2);
     loadAndPrint(mini, client, docs3);
@@ -544,7 +544,7 @@ CFM bucket and each bucket is processed independently.
 ## Part 4 : Running this example on a real instance.
 
 Everything in the tour so far has used MiniFluo to run code.  The following
-instructions show how to run the code in this excercise on a real Fluo
+instructions show how to run the code in this exercise on a real Fluo
 instance.  [Uno] can be used to quickly setup Fluo on a single node.
 
 The following two helper classes will be needed to run on a real instance.

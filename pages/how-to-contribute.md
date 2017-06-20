@@ -28,7 +28,7 @@ This means that all contributions must pass any integration tests and be reviewe
    # checkout your branch
    git checkout fluo-301
    # rebase master to bring latest commits into your branch
-   # follow any insructions to resolve conflicts
+   # follow any instructions to resolve conflicts
    git rebase master
    # update your branch on your fork
    git push -f origin fluo-301
