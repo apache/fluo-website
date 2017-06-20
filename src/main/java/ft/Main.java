@@ -34,7 +34,7 @@ public class Main {
 
       System.out.println("started.");
 
-      excercise(mini, client);
+      exercise(mini, client);
     }
   }
 
@@ -42,7 +42,7 @@ public class Main {
     //this method does not need to be changed for earlier excercises in tour
   }
 
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
     //TODO Do all Fluo Tour excercises
   }
 }
