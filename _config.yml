@@ -47,11 +47,11 @@ latest_recipes_release: "1.0.0-incubating"
 
 # Sets links to external API
 api_base: "https://javadoc.io/doc/org.apache.fluo"
-api_static: "https://static.javadoc.io/org.apache.fluo"
+api_static: "https://javadoc.io/page/org.apache.fluo"
 fluo_api_base: "https://javadoc.io/doc/org.apache.fluo/fluo-api"
-fluo_api_static: "https://static.javadoc.io/org.apache.fluo/fluo-api"
-fluo_recipes_core_static: "https://static.javadoc.io/org.apache.fluo/fluo-recipes-core"
-fluo_recipes_spark_static: "https://static.javadoc.io/org.apache.fluo/fluo-recipes-spark"
+fluo_api_static: "https://javadoc.io/page/org.apache.fluo/fluo-api"
+fluo_recipes_core_static: "https://javadoc.io/page/org.apache.fluo/fluo-recipes-core"
+fluo_recipes_spark_static: "https://javadoc.io/page/org.apache.fluo/fluo-recipes-spark"
 old_api_base: "https://javadoc.io/doc/io.fluo"
 old_api_static: "https://static.javadoc.io/io.fluo"
 
