@@ -71,7 +71,7 @@ title: Memory limits and self notify code
     fluoConfig.addObserver(ospec);
   }
 
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
     try (LoaderExecutor le = client.newLoaderExecutor()) {
       Random r = new Random(42);
       for (int i = 0; i < 5000; i++) {

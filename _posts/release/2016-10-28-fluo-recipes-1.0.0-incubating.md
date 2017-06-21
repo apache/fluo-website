@@ -26,7 +26,7 @@ Below are resources for this release:
 * [#102][102] - Simplified Accumulo export queue recipe
 * [#92][92] - Added dependency analysis plugin
 * [#82][82] - Moved TypeLayer from Fluo API to Fluo Recipes
-* [#76][76] - Made compact transient command retry wehn calling compact throws an exception
+* [#76][76] - Made compact transient command retry when calling compact throws an exception
 * [#75][75] - Construct export queue row that falls in bucket
 * [#73][73] - Make compact transient sleep for each range
 * [#70][70] - Collision Free Map not behaving well when processing backs up

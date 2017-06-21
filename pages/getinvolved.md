@@ -8,7 +8,7 @@ Below are some ways that you can get involved with Apache Fluo:
 
 ### Mailing lists
 
-The `dev` mailing list is for general disscussion, announcing releases, organizing meet ups, etc.  For
+The `dev` mailing list is for general discussion, announcing releases, organizing meet ups, etc.  For
 discussion regarding specific issues or pull request consider using Github ([Fluo][f], [Fluo
 Recipes][r], [Fluo website][w]).  The `notifications` and `commits` mailing lists receive email from automated
 services and can be used to observe project activity.

@@ -8,7 +8,7 @@ redirect_from:
   - /apidocs/fluo-recipes/
 ---
 
-[Apache Fluo] and [Apache Fluo Recipes] have seperate API as they are different repositories with their own release cycle.
+[Apache Fluo] and [Apache Fluo Recipes] have separate API as they are different repositories with their own release cycle.
 
 #### Apache Fluo API
 

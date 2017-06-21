@@ -29,7 +29,7 @@ column *obs:data* is changed.
     fluoConfig.addObserver(new ObserverSpecification(MyObserver.class.getName()));
   }
 
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
     try(Transaction tx1 = client.newTransaction()) {
       tx1.set("kerbalnaut0001", OBSERVED_COL, "Jebediah");
       tx1.commit();

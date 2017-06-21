@@ -16,7 +16,7 @@ modified any of the key values.
 While designing the Fluo API we were uncertain about making Fluo's basic [POJOs] mutable or
 immutable.  In the end we decided to go with immutable types to make writing correct Fluo code
 easier.  One of the POJOs we created was [Bytes],  an immutable wrapper around a byte array.  We
-also created [BytesBuilder], which is analagous to StringBuilder, and makes it easy and efficient
+also created [BytesBuilder], which is analogous to StringBuilder, and makes it easy and efficient
 to construct Bytes.
 
 ### What about the copies?

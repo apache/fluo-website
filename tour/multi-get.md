@@ -24,7 +24,7 @@ difference.  The example code performs the following task.
 Below is the code to perform the task mentioned above.
 
 ```java
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
 
     Set<Column> columns = new LinkedHashSet<>();
 

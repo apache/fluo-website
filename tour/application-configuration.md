@@ -28,7 +28,7 @@ FluoConfiguration.
     appConfig.setProperty("exporterTable", "table5");
   }
 
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
     SimpleConfiguration appConfig = client.getAppConfiguration();
     System.out.println(appConfig.getString("exporterClass"));
     System.out.println(appConfig.getString("exporterDB"));
@@ -121,7 +121,7 @@ and notifies the two observers which process the data.
     fluoConfig.addObserver(observer2);
   }
 
-  private static void excercise(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
     try (Transaction tx = client.newTransaction()) {
       tx.set("e:99", new Column("export", "data1"), "222");
       tx.set("e:99", new Column("export", "data2"), "444");
