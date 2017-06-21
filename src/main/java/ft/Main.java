@@ -34,15 +34,15 @@ public class Main {
 
       System.out.println("started.");
 
-      excercise(mini, client);
+      exercise(mini, client);
     }
   }
 
   static void preInit(FluoConfiguration fluoConfig) {
-    //this method does not need to be changed for earlier excercises in tour
+    //this method does not need to be changed for earlier exercises in tour
   }
 
-  private static void excercise(MiniFluo mini, FluoClient client) {
-    //TODO Do all Fluo Tour excercises
+  private static void exercise(MiniFluo mini, FluoClient client) {
+    //TODO Do all Fluo Tour exercises
   }
 }
