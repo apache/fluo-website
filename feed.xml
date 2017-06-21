@@ -5,8 +5,8 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 13 Jun 2017 17:57:53 +0000</pubDate>
-    <lastBuildDate>Tue, 13 Jun 2017 17:57:53 +0000</lastBuildDate>
+    <pubDate>Wed, 21 Jun 2017 20:40:57 +0000</pubDate>
+    <lastBuildDate>Wed, 21 Jun 2017 20:40:57 +0000</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
       <item>
@@ -457,7 +457,7 @@ modified any of the key values.&lt;/p&gt;
 &lt;p&gt;While designing the Fluo API we were uncertain about making Fluo’s basic &lt;a href=&quot;/tour/data-pojos/&quot;&gt;POJOs&lt;/a&gt; mutable or
 immutable.  In the end we decided to go with immutable types to make writing correct Fluo code
 easier.  One of the POJOs we created was &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Bytes.html&quot;&gt;Bytes&lt;/a&gt;,  an immutable wrapper around a byte array.  We
-also created &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Bytes.BytesBuilder.html&quot;&gt;BytesBuilder&lt;/a&gt;, which is analagous to StringBuilder, and makes it easy and efficient
+also created &lt;a href=&quot;https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Bytes.BytesBuilder.html&quot;&gt;BytesBuilder&lt;/a&gt;, which is analogous to StringBuilder, and makes it easy and efficient
 to construct Bytes.&lt;/p&gt;
 
 &lt;h3 id=&quot;what-about-the-copies&quot;&gt;What about the copies?&lt;/h3&gt;
@@ -677,7 +677,7 @@ release for the project.&lt;/p&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/102&quot;&gt;#102&lt;/a&gt; - Simplified Accumulo export queue recipe&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/92&quot;&gt;#92&lt;/a&gt; - Added dependency analysis plugin&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/82&quot;&gt;#82&lt;/a&gt; - Moved TypeLayer from Fluo API to Fluo Recipes&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/76&quot;&gt;#76&lt;/a&gt; - Made compact transient command retry wehn calling compact throws an exception&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/76&quot;&gt;#76&lt;/a&gt; - Made compact transient command retry when calling compact throws an exception&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/75&quot;&gt;#75&lt;/a&gt; - Construct export queue row that falls in bucket&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/73&quot;&gt;#73&lt;/a&gt; - Make compact transient sleep for each range&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/70&quot;&gt;#70&lt;/a&gt; - Collision Free Map not behaving well when processing backs up&lt;/li&gt;
