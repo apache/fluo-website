@@ -8,7 +8,7 @@ obtain, edit, and run this basic skeleton.
 
 ```bash
 #clone branch with starter code
-git clone -b fluo-tour http://git.apache.org/incubator-fluo-website.git fluo-tour
+git clone -b fluo-tour https://gitbox.apache.org/repos/asf/incubator-fluo-website fluo-tour
 cd fluo-tour
 
 #edit Main (all of the following excercises will require this)
