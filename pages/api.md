@@ -17,7 +17,7 @@ redirect_from:
 
 #### Apache Fluo Recipes API
 
-* 1.1.0-incubating: <a href="{{ site.api_base }}/fluo-recipes-core/1.1.0-incubating/" target="_blank">core</a>, <a href="{{ site.api_base }}/fluo-recipes-accumulo/1.1.0-incubating/" target="_blank">accumulo</a>, <a href="{{ site.api_base }}/fluo-recipes-kryo/1.1.0-incubating/" target="_blank">kryo</a>, <a href="{{ site.api_base }}/fluo-recipes-spark/1.1.0-incubating/" target="_blank">spark</a>, <a href="{{ site.api_base }}/fluo-recipes-test/1.1.0-incubating/" target="_blank">test</a> - October 28, 2016
+* 1.1.0-incubating: <a href="{{ site.api_base }}/fluo-recipes-core/1.1.0-incubating/" target="_blank">core</a>, <a href="{{ site.api_base }}/fluo-recipes-accumulo/1.1.0-incubating/" target="_blank">accumulo</a>, <a href="{{ site.api_base }}/fluo-recipes-kryo/1.1.0-incubating/" target="_blank">kryo</a>, <a href="{{ site.api_base }}/fluo-recipes-spark/1.1.0-incubating/" target="_blank">spark</a>, <a href="{{ site.api_base }}/fluo-recipes-test/1.1.0-incubating/" target="_blank">test</a> - June 22, 2017
 * 1.0.0-incubating: <a href="{{ site.api_base }}/fluo-recipes-core/1.0.0-incubating/" target="_blank">core</a>, <a href="{{ site.api_base }}/fluo-recipes-accumulo/1.0.0-incubating/" target="_blank">accumulo</a>, <a href="{{ site.api_base }}/fluo-recipes-kryo/1.0.0-incubating/" target="_blank">kryo</a>, <a href="{{ site.api_base }}/fluo-recipes-spark/1.0.0-incubating/" target="_blank">spark</a>, <a href="{{ site.api_base }}/fluo-recipes-test/1.0.0-incubating/" target="_blank">test</a> - October 28, 2016
 
 API for releases before joining Apache have been [archived](/api/archive).
