@@ -6,43 +6,47 @@ The following code shows how to setup and trigger an observer.  The observer is 
 column *obs:data* is changed.
 
 ```java
-  public static final Column OBSERVED_COL = new Column("obs","data");
-  public static final Column INVERT_COL = new Column("inv","data");
+  public static final Column OBSERVED_COL = new Column("obs", "data");
+  public static final Column INVERT_COL = new Column("inv", "data");
 
-  public static class MyObserver extends AbstractObserver {
-
-    @Override
-    public void process(TransactionBase tx, Bytes row, Column col) throws Exception {
-      //invert column and value
-      Bytes value = tx.get(row, col);
-      tx.set(value, INVERT_COL, row);
-    }
+  // This class is responsible for registering Observers for all observed columns.
+  public static class MyObserverProvider implements ObserverProvider {
 
     @Override
-    public ObservedColumn getObservedColumn() {
-      return new ObservedColumn(OBSERVED_COL, NotificationType.STRONG);
+    public void provide(Registry obsRegistry, Context ctx) {
+
+      // Observer is a functional interface allowing Observers to be lambdas
+      Observer invObserver = (tx, row, col) -> {
+        Bytes value = tx.get(row, col);
+        tx.set(value, INVERT_COL, row);
+      };
+
+      // Register an observer to process notifications for the column obs:data
+      obsRegistry.forColumn(OBSERVED_COL, NotificationType.STRONG).useObserver(invObserver);
     }
+
   }
 
   private static void preInit(FluoConfiguration fluoConfig) {
-    //configure Fluo to use MyObserver before initialization
-    fluoConfig.addObserver(new ObserverSpecification(MyObserver.class.getName()));
+    // Configure ObserverProvider before initialization. Workers will instantiate this class and use
+    // it to create Observers.
+    fluoConfig.setObserverProvider(MyObserverProvider.class);
   }
 
   private static void exercise(MiniFluo mini, FluoClient client) {
-    try(Transaction tx1 = client.newTransaction()) {
+    try (Transaction tx1 = client.newTransaction()) {
       tx1.set("kerbalnaut0001", OBSERVED_COL, "Jebediah");
       tx1.commit();
     }
 
-    try(Transaction tx2 = client.newTransaction()) {
+    try (Transaction tx2 = client.newTransaction()) {
       tx2.set("kerbalnaut0002", OBSERVED_COL, "Bill");
       tx2.commit();
     }
 
     mini.waitForObservers();
 
-    try(Snapshot snap = client.newSnapshot()) {
+    try (Snapshot snap = client.newSnapshot()) {
       snap.scanner().build().forEach(System.out::println);
     }
   }
