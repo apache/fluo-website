@@ -1,3 +1,4 @@
 source 'https://rubygems.org'
 gem 'github-pages', '110', group: :jekyll_plugins
-gem 'therubyracer'
+gem 'therubyracer', '0.12.2'
+gem 'nokogiri', '1.6.8.1'
