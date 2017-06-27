@@ -19,8 +19,9 @@ Below are resources for this release:
 
 ## Major Change
 
-For this release of Fluo Recipes, supporting the [new Observer API][obsAPI] was
-the primary motivation.  The Collision Free Map and [Export Queue] required
+For this release of Fluo Recipes, the work done in [#127], [#128], [#130], and
+ [#131] to support the [new Observer API][obsAPI] was
+the most significant change.  The Collision Free Map and [Export Queue] required
 significant additions to support the new Observer API.  Since the name
 *Collision Free Map* (CFM) is awful and it needed major API additions, the
 decision was made to deprecate it and offer the [CombineQueue].  The
@@ -236,7 +237,10 @@ EXPORT x=5:t=27        old: 1 new: -   seq: 106
 *** All notifications processed. ***
 ```
 
-
+[#127]: https://github.com/apache/incubator-fluo-recipes/issues/127
+[#128]: https://github.com/apache/incubator-fluo-recipes/pull/128
+[#130]: https://github.com/apache/incubator-fluo-recipes/pull/130
+[#131]: https://github.com/apache/incubator-fluo-recipes/pull/131
 [procedures]: https://www.apache.org/info/verification
 [KEYS]: https://www.apache.org/dist/incubator/fluo/KEYS
 [src-release]: https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz
