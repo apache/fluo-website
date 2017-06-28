@@ -48,7 +48,7 @@ table5
 
 If you want to use the same code to create multiple observers, one way to accomplish this is
 with application configuration. The code below shows an example of this.  The example simulates
-exporting rows to multiple mysql tables.  To do this it creates an observers per a export
+exporting rows to multiple mysql tables.  To do this, it creates an observers per a export
 table. The observed column and export table for each observer is derived from application
 configuration.
 
