@@ -47,7 +47,7 @@ Below is a sample Maven POM containing all possible Fluo Recipes dependencies:
 
 ```xml
   <properties>
-    <fluo-recipes.version>1.0.0-incubating</fluo-recipes.version>
+    <fluo-recipes.version>1.1.0-incubating</fluo-recipes.version>
   </properties>
 
   <dependencies>
@@ -86,8 +86,8 @@ Below is a sample Maven POM containing all possible Fluo Recipes dependencies:
 ```
 
 [fluo]: https://fluo.apache.org/
-[fluo-api]: https://fluo.apache.org/apidocs/fluo/
-[recipes-api]: https://fluo.apache.org/apidocs/fluo-recipes/
+[fluo-api]: /api
+[recipes-api]: /api
 [combine-q]: /docs/fluo-recipes/1.1.0-incubating/combine-queue/
 [export-q]: /docs/fluo-recipes/1.1.0-incubating/export-queue/
 [recording-tx]: /docs/fluo-recipes/1.1.0-incubating/recording-tx/

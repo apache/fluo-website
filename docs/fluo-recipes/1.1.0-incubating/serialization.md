@@ -72,5 +72,5 @@ how to do this.
 ```
 
 [1]: https://github.com/EsotericSoftware/kryo
-[2]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/core/serialization/SimpleSerializer.html
+[2]: {{ site.api_static }}/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/serialization/SimpleSerializer.html
 [3]: https://github.com/EsotericSoftware/kryo#registration

@@ -206,6 +206,6 @@ calls `process()` on a [ChangeObserver].
    previous transaction that called `ChangeObserver.process()`.
 
 [phrasecount]: https://github.com/fluo-io/phrasecount
-[CombineQueue]: /modules/core/src/main/java/org/apache/fluo/recipes/core/combine/CombineQueue.java
-[ChangeObserver]: /modules/core/src/main/java/org/apache/fluo/recipes/core/combine/ChangeObserver.java
-[Combiner]: /modules/core/src/main/java/org/apache/fluo/recipes/core/combine/Combiner.java
+[CombineQueue]: {{ site.api_static }}/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/combine/CombineQueue.html
+[ChangeObserver]: {{ site.api_static }}/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/combine/ChangeObserver.html
+[Combiner]: {{ site.api_static }}/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/combine/Combiner.html

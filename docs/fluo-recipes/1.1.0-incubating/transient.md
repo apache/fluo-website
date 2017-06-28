@@ -13,7 +13,7 @@ time these transient ranges of the table will have a lot more delete markers
 than actual data if nothing is done.  If nothing is done, then processing
 transient data will get increasingly slower over time.
 
-These deleted markers can be cleaned up by forcing Accumulo to compact the
+These delete markers can be cleaned up by forcing Accumulo to compact the
 Fluo table, which will run Fluos garbage collection iterator. However,
 compacting the entire table to clean up these ranges within a table is
 overkill. Alternatively,  Accumulo supports compacting ranges of a table.   So
@@ -79,5 +79,5 @@ first range takes 20 seconds to compact, then it will be compacted again in 600
 seconds.  If the second range takes 80 seconds to compact, then it will be
 compacted again in 800 seconds.
 
-[1]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html
-[2]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html
+[1]: {{ site.api_static }}/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html
+[2]: {{ site.api_static }}/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html

@@ -17,6 +17,7 @@ For a general overview of Fluo, take the [Fluo tour](/tour/).
 
 ### Apache Fluo Recipes documentation
 
+* [1.1.0-incubating][recipes-1.1] - June 22, 2017
 * [1.0.0-incubating][recipes-1.0] - October 28, 2016
 
 Documentation for releases before joining Apache have been [archived](archive).
@@ -25,4 +26,5 @@ Documentation for releases before joining Apache have been [archived](archive).
 [Apache Fluo Recipes]: https://github.com/apache/fluo-recipes
 [fluo-1.1]: /docs/fluo/1.1.0-incubating/
 [fluo-1.0]: /docs/fluo/1.0.0-incubating/
+[recipes-1.1]: /docs/fluo-recipes/1.1.0-incubating/
 [recipes-1.0]: /docs/fluo-recipes/1.0.0-incubating/

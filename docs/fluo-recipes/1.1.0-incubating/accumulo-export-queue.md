@@ -24,41 +24,41 @@ Exporting to Accumulo is easy. Follow the steps below:
    key/values and into mutations for Accumulo.  This step is optional, a lambda could
    be used in step 3 instead of creating a class.
 
-    ```java
-    public class SimpleTranslator implements AccumuloTranslator<String,String> {
+   ```java
+   public class SimpleTranslator implements AccumuloTranslator<String,String> {
 
-      @Override
-      public void translate(SequencedExport<String, String> export, Consumer<Mutation> consumer) {
-        Mutation m = new Mutation(export.getKey());
-        m.put("cf", "cq", export.getSequence(), export.getValue());
-        consumer.accept(m);
-      }
-    }
+     @Override
+     public void translate(SequencedExport<String, String> export, Consumer<Mutation> consumer) {
+       Mutation m = new Mutation(export.getKey());
+       m.put("cf", "cq", export.getSequence(), export.getValue());
+       consumer.accept(m);
+     }
+   }
 
-    ```
+   ```
 
 2. Configure an `ExportQueue` and the export table prior to initializing Fluo.
 
-    ```java
+   ```java
 
-    FluoConfiguration fluoConfig = ...;
+   FluoConfiguration fluoConfig = ...;
 
-    String instance =       // Name of accumulo instance exporting to
-    String zookeepers =     // Zookeepers used by Accumulo instance exporting to
-    String user =           // Accumulo username, user that can write to exportTable
-    String password =       // Accumulo user password
-    String exportTable =    // Name of table to export to
+   String instance =       // Name of accumulo instance exporting to
+   String zookeepers =     // Zookeepers used by Accumulo instance exporting to
+   String user =           // Accumulo username, user that can write to exportTable
+   String password =       // Accumulo user password
+   String exportTable =    // Name of table to export to
 
-    // Set properties for table to export to in Fluo app configuration.
-    AccumuloExporter.configure(EXPORT_QID).instance(instance, zookeepers)
-        .credentials(user, password).table(exportTable).save(fluoConfig);
+   // Set properties for table to export to in Fluo app configuration.
+   AccumuloExporter.configure(EXPORT_QID).instance(instance, zookeepers)
+       .credentials(user, password).table(exportTable).save(fluoConfig);
 
-    // Set properties for export queue in Fluo app configuration
-    ExportQueue.configure(EXPORT_QID).keyType(String.class).valueType(String.class)
-        .buckets(119).save(fluoConfig);
+   // Set properties for export queue in Fluo app configuration
+   ExportQueue.configure(EXPORT_QID).keyType(String.class).valueType(String.class)
+       .buckets(119).save(fluoConfig);
 
-    // Initialize Fluo using fluoConfig
-    ```
+   // Initialize Fluo using fluoConfig
+   ```
 
 3.  In the applications `ObserverProvider`, register an observer that will process exports and write
     them to Accumulo using [AccumuloExporter].  Also, register observers that add to the export
@@ -97,8 +97,8 @@ Exporting to Accumulo is easy. Follow the steps below:
 The `getTranslator()` method in [AccumuloReplicator] creates a specialized [AccumuloTranslator] for replicating a Fluo table to Accumulo.
 
 [1]: /docs/fluo-recipes/1.1.0-incubating/export-queue/
-[Exporter]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/core/export/function/Exporter.html
-[AccumuloExporter]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/function/AccumuloExporter.html
-[AccumuloTranslator]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/function/AccumuloTranslator.html
-[AccumuloReplicator]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/AccumuloReplicator.html
+[Exporter]: {{ site.api_static }}/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/export/function/Exporter.html
+[AccumuloExporter]: {{ site.api_static }}/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/function/AccumuloExporter.html
+[AccumuloTranslator]: {{ site.api_static }}/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/function/AccumuloTranslator.html
+[AccumuloReplicator]: {{ site.api_static }}/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/AccumuloReplicator.html
 

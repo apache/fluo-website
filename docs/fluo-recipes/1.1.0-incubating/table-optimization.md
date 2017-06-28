@@ -60,6 +60,6 @@ fluo exec app1 org.apache.fluo.recipes.accumulo.cmds.OptimizeTable
 Recipes register themself by calling [TableOptimizations.registerOptimization()][1].  Anyone can use
 this mechanism, its not limited to use by exisitng recipes.
 
-[1]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/core/common/TableOptimizations.html
-[2]: {{ site.api_static }}/fluo-recipes-FIXME/1.1.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html
+[1]: {{ site.api_static }}/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/common/TableOptimizations.html
+[2]: {{ site.api_static }}/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html
 [3]: http://accumulo.apache.org/blog/2015/03/20/balancing-groups-of-tablets.html
