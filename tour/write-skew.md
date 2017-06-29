@@ -4,7 +4,7 @@ title: Write Skew
 
 The page on collisions showed that if two transactions overlap and write the same data then one will
 fail.  However, in the case where two transactions overlap and one reads data that another is writing
-then both can succeed.  This behavior is called write skew.
+both can succeed.  This behavior is called write skew.
 
 The example below shows write skew.  In the example, *n0* is a node in a tree with two children *n01*
 and *n02*.  In *tx2*, the sum of *n0* is set to the sum of its children.  However, *tx2* misses the
@@ -27,5 +27,4 @@ different keys.
 The changes made by *tx3* will not be seen by *tx2*. This behavior is OK if the update made by *tx3*
 triggers a later update of *n0:data:sum*. Later pages in the tour will show that Observers can work
 this way, so that eventually the changes made by *tx3* are incorporated.  The [Weak Notification
-Exercise](/tour/weak-notifications/) later in the tour shows an example of an Observer that works
-like this.
+Exercise](/tour/weak-notifications/) later in the tour shows an example of this.

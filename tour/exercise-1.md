@@ -220,9 +220,9 @@ import java.util.*;
 
 import org.apache.fluo.api.client.TransactionBase;
 import org.apache.fluo.api.data.*;
-import org.apache.fluo.api.observer.AbstractObserver;
+import org.apache.fluo.api.observer.StringObserver;
 
-public class ContentObserver extends AbstractObserver {
+public class ContentObserver implements StringObserver {
 
   public static final Column PROCESSED_COL = new Column("doc", "processed");
   public static final Column WORD_COUNT = new Column("word","docCount");
@@ -247,9 +247,7 @@ public class ContentObserver extends AbstractObserver {
 
 
   @Override
-  public void process(TransactionBase tx, Bytes brow, Column col) throws Exception {
-
-    String row = brow.toString();
+  public void process(TransactionBase tx, String row, Column col) throws Exception {
 
     Map<Column, String> colVals =
         tx.gets(row, DocLoader.CONTENT_COL, DocLoader.REF_STATUS_COL, PROCESSED_COL);
@@ -258,17 +256,11 @@ public class ContentObserver extends AbstractObserver {
     String status = colVals.get(DocLoader.REF_STATUS_COL);
     String processed = colVals.getOrDefault(PROCESSED_COL, "false");
 
-    // TODO if status is referenced and not already processed the adjustCounts by +1 and set
+    // TODO if status is referenced and not already processed then adjustCounts by +1 and set
     // PROCESSED_COL to true
 
-    // TODO is status is unreferenced then delete all columns for content
+    // TODO if status is unreferenced then delete all columns for content
     // TODO if status is unreferenced and document was processed, then adjust counts by -1
-  }
-
-
-  @Override
-  public ObservedColumn getObservedColumn() {
-    return new ObservedColumn(DocLoader.REF_STATUS_COL, NotificationType.STRONG);
   }
 }
 ```
@@ -280,8 +272,16 @@ When you are ready to run the observer, modify the `preInit()` method in `ft.Mai
 observer as follows.
 
 ```java
+  public static class TourObserverProvider implements ObserverProvider {
+    @Override
+    public void provide(Registry obsRegistry, Context ctx) {
+      obsRegistry.forColumn(DocLoader.REF_STATUS_COL, NotificationType.STRONG)
+          .useObserver(new ContentObserver());;
+    }
+  }
+
   private static void preInit(FluoConfiguration fluoConfig) {
-    fluoConfig.addObserver(new ObserverSpecification(ContentObserver.class.getName()));
+    fluoConfig.setObserverProvider(TourObserverProvider.class);
   }
 ```
 
@@ -393,111 +393,50 @@ w:stuck word docCount	1
 
 ## Part 3 : Using Fluo Recipes
 
-The way to compute word counts above is very prone to transactional collisions. One way to avoid
-these collisions is to use the CollisionFreeMap(CFM) provided in Fluo Recipes.  The CFM will queue
+The suggested method of computing word counts above is prone to transaction collisions. One way to avoid
+collisions is to use a CombineQueue provided by Fluo Recipes.  This will queue
 updates for words and notify another observer to process the queued updates.  The updates are queued
-in a way that will not cause collisions.  The CFM has its own Observer which will call two functions
-you provide.  The code below shows an example of these two functions and how to configure the CFM to
-call them.
+in a way that will not cause collisions.  The CombineQueue has its own Observer which will call two functions
+you provide.  One function combines updates for a key and the other consumes changes to values.
 
-To try using a CFM, first add the following class.
+To try using a CombineQueue, first add the following class.  This class handles changes to word
+counts by updating an inverted index of word counts.
 
 ```java
 package ft;
 
-import java.util.*;
-
 import org.apache.fluo.api.client.TransactionBase;
-import org.apache.fluo.api.config.FluoConfiguration;
-import org.apache.fluo.api.config.SimpleConfiguration;
-import org.apache.fluo.recipes.core.map.CollisionFreeMap;
-import org.apache.fluo.recipes.core.map.Combiner;
-import org.apache.fluo.recipes.core.map.Update;
-import org.apache.fluo.recipes.core.map.UpdateObserver;
+import org.apache.fluo.recipes.core.combine.ChangeObserver;
 
 import static ft.ContentObserver.WORD_COUNT;
 
-/**
- * This class contains all of the code related to the {@link CollisionFreeMap} that keeps track of
- * word counts.  It also generates an inverted index of word counts as an example follow on action.
- */
-public class WordCounter {
+public class WordCountChangeObserver implements ChangeObserver<String, Long> {
 
-  /**
-   * the {@link CollisionFreeMap} Observer calls this combiner to processes the queued updates for
-   * a word.
-   */
-  public static class LongCombiner implements Combiner<String, Long>{
+  @Override
+  public void process(TransactionBase tx, Iterable<Change<String, Long>> changes) {
+    // This print shows per bucket processing.
+    System.out.println("== begin processing word count changes ==");
 
-    @Override
-    public Optional<Long> combine(String k, Iterator<Long> counts) {
-      long sum = 0;
-      while(counts.hasNext()) {
-        sum += counts.next();
+    for (Change<String, Long> change : changes) {
+
+      long oldCount = change.getOldValue().orElse(0l);  //previous count for a word
+      long newCount = change.getNewValue().orElse(0l);  //new count for a word
+
+      if (change.getOldValue().isPresent()) {
+        // delete old count for word from inverted index
+        tx.delete(String.format("ic:%06d:%s", oldCount, change.getKey()), WORD_COUNT);
       }
 
-      if(sum == 0) {
-        //returning emtpy will cause the CFM to delete the key in Fluo's table
-        return Optional.empty();
-      } else {
-        return Optional.of(sum);
+      if (change.getNewValue().isPresent()) {
+        // insert new count for word into inverted index
+        tx.set(String.format("ic:%06d:%s", newCount, change.getKey()), WORD_COUNT, "");
       }
-    }
-  }
 
-  /**
-   * The {@link CollisionFreeMap} Observer will call this class when the counts for a word change.
-   */
-  public static class WordObserver extends UpdateObserver<String, Long> {
-    @Override
-    public void updatingValues(TransactionBase tx, Iterator<Update<String, Long>> updates) {
-      System.out.println("== begin CFM updates ==");  //this print to show per bucket processing
-      while(updates.hasNext()) {
-        Update<String, Long> u = updates.next();
-
-        long oldCount = u.getOldValue().orElse(0l);
-        long newCount = u.getNewValue().orElse(0l);
-
-        //create an inverted index of word counts
-        if(u.getOldValue().isPresent()) {
-          tx.delete(String.format("ic:%06d:%s", oldCount, u.getKey()), WORD_COUNT);
-        }
-
-        if(u.getNewValue().isPresent()) {
-          tx.set(String.format("ic:%06d:%s", newCount, u.getKey()), WORD_COUNT, "");
-        }
-
-        System.out.printf("  update %s %d -> %d\n", u.getKey(), oldCount , newCount);
-      }
-      System.out.println("== end CFM updates ==");
-    }
-  }
-
-  /**
-   * Code to setup a CFM's Observer and configure it to call your functions.
-   */
-  public static void configure(FluoConfiguration fluoConfig, int numBuckets) {
-    CollisionFreeMap.configure(fluoConfig, new CollisionFreeMap.Options("wc", LongCombiner.class,
-        WordObserver.class, String.class, Long.class, 3));
-  }
-
-  private CollisionFreeMap<String, Long> cfm;
-
-  WordCounter(SimpleConfiguration appConfig){
-    cfm = CollisionFreeMap.getInstance("wc", appConfig);
-  }
-
-  /**
-   * This method will queue updates for each word to be processed later by the CFM Observer.
-   */
-  void adjustCounts(TransactionBase tx, int delta, List<String> words){
-    HashMap<String, Long> wcUpdates = new HashMap<>();
-
-    for (String word : words) {
-      wcUpdates.put(word, (long)delta);
+      // change.getKey() is a word
+      System.out.printf("  update %s %d -> %d\n", change.getKey(), oldCount, newCount);
     }
 
-    cfm.update(tx, wcUpdates);
+    System.out.println("== end processing word count changes ==");
   }
 }
 ```
@@ -505,41 +444,59 @@ public class WordCounter {
 Then modify `preInit()` in `Main` to the following.
 
 ```java
+  public static class TourObserverProvider implements ObserverProvider {
+    @Override
+    public void provide(Registry obsRegistry, Context ctx) {
+      CombineQueue<String, Long> wordCQ = CombineQueue.getInstance("wc", ctx.getAppConfiguration());
+
+      // Pass the word count combine queue to the ContentObserver so it can queue updates 
+      // when a documents word counts change.
+      obsRegistry.forColumn(DocLoader.REF_STATUS_COL, NotificationType.STRONG)
+          .useObserver(new ContentObserver(wordCQ));
+
+      // Register observer to process queued updates, the observer will call the two functions.
+      // SummingCombiner is provided by Fluo Recipes.  It sums all updates queued for a key.
+      wordCQ.registerObserver(obsRegistry, new SummingCombiner<>(), new WordCountChangeObserver());
+    }
+  }
+
   private static void preInit(FluoConfiguration fluoConfig) {
-    fluoConfig.addObserver(new ObserverSpecification(ContentObserver.class.getName()));
-    WordCounter.configure(fluoConfig, 3);
+    fluoConfig.setObserverProvider(TourObserverProvider.class);
+    CombineQueue.configure("wc").keyType(String.class).valueType(Long.class).buckets(3)
+        .save(fluoConfig);
   }
 ```
 
-After that add the following `init()` method to `ContentObserver` and modify `adjustCounts()` to the
+Add a constuctor to `ContentObserver` and modify `adjustCounts()` to the
 following.
 
 ```java
-  private WordCounter wordCounter;
 
-  @Override
-  public void init(Context context) throws Exception {
-    //get an instance of the CFM based on application config
-    wordCounter = new WordCounter(context.getAppConfiguration());
+  private CombineQueue<String, Long> wordCQ;
+
+  public ContentObserver(CombineQueue<String, Long> wordCQ) {
+    this.wordCQ = wordCQ;
   }
 
   private void adjustCounts(TransactionBase tx, int delta, List<String> words) {
-    wordCounter.adjustCounts(tx, delta, words);
+    HashMap<String, Long> wcUpdates = new HashMap<>();
+    words.forEach(word -> wcUpdates.put(word, (long) delta));
+    wordCQ.addAll(tx, wcUpdates);
   }
 ```
 
-The CFM groups key values into buckets for efficiency and processes the updates for entire bucket in
-a single transaction.  When you run this new code, that is why `== begin CFM updates ==` is seen at
-least three times for each group of documents loaded.
+A CombineQueue  groups key values into buckets for efficiency and processes entire buckets in
+a single transaction.  When you run this code, that is why `== begin processing word count changes ==` is seen 
+multiple times for each group of documents loaded.
 
-When you run this example you will also notice two new prefixes in the output of the table scan.  First
-the `wc:` prefix is where the CFM stores its data.  By default the CFM uses Kryo for serialization
+These changes produce two new prefixes in the output of the table scan.  First
+the `wc:` prefix is where the CombineQueue stores its data.  By default the CombineQueue uses Kryo for serialization
 and therefore the key values with this prefix contain non-ASCII characters.  The utility function
 `FluoITHelper.printFluoTable()` escapes non-ASCII characters with `\x<HEX>`.   Second the `ic:`
-prefix contains an inverted index of word counts.  This was created simply to show an example of a
+prefix contains the inverted index of word counts.  This was created simply to show an example of a
 follow on action when word counts change.  Ideally this follow on action would have a low chance of
 collisions.  Creating the inverted index will not cause collisions because each word is in a single
-CFM bucket and each bucket is processed independently.
+CombineQueue bucket and each bucket is processed independently.
 
 ## Part 4 : Running this example on a real instance.
 

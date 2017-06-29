@@ -2,10 +2,9 @@
 title: Read and Write Data
 ---
 
-The following example shows basic code for writing data using Fluo and then reading it back out.  To
-run this code, modify `src/main/java/ft/Main.java` in the [Fluo Tour git repository][1] and run it by
-following the instructions in the repository.
-
+The following  shows Java code for writing and reading data using Fluo.  In your local clone, modify
+the `exercise(MiniFluo, FluoClient)` function in [src/main/java/ft/Main.java][main].  Then run
+`ft.Main` as previously mentioned.
 
 ```java
   private static void exercises(MiniFluo mini, FluoClient client) {
@@ -39,7 +38,7 @@ assume UTF-8 encoding when converting to bytes.
 Transactions and snapshots allocate resources and therefore have `close()` methods.  The
 try-with-resources block will automatically call `close()`, even when exceptions occur.
 
-[1]: https://github.com/apache/incubator-fluo-website/tree/fluo-tour
+[main]: https://github.com/apache/incubator-fluo-website/tree/fluo-tour/src/main/java/ft/Main.java
 [get]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#get-org.apache.fluo.api.data.Bytes-org.apache.fluo.api.data.Column-
 [gets]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-
 [Bytes]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.html

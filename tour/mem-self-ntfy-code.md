@@ -8,42 +8,33 @@ title: Memory limits and self notify code
   static Column UPDATE_COL = new Column("sum", "update");
   static Column CONTINUE_COL = new Column("sum", "continue");
 
-  public static class SummingObserver extends AbstractObserver {
+  public static class SummingObserver implements StringObserver {
 
     private int maxToProcess;
 
-    @Override
-    public void init(Context context) throws Exception {
-      //made the max amount to process in a single transaction configurable
-      maxToProcess = context.getObserverConfiguration().getInt("maxToProcess", 100);
+    SummingObserver(int maxToProcess) {
+      this.maxToProcess = maxToProcess;
     }
 
     @Override
-    public ObservedColumn getObservedColumn() {
-      return new ObservedColumn(NC, NotificationType.WEAK);
-    }
-
-    @Override
-    public void process(TransactionBase tx, Bytes brow, Column col) throws Exception {
-
-      String row = brow.toString();
+    public void process(TransactionBase tx, String row, Column col) throws Exception {
 
       Map<Column, String> colVals = tx.gets(row, TOTAL_COL, CONTINUE_COL);
 
       int sum = Integer.parseInt(colVals.getOrDefault(TOTAL_COL, "0"));
-      
+
       // construct a scan range that uses the continue row
       String startRow = colVals.getOrDefault(CONTINUE_COL, row + "/");
       String endRow = row + "/:"; // after the character '9' comes ':'
       CellScanner scanner = tx.scanner().over(new Span(startRow, true, endRow, false)).build();
 
       int processed = 0;
-      
+
       for (RowColumnValue rcv : scanner) {
         if (processed >= maxToProcess) {
           // stop processing and set the continue row
           tx.set(row, CONTINUE_COL, rcv.getsRow());
-          tx.setWeakNotification(brow, col);
+          tx.setWeakNotification(row, col);
           break;
         }
         sum += Integer.parseInt(rcv.getsValue());
@@ -60,15 +51,23 @@ title: Memory limits and self notify code
         tx.delete(row, CONTINUE_COL);
         // need to start over at the beginning and see if there is new data before the continue
         // column
-        tx.setWeakNotification(brow, col);
+        tx.setWeakNotification(row, col);
       }
     }
   }
 
+  public static class TourObserverProvider implements ObserverProvider {
+    @Override
+    public void provide(Registry obsRegistry, Context ctx) {
+      int maxToProcess = ctx.getAppConfiguration().getInt("maxToProcess");
+      obsRegistry.forColumn(NC, NotificationType.WEAK)
+          .useObserver(new SummingObserver(maxToProcess));
+    }
+  }
+
   private static void preInit(FluoConfiguration fluoConfig) {
-    ObserverSpecification ospec = new ObserverSpecification(SummingObserver.class.getName());
-    ospec.getConfiguration().setProperty("maxToProcess", 500);
-    fluoConfig.addObserver(ospec);
+    fluoConfig.getAppConfiguration().setProperty("maxToProcess", 500);
+    fluoConfig.setObserverProvider(TourObserverProvider.class);
   }
 
   private static void exercise(MiniFluo mini, FluoClient client) {

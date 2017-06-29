@@ -35,7 +35,7 @@ title: Collision code
 The code above prints :
 
 ```
-tx3 commit exception message : org.apache.fluo.api.exceptions.CommitException
+tx3 commit exception : org.apache.fluo.api.exceptions.CommitException: Collsions(1):kerbalnaut0001 name last
 Kerman
 ```
 

@@ -7,45 +7,43 @@ title: Weak Notification Code
   static Column TOTAL_COL = new Column("sum", "total");
   static Column UPDATE_COL = new Column("sum", "update");
 
-  public static class SummingObserver extends AbstractObserver {
-
+  public static class TourObserverProvider implements ObserverProvider {
     @Override
-    public ObservedColumn getObservedColumn() {
-      return new ObservedColumn(NC, NotificationType.WEAK);
-    }
+    public void provide(Registry obsRegistry, Context ctx) {
 
-    @Override
-    public void process(TransactionBase tx, Bytes brow, Column col) throws Exception {
+      // Observers can be written as lambdas
+      StringObserver summingObs = (tx, row, col) -> {
+        int sum = Integer.parseInt(tx.gets(row, TOTAL_COL, "0"));
 
-      String row = brow.toString();
+        CellScanner scanner = tx.scanner().over(Span.prefix(row + "/")).build();
+        for (RowColumnValue rcv : scanner) {
+          sum += Integer.parseInt(rcv.getsValue());
+          tx.delete(rcv.getRow(), rcv.getColumn());
+        }
 
-      int sum = Integer.parseInt(tx.gets(row, TOTAL_COL, "0"));
+        System.out.println("sum : " + sum);
 
-      CellScanner scanner = tx.scanner().over(Span.prefix(row +"/")).build();
-      for (RowColumnValue rcv : scanner) {
-        sum += Integer.parseInt(rcv.getsValue());
-        tx.delete(rcv.getRow(), rcv.getColumn());
-      }
+        tx.set(row, TOTAL_COL, "" + sum);
+      };
 
-      System.out.println("sum : " + sum);
-
-      tx.set(row, TOTAL_COL, ""+sum);
+      obsRegistry.forColumn(NC, NotificationType.WEAK).useObserver(summingObs);
     }
   }
 
   private static void preInit(FluoConfiguration fluoConfig) {
-    fluoConfig.addObserver(new ObserverSpecification(SummingObserver.class.getName()));
+    fluoConfig.setObserverProvider(TourObserverProvider.class);
   }
 
   private static void exercise(MiniFluo mini, FluoClient client) {
     try (LoaderExecutor le = client.newLoaderExecutor()) {
       Random r = new Random(42);
       for (int i = 0; i < 5000; i++) {
-        //The Loader interface only has one function and can therefore be written as a lambda below.
+        // The Loader interface only has one function and can therefore be written as a lambda
+        // below.
         le.execute((tx, ctx) -> {
-          String row = "counter001/"+String.format("%07d", r.nextInt(10_000_000));
+          String row = "counter001/" + String.format("%07d", r.nextInt(10_000_000));
           int curVal = Integer.parseInt(tx.gets(row, UPDATE_COL, "0"));
-          tx.set(row, UPDATE_COL, curVal+1+"");
+          tx.set(row, UPDATE_COL, curVal + 1 + "");
           tx.setWeakNotification("counter001", NC);
         });
       }
@@ -53,8 +51,8 @@ title: Weak Notification Code
 
     mini.waitForObservers();
 
-    try(Snapshot snap = client.newSnapshot()) {
-      System.out.println("final sum : "+snap.gets("counter001", TOTAL_COL));
+    try (Snapshot snap = client.newSnapshot()) {
+      System.out.println("final sum : " + snap.gets("counter001", TOTAL_COL));
     }
   }
 ```

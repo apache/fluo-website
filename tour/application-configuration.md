@@ -14,7 +14,7 @@ To use application configuration, set properties with the prefix `fluo.app` in y
 file before initialization.  Alternatively use [FluoConfiguration.getAppConfiguration()][fcogac] to
 set these properties programmatically.  After Fluo is initialized this information can be accessed
 anywhere by calling [FluoClient.getAppConfiguration()][fclgac],
-[Observer.Context.getAppConfigurtaion()][ocgac], or [Loader.Context.getAppConfiguration()][lcgac].
+[ObserverProvider.Context.getAppConfigurtaion()][opgac], or [Loader.Context.getAppConfiguration()][lcgac].
 
 The following is a simple example of using application config.   This example sets some application
 config before initialization.  After initialization the configuration is accessed via
@@ -46,79 +46,51 @@ table5
 
 ## Observer Configuration
 
-If you want instances of an Observer to behave differently and share code, one way to accomplish
-this is with per observer configuration.  When setting up an observer call one of the
-[ObserverSpecification][ospec] methods that takes configuration.  When an observer is initialized it
-can access this configuration by calling [Observer.Context.getObserverConfiguration()][ocgp].
-
-The code below shows an example of setting configuration for an Observer.  This example simulates an
-observer that can export rows to a mysql table. The example configures two instances of an observer
-using the same class with different configuration.  Even though the observers use the same class, the
-two instances must observe different columns.  That is why the code derives the observed column based
-on the observer configuration.  Notice the mysql database is obtained from application configuration by
-the observer and the table is obtained from observer configuration.
+If you want to use the same code to create multiple observers, one way to accomplish this is
+with application configuration. The code below shows an example of this.  The example simulates
+exporting rows to multiple mysql tables.  To do this, it creates an observers per a export
+table. The observed column and export table for each observer is derived from application
+configuration.
 
 ```java
-package ft;
+  public static class TourObserverProvider implements ObserverProvider {
+    @Override
+    public void provide(Registry obsRegistry, Context ctx) {
+      SimpleConfiguration appCfg = ctx.getAppConfiguration();
+      String exportDB = appCfg.getString("exportDB");
 
-import org.apache.fluo.api.client.TransactionBase;
-import org.apache.fluo.api.client.scanner.CellScanner;
-import org.apache.fluo.api.data.Bytes;
-import org.apache.fluo.api.data.Column;
-import org.apache.fluo.api.data.RowColumnValue;
-import org.apache.fluo.api.data.Span;
-import org.apache.fluo.api.observer.Observer;
+      // Create an observer for each export table
+      for (Entry<String, String> entry : appCfg.subset("exportTables").toMap().entrySet()) {
+        String exportId = entry.getKey();
+        String exportTable = entry.getValue();
 
-public class MysqlExportObserver implements Observer {
+        Column exportNtfyCol = new Column("ET", exportId);
 
-  private String exportDB;
-  private String exportTable;
+        Observer exportObserver = (tx, row, col) -> {
+          CellScanner scanner = tx.scanner().over(Span.exact(row)).build();
 
-  @Override
-  public void close() {}
+          for (RowColumnValue rcv : scanner) {
+            System.out.printf("Exporting val=%s from row=%s to db=%s table=%s\n", rcv.getsValue(),
+                row, exportDB, exportTable);
+            tx.delete(rcv.getRow(), rcv.getColumn());
+          }
+        };
 
-  @Override
-  public ObservedColumn getObservedColumn() {
-    Column col = new Column("ET", exportTable);
-    return new ObservedColumn(col, NotificationType.WEAK);
-  }
-
-  @Override
-  public void init(Context ctx) throws Exception {
-    exportDB = ctx.getAppConfiguration().getString("exportDB");
-    exportTable = ctx.getObserverConfiguration().getString("exportTable");
-  }
-
-  @Override
-  public void process(TransactionBase tx, Bytes row, Column col) throws Exception {
-    CellScanner scanner = tx.scanner().over(Span.exact(row)).build();
-
-    for (RowColumnValue rcv : scanner) {
-      System.out.printf("Exporting val:%s from row:%s to db/table:%s/%s\n", rcv.getsValue(), row,
-          exportDB, exportTable);
-      tx.delete(rcv.getRow(), rcv.getColumn());
+        obsRegistry.forColumn(exportNtfyCol, NotificationType.WEAK).useObserver(exportObserver);
+      }
     }
   }
-}
-```
 
-The following code initializes two observers using the same class with different configuration.  It
-also sets application configuration that is used by the observers.  The code then writes some data
-and notifies the two observers which process the data.
-
-```java
   private static void preInit(FluoConfiguration fluoConfig) {
     SimpleConfiguration appConfig = fluoConfig.getAppConfiguration();
     appConfig.setProperty("exportDB", "db1");
 
-    ObserverSpecification observer1 = new ObserverSpecification(MysqlExportObserver.class.getName(),
-        Collections.singletonMap("exportTable", "table9"));
+    // An observer will be created to process each export table. In this example 't1' and 't2'
+    // are used as logical IDs for export tables.
+    appConfig.setProperty("exportTables.t1", "bigtable");
+    appConfig.setProperty("exportTables.t2", "tinytable");
 
-    ObserverSpecification observer2 = new ObserverSpecification(MysqlExportObserver.class.getName(),
-        Collections.singletonMap("exportTable", "table3"));
-
-    fluoConfig.addObserver(observer1);
-    fluoConfig.addObserver(observer2);
+    fluoConfig.setObserverProvider(TourObserverProvider.class);
   }
 
   private static void exercise(MiniFluo mini, FluoClient client) {
@@ -127,7 +99,7 @@ and notifies the two observers which process the data.
       tx.set("e:99", new Column("export", "data2"), "444");
       tx.set("e:99", new Column("export", "data3"), "555");
 
-      tx.setWeakNotification("e:99", new Column("ET", "table3"));
+      tx.setWeakNotification("e:99", new Column("ET", "t1"));
 
       tx.commit();
     }
@@ -138,7 +110,7 @@ and notifies the two observers which process the data.
       tx.set("e:98", new Column("export", "data2"), "888");
       tx.set("e:98", new Column("export", "data3"), "999");
 
-      tx.setWeakNotification("e:98", new Column("ET", "table9"));
+      tx.setWeakNotification("e:98", new Column("ET", "t2"));
 
       tx.commit();
     }
@@ -150,17 +122,17 @@ and notifies the two observers which process the data.
 Running the code above prints the following.
 
 ```
-Exporting val:222 from row:e:99 to db/table:db1/table3
-Exporting val:777 from row:e:98 to db/table:db1/table9
-Exporting val:444 from row:e:99 to db/table:db1/table3
-Exporting val:888 from row:e:98 to db/table:db1/table9
-Exporting val:555 from row:e:99 to db/table:db1/table3
-Exporting val:999 from row:e:98 to db/table:db1/table9
+Exporting val=777 from row=e:98 to db=db1 table=tinytable
+Exporting val=888 from row=e:98 to db=db1 table=tinytable
+Exporting val=999 from row=e:98 to db=db1 table=tinytable
+Exporting val=222 from row=e:99 to db=db1 table=bigtable
+Exporting val=444 from row=e:99 to db=db1 table=bigtable
+Exporting val=555 from row=e:99 to db=db1 table=bigtable
 ```
 
 [fcogac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/config/FluoConfiguration.html#getAppConfiguration--
 [fclgac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/FluoClient.html#getAppConfiguration--
-[ocgac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/observer/Observer.Context.html#getAppConfiguration--
+[opgac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/observer/ObserverProvider.Context.html#getAppConfiguration--
 [lcgac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/Loader.Context.html#getAppConfiguration--
 [ospec]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release}}/org/apache/fluo/api/config/ObserverSpecification.html
 [ocgp]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/observer/Observer.Context.html#getObserverConfiguration--
