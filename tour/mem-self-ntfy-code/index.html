@@ -116,42 +116,33 @@
   <span class="kd">static</span> <span class="n">Column</span> <span class="n">UPDATE_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"sum"</span><span class="o">,</span> <span class="s">"update"</span><span class="o">);</span>
   <span class="kd">static</span> <span class="n">Column</span> <span class="n">CONTINUE_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"sum"</span><span class="o">,</span> <span class="s">"continue"</span><span class="o">);</span>
 
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">SummingObserver</span> <span class="kd">extends</span> <span class="n">AbstractObserver</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">SummingObserver</span> <span class="kd">implements</span> <span class="n">StringObserver</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="kt">int</span> <span class="n">maxToProcess</span><span class="o">;</span>
 
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-      <span class="c1">//made the max amount to process in a single transaction configurable</span>
-      <span class="n">maxToProcess</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getObserverConfiguration</span><span class="o">().</span><span class="na">getInt</span><span class="o">(</span><span class="s">"maxToProcess"</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
+    <span class="n">SummingObserver</span><span class="o">(</span><span class="kt">int</span> <span class="n">maxToProcess</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">maxToProcess</span> <span class="o">=</span> <span class="n">maxToProcess</span><span class="o">;</span>
     <span class="o">}</span>
 
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">ObservedColumn</span> <span class="nf">getObservedColumn</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="k">new</span> <span class="nf">ObservedColumn</span><span class="o">(</span><span class="n">NC</span><span class="o">,</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">WEAK</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">brow</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-
-      <span class="n">String</span> <span class="n">row</span> <span class="o">=</span> <span class="n">brow</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">String</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
 
       <span class="n">Map</span><span class="o">&lt;</span><span class="n">Column</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">colVals</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">gets</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">TOTAL_COL</span><span class="o">,</span> <span class="n">CONTINUE_COL</span><span class="o">);</span>
 
       <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">colVals</span><span class="o">.</span><span class="na">getOrDefault</span><span class="o">(</span><span class="n">TOTAL_COL</span><span class="o">,</span> <span class="s">"0"</span><span class="o">));</span>
-      
+
       <span class="c1">// construct a scan range that uses the continue row</span>
       <span class="n">String</span> <span class="n">startRow</span> <span class="o">=</span> <span class="n">colVals</span><span class="o">.</span><span class="na">getOrDefault</span><span class="o">(</span><span class="n">CONTINUE_COL</span><span class="o">,</span> <span class="n">row</span> <span class="o">+</span> <span class="s">"/"</span><span class="o">);</span>
       <span class="n">String</span> <span class="n">endRow</span> <span class="o">=</span> <span class="n">row</span> <span class="o">+</span> <span class="s">"/:"</span><span class="o">;</span> <span class="c1">// after the character '9' comes ':'</span>
       <span class="n">CellScanner</span> <span class="n">scanner</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">scanner</span><span class="o">().</span><span class="na">over</span><span class="o">(</span><span class="k">new</span> <span class="n">Span</span><span class="o">(</span><span class="n">startRow</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="n">endRow</span><span class="o">,</span> <span class="kc">false</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
 
       <span class="kt">int</span> <span class="n">processed</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-      
+
       <span class="k">for</span> <span class="o">(</span><span class="n">RowColumnValue</span> <span class="n">rcv</span> <span class="o">:</span> <span class="n">scanner</span><span class="o">)</span> <span class="o">{</span>
         <span class="k">if</span> <span class="o">(</span><span class="n">processed</span> <span class="o">&gt;=</span> <span class="n">maxToProcess</span><span class="o">)</span> <span class="o">{</span>
           <span class="c1">// stop processing and set the continue row</span>
           <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">CONTINUE_COL</span><span class="o">,</span> <span class="n">rcv</span><span class="o">.</span><span class="na">getsRow</span><span class="o">());</span>
-          <span class="n">tx</span><span class="o">.</span><span class="na">setWeakNotification</span><span class="o">(</span><span class="n">brow</span><span class="o">,</span> <span class="n">col</span><span class="o">);</span>
+          <span class="n">tx</span><span class="o">.</span><span class="na">setWeakNotification</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">col</span><span class="o">);</span>
           <span class="k">break</span><span class="o">;</span>
         <span class="o">}</span>
         <span class="n">sum</span> <span class="o">+=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">rcv</span><span class="o">.</span><span class="na">getsValue</span><span class="o">());</span>
@@ -168,15 +159,23 @@
         <span class="n">tx</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">CONTINUE_COL</span><span class="o">);</span>
         <span class="c1">// need to start over at the beginning and see if there is new data before the continue</span>
         <span class="c1">// column</span>
-        <span class="n">tx</span><span class="o">.</span><span class="na">setWeakNotification</span><span class="o">(</span><span class="n">brow</span><span class="o">,</span> <span class="n">col</span><span class="o">);</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">setWeakNotification</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">col</span><span class="o">);</span>
       <span class="o">}</span>
     <span class="o">}</span>
   <span class="o">}</span>
 
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">TourObserverProvider</span> <span class="kd">implements</span> <span class="n">ObserverProvider</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="n">Registry</span> <span class="n">obsRegistry</span><span class="o">,</span> <span class="n">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kt">int</span> <span class="n">maxToProcess</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">().</span><span class="na">getInt</span><span class="o">(</span><span class="s">"maxToProcess"</span><span class="o">);</span>
+      <span class="n">obsRegistry</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="n">NC</span><span class="o">,</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">WEAK</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">useObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">SummingObserver</span><span class="o">(</span><span class="n">maxToProcess</span><span class="o">));</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
   <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">ObserverSpecification</span> <span class="n">ospec</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObserverSpecification</span><span class="o">(</span><span class="n">SummingObserver</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-    <span class="n">ospec</span><span class="o">.</span><span class="na">getConfiguration</span><span class="o">().</span><span class="na">setProperty</span><span class="o">(</span><span class="s">"maxToProcess"</span><span class="o">,</span> <span class="mi">500</span><span class="o">);</span>
-    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">addObserver</span><span class="o">(</span><span class="n">ospec</span><span class="o">);</span>
+    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">().</span><span class="na">setProperty</span><span class="o">(</span><span class="s">"maxToProcess"</span><span class="o">,</span> <span class="mi">500</span><span class="o">);</span>
+    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">setObserverProvider</span><span class="o">(</span><span class="n">TourObserverProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
   <span class="o">}</span>
 
   <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">exercise</span><span class="o">(</span><span class="n">MiniFluo</span> <span class="n">mini</span><span class="o">,</span> <span class="n">FluoClient</span> <span class="n">client</span><span class="o">)</span> <span class="o">{</span>

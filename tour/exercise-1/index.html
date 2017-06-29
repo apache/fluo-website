@@ -334,9 +334,9 @@ incremented.</p>
 
 <span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.TransactionBase</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.*</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.api.observer.AbstractObserver</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.observer.StringObserver</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContentObserver</span> <span class="kd">extends</span> <span class="n">AbstractObserver</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContentObserver</span> <span class="kd">implements</span> <span class="n">StringObserver</span> <span class="o">{</span>
 
   <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Column</span> <span class="n">PROCESSED_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"doc"</span><span class="o">,</span> <span class="s">"processed"</span><span class="o">);</span>
   <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Column</span> <span class="n">WORD_COUNT</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"word"</span><span class="o">,</span><span class="s">"docCount"</span><span class="o">);</span>
@@ -361,9 +361,7 @@ incremented.</p>
 
 
   <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">brow</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-
-    <span class="n">String</span> <span class="n">row</span> <span class="o">=</span> <span class="n">brow</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">String</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
 
     <span class="n">Map</span><span class="o">&lt;</span><span class="n">Column</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">colVals</span> <span class="o">=</span>
         <span class="n">tx</span><span class="o">.</span><span class="na">gets</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">DocLoader</span><span class="o">.</span><span class="na">CONTENT_COL</span><span class="o">,</span> <span class="n">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">,</span> <span class="n">PROCESSED_COL</span><span class="o">);</span>
@@ -372,17 +370,11 @@ incremented.</p>
     <span class="n">String</span> <span class="n">status</span> <span class="o">=</span> <span class="n">colVals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">);</span>
     <span class="n">String</span> <span class="n">processed</span> <span class="o">=</span> <span class="n">colVals</span><span class="o">.</span><span class="na">getOrDefault</span><span class="o">(</span><span class="n">PROCESSED_COL</span><span class="o">,</span> <span class="s">"false"</span><span class="o">);</span>
 
-    <span class="c1">// TODO if status is referenced and not already processed the adjustCounts by +1 and set</span>
+    <span class="c1">// TODO if status is referenced and not already processed then adjustCounts by +1 and set</span>
     <span class="c1">// PROCESSED_COL to true</span>
 
-    <span class="c1">// TODO is status is unreferenced then delete all columns for content</span>
+    <span class="c1">// TODO if status is unreferenced then delete all columns for content</span>
     <span class="c1">// TODO if status is unreferenced and document was processed, then adjust counts by -1</span>
-  <span class="o">}</span>
-
-
-  <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="n">ObservedColumn</span> <span class="nf">getObservedColumn</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nf">ObservedColumn</span><span class="o">(</span><span class="n">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">,</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
@@ -394,8 +386,16 @@ column?</p>
 <p>When you are ready to run the observer, modify the <code class="highlighter-rouge">preInit()</code> method in <code class="highlighter-rouge">ft.Main</code> to configure the
 observer as follows.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">addObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">ObserverSpecification</span><span class="o">(</span><span class="n">ContentObserver</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">()));</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">TourObserverProvider</span> <span class="kd">implements</span> <span class="n">ObserverProvider</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="n">Registry</span> <span class="n">obsRegistry</span><span class="o">,</span> <span class="n">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">obsRegistry</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="n">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">,</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">useObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">ContentObserver</span><span class="o">());;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">setObserverProvider</span><span class="o">(</span><span class="n">TourObserverProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
   <span class="o">}</span>
 </code></pre>
 </div>
@@ -508,110 +508,49 @@ w:stuck word docCount	1
 
 <h2 id="part-3--using-fluo-recipes">Part 3 : Using Fluo Recipes</h2>
 
-<p>The way to compute word counts above is very prone to transactional collisions. One way to avoid
-these collisions is to use the CollisionFreeMap(CFM) provided in Fluo Recipes.  The CFM will queue
+<p>The suggested method of computing word counts above is prone to transaction collisions. One way to avoid
+collisions is to use a CombineQueue provided by Fluo Recipes.  This will queue
 updates for words and notify another observer to process the queued updates.  The updates are queued
-in a way that will not cause collisions.  The CFM has its own Observer which will call two functions
-you provide.  The code below shows an example of these two functions and how to configure the CFM to
-call them.</p>
+in a way that will not cause collisions.  The CombineQueue has its own Observer which will call two functions
+you provide.  One function combines updates for a key and the other consumes changes to values.</p>
 
-<p>To try using a CFM, first add the following class.</p>
+<p>To try using a CombineQueue, first add the following class.  This class handles changes to word
+counts by updating an inverted index of word counts.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">ft</span><span class="o">;</span>
 
-<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
-
 <span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.TransactionBase</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.FluoConfiguration</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.SimpleConfiguration</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.map.CollisionFreeMap</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.map.Combiner</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.map.Update</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.map.UpdateObserver</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.combine.ChangeObserver</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">static</span> <span class="n">ft</span><span class="o">.</span><span class="na">ContentObserver</span><span class="o">.</span><span class="na">WORD_COUNT</span><span class="o">;</span>
 
-<span class="cm">/**
- * This class contains all of the code related to the {@link CollisionFreeMap} that keeps track of
- * word counts.  It also generates an inverted index of word counts as an example follow on action.
- */</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WordCounter</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WordCountChangeObserver</span> <span class="kd">implements</span> <span class="n">ChangeObserver</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="o">{</span>
 
-  <span class="cm">/**
-   * the {@link CollisionFreeMap} Observer calls this combiner to processes the queued updates for
-   * a word.
-   */</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LongCombiner</span> <span class="kd">implements</span> <span class="n">Combiner</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Change</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;&gt;</span> <span class="n">changes</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// This print shows per bucket processing.</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"== begin processing word count changes =="</span><span class="o">);</span>
 
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="nf">combine</span><span class="o">(</span><span class="n">String</span> <span class="n">k</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">counts</span><span class="o">)</span> <span class="o">{</span>
-      <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-      <span class="k">while</span><span class="o">(</span><span class="n">counts</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-        <span class="n">sum</span> <span class="o">+=</span> <span class="n">counts</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Change</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">change</span> <span class="o">:</span> <span class="n">changes</span><span class="o">)</span> <span class="o">{</span>
+
+      <span class="kt">long</span> <span class="n">oldCount</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0</span><span class="n">l</span><span class="o">);</span>  <span class="c1">//previous count for a word</span>
+      <span class="kt">long</span> <span class="n">newCount</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0</span><span class="n">l</span><span class="o">);</span>  <span class="c1">//new count for a word</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">change</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+        <span class="c1">// delete old count for word from inverted index</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"ic:%06d:%s"</span><span class="o">,</span> <span class="n">oldCount</span><span class="o">,</span> <span class="n">change</span><span class="o">.</span><span class="na">getKey</span><span class="o">()),</span> <span class="n">WORD_COUNT</span><span class="o">);</span>
       <span class="o">}</span>
 
-      <span class="k">if</span><span class="o">(</span><span class="n">sum</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">//returning emtpy will cause the CFM to delete the key in Fluo's table</span>
-        <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
-      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">sum</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">change</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+        <span class="c1">// insert new count for word into inverted index</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"ic:%06d:%s"</span><span class="o">,</span> <span class="n">newCount</span><span class="o">,</span> <span class="n">change</span><span class="o">.</span><span class="na">getKey</span><span class="o">()),</span> <span class="n">WORD_COUNT</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
       <span class="o">}</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
 
-  <span class="cm">/**
-   * The {@link CollisionFreeMap} Observer will call this class when the counts for a word change.
-   */</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">WordObserver</span> <span class="kd">extends</span> <span class="n">UpdateObserver</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="o">{</span>
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updatingValues</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Update</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;&gt;</span> <span class="n">updates</span><span class="o">)</span> <span class="o">{</span>
-      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"== begin CFM updates =="</span><span class="o">);</span>  <span class="c1">//this print to show per bucket processing</span>
-      <span class="k">while</span><span class="o">(</span><span class="n">updates</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-        <span class="n">Update</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">u</span> <span class="o">=</span> <span class="n">updates</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-
-        <span class="kt">long</span> <span class="n">oldCount</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0</span><span class="n">l</span><span class="o">);</span>
-        <span class="kt">long</span> <span class="n">newCount</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0</span><span class="n">l</span><span class="o">);</span>
-
-        <span class="c1">//create an inverted index of word counts</span>
-        <span class="k">if</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
-          <span class="n">tx</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"ic:%06d:%s"</span><span class="o">,</span> <span class="n">oldCount</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="na">getKey</span><span class="o">()),</span> <span class="n">WORD_COUNT</span><span class="o">);</span>
-        <span class="o">}</span>
-
-        <span class="k">if</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
-          <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"ic:%06d:%s"</span><span class="o">,</span> <span class="n">newCount</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="na">getKey</span><span class="o">()),</span> <span class="n">WORD_COUNT</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
-        <span class="o">}</span>
-
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"  update %s %d -&gt; %d\n"</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="na">getKey</span><span class="o">(),</span> <span class="n">oldCount</span> <span class="o">,</span> <span class="n">newCount</span><span class="o">);</span>
-      <span class="o">}</span>
-      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"== end CFM updates =="</span><span class="o">);</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
-
-  <span class="cm">/**
-   * Code to setup a CFM's Observer and configure it to call your functions.
-   */</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">,</span> <span class="kt">int</span> <span class="n">numBuckets</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="k">new</span> <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">Options</span><span class="o">(</span><span class="s">"wc"</span><span class="o">,</span> <span class="n">LongCombiner</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
-        <span class="n">WordObserver</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">3</span><span class="o">));</span>
-  <span class="o">}</span>
-
-  <span class="kd">private</span> <span class="n">CollisionFreeMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">cfm</span><span class="o">;</span>
-
-  <span class="n">WordCounter</span><span class="o">(</span><span class="n">SimpleConfiguration</span> <span class="n">appConfig</span><span class="o">){</span>
-    <span class="n">cfm</span> <span class="o">=</span> <span class="n">CollisionFreeMap</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"wc"</span><span class="o">,</span> <span class="n">appConfig</span><span class="o">);</span>
-  <span class="o">}</span>
-
-  <span class="cm">/**
-   * This method will queue updates for each word to be processed later by the CFM Observer.
-   */</span>
-  <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">words</span><span class="o">){</span>
-    <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">wcUpdates</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
-
-    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
-      <span class="n">wcUpdates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">delta</span><span class="o">);</span>
+      <span class="c1">// change.getKey() is a word</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"  update %s %d -&gt; %d\n"</span><span class="o">,</span> <span class="n">change</span><span class="o">.</span><span class="na">getKey</span><span class="o">(),</span> <span class="n">oldCount</span><span class="o">,</span> <span class="n">newCount</span><span class="o">);</span>
     <span class="o">}</span>
 
-    <span class="n">cfm</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">wcUpdates</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"== end processing word count changes =="</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
@@ -619,42 +558,60 @@ call them.</p>
 
 <p>Then modify <code class="highlighter-rouge">preInit()</code> in <code class="highlighter-rouge">Main</code> to the following.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">addObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">ObserverSpecification</span><span class="o">(</span><span class="n">ContentObserver</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">()));</span>
-    <span class="n">WordCounter</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">TourObserverProvider</span> <span class="kd">implements</span> <span class="n">ObserverProvider</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="n">Registry</span> <span class="n">obsRegistry</span><span class="o">,</span> <span class="n">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">CombineQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">wordCQ</span> <span class="o">=</span> <span class="n">CombineQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"wc"</span><span class="o">,</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+
+      <span class="c1">// Pass the word count combine queue to the ContentObserver so it can queue updates </span>
+      <span class="c1">// when a documents word counts change.</span>
+      <span class="n">obsRegistry</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="n">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">,</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">useObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">ContentObserver</span><span class="o">(</span><span class="n">wordCQ</span><span class="o">));</span>
+
+      <span class="c1">// Register observer to process queued updates, the observer will call the two functions.</span>
+      <span class="c1">// SummingCombiner is provided by Fluo Recipes.  It sums all updates queued for a key.</span>
+      <span class="n">wordCQ</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">(</span><span class="n">obsRegistry</span><span class="o">,</span> <span class="k">new</span> <span class="n">SummingCombiner</span><span class="o">&lt;&gt;(),</span> <span class="k">new</span> <span class="n">WordCountChangeObserver</span><span class="o">());</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">setObserverProvider</span><span class="o">(</span><span class="n">TourObserverProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">CombineQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="s">"wc"</span><span class="o">).</span><span class="na">keyType</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">valueType</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">buckets</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">);</span>
   <span class="o">}</span>
 </code></pre>
 </div>
 
-<p>After that add the following <code class="highlighter-rouge">init()</code> method to <code class="highlighter-rouge">ContentObserver</code> and modify <code class="highlighter-rouge">adjustCounts()</code> to the
+<p>Add a constuctor to <code class="highlighter-rouge">ContentObserver</code> and modify <code class="highlighter-rouge">adjustCounts()</code> to the
 following.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">private</span> <span class="n">WordCounter</span> <span class="n">wordCounter</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>
+  <span class="kd">private</span> <span class="n">CombineQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">wordCQ</span><span class="o">;</span>
 
-  <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-    <span class="c1">//get an instance of the CFM based on application config</span>
-    <span class="n">wordCounter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WordCounter</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+  <span class="kd">public</span> <span class="nf">ContentObserver</span><span class="o">(</span><span class="n">CombineQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">wordCQ</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">wordCQ</span> <span class="o">=</span> <span class="n">wordCQ</span><span class="o">;</span>
   <span class="o">}</span>
 
   <span class="kd">private</span> <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">wordCounter</span><span class="o">.</span><span class="na">adjustCounts</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">delta</span><span class="o">,</span> <span class="n">words</span><span class="o">);</span>
+    <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">wcUpdates</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">words</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="n">wcUpdates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span> <span class="n">delta</span><span class="o">));</span>
+    <span class="n">wordCQ</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">wcUpdates</span><span class="o">);</span>
   <span class="o">}</span>
 </code></pre>
 </div>
 
-<p>The CFM groups key values into buckets for efficiency and processes the updates for entire bucket in
-a single transaction.  When you run this new code, that is why <code class="highlighter-rouge">== begin CFM updates ==</code> is seen at
-least three times for each group of documents loaded.</p>
+<p>A CombineQueue  groups key values into buckets for efficiency and processes entire buckets in
+a single transaction.  When you run this code, that is why <code class="highlighter-rouge">== begin processing word count changes ==</code> is seen 
+multiple times for each group of documents loaded.</p>
 
-<p>When you run this example you will also notice two new prefixes in the output of the table scan.  First
-the <code class="highlighter-rouge">wc:</code> prefix is where the CFM stores its data.  By default the CFM uses Kryo for serialization
+<p>These changes produce two new prefixes in the output of the table scan.  First
+the <code class="highlighter-rouge">wc:</code> prefix is where the CombineQueue stores its data.  By default the CombineQueue uses Kryo for serialization
 and therefore the key values with this prefix contain non-ASCII characters.  The utility function
 <code class="highlighter-rouge">FluoITHelper.printFluoTable()</code> escapes non-ASCII characters with <code class="highlighter-rouge">\x&lt;HEX&gt;</code>.   Second the <code class="highlighter-rouge">ic:</code>
-prefix contains an inverted index of word counts.  This was created simply to show an example of a
+prefix contains the inverted index of word counts.  This was created simply to show an example of a
 follow on action when word counts change.  Ideally this follow on action would have a low chance of
 collisions.  Creating the inverted index will not cause collisions because each word is in a single
-CFM bucket and each bucket is processed independently.</p>
+CombineQueue bucket and each bucket is processed independently.</p>
 
 <h2 id="part-4--running-this-example-on-a-real-instance">Part 4 : Running this example on a real instance.</h2>
 

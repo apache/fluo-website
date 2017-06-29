@@ -114,43 +114,47 @@
   <p>The following code shows how to setup and trigger an observer.  The observer is triggered when the
 column <em>obs:data</em> is changed.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Column</span> <span class="n">OBSERVED_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"obs"</span><span class="o">,</span><span class="s">"data"</span><span class="o">);</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Column</span> <span class="n">INVERT_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"inv"</span><span class="o">,</span><span class="s">"data"</span><span class="o">);</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Column</span> <span class="n">OBSERVED_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"obs"</span><span class="o">,</span> <span class="s">"data"</span><span class="o">);</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Column</span> <span class="n">INVERT_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"inv"</span><span class="o">,</span> <span class="s">"data"</span><span class="o">);</span>
 
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">extends</span> <span class="n">AbstractObserver</span> <span class="o">{</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="n">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="n">Column</span> <span class="n">col</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-      <span class="c1">//invert column and value</span>
-      <span class="n">Bytes</span> <span class="n">value</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">col</span><span class="o">);</span>
-      <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">INVERT_COL</span><span class="o">,</span> <span class="n">row</span><span class="o">);</span>
-    <span class="o">}</span>
+  <span class="c1">// This class is responsible for registering Observers for all observed columns.</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">MyObserverProvider</span> <span class="kd">implements</span> <span class="n">ObserverProvider</span> <span class="o">{</span>
 
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">ObservedColumn</span> <span class="nf">getObservedColumn</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="k">new</span> <span class="nf">ObservedColumn</span><span class="o">(</span><span class="n">OBSERVED_COL</span><span class="o">,</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="n">Registry</span> <span class="n">obsRegistry</span><span class="o">,</span> <span class="n">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+
+      <span class="c1">// Observer is a functional interface allowing Observers to be lambdas</span>
+      <span class="n">Observer</span> <span class="n">invObserver</span> <span class="o">=</span> <span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">row</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">Bytes</span> <span class="n">value</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">col</span><span class="o">);</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">INVERT_COL</span><span class="o">,</span> <span class="n">row</span><span class="o">);</span>
+      <span class="o">};</span>
+
+      <span class="c1">// Register an observer to process notifications for the column obs:data</span>
+      <span class="n">obsRegistry</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="n">OBSERVED_COL</span><span class="o">,</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">).</span><span class="na">useObserver</span><span class="o">(</span><span class="n">invObserver</span><span class="o">);</span>
     <span class="o">}</span>
+
   <span class="o">}</span>
 
   <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">//configure Fluo to use MyObserver before initialization</span>
-    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">addObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">ObserverSpecification</span><span class="o">(</span><span class="n">MyObserver</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">()));</span>
+    <span class="c1">// Configure ObserverProvider before initialization. Workers will instantiate this class and use</span>
+    <span class="c1">// it to create Observers.</span>
+    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">setObserverProvider</span><span class="o">(</span><span class="n">MyObserverProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
   <span class="o">}</span>
 
   <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">exercise</span><span class="o">(</span><span class="n">MiniFluo</span> <span class="n">mini</span><span class="o">,</span> <span class="n">FluoClient</span> <span class="n">client</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">try</span><span class="o">(</span><span class="n">Transaction</span> <span class="n">tx1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">tx1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">())</span> <span class="o">{</span>
       <span class="n">tx1</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"kerbalnaut0001"</span><span class="o">,</span> <span class="n">OBSERVED_COL</span><span class="o">,</span> <span class="s">"Jebediah"</span><span class="o">);</span>
       <span class="n">tx1</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
     <span class="o">}</span>
 
-    <span class="k">try</span><span class="o">(</span><span class="n">Transaction</span> <span class="n">tx2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">tx2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">())</span> <span class="o">{</span>
       <span class="n">tx2</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"kerbalnaut0002"</span><span class="o">,</span> <span class="n">OBSERVED_COL</span><span class="o">,</span> <span class="s">"Bill"</span><span class="o">);</span>
       <span class="n">tx2</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
     <span class="o">}</span>
 
     <span class="n">mini</span><span class="o">.</span><span class="na">waitForObservers</span><span class="o">();</span>
 
-    <span class="k">try</span><span class="o">(</span><span class="n">Snapshot</span> <span class="n">snap</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newSnapshot</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">(</span><span class="n">Snapshot</span> <span class="n">snap</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newSnapshot</span><span class="o">())</span> <span class="o">{</span>
       <span class="n">snap</span><span class="o">.</span><span class="na">scanner</span><span class="o">().</span><span class="na">build</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
     <span class="o">}</span>
   <span class="o">}</span>
