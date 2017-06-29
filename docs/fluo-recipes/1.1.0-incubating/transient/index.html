@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.1.0-incubating/transient/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Transient data | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55360307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/release/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li><a href="/docs/">Docs</a></li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/getinvolved/">Get Involved</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="fluo-doc">
+
+  
+
+  
+
+  <header class="post-header">
+    <h2 class="post-title">Transient data</h2>
+  </header>
+
+  <article id="page-content">
+    <h2 id="background">Background</h2>
+
+<p>Some recipes store transient data in a portion of the Fluo table.  Transient
+data is data thats continually being added and deleted.  Also these transient
+data ranges contain no long term data.  The way Fluo works, when data is
+deleted a delete marker is inserted but the data is actually still there.  Over
+time these transient ranges of the table will have a lot more delete markers
+than actual data if nothing is done.  If nothing is done, then processing
+transient data will get increasingly slower over time.</p>
+
+<p>These delete markers can be cleaned up by forcing Accumulo to compact the
+Fluo table, which will run Fluos garbage collection iterator. However,
+compacting the entire table to clean up these ranges within a table is
+overkill. Alternatively,  Accumulo supports compacting ranges of a table.   So
+a good solution to the delete marker problem is to periodically compact just
+the transient ranges.</p>
+
+<p>Fluo Recipes provides helper code to deal with transient data ranges in a
+standard way.</p>
+
+<h2 id="registering-transient-ranges">Registering Transient Ranges</h2>
+
+<p>Recipes like <a href="/docs/fluo-recipes/1.1.0-incubating/export-queue/">Export Queue</a> will automatically register
+transient ranges when configured.  If you would like to register your own
+transient ranges, use <a href="https://javadoc.io/page/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html">TransientRegistry</a>.  Below is a simple example of
+using this.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+<span class="n">TransientRegistry</span> <span class="n">transientRegistry</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TransientRegistry</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+<span class="n">transientRegistry</span><span class="o">.</span><span class="na">addTransientRange</span><span class="o">(</span><span class="k">new</span> <span class="n">RowRange</span><span class="o">(</span><span class="n">startRow</span><span class="o">,</span> <span class="n">endRow</span><span class="o">));</span>
+
+<span class="c1">//Initialize Fluo using fluoConfig. This will store the registered ranges in</span>
+<span class="c1">//zookeeper making them availiable on any node later.</span>
+</code></pre>
+</div>
+
+<h2 id="compacting-transient-ranges">Compacting Transient Ranges</h2>
+
+<p>Although you may never need to register transient ranges directly, you will
+need to periodically compact transient ranges if using a recipe that registers
+them.  Using <a href="https://javadoc.io/page/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html">TableOperations</a> this can be done with one line of Java code
+like the following.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+<span class="n">TableOperations</span><span class="o">.</span><span class="na">compactTransient</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>Fluo recipes provides an easy way to compact transient ranges from the command line using the <code class="highlighter-rouge">fluo exec</code> command as follows:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>fluo exec &lt;app name&gt; org.apache.fluo.recipes.accumulo.cmds.CompactTransient [&lt;interval&gt; [&lt;multiplier&gt;]]
+</code></pre>
+</div>
+
+<p>If no arguments are specified the command will call <code class="highlighter-rouge">compactTransient()</code> once.
+If <code class="highlighter-rouge">&lt;interval&gt;</code> is specified the command will run forever compacting transient
+ranges sleeping <code class="highlighter-rouge">&lt;interval&gt;</code> seconds between compacting each transient ranges.</p>
+
+<p>In the case where Fluo is backed up in processing data a transient range could
+have a lot of data queued and compacting it too frequently would be
+counterproductive.  To avoid this the <code class="highlighter-rouge">CompactTransient</code> command will consider
+the time it took to compact a range when deciding when to compact that range
+next.  This is where the <code class="highlighter-rouge">&lt;multiplier&gt;</code> argument comes in, the time to sleep
+between compactions of a range is determined as follows.  If not specified, the
+multiplier defaults to 3.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>   <span class="n">sleepTime</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">compactTime</span> <span class="o">*</span> <span class="n">multiplier</span><span class="o">,</span> <span class="n">interval</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>For example assume a Fluo application has two transient ranges.  Also assume
+CompactTransient is run with an interval of 600 and a multiplier of 10.  If the
+first range takes 20 seconds to compact, then it will be compacted again in 600
+seconds.  If the second range takes 80 seconds to compact, then it will be
+compacted again in 800 seconds.</p>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <hr>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <div class="center-block">
+          <a href="https://apache.org"><img src="/resources/feather.png" alt="Apache"></a>
+          Copyright &copy; 2017 The Apache Software Foundation. Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

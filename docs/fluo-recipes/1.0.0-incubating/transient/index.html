@@ -106,6 +106,8 @@
             <div class="fluo-doc">
 
   
+  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-incubating which is an old version! Check out the <a href="/docs/fluo-recipes/1.1.0-incubating">latest docs</a>!</div>
+  
 
   
 
@@ -138,7 +140,7 @@ standard way.</p>
 
 <p>Recipes like <a href="/docs/fluo-recipes/1.0.0-incubating/export-queue/">Export Queue</a> will automatically register
 transient ranges when configured.  If you would like to register your own
-transient ranges, use <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html">TransientRegistry</a>.  Below is a simple example of
+transient ranges, use <a href="https://javadoc.io/page/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html">TransientRegistry</a>.  Below is a simple example of
 using this.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
@@ -154,7 +156,7 @@ using this.</p>
 
 <p>Although you may never need to register transient ranges directly, you will
 need to periodically compact transient ranges if using a recipe that registers
-them.  Using <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.0.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html">TableOperations</a> this can be done with one line of Java code
+them.  Using <a href="https://javadoc.io/page/org.apache.fluo/fluo-recipes-accumulo/1.0.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html">TableOperations</a> this can be done with one line of Java code
 like the following.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>

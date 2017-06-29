@@ -121,11 +121,11 @@ related data. This blog post offers some tips to help you get started writing to
 
 <p>Spark automatically serializes Java objects that are needed for remote execution.  When trying to
 use Fluo with Spark its important to understand what will serialize properly and what will not.
-Classes used to load data into Fluo like <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a> and <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a> are not suitable for
+Classes used to load data into Fluo like <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a> and <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a> are not suitable for
 serialization.  These classes may have thread pools, resources in Zookeeper, transactions that are
 committing in the background, etc .  Therefore these classes must be instantiated at each remote process
 Spark creates.  One way to do this is with Spark’s <code class="highlighter-rouge">foreachParition</code> method.  This method will
-execute code locally at each RDD partition. Within each partition, a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a>
+execute code locally at each RDD partition. Within each partition, a <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/LoaderExecutor.html">LoaderExecutor</a>
 can be created.  That’s what the example below shows.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code> 
@@ -180,7 +180,7 @@ partitioning methods in Spark will not accomplish this.</p>
 <p>When following the bulk load approach, you would write <a href="http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Key.html">Key</a> and <a href="http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Value.html">Value</a> objects using the
 <a href="http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/client/mapred/AccumuloFileOutputFormat.html">AccumuloFileOutputFormat</a>. Fluo provides the <a href="https://github.com/apache/incubator-fluo/blob/rel/fluo-1.0.0-incubating/modules/mapreduce/src/main/java/org/apache/fluo/mapreduce/FluoKeyValueGenerator.java">FluoKeyValueGenerator</a> to create key/values in the
 Fluo data format.  Fluo Recipes builds on this and provides code that makes it easy to bulk import
-into Accumulo.  The <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-spark/1.0.0-incubating/org/apache/fluo/recipes/spark/FluoSparkHelper.html#bulkImportRcvToFluo-org.apache.spark.api.java.JavaPairRDD-org.apache.fluo.recipes.spark.FluoSparkHelper.BulkImportOptions-">FluoSparkHelper.bulkImportRcvToFluo()</a> method will do the following :</p>
+into Accumulo.  The <a href="https://javadoc.io/page/org.apache.fluo/fluo-recipes-spark/1.1.0-incubating/org/apache/fluo/recipes/spark/FluoSparkHelper.html#bulkImportRcvToFluo-org.apache.spark.api.java.JavaPairRDD-org.apache.fluo.recipes.spark.FluoSparkHelper.BulkImportOptions-">FluoSparkHelper.bulkImportRcvToFluo()</a> method will do the following :</p>
 
 <ul>
   <li>Repartition data using the split points in the Fluo table</li>
@@ -190,8 +190,8 @@ into Accumulo.  The <a href="https://static.javadoc.io/org.apache.fluo/fluo-reci
 </ul>
 
 <p>The <a href="https://github.com/astralway/webindex">Webindex</a> example uses bulk load to initialize its Fluo table using the code in Fluo Recipes.
-Webindex uses multiple <a href="/docs/fluo-recipes/1.0.0-incubating/cfm/">Collision Free Maps</a> and initializes them using
-<a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/map/CollisionFreeMap.html#getInitializer-java.lang.String-int-org.apache.fluo.recipes.core.serialization.SimpleSerializer-">CollisionFreeMap.getInitializer()</a>.  Webindex uses Spark to initialize the Fluo table with
+Webindex uses multiple <a href="/docs/fluo-recipes/1.1.0-incubating/cfm/">Collision Free Maps</a> and initializes them using
+<a href="https://javadoc.io/page/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/map/CollisionFreeMap.html#getInitializer-java.lang.String-int-org.apache.fluo.recipes.core.serialization.SimpleSerializer-">CollisionFreeMap.getInitializer()</a>.  Webindex uses Spark to initialize the Fluo table with
 historical data.  Webindex also uses Spark to execute load transactions in parallel for
 incrementally loading data.</p>
 

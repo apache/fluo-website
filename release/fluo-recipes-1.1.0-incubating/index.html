@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//release/fluo-recipes-1.1.0-incubating/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Apache Fluo Recipes 1.1.0-incubating released | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55360307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/release/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li><a href="/docs/">Docs</a></li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/getinvolved/">Get Involved</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="post-header">
+  <h2>Apache Fluo Recipes 1.1.0-incubating released</h2>
+  <p class="text-muted">22 Jun 2017</p>
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Apache Fluo Recipes 1.1.0-incubating released&url=https://fluo.apache.org//release/fluo-recipes-1.1.0-incubating/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
+</div>
+
+
+
+<div class="post-content">
+  <p>Apache Fluo Recipes builds on the Apache Fluo API to provide libraries of common code for Fluo developers.</p>
+
+<p>Below are resources for this release:</p>
+
+<ul>
+  <li>
+    <p>Download a release tarball and verify by these <a href="https://www.apache.org/info/verification">procedures</a> using these <a href="https://www.apache.org/dist/incubator/fluo/KEYS">KEYS</a></p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz">fluo-recipes-1.1.0-incubating-source-release.tar.gz</a></td>
+          <td><a href="https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz.asc">ASC</a> <a href="https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz.md5">MD5</a> <a href="https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz.sha">SHA</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>View the <a href="/docs/fluo-recipes/1.1.0-incubating">documentation</a></li>
+  <li>Read the javadocs: <a href="https://javadoc.io/doc/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/" target="_blank">core</a>, <a href="https://javadoc.io/doc/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating/" target="_blank">accumulo</a>, <a href="https://javadoc.io/doc/org.apache.fluo/fluo-recipes-kryo/1.1.0-incubating/" target="_blank">kryo</a>, <a href="https://javadoc.io/doc/org.apache.fluo/fluo-recipes-spark/1.1.0-incubating/" target="_blank">spark</a>, <a href="https://javadoc.io/doc/org.apache.fluo/fluo-recipes-test/1.1.0-incubating/" target="_blank">test</a></li>
+  <li>Jars are available in <a href="http://search.maven.org/#search|ga|1|fluo-recipes">Maven Central</a>.</li>
+  <li>View the <a href="https://github.com/apache/incubator-fluo-recipes/milestone/1?closed=1">changes</a>.</li>
+</ul>
+
+<h2 id="major-change">Major Change</h2>
+
+<p>For this release of Fluo Recipes, the work done in <a href="https://github.com/apache/incubator-fluo-recipes/issues/127">#127</a>, <a href="https://github.com/apache/incubator-fluo-recipes/pull/128">#128</a>, <a href="https://github.com/apache/incubator-fluo-recipes/pull/130">#130</a>, and
+ <a href="https://github.com/apache/incubator-fluo-recipes/pull/131">#131</a> to support the <a href="/release/fluo-1.1.0-incubating/#new-api-for-configuring-observers">new Observer API</a> was
+the most significant change.  The Collision Free Map and <a href="https://javadoc.io/page/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/export/ExportQueue.html">Export Queue</a> required
+significant additions to support the new Observer API.  Since the name
+<em>Collision Free Map</em> (CFM) is awful and it needed major API additions, the
+decision was made to deprecate it and offer the <a href="https://javadoc.io/page/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/combine/CombineQueue.html">CombineQueue</a>.  The
+CombineQueue offers the  same functionality as the CFM, but only supports the
+new observer API. The deprecated CFM still supports the old Observer API.  For
+the Export Queue, additions were made to its API and everything related to the
+old Observer API was deprecated.  All API changes in this release are backwards
+compatible with the 1.0.0 release.</p>
+
+<h3 id="example-of-new-apis">Example of new APIs</h3>
+
+<p>The new APIs in this release are much easier to use and now offer the ability
+to use lambdas.  This example attempts to shows this and does the following :</p>
+
+<ul>
+  <li>Counts events in three dimensions <code class="highlighter-rouge">(x,y,t)</code>.</li>
+  <li>Counts events in the two dimensional cross sections : <code class="highlighter-rouge">(x,y)</code>, <code class="highlighter-rouge">(x,t)</code>, and <code class="highlighter-rouge">(y,t)</code>.</li>
+  <li>Prints out the counts as they change.</li>
+</ul>
+
+<p>To illustrate what this example accomplishes, for the following inputs :</p>
+
+<ul>
+  <li><code class="highlighter-rouge">2</code> events at <code class="highlighter-rouge">(x=3,y=3,t=5)</code></li>
+  <li><code class="highlighter-rouge">1</code> events at <code class="highlighter-rouge">(x=3,y=3,t=5)</code></li>
+  <li><code class="highlighter-rouge">4</code> events at <code class="highlighter-rouge">(x=7,y=3,t=5)</code></li>
+</ul>
+
+<p>The example code should compute the following.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">3</code> events at <code class="highlighter-rouge">(x=3,y=3,t=5)</code></li>
+  <li><code class="highlighter-rouge">4</code> events at <code class="highlighter-rouge">(x=7,y=3,t=5)</code></li>
+  <li><code class="highlighter-rouge">3</code> events at <code class="highlighter-rouge">(x=3,y=3)</code></li>
+  <li><code class="highlighter-rouge">4</code> events at <code class="highlighter-rouge">(x=7,y=3)</code></li>
+  <li><code class="highlighter-rouge">3</code> events at <code class="highlighter-rouge">(x=3,t=5)</code></li>
+  <li><code class="highlighter-rouge">4</code> events at <code class="highlighter-rouge">(x=7,t=5)</code></li>
+  <li><code class="highlighter-rouge">7</code> events at <code class="highlighter-rouge">(y=3,t=5)</code></li>
+</ul>
+
+<p>The example achieves this using recipes as follows :</p>
+
+<ul>
+  <li>An export queue that prints out all changes in counts.</li>
+  <li>Three combine queues for counting 2D cross sections.  All three queue data for export when counts change.</li>
+  <li>A combine queue for counting 3D events.  It queues updates to the 2D combine queues when counts changes.  It also queues changes to the export queue.</li>
+</ul>
+
+<p>Below is the Fluo <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/ObserverProvider.html">ObserverProvider</a> that wires everything together. The new
+Fluo and Fluo Recipes APIs enable wiring everything in Java code.  In the
+previous versions, this would have been a cumbersome combination of
+configuration and Java code.   With the new APIs, using lambdas is now an
+option.  This was not an option with the old APIs.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppObserverProvider</span> <span class="kd">implements</span> <span class="n">ObserverProvider</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="n">Registry</span> <span class="n">obsRegistry</span><span class="o">,</span> <span class="n">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">SimpleConfiguration</span> <span class="n">appCfg</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">();</span>
+
+    <span class="n">CombineQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">xytCq</span> <span class="o">=</span> <span class="n">CombineQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Example</span><span class="o">.</span><span class="na">CQ_XYT_ID</span><span class="o">,</span> <span class="n">appCfg</span><span class="o">);</span>
+    <span class="n">CombineQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">xyCq</span> <span class="o">=</span> <span class="n">CombineQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Example</span><span class="o">.</span><span class="na">CQ_XY_ID</span><span class="o">,</span> <span class="n">appCfg</span><span class="o">);</span>
+    <span class="n">CombineQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">ytCq</span> <span class="o">=</span> <span class="n">CombineQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Example</span><span class="o">.</span><span class="na">CQ_YT_ID</span><span class="o">,</span> <span class="n">appCfg</span><span class="o">);</span>
+    <span class="n">CombineQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">xtCq</span> <span class="o">=</span> <span class="n">CombineQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Example</span><span class="o">.</span><span class="na">CQ_XT_ID</span><span class="o">,</span> <span class="n">appCfg</span><span class="o">);</span>
+
+    <span class="n">ExportQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">exportQ</span> <span class="o">=</span> <span class="n">ExportQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Example</span><span class="o">.</span><span class="na">EXPORTQ_ID</span><span class="o">,</span> <span class="n">appCfg</span><span class="o">);</span>
+
+    <span class="c1">// Some of Lambda's below could be inlined. To make the example a little more clear they were</span>
+    <span class="c1">// not in order to show the types involved.</span>
+
+    <span class="c1">// This is called by a combine queue when a value changes. The old and new value for the key</span>
+    <span class="c1">// are passed. The lambda below queues changes for export.</span>
+    <span class="n">ChangeObserver</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">expChangeObs</span> <span class="o">=</span> <span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">changes</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="k">for</span> <span class="o">(</span><span class="n">Change</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">change</span> <span class="o">:</span> <span class="n">changes</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">oldVal</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">v</span> <span class="o">-&gt;</span> <span class="s">"old: "</span> <span class="o">+</span> <span class="n">v</span><span class="o">).</span><span class="na">orElse</span><span class="o">(</span><span class="s">"old: -"</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">newVal</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">v</span> <span class="o">-&gt;</span> <span class="s">"new: "</span> <span class="o">+</span> <span class="n">v</span><span class="o">).</span><span class="na">orElse</span><span class="o">(</span><span class="s">"new: -"</span><span class="o">);</span>
+        <span class="n">exportQ</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">change</span><span class="o">.</span><span class="na">getKey</span><span class="o">(),</span> <span class="n">oldVal</span> <span class="o">+</span> <span class="s">" "</span> <span class="o">+</span> <span class="n">newVal</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">};</span>
+
+    <span class="c1">// This lambda processes changes to 3D counts. It queues updates to the (x,y), (x,t), and (y,t)</span>
+    <span class="c1">// 2D combine queues. For example if (x=3,y=2,t=5) changed from 4 to 7, it would queue</span>
+    <span class="c1">// (x=3,y=2):+3, (x=3,t=5):+3, and (y=2,t=5):+3 to the 2D combine queues. The lambda also queues</span>
+    <span class="c1">// exports for 3D count changes.</span>
+    <span class="n">ChangeObserver</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">projectingChangeObs</span> <span class="o">=</span> <span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">changes</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">xtUpdates</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+      <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">ytUpdates</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+      <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">xyUpdates</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+
+      <span class="k">for</span> <span class="o">(</span><span class="n">Change</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">change</span> <span class="o">:</span> <span class="n">changes</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="na">getKey</span><span class="o">().</span><span class="na">split</span><span class="o">(</span><span class="s">":"</span><span class="o">);</span>
+        <span class="kt">long</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0L</span><span class="o">)</span> <span class="o">-</span> <span class="n">change</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0L</span><span class="o">);</span>
+
+        <span class="c1">// While processing the changes for an entire bucket, opportunistically merge multiple</span>
+        <span class="c1">// updates to the same 2D coordinates.</span>
+        <span class="n">xtUpdates</span><span class="o">.</span><span class="na">merge</span><span class="o">(</span><span class="n">fields</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">+</span> <span class="s">":"</span> <span class="o">+</span> <span class="n">fields</span><span class="o">[</span><span class="mi">2</span><span class="o">],</span> <span class="n">delta</span><span class="o">,</span> <span class="nl">Long:</span><span class="o">:</span><span class="n">sum</span><span class="o">);</span>
+        <span class="n">ytUpdates</span><span class="o">.</span><span class="na">merge</span><span class="o">(</span><span class="n">fields</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">+</span> <span class="s">":"</span> <span class="o">+</span> <span class="n">fields</span><span class="o">[</span><span class="mi">2</span><span class="o">],</span> <span class="n">delta</span><span class="o">,</span> <span class="nl">Long:</span><span class="o">:</span><span class="n">sum</span><span class="o">);</span>
+        <span class="n">xyUpdates</span><span class="o">.</span><span class="na">merge</span><span class="o">(</span><span class="n">fields</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">+</span> <span class="s">":"</span> <span class="o">+</span> <span class="n">fields</span><span class="o">[</span><span class="mi">1</span><span class="o">],</span> <span class="n">delta</span><span class="o">,</span> <span class="nl">Long:</span><span class="o">:</span><span class="n">sum</span><span class="o">);</span>
+      <span class="o">}</span>
+
+      <span class="c1">// Queue updates to 2D combine queues.</span>
+      <span class="n">xtCq</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">xtUpdates</span><span class="o">);</span>
+      <span class="n">ytCq</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">ytUpdates</span><span class="o">);</span>
+      <span class="n">xyCq</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">xyUpdates</span><span class="o">);</span>
+
+      <span class="c1">// Queue changes for export</span>
+      <span class="n">expChangeObs</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">changes</span><span class="o">);</span>
+    <span class="o">};</span>
+
+    <span class="c1">// Register observer for 3D combine queue. The observer calls the provided combiner and</span>
+    <span class="c1">// change observer when processing queued entries.</span>
+    <span class="n">xytCq</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">(</span><span class="n">obsRegistry</span><span class="o">,</span> <span class="k">new</span> <span class="n">SummingCombiner</span><span class="o">&lt;&gt;(),</span> <span class="n">projectingChangeObs</span><span class="o">);</span>
+
+    <span class="c1">// Register observers for all 2D combine queues.</span>
+    <span class="n">xyCq</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">(</span><span class="n">obsRegistry</span><span class="o">,</span> <span class="k">new</span> <span class="n">SummingCombiner</span><span class="o">&lt;&gt;(),</span> <span class="n">expChangeObs</span><span class="o">);</span>
+    <span class="n">xtCq</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">(</span><span class="n">obsRegistry</span><span class="o">,</span> <span class="k">new</span> <span class="n">SummingCombiner</span><span class="o">&lt;&gt;(),</span> <span class="n">expChangeObs</span><span class="o">);</span>
+    <span class="n">ytCq</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">(</span><span class="n">obsRegistry</span><span class="o">,</span> <span class="k">new</span> <span class="n">SummingCombiner</span><span class="o">&lt;&gt;(),</span> <span class="n">expChangeObs</span><span class="o">);</span>
+
+    <span class="c1">// This functional interface is new in this release. The lambda below prints out data that was</span>
+    <span class="c1">// successfully queued for export.</span>
+    <span class="n">Exporter</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">exporter</span> <span class="o">=</span> <span class="n">iter</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="k">while</span> <span class="o">(</span><span class="n">iter</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">SequencedExport</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">seqExport</span> <span class="o">=</span> <span class="n">iter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"EXPORT %-15s %-15s seq: %d\n"</span><span class="o">,</span> <span class="n">seqExport</span><span class="o">.</span><span class="na">getKey</span><span class="o">(),</span> <span class="n">seqExport</span><span class="o">.</span><span class="na">getValue</span><span class="o">(),</span>
+            <span class="n">seqExport</span><span class="o">.</span><span class="na">getSequence</span><span class="o">());</span>
+      <span class="o">}</span>
+    <span class="o">};</span>
+
+    <span class="c1">// Register an observer to process queued export entries. The observer will call the lambda</span>
+    <span class="c1">// created above.</span>
+    <span class="n">exportQ</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">(</span><span class="n">obsRegistry</span><span class="o">,</span> <span class="n">exporter</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>The code below does three things :</p>
+
+<ul>
+  <li>Starts MiniFluo.</li>
+  <li>Configures the four combine queues and the export queue.</li>
+  <li>Adds some data to the 3D combine queue twice.  Between the adds, it waits for processing to finish.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="n">FluoConfiguration</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">();</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">setApplicationName</span><span class="o">(</span><span class="s">"dimensions"</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">setMiniDataDir</span><span class="o">(</span><span class="s">"target/mini"</span><span class="o">);</span>
+
+    <span class="n">CombineQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">CQ_XYT_ID</span><span class="o">).</span><span class="na">keyType</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">valueType</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">buckets</span><span class="o">(</span><span class="mi">7</span><span class="o">).</span><span class="na">save</span><span class="o">(</span><span class="n">props</span><span class="o">);</span>
+    <span class="n">CombineQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">CQ_XT_ID</span><span class="o">).</span><span class="na">keyType</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">valueType</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">buckets</span><span class="o">(</span><span class="mi">7</span><span class="o">).</span><span class="na">save</span><span class="o">(</span><span class="n">props</span><span class="o">);</span>
+    <span class="n">CombineQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">CQ_XY_ID</span><span class="o">).</span><span class="na">keyType</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">valueType</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">buckets</span><span class="o">(</span><span class="mi">7</span><span class="o">).</span><span class="na">save</span><span class="o">(</span><span class="n">props</span><span class="o">);</span>
+    <span class="n">CombineQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">CQ_YT_ID</span><span class="o">).</span><span class="na">keyType</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">valueType</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">buckets</span><span class="o">(</span><span class="mi">7</span><span class="o">).</span><span class="na">save</span><span class="o">(</span><span class="n">props</span><span class="o">);</span>
+
+    <span class="c1">// A new Fluent method of configuring export queues was introduced in 1.1.0</span>
+    <span class="n">ExportQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">EXPORTQ_ID</span><span class="o">).</span><span class="na">keyType</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">valueType</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">buckets</span><span class="o">(</span><span class="mi">7</span><span class="o">).</span><span class="na">save</span><span class="o">(</span><span class="n">props</span><span class="o">);</span>
+
+    <span class="n">props</span><span class="o">.</span><span class="na">setObserverProvider</span><span class="o">(</span><span class="n">AppObserverProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="n">FileUtils</span><span class="o">.</span><span class="na">deleteQuietly</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"target/mini"</span><span class="o">));</span>
+
+    <span class="k">try</span> <span class="o">(</span><span class="n">MiniFluo</span> <span class="n">miniFluo</span> <span class="o">=</span> <span class="n">FluoFactory</span><span class="o">.</span><span class="na">newMiniFluo</span><span class="o">(</span><span class="n">props</span><span class="o">);</span> 
+         <span class="n">FluoClient</span> <span class="n">fc</span> <span class="o">=</span> <span class="n">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">miniFluo</span><span class="o">.</span><span class="na">getClientConfiguration</span><span class="o">()))</span> <span class="o">{</span>
+
+      <span class="n">CombineQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">xytCq</span> <span class="o">=</span> <span class="n">CombineQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">CQ_XYT_ID</span><span class="o">,</span> <span class="n">fc</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+
+      <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">updates</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+      <span class="n">updates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"x=3:y=5:t=23"</span><span class="o">,</span> <span class="mi">1L</span><span class="o">);</span>
+      <span class="n">updates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"x=5:y=5:t=27"</span><span class="o">,</span> <span class="mi">1L</span><span class="o">);</span>
+      <span class="n">updates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"x=3:y=5:t=27"</span><span class="o">,</span> <span class="mi">1L</span><span class="o">);</span>
+
+      <span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">xytCq</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">updates</span><span class="o">);</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+      <span class="o">}</span>
+
+      <span class="n">miniFluo</span><span class="o">.</span><span class="na">waitForObservers</span><span class="o">();</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"\n*** All notifications processed. ***\n"</span><span class="o">);</span>
+
+      <span class="n">updates</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+      <span class="n">updates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"x=3:y=5:t=23"</span><span class="o">,</span> <span class="mi">1L</span><span class="o">);</span>
+      <span class="n">updates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"x=5:y=5:t=27"</span><span class="o">,</span> <span class="o">-</span><span class="mi">1L</span><span class="o">);</span>
+      <span class="n">updates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"x=3:y=5:t=29"</span><span class="o">,</span> <span class="mi">1L</span><span class="o">);</span>
+
+      <span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">xytCq</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">updates</span><span class="o">);</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+      <span class="o">}</span>
+
+      <span class="n">miniFluo</span><span class="o">.</span><span class="na">waitForObservers</span><span class="o">();</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"\n*** All notifications processed. ***\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Below is the output of running this example.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>EXPORT x=3:y=5:t=23    old: - new: 1   seq: 8
+EXPORT x=3:y=5:t=27    old: - new: 1   seq: 9
+EXPORT x=5:y=5:t=27    old: - new: 1   seq: 9
+EXPORT x=3:y=5         old: - new: 2   seq: 37
+EXPORT y=5:t=27        old: - new: 2   seq: 42
+EXPORT x=3:t=23        old: - new: 1   seq: 36
+EXPORT x=5:t=27        old: - new: 1   seq: 36
+EXPORT x=3:t=27        old: - new: 1   seq: 38
+EXPORT x=5:y=5         old: - new: 1   seq: 39
+EXPORT y=5:t=23        old: - new: 1   seq: 41
+
+*** All notifications processed. ***
+
+EXPORT x=3:y=5:t=29    old: - new: 1   seq: 92
+EXPORT x=5:y=5:t=27    old: 1 new: -   seq: 92
+EXPORT x=3:y=5:t=23    old: 1 new: 2   seq: 93
+EXPORT y=5:t=27        old: 2 new: 1   seq: 109
+EXPORT x=3:y=5         old: 2 new: 4   seq: 110
+EXPORT y=5:t=23        old: 1 new: 2   seq: 111
+EXPORT y=5:t=29        old: - new: 1   seq: 108
+EXPORT x=3:t=29        old: - new: 1   seq: 105
+EXPORT x=3:t=23        old: 1 new: 2   seq: 106
+EXPORT x=5:y=5         old: 1 new: -   seq: 107
+EXPORT x=5:t=27        old: 1 new: -   seq: 106
+
+*** All notifications processed. ***
+</code></pre>
+</div>
+
+
+</div>
+
+<div>
+  <p class="text-muted">View all releases in the <a href="/release/">release archive</a></p>
+</div>
+
+          </div>
+      </div>
+      <hr>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <div class="center-block">
+          <a href="https://apache.org"><img src="/resources/feather.png" alt="Apache"></a>
+          Copyright &copy; 2017 The Apache Software Foundation. Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

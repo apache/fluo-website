@@ -141,18 +141,18 @@ allow the scripts to use the versions of Hadoop, Accumulo, and Zookeeper install
 
 <h2 id="creating-a-fluo-client">Creating a Fluo client</h2>
 
-<p>To create a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>, you will need to provide it with a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object that is
+<p>To create a <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>, you will need to provide it with a <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object that is
 configured to connect to your Fluo instance.</p>
 
 <p>If you have access to the <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> file that was used to configure your Fluo instance, you
-can use it to build a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object with all necessary properties which are all
+can use it to build a <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object with all necessary properties which are all
 properties with the <code class="highlighter-rouge">fluo.client.*</code> prefix in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.0.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>:</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"fluo.properties"</span><span class="o">));</span>
 </code></pre>
 </div>
 
-<p>You can also create an empty <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object and set properties using Java:</p>
+<p>You can also create an empty <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object and set properties using Java:</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FluoConfiguration</span><span class="o">();</span>
 <span class="n">config</span><span class="o">.</span><span class="na">setAccumuloUser</span><span class="o">(</span><span class="s">"user"</span><span class="o">);</span>
@@ -161,8 +161,8 @@ properties with the <code class="highlighter-rouge">fluo.client.*</code> prefix 
 </code></pre>
 </div>
 
-<p>Once you have <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object, pass it to the <code class="highlighter-rouge">newClient()</code> method of <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoFactory.html">FluoFactory</a> to
-create a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>:</p>
+<p>Once you have <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> object, pass it to the <code class="highlighter-rouge">newClient()</code> method of <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoFactory.html">FluoFactory</a> to
+create a <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>:</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoClient</span> <span class="n">client</span> <span class="o">=</span> <span class="n">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">config</span><span class="o">)</span>
 </code></pre>
@@ -200,7 +200,7 @@ following way. Defining the injection point is optional.</p>
 <p>To create an observer, follow these steps:</p>
 
 <ol>
-  <li>Create a class that extends <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/observer/AbstractObserver.html">AbstractObserver</a>.</li>
+  <li>Create a class that extends <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/observer/AbstractObserver.html">AbstractObserver</a>.</li>
   <li>Build a jar containing this class and include this jar in the <code class="highlighter-rouge">lib/</code> directory of your Fluo
 application.</li>
   <li>Configure your Fluo instance to use this observer by modifying the Observer section of
@@ -213,7 +213,7 @@ application.</li>
 <p>Each observer can have its own configuration. This is useful for the case of using the same
 observer code w/ different parameters. However for the case of sharing the same configuration
 across observers, fluo provides a simple mechanism to set and access application specific
-configuration. See the javadoc on <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>.getAppConfiguration() for more details.</p>
+configuration. See the javadoc on <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.0.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>.getAppConfiguration() for more details.</p>
 
 <h2 id="debugging-applications">Debugging Applications</h2>
 

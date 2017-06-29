@@ -120,10 +120,10 @@ initialization any Fluo client or Observer can access the configuration.</p>
 <h2 id="application-configuration">Application Configuration</h2>
 
 <p>To use application configuration, set properties with the prefix <code class="highlighter-rouge">fluo.app</code> in your configuration
-file before initialization.  Alternatively use <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html#getAppConfiguration--">FluoConfiguration.getAppConfiguration()</a> to
+file before initialization.  Alternatively use <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/config/FluoConfiguration.html#getAppConfiguration--">FluoConfiguration.getAppConfiguration()</a> to
 set these properties programmatically.  After Fluo is initialized this information can be accessed
-anywhere by calling <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html#getAppConfiguration--">FluoClient.getAppConfiguration()</a>,
-<a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/Observer.Context.html#getAppConfiguration--">Observer.Context.getAppConfigurtaion()</a>, or <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/Loader.Context.html#getAppConfiguration--">Loader.Context.getAppConfiguration()</a>.</p>
+anywhere by calling <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html#getAppConfiguration--">FluoClient.getAppConfiguration()</a>,
+<a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/Observer.Context.html#getAppConfiguration--">Observer.Context.getAppConfigurtaion()</a>, or <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/Loader.Context.html#getAppConfiguration--">Loader.Context.getAppConfiguration()</a>.</p>
 
 <p>The following is a simple example of using application config.   This example sets some application
 config before initialization.  After initialization the configuration is accessed via
@@ -157,8 +157,8 @@ table5
 
 <p>If you want instances of an Observer to behave differently and share code, one way to accomplish
 this is with per observer configuration.  When setting up an observer call one of the
-<a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/config/ObserverSpecification.html">ObserverSpecification</a> methods that takes configuration.  When an observer is initialized it
-can access this configuration by calling <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/Observer.Context.html#getObserverConfiguration--">Observer.Context.getObserverConfiguration()</a>.</p>
+<a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/config/ObserverSpecification.html">ObserverSpecification</a> methods that takes configuration.  When an observer is initialized it
+can access this configuration by calling <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/Observer.Context.html#getObserverConfiguration--">Observer.Context.getObserverConfiguration()</a>.</p>
 
 <p>The code below shows an example of setting configuration for an Observer.  This example simulates an
 observer that can export rows to a mysql table. The example configures two instances of an observer

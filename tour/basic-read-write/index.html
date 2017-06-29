@@ -139,9 +139,9 @@ and write data.  It can only read data that was committed before it started.  Da
 transaction will only be written when <code class="highlighter-rouge">commit()</code> is called.</p>
 
 <p>A <strong>Snapshot</strong> is created to read the data previously written by the Transaction.  Snapshots only see
-data committed before the snapshot was created.  The code calls <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-">gets(CharSequence, Column)</a> which
+data committed before the snapshot was created.  The code calls <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-">gets(CharSequence, Column)</a> which
 is a convenience method that works with strings.  Internally Fluo only deals with bytes and its
-<a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#get-org.apache.fluo.api.data.Bytes-org.apache.fluo.api.data.Column-">get(Bytes, Column)</a> method returns <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Bytes.html">Bytes</a>.   The Fluo methods that take and return Strings
+<a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/SnapshotBase.html#get-org.apache.fluo.api.data.Bytes-org.apache.fluo.api.data.Column-">get(Bytes, Column)</a> method returns <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/data/Bytes.html">Bytes</a>.   The Fluo methods that take and return Strings
 assume UTF-8 encoding when converting to bytes.</p>
 
 <p>Transactions and snapshots allocate resources and therefore have <code class="highlighter-rouge">close()</code> methods.  The
