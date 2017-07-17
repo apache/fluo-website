@@ -13,7 +13,7 @@ with its own issues.  Use the following links to report bugs, request new featur
 current issues.
 
  * [Fluo issues][fi]
- * [Fluo Recipes issue][ri]
+ * [Fluo Recipes issues][ri]
  * [Website issues][wi]
 
 ### Mailing lists
