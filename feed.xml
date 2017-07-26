@@ -5,13 +5,21 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 26 Jul 2017 12:14:37 +0000</pubDate>
-    <lastBuildDate>Wed, 26 Jul 2017 12:14:37 +0000</lastBuildDate>
+    <pubDate>Wed, 26 Jul 2017 14:13:43 +0000</pubDate>
+    <lastBuildDate>Wed, 26 Jul 2017 14:13:43 +0000</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
       <item>
         <title>Fluo graduates from the Apache incubator!</title>
-        <description>&lt;p&gt;Apache Fluo graduated from the &lt;a href=&quot;http://incubator.apache.org/&quot;&gt;Apache Incubator&lt;/a&gt; to become a Top-Level Project! Graduation signifies Fluo’s commitment to the meritocratic process and principles of the Apache Software Foundation. For more information, see &lt;a href=&quot;https://blogs.apache.org/foundation/entry/the-apache-software-foundation-announces5&quot;&gt;the announcement&lt;/a&gt; on the Apache Software Foundation blog.&lt;/p&gt;
+        <description>&lt;p&gt;Apache Fluo graduated from the &lt;a href=&quot;http://incubator.apache.org/&quot;&gt;Apache Incubator&lt;/a&gt; to become a Top-Level Project!
+Graduation signifies Fluo’s commitment to the meritocratic process and principles of the Apache
+Software Foundation. For more information, see the following annoucements :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blogs.apache.org/foundation/entry/the-apache-software-foundation-announces5&quot;&gt;Apache Software Foundation blog post&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://twitter.com/TheASF/status/890149770551078914&quot;&gt;@TheASF Tweet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://globenewswire.com/news-release/2017/07/26/1062705/0/en/The-Apache-Software-Foundation-Announces-Apache-Fluo-as-a-Top-Level-Project.html&quot;&gt;NASDAQ GlobeNewswire&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 </description>
         <pubDate>Wed, 26 Jul 2017 06:00:00 +0000</pubDate>
