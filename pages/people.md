@@ -6,7 +6,7 @@ permalink: /people/
 
 ---
 
-## PPMC/Committers
+## [PMC]/Committers
 
 | Name                                               | Organization                | Timezone |
 -----------------------------------------------------|-----------------------------|----------|
@@ -18,14 +18,6 @@ permalink: /people/
 | [Keith Turner](https://github.com/keith-turner)    | [Peterson Technologies][pt] | [ET][et] |
 | [Mike Walch](https://github.com/mikewalch)         | [Peterson Technologies][pt] | [ET][et] |
 | [Christopher McTague](https://github.com/cjmctague)| [Peterson Technologies][pt] | [ET][et] |
-
-## Mentors
-
-| Name                                               | Organization               | Timezone |
------------------------------------------------------|----------------------------|----------|
-| [Billie Rinaldi](https://github.com/billierinaldi) | [Hortonworks][hw]          | [ET][et] |
-| [Drew Farris](https://github.com/drewfarris)       | [Booz Allen Hamilton][bah] | [ET][et] |
-| [Josh Elser](https://github.com/joshelser)         | [Hortonworks][hw]          | [ET][et] |
 
 ## Contributors
 
@@ -44,3 +36,4 @@ based on commits.
 [bah]: http://www.boozallen.com/
 [et]: http://www.timeanddate.com/time/zones/et
 [ist]: http://www.timeanddate.com/time/zones/ist
+[PMC]: https://www.apache.org/foundation/how-it-works.html#pmc
