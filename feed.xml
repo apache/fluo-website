@@ -5,21 +5,23 @@
     <description></description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 26 Jul 2017 21:05:07 +0000</pubDate>
-    <lastBuildDate>Wed, 26 Jul 2017 21:05:07 +0000</lastBuildDate>
+    <pubDate>Thu, 27 Jul 2017 15:30:56 +0000</pubDate>
+    <lastBuildDate>Thu, 27 Jul 2017 15:30:56 +0000</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
       <item>
         <title>Fluo graduates from the Apache incubator!</title>
         <description>&lt;p&gt;Apache Fluo graduated from the &lt;a href=&quot;http://incubator.apache.org/&quot;&gt;Apache Incubator&lt;/a&gt; to become a Top-Level Project!
 Graduation signifies Fluo’s commitment to the meritocratic process and principles of the Apache
-Software Foundation. For more information, see the following annoucements :&lt;/p&gt;
+Software Foundation. For more information, see the following press annoucements :&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://blogs.apache.org/foundation/entry/the-apache-software-foundation-announces5&quot;&gt;Apache Software Foundation blog post&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://twitter.com/TheASF/status/890149770551078914&quot;&gt;@TheASF Tweet&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://globenewswire.com/news-release/2017/07/26/1062705/0/en/The-Apache-Software-Foundation-Announces-Apache-Fluo-as-a-Top-Level-Project.html&quot;&gt;NASDAQ GlobeNewswire&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;For general information about Fluo, checkout the &lt;a href=&quot;/&quot;&gt;home page&lt;/a&gt;.&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 26 Jul 2017 06:00:00 +0000</pubDate>
@@ -1012,7 +1014,7 @@ release for the project. Below are resources for this release:&lt;/p&gt;
 &lt;p&gt;Starting with 1.0.0-incubating, Apache Fluo will follow &lt;a href=&quot;http://semver.org/&quot;&gt;semver&lt;/a&gt; for all future API
 changes. The API consists of everything under the &lt;code class=&quot;highlighter-rouge&quot;&gt;org.apache.fluo.api&lt;/code&gt; package. Code outside of this
 package can change at any time. If your project is using Fluo code that falls outside of the API,
-then consider &lt;a href=&quot;/getinvolved/&quot;&gt;initiating a discussion&lt;/a&gt; about adding it to the API.&lt;/p&gt;
+then consider &lt;a href=&quot;/contactus/&quot;&gt;initiating a discussion&lt;/a&gt; about adding it to the API.&lt;/p&gt;
 
 &lt;h2 id=&quot;significant-changes&quot;&gt;Significant changes&lt;/h2&gt;
 
