@@ -1,10 +1,33 @@
 ---
 layout: page
-title: Get Involved
-permalink: /getinvolved/
+title: Contact Us
+permalink: /contactus/
+redirect_from: /getinvolved/
 ---
 
-Below are some ways that you can get involved with Apache Fluo:
+Contact us if you need help with :
+
+ * Deciding if Fluo is the right solution for your problem
+ * Designing a Fluo application
+ * Debugging issues with a Fluo application
+ * Reporting a bug or requesting a feature
+ * Getting started contributing.
+ * Any other question relating to Fluo.
+
+Below are the different ways to get in touch with the Fluo community.
+
+### Mailing lists
+
+The `dev` mailing list is for user questions, general discussion, announcing releases, organizing
+meet ups, etc.
+
+The `notifications` and `commits` mailing lists receive email from automated services
+and can be used to observe project activity.  Design and code review discussion happen on GitHub issues and pull request.  These discussions are archived
+to the notifications list.
+
+dev@fluo.apache.org           | [Subscribe][dev-sub]     | [Unsubscribe][dev-unsub]    | [Archive][dev-arch]
+notifications@fluo.apache.org | [Subscribe][ntfy-sub]    | [Unsubscribe][ntfy-unsub]   | [Archive][ntfy-arch]
+commits@fluo.apache.org       | [Subscribe][commits-sub] | [Unsubscribe][commits-unsub]| [Archive][commits-arch]
 
 ### Issues
 
@@ -16,26 +39,13 @@ current issues.
  * [Fluo Recipes issues][ri]
  * [Website issues][wi]
 
-### Mailing lists
-
-The `dev` mailing list is for user questions, general discussion, announcing releases, organizing
-meet ups, etc. The `notifications` and `commits` mailing lists receive email from automated services
-and can be used to observe project activity.  A lot of discussion happens on GitHub and is archived
-to the notifications list.
-
-dev@fluo.apache.org           | [Subscribe][dev-sub]     | [Unsubscribe][dev-unsub]    | [Archive][dev-arch]
-notifications@fluo.apache.org | [Subscribe][ntfy-sub]    | [Unsubscribe][ntfy-unsub]   | [Archive][ntfy-arch]
-commits@fluo.apache.org       | [Subscribe][commits-sub] | [Unsubscribe][commits-unsub]| [Archive][commits-arch]
-
 ### IRC
 
-Drop by and chat about Apache Fluo at [#fluo][fnf] on [freenode][fn].  
+Drop by and chat about Apache Fluo at [#fluo][fnf] on [freenode][fn].
 
 ### Contributions 
 
-Contributions are welcome to all Apache Fluo projects! All projects follow a
-[review-then-commit][rtc] process. If you are interested in contributing, read our [How To
-Contribute][htc] page.
+Contributions are welcome to all Apache Fluo projects! If you would like help getting started contributing, please contact us on the dev list.  We will work with you to help find something that interest you.  All projects follow a [review-then-commit][rtc] process. If you are interested in contributing, read our [How To Contribute][htc] page.
 
 [f]: https://github.com/apache/fluo
 [r]: https://github.com/apache/fluo-recipes
