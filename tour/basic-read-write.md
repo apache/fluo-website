@@ -38,7 +38,7 @@ assume UTF-8 encoding when converting to bytes.
 Transactions and snapshots allocate resources and therefore have `close()` methods.  The
 try-with-resources block will automatically call `close()`, even when exceptions occur.
 
-[main]: https://github.com/apache/incubator-fluo-website/tree/fluo-tour/src/main/java/ft/Main.java
+[main]: https://github.com/apache/fluo-website/tree/fluo-tour/src/main/java/ft/Main.java
 [get]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#get-org.apache.fluo.api.data.Bytes-org.apache.fluo.api.data.Column-
 [gets]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/SnapshotBase.html#gets-java.lang.CharSequence-org.apache.fluo.api.data.Column-
 [Bytes]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/data/Bytes.html

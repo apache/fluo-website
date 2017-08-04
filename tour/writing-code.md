@@ -8,7 +8,7 @@ obtain, edit, and run this basic skeleton.
 
 ```bash
 #clone branch with starter code
-git clone -b fluo-tour https://gitbox.apache.org/repos/asf/incubator-fluo-website fluo-tour
+git clone -b fluo-tour https://gitbox.apache.org/repos/asf/fluo-website fluo-tour
 cd fluo-tour
 
 #edit Main (all of the following excercises will require this)
@@ -21,4 +21,4 @@ mvn -q clean compile exec:java
 Because it is so closely related to the website, this starter code is located in a branch of Fluo's
 website.  The starter project has its [own readme][readme] also.
 
-[readme]: https://github.com/apache/incubator-fluo-website/tree/fluo-tour
+[readme]: https://github.com/apache/fluo-website/tree/fluo-tour

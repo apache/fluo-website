@@ -21,7 +21,7 @@ permalink: /people/
 
 ## Contributors
 
-GitHub also has a [contributor list](https://github.com/apache/incubator-fluo/graphs/contributors)
+GitHub also has a [contributor list](https://github.com/apache/fluo/graphs/contributors)
 based on commits.
 
 | Name                                         | Organization                        | Timezone   |

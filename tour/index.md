@@ -37,5 +37,5 @@ thoughts, solutions, etc  related to this tour can also be tweeted using the has
 {% endfor %}
 
 [contact]: /contactus/
-[issues]: https://github.com/apache/incubator-fluo-website/issues
+[issues]: https://github.com/apache/fluo-website/issues
 [aft]: https://twitter.com/hashtag/apachefluotour

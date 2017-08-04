@@ -27,8 +27,8 @@ list, please open an issue or submit a pull request [on Github][web-ghr].
 * [Stresso] - An example application designed to stress Apache Fluo
 
 [asf]: https://www.apache.org/
-[Fluo]: https://github.com/apache/incubator-fluo
-[Fluo Recipes]: https://github.com/apache/incubator-fluo-recipes
+[Fluo]: https://github.com/apache/fluo
+[Fluo Recipes]: https://github.com/apache/fluo-recipes
 [Muchos]: https://github.com/astralway/muchos
 [Uno]: https://github.com/astralway/uno
 [Webindex]: https://github.com/astralway/webindex
@@ -36,5 +36,5 @@ list, please open an issue or submit a pull request [on Github][web-ghr].
 [Quickstart]: https://github.com/astralway/quickstart
 [Phrasecount]: https://github.com/astralway/phrasecount
 [Jaccard]: https://github.com/keith-turner/jaccard
-[web-ghr]: https://github.com/apache/incubator-fluo-website
+[web-ghr]: https://github.com/apache/fluo-website
 [Rya]: https://rya.apache.org

@@ -49,10 +49,10 @@ Contributions are welcome to all Apache Fluo projects! If you would like help ge
 
 [f]: https://github.com/apache/fluo
 [r]: https://github.com/apache/fluo-recipes
-[w]: https://github.com/apache/incubator-fluo-website
+[w]: https://github.com/apache/fluo-website
 [fi]: https://github.com/apache/fluo/issues
 [ri]: https://github.com/apache/fluo-recipes/issues
-[wi]: https://github.com/apache/incubator-fluo-website/issues
+[wi]: https://github.com/apache/fluo-website/issues
 [fnf]: irc://chat.freenode.net/fluo
 [fn]: https://freenode.net/
 [htc]: /how-to-contribute/

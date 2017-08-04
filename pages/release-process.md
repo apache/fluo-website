@@ -13,7 +13,7 @@ following command to checkout the svn repository that contains the KEYS files.  
 repository will eventually sync to the website.
 
 ```bash
-svn co https://dist.apache.org/repos/dist/release/incubator/fluo/
+svn co https://dist.apache.org/repos/dist/release/fluo/
 ```
 
 The maven release plugin will need credentials to stage artifacts.  You can provide the credentials
@@ -64,7 +64,7 @@ for `RCV`.
       for download at `https://repository.apache.org/content/repositories/orgapachefluo-REPO_ID`
     * Its very important to only close the staging repository and not release or promote it at this point.  Releasing publishes
       the artifacts to Maven central and this can not be undone.  Releasing is done after a successful vote.
-    * When closing, add a comment like `Apache Fluo (incubating) 1.1.0-rc3`
+    * When closing, add a comment like `Apache Fluo 1.2.0-rc3`
 
  4. Delete the tag created by `mvn release:pepare`.  This tag should not be pushed to Apache until
     the vote passes.  Also, a signed tag should be created instead of the one created by Maven.  So out
@@ -142,9 +142,9 @@ When the vote passes on a release candidate, follow the steps below to complete 
      This is the same svn repo mentioned earlier for the KEYS file.  Follow the [ASF guidance][sigs] for
      hashes and signatures.  This step publishes the files to the ASF mirrors.
 
- 8.  Send an email to `dev@fluo.incubator.apache.org` announcing new release.
+ 8.  Send an email to `dev@fluo.apache.org` announcing new release.
 
-[website README]: https://github.com/apache/incubator-fluo-website/blob/master/README.md
+[website README]: https://github.com/apache/fluo-website/blob/master/README.md
 [example-email]: https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E
-[KEYS]: https://www.apache.org/dist/incubator/fluo/KEYS
+[KEYS]: https://www.apache.org/dist/fluo/KEYS
 [sigs]: http://www.apache.org/dev/release-distribution.html#sigs-and-sums

@@ -32,7 +32,7 @@ This website was made using:
 [commons]: http://commons.apache.org/
 [curator]: http://curator.apache.org/
 [hadoop]: http://hadoop.apache.org/
-[twill]: http://twill.incubator.apache.org/
+[twill]: http://twill.apache.org/
 [zookeeper]: http://zookeeper.apache.org/
 [dropwizard]: https://dropwizard.github.io/metrics/3.1.0/
 [junit]: http://junit.org/

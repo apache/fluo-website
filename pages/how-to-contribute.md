@@ -69,10 +69,10 @@ This can be configured by common IDEs:
 
 [f]: https://github.com/apache/fluo
 [r]: https://github.com/apache/fluo-recipes
-[w]: https://github.com/apache/incubator-fluo-website
+[w]: https://github.com/apache/fluo-website
 [fi]: https://github.com/apache/fluo/issues
 [ri]: https://github.com/apache/fluo-recipes/issues
-[wi]: https://github.com/apache/incubator-fluo-website/issues
+[wi]: https://github.com/apache/fluo-website/issues
 [tutorial]: http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
 [stackoverflow]: http://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git
 [rtc]: http://www.apache.org/foundation/glossary.html#ReviewThenCommit
