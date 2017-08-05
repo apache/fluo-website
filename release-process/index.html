@@ -114,11 +114,11 @@
 
 <p>Before you can release Fluo or Fluo Recipes, you will need a GPG key. For information on generating
 a key look at this <a href="https://www.apache.org/dev/openpgp.html">ASF GPG page</a>.  After generating a key,
-add it to the <a href="https://www.apache.org/dist/incubator/fluo/KEYS">KEYS</a> file.  The <a href="https://www.apache.org/dist/incubator/fluo/KEYS">KEYS</a> files contains instructions for adding to itself.  Use the 
+add it to the <a href="https://www.apache.org/dist/fluo/KEYS">KEYS</a> file.  The <a href="https://www.apache.org/dist/fluo/KEYS">KEYS</a> files contains instructions for adding to itself.  Use the 
 following command to checkout the svn repository that contains the KEYS files.  Updates to this
 repository will eventually sync to the website.</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>svn co https://dist.apache.org/repos/dist/release/incubator/fluo/
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>svn co https://dist.apache.org/repos/dist/release/fluo/
 </code></pre>
 </div>
 
@@ -178,7 +178,7 @@ for <code class="highlighter-rouge">RCV</code>.</p>
 for download at <code class="highlighter-rouge">https://repository.apache.org/content/repositories/orgapachefluo-REPO_ID</code></li>
       <li>Its very important to only close the staging repository and not release or promote it at this point.  Releasing publishes
 the artifacts to Maven central and this can not be undone.  Releasing is done after a successful vote.</li>
-      <li>When closing, add a comment like <code class="highlighter-rouge">Apache Fluo (incubating) 1.1.0-rc3</code></li>
+      <li>When closing, add a comment like <code class="highlighter-rouge">Apache Fluo 1.2.0-rc3</code></li>
     </ul>
   </li>
   <li>
@@ -261,7 +261,7 @@ git branch -d &lt;releaseVersion&gt;-rc&lt;RCV&gt;
     </div>
   </li>
   <li>
-    <p>View the <a href="https://github.com/apache/incubator-fluo-website/blob/master/README.md">website README</a> for instructions on how to generate Javadocs and documentation using
+    <p>View the <a href="https://github.com/apache/fluo-website/blob/master/README.md">website README</a> for instructions on how to generate Javadocs and documentation using
 the released tag.  Submit PR to the website repo to publish.</p>
   </li>
   <li>
@@ -270,7 +270,7 @@ This is the same svn repo mentioned earlier for the KEYS file.  Follow the <a hr
 hashes and signatures.  This step publishes the files to the ASF mirrors.</p>
   </li>
   <li>
-    <p>Send an email to <code class="highlighter-rouge">dev@fluo.incubator.apache.org</code> announcing new release.</p>
+    <p>Send an email to <code class="highlighter-rouge">dev@fluo.apache.org</code> announcing new release.</p>
   </li>
 </ol>
 
