@@ -56,7 +56,7 @@ Contributions are welcome to all Apache Fluo projects! If you would like help ge
 [fnf]: irc://chat.freenode.net/fluo
 [fn]: https://freenode.net/
 [htc]: /how-to-contribute/
-[rtc]: http://www.apache.org/foundation/glossary.html#ReviewThenCommit
+[rtc]: https://www.apache.org/foundation/glossary.html#ReviewThenCommit
 [dev-arch]: https://lists.apache.org/list.html?dev@fluo.apache.org
 [ntfy-arch]: https://lists.apache.org/list.html?notifications@fluo.apache.org
 [commits-arch]: https://lists.apache.org/list.html?commits@fluo.apache.org
