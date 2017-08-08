@@ -16,7 +16,7 @@ browser using [Jekyll]. This can be done by following these instructions:
 
 2. Use [Bundler] to install all gems in the [Gemfile] of this repo.
 
-        cd incubator-fluo-website/
+        cd fluo-website/
         bundle install
 
 3. Run the following command to have Jekyll serve the website locally:
