@@ -27,13 +27,13 @@ based on commits.
 | Name                                         | Organization                        | Timezone   |
 -----------------------------------------------|-------------------------------------|------------|
 | [Eric Newton](https://github.com/ericnewton) |                                     | [ET][et]   |
-| [Garvit Bansal](https://github.com/Garvit244)| [Flipkart](http://www.flipkart.com) | [IST][ist] |
+| [Garvit Bansal](https://github.com/Garvit244)| [Flipkart](https://www.flipkart.com) | [IST][ist] |
 | [Michael Wall](https://github.com/mjwall)    |                                     | [ET][et]   |
 
 [tc]: http://www.tetraconcepts.com/
-[hw]: http://hortonworks.com/
+[hw]: https://hortonworks.com/
 [pt]: http://www.ptech-llc.com/
-[bah]: http://www.boozallen.com/
-[et]: http://www.timeanddate.com/time/zones/et
-[ist]: http://www.timeanddate.com/time/zones/ist
+[bah]: https://www.boozallen.com/
+[et]: https://www.timeanddate.com/time/zones/et
+[ist]: https://www.timeanddate.com/time/zones/ist
 [PMC]: https://www.apache.org/foundation/how-it-works.html#pmc

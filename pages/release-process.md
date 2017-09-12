@@ -147,4 +147,4 @@ When the vote passes on a release candidate, follow the steps below to complete 
 [website README]: https://github.com/apache/fluo-website/blob/master/README.md
 [example-email]: https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E
 [KEYS]: https://www.apache.org/dist/fluo/KEYS
-[sigs]: http://www.apache.org/dev/release-distribution.html#sigs-and-sums
+[sigs]: https://www.apache.org/dev/release-distribution.html#sigs-and-sums

@@ -74,5 +74,5 @@ This can be configured by common IDEs:
 [ri]: https://github.com/apache/fluo-recipes/issues
 [wi]: https://github.com/apache/fluo-website/issues
 [tutorial]: http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
-[stackoverflow]: http://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git
-[rtc]: http://www.apache.org/foundation/glossary.html#ReviewThenCommit
+[stackoverflow]: https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git
+[rtc]: https://www.apache.org/foundation/glossary.html#ReviewThenCommit
