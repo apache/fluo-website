@@ -34,7 +34,13 @@
           <ul class="navbar-nav nav">
             <li><a href="{{ site.baseurl }}/release/">Releases</a></li>
             <li><a href="{{ site.baseurl }}/tour/">Tour</a></li>
-            <li><a href="{{ site.baseurl }}/docs/">Docs</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ site.baseurl }}/docs/fluo/{{ site.latest_fluo_release }}/">Fluo</a></li>
+                <li><a href="{{ site.baseurl }}/docs/fluo-recipes/{{ site.latest_recipes_release }}/">Fluo Recipes</a></li>
+              </ul>
+            </li>
             <li><a href="{{ site.baseurl }}/api/">API</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
