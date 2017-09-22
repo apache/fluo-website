@@ -7,6 +7,10 @@ layout: default
   <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}&via={{ site.twitter_username }}&related={{ site.twitter_username }}" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
 </div>
 
+{% if page.draft %}
+<div class="alert alert-danger" style="margin-bottom: 0px;" role="alert">These are draft release notes for a future release! <a href="{{ site.baseurl }}/release/">View the latest releases</a>.</div>
+{% endif %}
+
 {% if page.historical %}
   <div class="alert alert-danger" role="alert">This release was made before Apache incubation and is not endorsed by the ASF.</div>
 {% endif %}

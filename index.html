@@ -18,7 +18,8 @@ html_title_override: true
     <div class="row">
       <div class="col-sm-12 panel panel-default">
         <h3 id="news-header">Latest News</h3>
-        {% for post in site.posts limit:site.num_home_posts %}
+        {% assign visible_posts = site.posts | where:"draft",false %}
+        {% for post in visible_posts limit:site.num_home_posts %}
         <div class="post-header-home">
           <div class="row">
             <div class="col-sm-12">
