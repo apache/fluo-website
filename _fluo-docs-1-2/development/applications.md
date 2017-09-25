@@ -20,12 +20,12 @@ For both clients and observers, you will need to include the following in your M
 <dependency>
   <groupId>org.apache.fluo</groupId>
   <artifactId>fluo-api</artifactId>
-  <version>1.2.0</version>
+  <version>{{ page.version }}</version>
 </dependency>
 <dependency>
   <groupId>org.apache.fluo</groupId>
   <artifactId>fluo-core</artifactId>
-  <version>1.2.0</version>
+  <version>{{ page.version }}</version>
   <scope>runtime</scope>
 </dependency>
 ```
