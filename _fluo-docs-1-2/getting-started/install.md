@@ -36,8 +36,8 @@ After you obtain a Fluo distribution tarball, follow these steps to install Fluo
 
 1.  Choose a directory with plenty of space and untar the distribution:
 
-        tar -xvzf fluo-1.2.0-bin.tar.gz
-        cd fluo-1.2.0
+        tar -xvzf fluo-{{ page.version }}-bin.tar.gz
+        cd fluo-{{ page.version }}
 
     The distribution contains a `fluo` script in `bin/` that administers Fluo and the
     following configuration files in `conf/`:
@@ -77,7 +77,7 @@ invoked by this script.
 Modify and add the following to your `~/.bashrc` if you want to be able to execute the fluo script
 from any directory:
 
-    export PATH=/path/to/fluo-1.2.0/bin:$PATH
+    export PATH=/path/to/fluo-{{ page.version }}/bin:$PATH
 
 Source your `.bashrc` for the changes to take effect and test the script
 
