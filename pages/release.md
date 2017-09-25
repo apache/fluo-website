@@ -7,7 +7,7 @@ permalink: "/release/"
 Apache Fluo and Apache Fluo Recipes are released separately on their own schedule.
 
 {% for release in site.categories.release %}
-{% unless release.historical %}
+{% unless release.historical or release.draft %}
 * [{{ release.version }}]({{ site.baseurl }}/release/{{ release.version }}/) - {{ release.date | date_to_string }}
 {% endunless %}
 {% endfor %}

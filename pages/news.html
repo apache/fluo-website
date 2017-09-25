@@ -6,7 +6,8 @@ redirect_from: /blog/
 
 <h2>{{ page.title }}</h2>
 
-{% for post in site.posts %}
+{% assign visible_posts = site.posts | where:"draft",false %}
+{% for post in visible_posts %}
   {% assign post_year = post.date | date: "%Y" %}
   {% assign newer_post_year = post.next.date | date: "%Y" %}
   {% if post_year != newer_post_year %}
