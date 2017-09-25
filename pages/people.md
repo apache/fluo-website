@@ -24,16 +24,18 @@ permalink: /people/
 GitHub also has a [contributor list](https://github.com/apache/fluo/graphs/contributors)
 based on commits.
 
-| Name                                         | Organization                        | Timezone   |
------------------------------------------------|-------------------------------------|------------|
-| [Eric Newton](https://github.com/ericnewton) |                                     | [ET][et]   |
-| [Garvit Bansal](https://github.com/Garvit244)| [Flipkart](https://www.flipkart.com) | [IST][ist] |
-| [Michael Wall](https://github.com/mjwall)    |                                     | [ET][et]   |
+| Name                                                     | Organization                        | Timezone   |
+-----------------------------------------------------------|-------------------------------------|------------|
+| [Eric Newton](https://github.com/ericnewton)             |                                     | [ET][et]   |
+| [Garvit Bansal](https://github.com/Garvit244)            | [Flipkart](https://www.flipkart.com)| [IST][ist] |
+| [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
+| [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PDT][pdt] |
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: https://hortonworks.com/
 [pt]: http://www.ptech-llc.com/
 [bah]: https://www.boozallen.com/
 [et]: https://www.timeanddate.com/time/zones/et
+[pdt]: https://www.timeanddate.com/time/zones/pdt
 [ist]: https://www.timeanddate.com/time/zones/ist
 [PMC]: https://www.apache.org/foundation/how-it-works.html#pmc
