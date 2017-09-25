@@ -176,13 +176,12 @@ a visualization tool by following the instructions below:
 
 [Grafana]: http://grafana.org/
 [InfluxDB]: https://influxdb.com/
-[fluo-app.properties]: {{ site.github_base }}/modules/distribution/src/main/config/fluo-app.properties
+[fluo-app.properties]: {{ page.github_base }}/modules/distribution/src/main/config/fluo-app.properties
 [Dropwizard]: https://dropwizard.github.io/metrics/3.1.0/
-[grafana]: {{ site.docs_base}}/administration/grafana/
-[MetricsReporter]: {{ site.github_base }}/modules/api/src/main/java/org/apache/fluo/api/metrics/MetricsReporter.java
-[Observer]: {{ site.github_base }}/modules/api/src/main/java/org/apache/fluo/api/observer/Observer.java
-[Loader]: {{ site.github_base }}/modules/api/src/main/java/org/apache/fluo/api/client/Loader.java
-[FluoClient]: {{ site.github_base }}/modules/api/src/main/java/org/apache/fluo/api/client/FluoClient.java
+[MetricsReporter]: {{ page.javadoc_base }}/org/apache/fluo/api/metrics/MetricsReporter.html
+[Observer]: {{ page.javadoc_base }}/org/apache/fluo/api/observer/Observer.html
+[Loader]: {{ page.javadoc_base }}/org/apache/fluo/api/client/Loader.html
+[FluoClient]: {{ page.javadoc_base }}/org/apache/fluo/api/client/FluoClient.html
 [Timer]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#timers
 [Counter]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#counters
 [Histogram]: https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms

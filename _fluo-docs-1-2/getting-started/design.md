@@ -4,8 +4,7 @@ category: getting-started
 order: 1
 ---
 
-For a general overview of Fluo, take the [Fluo tour](/tour/). The diagram below provides an
-overview of Apache Fluo's design.
+The diagram below provides an overview of Apache Fluo's design.
 
 ![fluo-architecture][1]
 

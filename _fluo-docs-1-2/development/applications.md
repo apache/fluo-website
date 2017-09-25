@@ -281,7 +281,7 @@ The log above traces the following sequence of events.
 * T1 commits successfully and its commit timestamp from the Oracle is `4`.
 * Transaction T2 has a start timestamp of `5` (because its `5` > `4` it can see what T1 wrote).
 * T2 reads a value of `1` for row `4333` and column `stat count`
-* T2 sets row `4333` and `column `stat count` to `2`
+* T2 sets row `4333` and column `stat count` to `2`
 * T2 commits successfully with a commit timestamp of `6`
 
 Below is an example log after only setting `fluo.tx.collisions` to TRACE. This setting will only log
@@ -299,11 +299,11 @@ the trace logs human readable, non ASCII chars are escaped using hex. The conven
 where D is a hex digit. Also the `\` character is escaped to make the output unambiguous.
 
 [design]: {{ page.docs_base }}/getting-started/design/
-[FluoFactory]: {{ page.github_base}}/modules/api/src/main/java/org/apache/fluo/api/client/FluoFactory.java
-[FluoClient]: {{ page.github_base}}/modules/api/src/main/java/org/apache/fluo/api/client/FluoClient.java
-[FluoConfiguration]: {{ page.github_base}}/modules/api/src/main/java/org/apache/fluo/api/config/FluoConfiguration.java
-[Observer]: {{ page.github_base}}/modules/api/src/main/java/org/apache/fluo/api/observer/Observer.java
-[ObserverProvider]: {{ page.github_base}}/modules/api/src/main/java/org/apache/fluo/api/observer/ObserverProvider.java
+[FluoFactory]: {{ page.javadoc_base}}/org/apache/fluo/api/client/FluoFactory.html
+[FluoClient]: {{ page.javadoc_base}}/org/apache/fluo/api/client/FluoClient.html
+[FluoConfiguration]: {{ page.javadoc_base}}/org/apache/fluo/api/config/FluoConfiguration.html
+[Observer]: {{ page.javadoc_base}}/org/apache/fluo/api/observer/Observer.html
+[ObserverProvider]: {{ page.javadoc_base}}/org/apache/fluo/api/observer/ObserverProvider.html
 [fluo-conn.properties]: {{ page.github_base}}/modules/distribution/src/main/config/fluo-conn.properties
 [fluo-app.properties]: {{ page.github_base}}/modules/distribution/src/main/config/fluo-app.properties
 [API]: https://fluo.apache.org/apidocs/

@@ -42,7 +42,7 @@ defaults:
       permalink: "/tour/:basename/"
   -
     scope:
-      path: ""
+      path: "_fluo-docs-1-2"
       type: "fluo-docs-1-2"
     values:
       layout: "fluo-docs-1.2"
