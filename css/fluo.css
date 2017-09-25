@@ -10,6 +10,8 @@ code { background-color: #f5f5f5; color: #555; }
 
 .text-muted { margin-left: 0px; }
 
+.doc-sidebar-link { font-size: 14px; margin-bottom: 10px; margin-left: 0px; }
+
 tr:nth-child(even) { background: #F3F3F3; }
 
 tr:nth-child(odd) { background: #FFF; }
