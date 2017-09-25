@@ -5,6 +5,12 @@ timezone: Etc/UTC
 
 permalink: pretty
 
+# Collection names cannot contain periods
+collections:
+  fluo-docs-1-2:
+    output: true
+    permalink: "/docs/fluo/1.2/:path"
+
 defaults:
   -
     scope:
@@ -34,6 +40,18 @@ defaults:
     values:
       layout: "tour"
       permalink: "/tour/:basename/"
+  -
+    scope:
+      path: "_fluo-docs-1-2"
+      type: "fluo-docs-1-2"
+    values:
+      layout: "fluo-docs-1.2"
+      title_prefix: "Fluo Documentation - "
+      version: "1.2.0"
+      minor_release: "1.2"
+      docs_base: "/docs/fluo/1.2"
+      javadoc_base: "https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating"
+      github_base: "https://github.com/apache/fluo/blob/master"
 
 # Number of posts displayed on the home page.
 num_home_posts: 5

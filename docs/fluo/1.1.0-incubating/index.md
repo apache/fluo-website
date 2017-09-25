@@ -33,6 +33,8 @@ Below are helpful resources for Fluo application developers:
 *  [Metrics] - Fluo metrics are visible via JMX by default but can be configured to send to Graphite
    or Ganglia
 
+**Find documentation for all Fluo releases in the [archive](/docs/)**.
+
 [fluo]: https://fluo.apache.org/
 [related]: https://fluo.apache.org/related-projects/
 [tour]: https://fluo.apache.org/tour/
