@@ -116,14 +116,67 @@
   </header>
 
   <article id="page-content">
-    <p>Contributions are welcome to all Apache Fluo repositories (<a href="https://github.com/apache/fluo">Fluo</a>, <a href="https://github.com/apache/fluo-recipes">Fluo Recipes</a>) and the <a href="https://github.com/apache/fluo-website">Fluo project website</a>.  All repositories follow a <a href="https://www.apache.org/foundation/glossary.html#ReviewThenCommit">review-then-commit</a> process.
-This means that all contributions must pass any integration tests and be reviewed before being committed. Code reviews are done by commenting on a GitHub pull request.</p>
+    <p>Contributions are welcome to all Apache Fluo repositories.  All repositories follow a
+<a href="https://www.apache.org/foundation/glossary.html#ReviewThenCommit">review-then-commit</a> process.  This means all contributions must pass any integration tests and
+be reviewed before being committed. Code reviews are done by commenting on a GitHub pull request.
+If you would like to contribute, but are not sure where to start then <a href="/contactus/">contact us</a> and/or look
+at issues marked <a href="https://github.com/search?utf8=%E2%9C%93&amp;q=repo%3Aapache%2Ffluo+repo%3Aapache%2Ffluo-recipes+repo%3Aapache%2Ffluo-bytes+repo%3Aapache%2Ffluo-website+repo%3Aapache%2Ffluo-yarn+repo%3Aapache%2Ffluo-docker+label%3A%22help+wanted%22+type%3Aissue+state%3Aopen&amp;type=Issues">helpwanted</a>.  Fluo committers will follow the <a href="https://www.apache.org/foundation/policies/conduct.html">Apache Code of Conduct</a> when
+corresponding with a contributor.  We respectfully ask all contributors to follow this code of
+conduct also.</p>
+
+<h3 id="repositories">Repositories</h3>
+
+<p>Contributions can be made to the following repositories.  This page contains general instructions
+for all repositories.  Each repository also has a <code class="highlighter-rouge">CONTRIBUTING.md</code> file containing instructions
+specifaclly for it. For the links columns below, <code class="highlighter-rouge">I</code> is for issues and <code class="highlighter-rouge">C</code> is for CONTRIBUTING.md.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Repository</th>
+      <th>Links</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/apache/fluo">Fluo</a></td>
+      <td><a href="https://github.com/apache/fluo/issues">I</a> <a href="https://github.com/apache/fluo/blob/master/CONTRIBUTING.md">C</a></td>
+      <td>Core Project</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-recipes">Fluo Recipes</a></td>
+      <td><a href="https://github.com/apache/fluo-recipes/issues">I</a> <a href="https://github.com/apache/fluo-recipes/blob/master/CONTRIBUTING.md">C</a></td>
+      <td>Recipes that build on core.  Code for interoperating with other projects.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-website">Website</a></td>
+      <td><a href="https://github.com/apache/fluo-website/issues">I</a> <a href="https://github.com/apache/fluo-website/blob/gh-pages/CONTRIBUTING.md">C</a></td>
+      <td>Source for this website.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-yarn">Fluo Yarn</a></td>
+      <td><a href="https://github.com/apache/fluo-yarn/issues">I</a> <a href="https://github.com/apache/fluo-yarn/blob/master/CONTRIBUTING.md">C</a></td>
+      <td>Enables launching Fluo using YARN</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-docker">Fluo Docker</a></td>
+      <td><a href="https://github.com/apache/fluo-docker/issues">I</a> <a href="https://github.com/apache/fluo-docker/blob/master/CONTRIBUTING.md">C</a></td>
+      <td>Support for running Fluo in Docker.  Enables launching Fluo in Mesos and Kubernetes.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-bytes">Fluo Bytes</a></td>
+      <td><a href="https://github.com/apache/fluo-bytes/issues">I</a> <a href="https://github.com/apache/fluo-bytes/blob/master/CONTRIBUTING.md">C</a></td>
+      <td>An immutable Byte wrapper for Java suitable for use in APIs.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h3 id="contribution-workflow">Contribution workflow</h3>
 
 <ol>
-  <li>Make sure you have a fork of the repository (<a href="https://github.com/apache/fluo">Fluo</a>, <a href="https://github.com/apache/fluo-recipes">Fluo Recipes</a>, <a href="https://github.com/apache/fluo-website">Fluo Website</a>) that you want contribute to.</li>
-  <li>Create an issue that describes the work.  Each Fluo repository has its own issue tracker: <a href="https://github.com/apache/fluo/issues">Fluo</a>, <a href="https://github.com/apache/fluo-recipes/issues">Fluo Recipes</a>, <a href="https://github.com/apache/fluo-website/issues">Fluo Website</a></li>
+  <li><a href="https://help.github.com/articles/fork-a-repo/">Fork</a> and <a href="https://help.github.com/articles/cloning-a-repository/">clone</a> the repository you want to contribute to.</li>
+  <li>If needed, create an issue that describes the work.</li>
   <li>
     <p>Create a branch in the local clone of your fork. An example branch name is <code class="highlighter-rouge">fluo-301</code> which describes the repo and issue number.</p>
 
@@ -132,44 +185,28 @@ This means that all contributions must pass any integration tests and be reviewe
     </div>
   </li>
   <li>Do work and commit to your branch.</li>
+  <li>Ensure you works satisfies the guidelines laid out in the <code class="highlighter-rouge">CONTRIBUTING.md</code> file.</li>
+  <li>If needed, squash to the minimum number of commits. For help on squashing commits, see this <a href="http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html">tutorial</a> or <a href="https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git">StackOverflow answer</a>.</li>
   <li>
-    <p>If your branch becomes stale, rebase it to master.</p>
+    <p><a href="https://help.github.com/articles/pushing-to-a-remote/">Push</a> your branch to your fork.</p>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># checkout master</span>
-git checkout master
-<span class="c"># pull latest commits from upstream</span>
-git pull upstream master
-<span class="c"># checkout your branch</span>
-git checkout fluo-301
-<span class="c"># rebase master to bring latest commits into your branch</span>
-<span class="c"># follow any instructions to resolve conflicts</span>
-git rebase master
-<span class="c"># update your branch on your fork</span>
-git push -f origin fluo-301
-</code></pre>
-    </div>
-  </li>
-  <li>When you are ready to create a pull request, squash to the minimum number of commits. For help on squashing commits, see this <a href="http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html">tutorial</a> or <a href="https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git">StackOverflow answer</a>.</li>
-  <li>
-    <p>Push your branch <code class="highlighter-rouge">fluo-301</code> to your fork</p>
-
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># add -f to command below if you squashed commits</span>
-<span class="c"># and previously pushed branch to your fork</span>
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># Push work in local branch fluo-301 to fork</span>
 git push origin fluo-301
 </code></pre>
     </div>
   </li>
-  <li>Create a pull request on the GitHub page of the repo (e.g. <a href="https://github.com/apache/fluo">Fluo</a>, <a href="https://github.com/apache/fluo-recipes">Fluo Recipes</a>, <a href="https://github.com/apache/fluo-website">Fluo Website</a>) that you want to contribute to.  The pull request should merge your branch (e.g. <code class="highlighter-rouge">fluo-301</code>) in your fork into the master branch of the repo.</li>
+  <li>Create a <a href="https://help.github.com/articles/about-pull-requests/">Pull Request</a> in the appropriate repository.  If the work is not complete and the Pull Request is for feedback, please put <code class="highlighter-rouge">[WIP]</code> in the subject.</li>
   <li>At least one committer (and others in the community) will review your pull request and add any comments to your code.</li>
-  <li>Reviewers should make comments at bottom of the pull request or in “Files Changed”.  Avoid commenting on commits as these comments will disappear if the branch is rebased as rebasing generates new commits for the pull request.</li>
-  <li>Push any changes from the review to the branch as new commits so the reviewer only needs to review new changes.</li>
-  <li>Repeat this process until a reviewer comments with a +1.</li>
-  <li>When the review process is finished, all commits on the branch of the pull request should be squashed into the minimum number of commits by the developer.  The reviewer should then merge the pull request.</li>
+  <li>Push any changes from the review to the branch as new commits so the reviewer only needs to review new changes.  Please avoid squasing commits after the review starts.  Squashing makes it hard for the reviewer to follow the changes.</li>
+  <li>Repeat this process until a reviewer approves the pull request.</li>
+  <li>When the review process is finished, all commits on the pull request may be squashed by a committer.  Please avoid squashing as it makes it difficult for the committer to know if they are merging what was reviewed.</li>
 </ol>
 
 <h3 id="coding-guidelines">Coding guidelines</h3>
 
-<p>Make sure your imports look like the block below:</p>
+<p>All Fluo projects have configured Maven to do automatic code formatting and import organizing.  So in projects with <code class="highlighter-rouge">pom.xml</code> files, running <code class="highlighter-rouge">mvn compile</code> should format all modified code.  Please run this before committing.  The instructions below explain how to set this formatting up in your IDE.</p>
+
+<p>To properly organize imports, make sure your imports look like the block below:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>java.
 javax.
@@ -183,8 +220,16 @@ javax.
 <p>This can be configured by common IDEs:</p>
 
 <ul>
-  <li>Eclipse: <code class="highlighter-rouge">Window -&gt; Preferences -&gt; Java -&gt; Organize Imports</code></li>
+  <li>Eclipse: <code class="highlighter-rouge">Window -&gt; Preferences -&gt; Java -&gt; Code Style -&gt; Organize Imports</code></li>
   <li>Intelli-J: <code class="highlighter-rouge">Preferences -&gt; Code Style -&gt; Java -&gt; Imports</code></li>
+</ul>
+
+<p>To properly format code in Eclipse :</p>
+
+<ul>
+  <li>Go to <code class="highlighter-rouge">Window -&gt; Preferences -&gt; Java -&gt; Code Style -&gt; Formatter</code></li>
+  <li>Click Import and import <code class="highlighter-rouge">&lt;local Fluo source dir&gt;/contrib/fluo-eclipse-style.xml</code></li>
+  <li>Either configure all projects in eclipse to use this style or just the Fluo projects.</li>
 </ul>
 
 
