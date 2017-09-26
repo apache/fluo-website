@@ -47,7 +47,7 @@ specifaclly for it. For the links columns below, `I` is for issues and `C` is fo
    git push origin fluo-301
    ```
 
-1. Create a [Pull Request] in the appropriate repository.  If the work is not comlete and the Pull Request is for feedback, please put `[WIP]` in the subject.
+1. Create a [Pull Request] in the appropriate repository.  If the work is not complete and the Pull Request is for feedback, please put `[WIP]` in the subject.
 1. At least one committer (and others in the community) will review your pull request and add any comments to your code.
 1. Push any changes from the review to the branch as new commits so the reviewer only needs to review new changes.  Please avoid squasing commits after the review starts.  Squashing makes it hard for the reviewer to follow the changes.
 1. Repeat this process until a reviewer approves the pull request.
