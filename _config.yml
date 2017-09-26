@@ -10,6 +10,9 @@ collections:
   fluo-docs-1-2:
     output: true
     permalink: "/docs/fluo/1.2/:path"
+  recipes-1-2:
+    output: true
+    permalink: "/docs/fluo-recipes/1.2/:path"
 
 defaults:
   -
@@ -52,6 +55,20 @@ defaults:
       docs_base: "/docs/fluo/1.2"
       javadoc_base: "https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating"
       github_base: "https://github.com/apache/fluo/blob/master"
+  -
+    scope:
+      path: "_recipes-1-2"
+      type: "recipes-1-2"
+    values:
+      layout: "recipes-1.2"
+      title_prefix: "Fluo Recipes Documentation - "
+      version: "1.2.0"
+      minor_release: "1.2"
+      docs_base: "/docs/fluo-recipes/1.2"
+      github_base: "https://github.com/apache/fluo-recipes/blob/master"
+      javadoc_fluo: "https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating"
+      javadoc_core: "https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.1.0-incubating"
+      javadoc_accumulo: "https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating"
 
 # Number of posts displayed on the home page.
 num_home_posts: 5
@@ -65,7 +82,7 @@ latest_recipes_release: "1.1.0-incubating"
 
 # Sets links to external API
 api_base: "https://javadoc.io/doc/org.apache.fluo"
-api_static: "https://javadoc.io/page/org.apache.fluo"
+api_static: "https://static.javadoc.io/org.apache.fluo"
 fluo_api_base: "https://javadoc.io/doc/org.apache.fluo/fluo-api"
 fluo_api_static: "https://javadoc.io/page/org.apache.fluo/fluo-api"
 fluo_recipes_core_static: "https://javadoc.io/page/org.apache.fluo/fluo-recipes-core"
