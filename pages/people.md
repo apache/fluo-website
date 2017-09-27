@@ -37,7 +37,6 @@ based on commits.
 [pt]: http://www.ptech-llc.com/
 [bah]: https://www.boozallen.com/
 [et]: https://www.timeanddate.com/time/zones/et
-[pdt]: https://www.timeanddate.com/time/zones/pdt
-[pst]: https://www.timeanddate.com/time/zones/pst
+[pt]: https://www.timeanddate.com/time/zones/pt
 [ist]: https://www.timeanddate.com/time/zones/ist
 [PMC]: https://www.apache.org/foundation/how-it-works.html#pmc
