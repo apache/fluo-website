@@ -30,6 +30,7 @@ based on commits.
 | [Garvit Bansal](https://github.com/Garvit244)            | [Flipkart](https://www.flipkart.com)| [IST][ist] |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PDT][pdt] |
+| [Kenneth McFarland](https://github.com/kpm1985)          |                                     | [PST][pst] |
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: https://hortonworks.com/
