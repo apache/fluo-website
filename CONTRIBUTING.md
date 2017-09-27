@@ -42,7 +42,7 @@ can be done by following these instructions:
 4. Open your web browser to [http://localhost:4000](http://localhost:4000).
 
 [contribute]: https://fluo.apache.org/how-to-contribute/
-[Jekyll]: http://jekyllrb.com/
-[Bundler]: http://bundler.io/
+[Jekyll]: https://jekyllrb.com/
+[Bundler]: https://bundler.io/
 [Gemfile]: Gemfile
 
