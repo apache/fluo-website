@@ -29,13 +29,14 @@ based on commits.
 | [Eric Newton](https://github.com/ericnewton)             |                                     | [ET][et]   |
 | [Garvit Bansal](https://github.com/Garvit244)            | [Flipkart](https://www.flipkart.com)| [IST][ist] |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
-| [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PDT][pdt] |
+| [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt] |
+| [Kenneth McFarland](https://github.com/kpm1985)          |                                     | [PT][pt] |
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: https://hortonworks.com/
 [pt]: http://www.ptech-llc.com/
 [bah]: https://www.boozallen.com/
 [et]: https://www.timeanddate.com/time/zones/et
-[pdt]: https://www.timeanddate.com/time/zones/pdt
+[pt]: https://www.timeanddate.com/time/zones/pt
 [ist]: https://www.timeanddate.com/time/zones/ist
 [PMC]: https://www.apache.org/foundation/how-it-works.html#pmc
