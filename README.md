@@ -1,29 +1,7 @@
 # Apache Fluo website
 
 Code powering the Apache Fluo website ([https://fluo.apache.org](https://fluo.apache.org)).
-
-## Contributions
-
-Contributions to the website can be made by submitting pull requests to this repo.
-
-If you want to view your changes in your browser before submitting a pull request, 
-you will need install all of the gems in the [Gemfile] to serve the website in your
-browser using [Jekyll]. This can be done by following these instructions:
-
-1. After you have Ruby and RubyGems installed on your machine, install [Bundler]:
-
-        gem install bundler
-
-2. Use [Bundler] to install all gems in the [Gemfile] of this repo.
-
-        cd fluo-website/
-        bundle install
-
-3. Run the following command to have Jekyll serve the website locally:
-
-        bundle exec jekyll serve --watch
-
-4. Open your web browser to [http://localhost:4000](http://localhost:4000).
+[Contributing](CONTRIBUTING.md) decribes how to test locally.
 
 ## Apache Fluo releases
 
@@ -64,7 +42,4 @@ Steps to update website for new Fluo Recipes release:
 
 4. Create a post in `_posts/release` with release notes and resources to announce release.
 
-[Jekyll]: http://jekyllrb.com/
-[Bundler]: http://bundler.io/
-[Gemfile]: Gemfile
 [instructions]: http://jekyllrb.com/docs/installation/
