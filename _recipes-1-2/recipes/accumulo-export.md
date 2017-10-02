@@ -1,5 +1,5 @@
 ---
-title: Accumulo Export Queue
+title: Accumulo Export
 category: recipes
 order: 3
 ---
