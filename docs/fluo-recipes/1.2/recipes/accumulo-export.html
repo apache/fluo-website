@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.1.0-incubating/accumulo-export-queue/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.2/recipes/accumulo-export">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Accumulo Export Queue Specialization | Apache Fluo</title>
+    <title>Accumulo Export | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -109,20 +109,126 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="fluo-doc">
+            <div class="row">
+  <div class="col-md-2">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-spy="affix">
+      <div class="panel panel-default">
+      
+      
+      
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="false" aria-controls="collapsegetting-started">
+                  Getting started
+                </a>
+              </h4>
+            </div>
+            <div id="collapsegetting-started" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/getting-started/overview">Overview</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapserecipes" aria-expanded="true" aria-controls="collapserecipes">
+                  Recipes
+                </a>
+              </h4>
+            </div>
+            <div id="collapserecipes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/combine-queue">Combine Queue</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/export-queue">Export Queue</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/accumulo-export">Accumulo Export</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/row-hasher">Row Hash Prefix</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/recording-tx">Recording Transaction</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsetools" aria-expanded="false" aria-controls="collapsetools">
+                  Tools
+                </a>
+              </h4>
+            </div>
+            <div id="collapsetools" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/serialization">Serializing Data</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/transient">Transient Data</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/table-optimization">Table Optimization</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/spark">Spark Helper</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/testing">Testing</a></div>
+                
+              </div>
+            </div>
+          
+        
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    
+    <p>Fluo Recipes 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Recipes &nbsp;&gt;&gt;&nbsp; Accumulo Export</p>
+    
 
-  
+    <div class="alert alert-danger" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Fluo! <a href="/docs/fluo/1.1.0-incubating/">View documentation for the latest release</a>.</div>
 
-  
-
-  <header class="post-header">
-    <h2 class="post-title">Accumulo Export Queue Specialization</h2>
-  </header>
-
-  <article id="page-content">
+    
+    <div class="row">
+      <div class="col-md-10"><h1>Accumulo Export</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/master/_recipes-1-2/recipes/accumulo-export.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+    
     <h2 id="background">Background</h2>
 
-<p>The <a href="/docs/fluo-recipes/1.1.0-incubating/export-queue/">Export Queue Recipe</a> provides a generic foundation for building export mechanism to any
+<p>The <a href="/docs/fluo-recipes/1.2/recipes/export-queue/">Export Queue Recipe</a> provides a generic foundation for building export mechanism to any
 external data store. The <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/function/AccumuloExporter.html">AccumuloExporter</a> provides an <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/export/function/Exporter.html">Exporter</a> for writing to
 Accumulo. <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/function/AccumuloExporter.html">AccumuloExporter</a> is located in the <code class="highlighter-rouge">fluo-recipes-accumulo</code> module and provides the
 following functionality:</p>
@@ -154,15 +260,13 @@ be used in step 3 instead of creating a class.</p>
     <span class="n">consumer</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">m</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
-
 </code></pre>
     </div>
   </li>
   <li>
     <p>Configure an <code class="highlighter-rouge">ExportQueue</code> and the export table prior to initializing Fluo.</p>
 
-    <div class="language-java highlighter-rouge"><pre class="highlight"><code>
-<span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+    <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
 
 <span class="n">String</span> <span class="n">instance</span> <span class="o">=</span>       <span class="c1">// Name of accumulo instance exporting to</span>
 <span class="n">String</span> <span class="n">zookeepers</span> <span class="o">=</span>     <span class="c1">// Zookeepers used by Accumulo instance exporting to</span>
@@ -222,8 +326,12 @@ queue.</p>
 <p>The <code class="highlighter-rouge">getTranslator()</code> method in <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/AccumuloReplicator.html">AccumuloReplicator</a> creates a specialized <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/export/function/AccumuloTranslator.html">AccumuloTranslator</a> for replicating a Fluo table to Accumulo.</p>
 
 
-  </article>
 
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/master/_recipes-1-2/recipes/accumulo-export.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+  </div>
 </div>
 
           </div>

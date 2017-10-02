@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/transient/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.2/tools/transient">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Transient data | Apache Fluo</title>
+    <title>Transient Data | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -109,19 +109,123 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="fluo-doc">
+            <div class="row">
+  <div class="col-md-2">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-spy="affix">
+      <div class="panel panel-default">
+      
+      
+      
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="false" aria-controls="collapsegetting-started">
+                  Getting started
+                </a>
+              </h4>
+            </div>
+            <div id="collapsegetting-started" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/getting-started/overview">Overview</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapserecipes" aria-expanded="false" aria-controls="collapserecipes">
+                  Recipes
+                </a>
+              </h4>
+            </div>
+            <div id="collapserecipes" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/combine-queue">Combine Queue</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/export-queue">Export Queue</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/accumulo-export">Accumulo Export</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/row-hasher">Row Hash Prefix</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/recording-tx">Recording Transaction</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsetools" aria-expanded="true" aria-controls="collapsetools">
+                  Tools
+                </a>
+              </h4>
+            </div>
+            <div id="collapsetools" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/serialization">Serializing Data</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/transient">Transient Data</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/table-optimization">Table Optimization</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/spark">Spark Helper</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/testing">Testing</a></div>
+                
+              </div>
+            </div>
+          
+        
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    
+    <p>Fluo Recipes 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Tools &nbsp;&gt;&gt;&nbsp; Transient Data</p>
+    
 
-  
-  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-incubating which is an old version! Check out the <a href="/docs/fluo-recipes/1.1.0-incubating">latest docs</a>!</div>
-  
+    <div class="alert alert-danger" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Fluo! <a href="/docs/fluo/1.1.0-incubating/">View documentation for the latest release</a>.</div>
 
-  
-
-  <header class="post-header">
-    <h2 class="post-title">Transient data</h2>
-  </header>
-
-  <article id="page-content">
+    
+    <div class="row">
+      <div class="col-md-10"><h1>Transient Data</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/master/_recipes-1-2/tools/transient.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+    
     <h2 id="background">Background</h2>
 
 <p>Some recipes store transient data in a portion of the Fluo table.  Transient
@@ -144,9 +248,9 @@ standard way.</p>
 
 <h2 id="registering-transient-ranges">Registering Transient Ranges</h2>
 
-<p>Recipes like <a href="/docs/fluo-recipes/1.0.0-incubating/export-queue/">Export Queue</a> will automatically register
+<p>Recipes like <a href="/docs/fluo-recipes/1.2/recipes/export-queue/">Export Queue</a> will automatically register
 transient ranges when configured.  If you would like to register your own
-transient ranges, use <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html">TransientRegistry</a>.  Below is a simple example of
+transient ranges, use <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/common/TransientRegistry.html">TransientRegistry</a>.  Below is a simple example of
 using this.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
@@ -162,7 +266,7 @@ using this.</p>
 
 <p>Although you may never need to register transient ranges directly, you will
 need to periodically compact transient ranges if using a recipe that registers
-them.  Using <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.0.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html">TableOperations</a> this can be done with one line of Java code
+them.  Using <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating/org/apache/fluo/recipes/accumulo/ops/TableOperations.html">TableOperations</a> this can be done with one line of Java code
 like the following.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
@@ -188,7 +292,7 @@ next.  This is where the <code class="highlighter-rouge">&lt;multiplier&gt;</cod
 between compactions of a range is determined as follows.  If not specified, the
 multiplier defaults to 3.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code>   <span class="n">sleepTime</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">compactTime</span> <span class="o">*</span> <span class="n">multiplier</span><span class="o">,</span> <span class="n">interval</span><span class="o">);</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">sleepTime</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">compactTime</span> <span class="o">*</span> <span class="n">multiplier</span><span class="o">,</span> <span class="n">interval</span><span class="o">);</span>
 </code></pre>
 </div>
 
@@ -199,8 +303,12 @@ seconds.  If the second range takes 80 seconds to compact, then it will be
 compacted again in 800 seconds.</p>
 
 
-  </article>
 
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/master/_recipes-1-2/tools/transient.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+  </div>
 </div>
 
           </div>

@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.1.0-incubating/export-queue/">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.2/recipes/export-queue">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Export Queue Recipe | Apache Fluo</title>
+    <title>Export Queue | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -109,17 +109,123 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <div class="fluo-doc">
+            <div class="row">
+  <div class="col-md-2">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-spy="affix">
+      <div class="panel panel-default">
+      
+      
+      
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="false" aria-controls="collapsegetting-started">
+                  Getting started
+                </a>
+              </h4>
+            </div>
+            <div id="collapsegetting-started" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/getting-started/overview">Overview</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapserecipes" aria-expanded="true" aria-controls="collapserecipes">
+                  Recipes
+                </a>
+              </h4>
+            </div>
+            <div id="collapserecipes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/combine-queue">Combine Queue</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/export-queue">Export Queue</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/accumulo-export">Accumulo Export</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/row-hasher">Row Hash Prefix</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/recipes/recording-tx">Recording Transaction</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsetools" aria-expanded="false" aria-controls="collapsetools">
+                  Tools
+                </a>
+              </h4>
+            </div>
+            <div id="collapsetools" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/serialization">Serializing Data</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/transient">Transient Data</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/table-optimization">Table Optimization</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/spark">Spark Helper</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo-recipes/1.2/tools/testing">Testing</a></div>
+                
+              </div>
+            </div>
+          
+        
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    
+    <p>Fluo Recipes 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Recipes &nbsp;&gt;&gt;&nbsp; Export Queue</p>
+    
 
-  
+    <div class="alert alert-danger" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Fluo! <a href="/docs/fluo/1.1.0-incubating/">View documentation for the latest release</a>.</div>
 
-  
-
-  <header class="post-header">
-    <h2 class="post-title">Export Queue Recipe</h2>
-  </header>
-
-  <article id="page-content">
+    
+    <div class="row">
+      <div class="col-md-10"><h1>Export Queue</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/master/_recipes-1-2/recipes/export-queue.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+    
     <h2 id="background">Background</h2>
 
 <p>Fluo is not suited for servicing low latency queries for two reasons. First, the implementation of
@@ -134,7 +240,7 @@ variability would not impede throughput but would impede the goal of low latency
 to export that data to another system.  For example Fluo could run on
 cluster A, continually transforming a large data set, and exporting data to
 Accumulo tables on cluster B.  The tables on cluster B would service user
-queries.  Fluo Recipes has built in support for <a href="/docs/fluo-recipes/1.1.0-incubating/accumulo-export-queue/">exporting to Accumulo</a>,
+queries.  Fluo Recipes has built in support for <a href="/docs/fluo-recipes/1.2/recipes/accumulo-export-queue/">exporting to Accumulo</a>,
 however this recipe can be used to export to systems other than Accumulo, like
 Redis, Elasticsearch, MySQL, etc.</p>
 
@@ -363,8 +469,8 @@ This row range is defined by using the export queue id as a row prefix for all
 data in the export queue.  So the row range defined by the export queue id
 should not be used by anything else.</p>
 
-<p>All data stored in an export queue is <a href="/docs/fluo-recipes/1.1.0-incubating/transient/">transient</a>. When an export
-queue is configured, it will recommend split points using the <a href="/docs/fluo-recipes/1.1.0-incubating/table-optimization/">table
+<p>All data stored in an export queue is <a href="/docs/fluo-recipes/1.2/tools/transient/">transient</a>. When an export
+queue is configured, it will recommend split points using the <a href="/docs/fluo-recipes/1.2/tools/table-optimization/">table
 optimization process</a>.  The number of splits generated
 by this process can be controlled by setting the number of buckets per tablet
 when configuring an export queue.</p>
@@ -425,8 +531,12 @@ example of write skew mentioned in the Percolater paper.</p>
 </ol>
 
 
-  </article>
 
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/master/_recipes-1-2/recipes/export-queue.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+  </div>
 </div>
 
           </div>
