@@ -6,7 +6,7 @@ layout: default
   <div class="col-md-2">
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-spy="affix">
       <div class="panel panel-default">
-      {% assign mydocs = site.fluo-docs-1-2 | group_by: 'category' %}
+      {% assign mydocs = site.fluo-1-2 | group_by: 'category' %}
       {% assign categories = "getting-started,development,administration" | split: "," %}
       {% for pcat in categories %}
         {% for dcat in mydocs %}
