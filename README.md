@@ -26,7 +26,7 @@ a Fluo Recipes release, replace any reference to `fluo` with `recipes`.
    from the post to publish it.  Otherwise, create a post with release notes and resources to announce
    the release.
 
-## Create documenation for next release
+## Create documentation for next release
 
 Below are steps to create documentaton for the next release of Fluo or Fluo Recipes. The
 directions below are for creating Fluo 1.3 docs from 1.2 docs.  For Fluo Recipes documentation,
