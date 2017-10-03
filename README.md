@@ -3,43 +3,44 @@
 Code powering the Apache Fluo website ([https://fluo.apache.org](https://fluo.apache.org)).
 [Contributing](CONTRIBUTING.md) decribes how to test locally.
 
-## Apache Fluo releases
+## Update website for new release
 
-Below are the steps required to update the Fluo project website for a new release 
-(substitute `1.0.0-beta-1` with the version of your release):
+Below are the steps required to update the Fluo project website for a new release
+of Fluo or Fluo Recipes.  The steps below assume you are releasing Fluo 1.2.0. For
+a Fluo Recipes release, replace any reference to `fluo` with `recipes`.
 
-1. Run the commands below to copy and convert documentation in your release tag of
-   your Fluo repo to this repo:
+1. Confirm that Javadocs for the release are hosted externally
 
-    ```bash
-    cd fluo-website/
-    mkdir -p docs/fluo/1.0.0-beta-1
-    ./_scripts/convert-fluo-docs.py /path/to/fluo/docs/ /path/to/fluo-website/docs/fluo/1.0.0-beta-1/
-    ```
+2. Modify `_config.yml` for the new release:
 
-2. Modify `docs/index.md` to point to new release and update the `latest_fluo_release` 
-   variable in `_config.yml`.
+    * Set `latest_fluo_release` to `1.2.0`
+    * Verify default values (i.e Javadoc & GitHub URLs) set for `fluo-1-2` collection
 
-3. Confirm that javadocs are hosted externally and modify `pages/api.md` to point to link to them.
+3. Remove the "Future release" warning from the Fluo docs layout in `_layouts/fluo-1.2.html`
 
-4. Create a post in `_posts/release` with release notes and resources to announce release.
+4. Add link to 1.2 documentation in `docs/index.md`.
 
-## Apache Fluo Recipes releases
+5. Add link to 1.2 javadocs in `pages/api.md`.
 
-Steps to update website for new Fluo Recipes release:
+6. If a post exists for the release in `_posts/release`, update the date and remove `draft: true`
+   from the post to publish it.  Otherwise, create a post with release notes and resources to announce
+   the release.
 
-1. Run the commands below to copy and convert documentation in your release tag.
+## Create documenation for next release
 
-    ```bash
-    cd fluo-website
-    mkdir -p docs/fluo-recipes/1.0.0-beta-1
-    ./_scripts/convert-recipes-docs.py /path/to/fluo-recipes/docs/ /path/to/fluo-website/docs/fluo-recipes/1.0.0-beta-1/
-    ```
+Below are steps to create documentaton for the next release of Fluo or Fluo Recipes. The
+directions below are for creating Fluo 1.3 docs from 1.2 docs.  For Fluo Recipes documentation,
+replace any reference to `fluo` with `recipes`.
 
-2. Modify `docs/index.md` to point to new release and update the `latest_recipes_release` variable in `_config.yml`.
+1. Create the Fluo 1.3 docs from the 1.2 docs
 
-3. Confirm that javadocs are hosted externally and modify `pages/api.md` to point to link to them.
+        cp -r _fluo-1-2 _fluo-1-3
 
-4. Create a post in `_posts/release` with release notes and resources to announce release.
+2. Create a `fluo-1.3.html` layout and update any collection references in it to `fluo-1-3`.
+   You should also add a warning banner to notify users that it's for a future release.
 
-[instructions]: http://jekyllrb.com/docs/installation/
+        cp _layouts/fluo-1.2.html _layouts/fluo-1.3.html
+        vim _layout/fluo-1.3.html
+
+3. Update `_config.yml` by adding a `fluo-1-3` collection and setting default values for it.
+   You may want to keep 1.2 values for github & javadocs until 1.3 is released.

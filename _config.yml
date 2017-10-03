@@ -7,7 +7,7 @@ permalink: pretty
 
 # Collection names cannot contain periods
 collections:
-  fluo-docs-1-2:
+  fluo-1-2:
     output: true
     permalink: "/docs/fluo/1.2/:path"
   recipes-1-2:
@@ -45,10 +45,10 @@ defaults:
       permalink: "/tour/:basename/"
   -
     scope:
-      path: "_fluo-docs-1-2"
-      type: "fluo-docs-1-2"
+      path: "_fluo-1-2"
+      type: "fluo-1-2"
     values:
-      layout: "fluo-docs-1.2"
+      layout: "fluo-1.2"
       title_prefix: "Fluo Documentation - "
       version: "1.2.0"
       minor_release: "1.2"
