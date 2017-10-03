@@ -87,6 +87,13 @@ tr:nth-child(odd) {background: #FFF}
   margin-top: 20px;
 }
 
+/* Turn off sidebar affix for small screens */
+@media (max-width: 975px) {
+  .affix {
+    position: static;
+  }
+}
+
 @media(max-width: 800px) {
   #fluo-img {
     height: 30px;
