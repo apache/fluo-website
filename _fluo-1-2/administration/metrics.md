@@ -1,7 +1,7 @@
 ---
 title: Metrics
 category: administration
-order: 1
+order: 6
 ---
 
 A Fluo application can be configured (in [fluo-app.properties]) to report metrics. When metrics are

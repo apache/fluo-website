@@ -1,7 +1,7 @@
 ---
-title: Installation
+title: Install Fluo
 category: getting-started
-order: 2
+order: 3
 ---
 
 Instructions for installing Apache Fluo and starting a Fluo application on a cluster where
@@ -105,8 +105,8 @@ Using at least Accumulo 1.6.1 is recommended because multiple performance bugs w
 [Hadoop]: http://hadoop.apache.org/
 [Zookeeper]: http://zookeeper.apache.org/
 [Java]: http://openjdk.java.net/
-[related]: https://fluo.apache.org/related-projects/
-[release]: https://fluo.apache.org/download/
+[related]: /related-projects/
+[release]: /download/
 [fluo-conn.properties]: {{ page.github_base }}/modules/distribution/src/main/config/fluo-conn.properties
 [fluo-app.properties]: {{ page.github_base }}/modules/distribution/src/main/config/fluo-app.properties
 [log4j.properties]: {{ page.github_base }}/modules/distribution/src/main/config/log4j.properties

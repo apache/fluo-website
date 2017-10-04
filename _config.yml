@@ -55,6 +55,7 @@ defaults:
       docs_base: "/docs/fluo/1.2"
       javadoc_base: "https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating"
       github_base: "https://github.com/apache/fluo/blob/master"
+      github_yarn: "https://github.com/apache/fluo-yarn/blob/master"
   -
     scope:
       path: "_recipes-1-2"
