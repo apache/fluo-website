@@ -26,11 +26,12 @@ based on commits.
 
 | Name                                                     | Organization                        | Timezone   |
 -----------------------------------------------------------|-------------------------------------|------------|
+| [Amal Krishnan](https://github.com/krishamal)            |                                     | [IST][ist] |
 | [Eric Newton](https://github.com/ericnewton)             |                                     | [ET][et]   |
 | [Garvit Bansal](https://github.com/Garvit244)            | [Flipkart](https://www.flipkart.com)| [IST][ist] |
-| [Kenneth McFarland](https://github.com/kpm1985)          |                                     | [PT][pt] |
+| [Kenneth McFarland](https://github.com/kpm1985)          |                                     | [PT][pt]   |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
-| [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt] |
+| [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: https://hortonworks.com/
