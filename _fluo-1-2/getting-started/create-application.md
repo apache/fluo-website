@@ -124,9 +124,9 @@ To create an observer, follow these steps:
 
 [Initialize] your Fluo application before running it.
 
-[design]: {{ page.docs_base }}/getting-started/design/
-[install-fluo]: {{ page.docs_base }}/getting-started/install-fluo/
-[Initialize]: {{ page.docs_base }}/administration/initialize/
+[design]: {{ page.docs_base }}/getting-started/design
+[install-fluo]: {{ page.docs_base }}/getting-started/install-fluo
+[Initialize]: {{ page.docs_base }}/administration/initialize
 [FluoFactory]: {{ page.javadoc_base}}/org/apache/fluo/api/client/FluoFactory.html
 [FluoClient]: {{ page.javadoc_base}}/org/apache/fluo/api/client/FluoClient.html
 [FluoConfiguration]: {{ page.javadoc_base}}/org/apache/fluo/api/config/FluoConfiguration.html

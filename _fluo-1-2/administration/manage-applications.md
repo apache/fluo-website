@@ -104,4 +104,4 @@ the trace logs human readable, non ASCII chars are escaped using hex. The conven
 where D is a hex digit. Also the `\` character is escaped to make the output unambiguous.
 
 [FluoClient]: {{ page.javadoc_base}}/org/apache/fluo/api/client/FluoClient.html
-[metrics]: {{ page.docs_base }}/administration/metrics/
+[metrics]: {{ page.docs_base }}/administration/metrics

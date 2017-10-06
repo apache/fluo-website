@@ -75,7 +75,7 @@ Also, learn how to [manage Fluo applications][manage].
 [fluo-app.properties]: {{ page.github_base}}/modules/distribution/src/main/config/fluo-app.properties
 [fluo-conn.properties]: {{ page.github_base}}/modules/distribution/src/main/config/fluo-conn.properties
 [phrasecount]: https://github.com/astralway/phrasecount
-[process]: {{ page.docs_base }}/administration/run-fluo-processes/
-[yarn]: {{ page.docs_base }}/administration/run-fluo-in-yarn/
-[docker]: {{ page.docs_base }}/administration/run-fluo-in-docker/
-[manage]: {{ page.docs_base }}/administration/manage-applications/
+[process]: {{ page.docs_base }}/administration/run-fluo-processes
+[yarn]: {{ page.docs_base }}/administration/run-fluo-in-yarn
+[docker]: {{ page.docs_base }}/administration/run-fluo-in-docker
+[manage]: {{ page.docs_base }}/administration/manage-applications
