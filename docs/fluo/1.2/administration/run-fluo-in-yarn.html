@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.2/getting-started/design">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.2/administration/run-fluo-in-yarn">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Design | Apache Fluo</title>
+    <title>Run Fluo in YARN | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -122,12 +122,12 @@
           
             <div class="panel-heading" role="tab" id="headingOne">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="true" aria-controls="collapsegetting-started">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="false" aria-controls="collapsegetting-started">
                   Getting started
                 </a>
               </h4>
             </div>
-            <div id="collapsegetting-started" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div id="collapsegetting-started" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
               <div class="panel-body">
                 
                 
@@ -158,12 +158,12 @@
           
             <div class="panel-heading" role="tab" id="headingOne">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseadministration" aria-expanded="false" aria-controls="collapseadministration">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseadministration" aria-expanded="true" aria-controls="collapseadministration">
                   Administration
                 </a>
               </h4>
             </div>
-            <div id="collapseadministration" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div id="collapseadministration" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
               <div class="panel-body">
                 
                 
@@ -193,66 +193,161 @@
   </div>
   <div class="col-md-10">
     
-    <p>Fluo 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Getting started &nbsp;&gt;&gt;&nbsp; Design</p>
+    <p>Fluo 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Administration &nbsp;&gt;&gt;&nbsp; Run Fluo in YARN</p>
     
 
     <div class="alert alert-warning" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Apache Fluo! <a href="/docs/fluo/1.1.0-incubating/">View documentation for the latest release</a>.</div>
 
     
     <div class="row">
-      <div class="col-md-10"><h1>Design</h1></div>
-      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/master/_fluo-1-2/getting-started/design.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+      <div class="col-md-10"><h1>Run Fluo in YARN</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/master/_fluo-1-2/administration/run-fluo-in-yarn.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
     </div>  
     
-    <p>The diagram below provides an overview of Apache Fluo’s design.</p>
+    <p>An Apache Fluo application can be started in Hadoop YARN using the Fluo YARN launcher.</p>
 
-<p><img src="/resources/docs/fluo-architecture.png" alt="fluo-architecture" /></p>
+<h2 id="requirements">Requirements</h2>
 
-<h2 id="fluo-application">Fluo Application</h2>
+<p>The Fluo YARN launcher requires <a href="https://fluo.apache.org/">Apache Fluo</a> and <a href="https://hadoop.apache.org/">Hadoop YARN</a> to be installed:</p>
 
-<p>A <strong>Fluo application</strong> maintains a large scale computation using a series of small transactional
-updates. Fluo applications store their data in a <strong>Fluo table</strong> which has a similar structure (row,
-column, value) to an <strong>Accumulo table</strong> except that a Fluo table has no timestamps. A Fluo table
-is implemented using an Accumulo table. While you could scan the Accumulo table used to implement
-a Fluo table using an Accumulo client, you would read extra implementation-related data in addition
-to your data. Therefore, developers should only interact with the data in a Fluo table by writing
-Fluo client or observer code:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Software</th>
+      <th>Recommended Version</th>
+      <th>Minimum Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://fluo.apache.org/">Fluo</a></td>
+      <td>1.2.0</td>
+      <td>1.2.0</td>
+    </tr>
+    <tr>
+      <td><a href="https://hadoop.apache.org/">YARN</a></td>
+      <td>2.7.2</td>
+      <td>2.6.0</td>
+    </tr>
+  </tbody>
+</table>
 
-<ul>
-  <li><strong>Clients</strong> ingest data or interact with Fluo from external applications (REST services,
-crawlers, etc).  These are generally user started process that use the Fluo API.</li>
-  <li><strong>Observers</strong> are user provided functions run by Fluo Workers that execute transactions in response to notifications. Notifications are set by Fluo transactions, executing in a client or observer, when a requested column is modified.</li>
-</ul>
+<p>See the <a href="/related-projects/">related projects page</a> for external projects that may help in setting up these dependencies.</p>
 
-<p>Multiple Fluo applications can run on a cluster at the same time. Fluo applications
-consist of an oracle process and a configurable number of worker processes:</p>
+<h2 id="set-up-your-fluo-application">Set up your Fluo application</h2>
 
-<ul>
-  <li>The <strong>Oracle</strong> process allocates timestamps for transactions. While only one Oracle is required,
-Fluo can be configured to run extra Oracles that can take over if the primary Oracle fails.</li>
-  <li><strong>Worker</strong> processes run user code (called <strong>observers</strong>) that perform transactions. All workers
- run the same observers. The number of worker instances are configured to handle the processing
- workload.</li>
-</ul>
+<p>Before you can launch a Fluo application in YARN, you should <a href="/docs/fluo/1.2/getting-started/install-fluo/">install Fluo</a> and <a href="/docs/fluo/1.2/administration/initialize/">initialize your
+application</a>. After your application has been initialized, follow the instructions below to install
+the Fluo YARN launcher and run your application in YARN. Avoid using the <code class="highlighter-rouge">fluo</code> command to start local oracle
+and worker processes if you are running in YARN.</p>
 
-<h2 id="fluo-dependencies">Fluo Dependencies</h2>
+<h2 id="install-and-configure-fluo-yarn-launcher">Install and Configure Fluo YARN launcher</h2>
 
-<p>Fluo requires the following software to be running on the cluster:</p>
+<p>Before you can install the Fluo YARN launcher, you will need to obtain a distribution tarball. It is
+recommended that you download the <a href="/download/">latest release</a>. You can also build a distribution from the
+master branch by following these steps which create a tarball in <code class="highlighter-rouge">distribution/target</code>:</p>
 
-<ul>
-  <li><strong>Accumulo</strong> - Fluo stores its data in Accumulo and uses Accumulo’s conditional mutations for
-transactions.</li>
-  <li><strong>Hadoop</strong> - Each Fluo application run its oracle and worker processes as Hadoop YARN
-applications. HDFS is also required for Accumulo.</li>
-  <li><strong>Zookeeper</strong> - Fluo stores its metadata and state information in Zookeeper. Zookeeper is also
-required for Accumulo.</li>
-</ul>
+<div class="highlighter-rouge"><pre class="highlight"><code>git clone https://github.com/apache/fluo-yarn.git
+cd fluo-yarn/
+mvn package
+</code></pre>
+</div>
+
+<p>After you obtain a Fluo YARN distribution tarball, follow these steps to install Fluo.</p>
+
+<ol>
+  <li>
+    <p>Choose a directory with plenty of space, untar the distribution, and run <code class="highlighter-rouge">fetch.sh</code> to retrieve dependencies:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> tar -xvzf fluo-yarn-1.0.0-bin.tar.gz
+ cd fluo-yarn-1.0.0
+ ./lib/fetch.sh
+</code></pre>
+    </div>
+
+    <p>The distribution contains a <code class="highlighter-rouge">fluo-yarn</code> script in <code class="highlighter-rouge">bin/</code> that administers Fluo and the
+ following configuration files in <code class="highlighter-rouge">conf/</code>:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Configuration file</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/apache/fluo-yarn/blob/master/distribution/conf/fluo-yarn-env.sh">fluo-yarn-env.sh</a></td>
+          <td>Configures classpath for <code class="highlighter-rouge">fluo-yarn</code> script. Required for all commands.</td>
+        </tr>
+        <tr>
+          <td><a href="https://github.com/apache/fluo-yarn/blob/master/distribution/conf/fluo-yarn.properties">fluo-yarn.properties</a></td>
+          <td>Configures how application runs in YARN.  Required for <code class="highlighter-rouge">start</code> command.</td>
+        </tr>
+        <tr>
+          <td><a href="https://github.com/apache/fluo-yarn/blob/master/distribution/conf/log4j.properties">log4j.properties</a></td>
+          <td>Configures logging</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>Configure <a href="https://github.com/apache/fluo-yarn/blob/master/distribution/conf/fluo-yarn-env.sh">fluo-yarn-env.sh</a></p>
+
+    <ul>
+      <li>Set <code class="highlighter-rouge">FLUO_HOME</code> if it is not in your environment</li>
+      <li>Modify <code class="highlighter-rouge">FLUO_CONN_PROPS</code> if you don’t want use the default.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Configure <a href="https://github.com/apache/fluo-yarn/blob/master/distribution/conf/fluo-yarn.properties">fluo-yarn.properties</a> to set how your application will be launched in YARN:</p>
+
+    <ul>
+      <li>YARN resource manager hostname</li>
+      <li>Number of oracle and worker instances</li>
+      <li>Max memory usage per oracle/worker</li>
+    </ul>
+
+    <p>If you are managing multiple Fluo applications in YARN, you can copy this file and configure it for
+each application.</p>
+  </li>
+</ol>
+
+<h2 id="start-fluo-application-in-yarn">Start Fluo application in YARN</h2>
+
+<p>Follow the instructions below to start your application in YARN. If you have not done so already, you should <a href="/docs/fluo/1.2/administration/initialize/">initialize
+your Fluo application</a> before following these instructions.</p>
+
+<ol>
+  <li>
+    <p>Configure <a href="https://github.com/apache/fluo-yarn/blob/master/distribution/conf/fluo-yarn-env.sh">fluo-yarn-env.sh</a> and <a href="https://github.com/apache/fluo-yarn/blob/master/distribution/conf/fluo-yarn.properties">fluo-yarn.properties</a> if you have not already.</p>
+  </li>
+  <li>
+    <p>Run the commands below to start your Fluo application in YARN.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> fluo-yarn start myapp conf/fluo-yarn.properties
+</code></pre>
+    </div>
+
+    <p>The commands will retrieve your application configuration and observer jars (using your application name) before
+starting the application in YARN. The command will output a YARN application ID that can be used to find your
+application in the YARN resource manager and view its logs.</p>
+  </li>
+</ol>
+
+<h2 id="manage-fluo-application-in-yarn">Manage Fluo application in YARN</h2>
+
+<p>Except for stopping your application in YARN, the <code class="highlighter-rouge">fluo</code> script can be used to <a href="/docs/fluo/1.2/administration/manage-applications/">manage your application</a> using the
+<code class="highlighter-rouge">scan</code> and <code class="highlighter-rouge">wait</code> commands.</p>
+
+<p>When you want you stop your Fluo application, use the the YARN resource manager or the 
+<code class="highlighter-rouge">yarn application -kill &lt;App ID&gt;</code> to stop the application in YARN.</p>
 
 
 
     <div class="row" style="margin-top: 20px;">
       <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
-      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/master/_fluo-1-2/getting-started/design.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/master/_fluo-1-2/administration/run-fluo-in-yarn.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
     </div>  
   </div>
 </div>

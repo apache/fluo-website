@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.2/development/applications">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.2/getting-started/create-application">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Applications | Apache Fluo</title>
+    <title>Create Application | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -120,22 +120,24 @@
           
         
           
-        
-          
             <div class="panel-heading" role="tab" id="headingOne">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="false" aria-controls="collapsegetting-started">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="true" aria-controls="collapsegetting-started">
                   Getting started
                 </a>
               </h4>
             </div>
-            <div id="collapsegetting-started" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div id="collapsegetting-started" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
               <div class="panel-body">
                 
                 
                 <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/design">Design</a></div>
                 
-                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/install">Installation</a></div>
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/quick-start">Quick Start</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/install-fluo">Install Fluo</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/create-application">Create Application</a></div>
                 
               </div>
             </div>
@@ -145,24 +147,6 @@
         
       
         
-          
-        
-          
-            <div class="panel-heading" role="tab" id="headingOne">
-              <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsedevelopment" aria-expanded="true" aria-controls="collapsedevelopment">
-                  Development
-                </a>
-              </h4>
-            </div>
-            <div id="collapsedevelopment" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-              <div class="panel-body">
-                
-                
-                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/development/applications">Applications</a></div>
-                
-              </div>
-            </div>
           
         
           
@@ -183,12 +167,20 @@
               <div class="panel-body">
                 
                 
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/initialize">Initialize Application</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-processes">Run Fluo processes</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-yarn">Run Fluo in YARN</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-docker">Run Fluo in Docker</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/manage-applications">Manage Applications</a></div>
+                
                 <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/metrics">Metrics</a></div>
                 
               </div>
             </div>
-          
-        
           
         
           
@@ -201,26 +193,19 @@
   </div>
   <div class="col-md-10">
     
-    <p>Fluo 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Development &nbsp;&gt;&gt;&nbsp; Applications</p>
+    <p>Fluo 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Getting started &nbsp;&gt;&gt;&nbsp; Create Application</p>
     
 
-    <div class="alert alert-danger" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Fluo! <a href="/docs/fluo/1.1.0-incubating/">View documentation for the latest release</a>.</div>
+    <div class="alert alert-warning" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Apache Fluo! <a href="/docs/fluo/1.1.0-incubating/">View documentation for the latest release</a>.</div>
 
     
     <div class="row">
-      <div class="col-md-10"><h1>Applications</h1></div>
-      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/master/_fluo-1-2/development/applications.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+      <div class="col-md-10"><h1>Create Application</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/master/_fluo-1-2/getting-started/create-application.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
     </div>  
     
-    <p>Once you have Fluo installed and running on your cluster, you can run Fluo applications consisting
-of <a href="/docs/fluo/1.2/getting-started/design/">clients and observers</a>. This documentations will shows how to :</p>
-
-<ul>
-  <li>Create a Fluo client</li>
-  <li>Create a Fluo observer</li>
-  <li>Initialize a Fluo Application</li>
-  <li>Start and stop a Fluo application (which consists of Oracle and Worker processes)</li>
-</ul>
+    <p>Once you have <a href="/docs/fluo/1.2/getting-started/install-fluo/">Fluo installed</a>, you can create and run Fluo applications consisting
+of <a href="/docs/fluo/1.2/getting-started/design/">clients and observers</a>. This documentation shows how to create a Fluo client and observer.</p>
 
 <h2 id="fluo-maven-dependencies">Fluo Maven Dependencies</h2>
 
@@ -339,237 +324,15 @@ will obtain the observed columns from the ObserverProvider and persist the colum
 These columns persisted in Zookeeper are used by transactions to know when to trigger observers.</li>
 </ol>
 
-<h2 id="initializing-a-fluo-application">Initializing a Fluo Application</h2>
+<h2 id="next-steps">Next Steps</h2>
 
-<p>Before a Fluo Application can run, it must be initiaized.  Below is an overview of what
-initialization does and some of the properties that may be set for initialization.</p>
-
-<ul>
-  <li><strong>Initialize ZooKeeper</strong> : Each application has its own area in ZooKeeper used for configuration,
-Oracle state, and worker coordination. All properties, except <code class="highlighter-rouge">fluo.connections.*</code>, are copied
-into ZooKeeper. For example, if <code class="highlighter-rouge">fluo.worker.num.threads=128</code> was set, then when a worker process
-starts it will read this from ZooKeeper.</li>
-  <li><strong>Copy Observer jars to DFS</strong> : Fluo workers processes need the jars containing observers. These
-are provided in one of the following ways.
-    <ul>
-      <li>Set the property <code class="highlighter-rouge">fluo.observer.init.dir</code> to a local directory containing observer jars. The
-jars in this directory are copied to DFS under <code class="highlighter-rouge">&lt;fluo.dfs.root&gt;/&lt;app name&gt;</code>. When a worker is
-started, the jars are pulled from DFS and added to its classpath.</li>
-      <li>Set the property <code class="highlighter-rouge">fluo.observer.jars.url</code> to a directory in DFS containing observer jars.  No
-copying is done. When a worker is started, the jars are pulled from this location and added to
-its classpath.</li>
-      <li>Do not set any of the properties above and have the mechanism that starts the worker process
-add the needed jars to the classpath.</li>
-    </ul>
-  </li>
-  <li><strong>Create Accumulo table</strong> : Each Fluo application creates and configures an Accumulo table. The
-<code class="highlighter-rouge">fluo.accumulo.*</code> properties determine which Accumulo instance is used. For performance reasons,
-Fluo runs its own code in Accumulo tablet servers. Fluo attempts to copy Fluo jars into DFS and
-configure Accumulo to use them. Fluo first checks the property <code class="highlighter-rouge">fluo.accumulo.jars</code> and if set,
-copies the jars listed there. If that property is not set, then Fluo looks on the classpath to
-find jars. Jars are copied to a location under <code class="highlighter-rouge">&lt;fluo.dfs.root&gt;/&lt;app name&gt;</code>.</li>
-</ul>
-
-<p>Below are the steps to initialize an application from the command line. It is also possible to
-initialize an application using Fluo’s Java API.</p>
-
-<ol>
-  <li>
-    <p>Create a copy of <a href="https://github.com/apache/fluo/blob/master/modules/distribution/src/main/config/fluo-app.properties">fluo-app.properties</a> for your Fluo application.</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> cp $FLUO_HOME/conf/fluo-app.properties /path/to/myapp/fluo-app.properties
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>Edit your copy of <a href="https://github.com/apache/fluo/blob/master/modules/distribution/src/main/config/fluo-app.properties">fluo-app.properties</a> and make sure to set the following:</p>
-
-    <ul>
-      <li>Class name of your ObserverProvider</li>
-      <li>Paths to your Fluo observer jars</li>
-      <li>Accumulo configuration</li>
-      <li>DFS configuration</li>
-    </ul>
-
-    <p>When configuring the observer section of fluo-app.properties, you can configure your instance for the
-<a href="https://github.com/astralway/phrasecount">phrasecount</a> application if you have not created your own application. See the <a href="https://github.com/astralway/phrasecount">phrasecount</a>
-example for instructions. You can also choose not to configure any observers but your workers will
-be idle when started.</p>
-  </li>
-  <li>
-    <p>Run the command below to initialize your Fluo application. Change <code class="highlighter-rouge">myapp</code> to your application name:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> fluo init myapp /path/to/myapp/fluo-app.properties
-</code></pre>
-    </div>
-
-    <p>A Fluo application only needs to be initialized once. After initialization, the Fluo application
-name is used to start/stop the application and scan the Fluo table.</p>
-  </li>
-  <li>
-    <p>Run <code class="highlighter-rouge">fluo list</code> which connects to Fluo and lists applications to verify initialization.</p>
-  </li>
-  <li>
-    <p>Run <code class="highlighter-rouge">fluo config myapp</code> to see what configuration is stored in ZooKeeper.</p>
-  </li>
-</ol>
-
-<h2 id="starting-your-fluo-application">Starting your Fluo application</h2>
-
-<p>Follow the instructions below to start a Fluo application which contains an oracle and multiple workers.</p>
-
-<ol>
-  <li>
-    <p>Configure <a href="https://github.com/apache/fluo/blob/master/modules/distribution/src/main/config/fluo-env.sh">fluo-env.sh</a> and <a href="https://github.com/apache/fluo/blob/master/modules/distribution/src/main/config/fluo-conn.properties">fluo-conn.properties</a> if you have not already.</p>
-  </li>
-  <li>
-    <p>Run Fluo application processes using the <code class="highlighter-rouge">fluo oracle</code> and <code class="highlighter-rouge">fluo worker</code> commands. Fluo applications
-are typically run with one oracle process and multiple worker processes. The commands below will start
-a Fluo oracle and two workers on your local machine:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> fluo oracle myapp &amp;&gt; oracle.log &amp;
- fluo worker myapp &amp;&gt; worker1.log &amp;
- fluo worker myapp &amp;&gt; worker2.log &amp;
-</code></pre>
-    </div>
-
-    <p>The commands will retrieve your application configuration and observer jars (using your
-application name) before starting the oracle or worker process.</p>
-  </li>
-</ol>
-
-<p>If you want to distribute the processes of your Fluo application across a cluster, you will need install
-Fluo on every node where you want to run a Fluo process and follow the instructions above on each node.</p>
-
-<h2 id="managing-your-fluo-application">Managing your Fluo application</h2>
-
-<p>When you have data in your Fluo application, you can view it using the command <code class="highlighter-rouge">fluo scan myapp</code>. 
-Pipe the output to <code class="highlighter-rouge">less</code> using the command <code class="highlighter-rouge">fluo scan myapp | less</code> if you want to page through the data.</p>
-
-<p>To list all Fluo applications, run <code class="highlighter-rouge">fluo list</code>.</p>
-
-<p>To stop your Fluo application, run <code class="highlighter-rouge">jps -m | grep Fluo</code> to find process IDs and use <code class="highlighter-rouge">kill</code> to stop them.</p>
-
-<h2 id="running-application-code">Running application code</h2>
-
-<p>The <code class="highlighter-rouge">fluo exec &lt;app name&gt; &lt;class&gt; {arguments}</code> provides an easy way to execute application code. It
-will execute a class with a main method if a jar containing the class is included with the observer 
-jars configured at initialization. When the class is run, Fluo classes and dependencies will be on 
-the classpath. The <code class="highlighter-rouge">fluo exec</code> command can inject the applications configuration if the class is 
-written in the following way. Defining the injection point is optional.</p>
-
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">javax.inject.Inject</span><span class="o">;</span>
-
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppCommand</span> <span class="o">{</span>
-
-  <span class="c1">//when run with fluo exec command, the applications configuration will be injected</span>
-  <span class="nd">@Inject</span>
-  <span class="kd">private</span> <span class="kd">static</span> <span class="n">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">;</span>
-
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-    <span class="k">try</span><span class="o">(</span><span class="n">FluoClient</span> <span class="n">fluoClient</span> <span class="o">=</span> <span class="n">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">))</span> <span class="o">{</span>
-      <span class="c1">//do stuff with Fluo</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</code></pre>
-</div>
-
-<h2 id="application-configuration">Application Configuration</h2>
-
-<p>For configuring observers, fluo provides a simple mechanism to set and access application specific
-configuration.  See the javadoc on <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>.getAppConfiguration() for more details.</p>
-
-<h2 id="debugging-applications">Debugging Applications</h2>
-
-<p>While monitoring <a href="/docs/fluo/1.2/administration/metrics/">Fluo metrics</a> can detect problems (like too many transaction collisions)
-in a Fluo application, <a href="/docs/fluo/1.2/administration/metrics/">metrics</a> may not provide enough information to debug the root cause
-of the problem. To help debug Fluo applications, low-level logging of transactions can be turned on
-by setting the following loggers to TRACE:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Logger</th>
-      <th>Level</th>
-      <th>Information</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>fluo.tx</td>
-      <td>TRACE</td>
-      <td>Provides detailed information about what transactions read and wrote</td>
-    </tr>
-    <tr>
-      <td>fluo.tx.summary</td>
-      <td>TRACE</td>
-      <td>Provides a one line summary about each transaction executed</td>
-    </tr>
-    <tr>
-      <td>fluo.tx.collisions</td>
-      <td>TRACE</td>
-      <td>Provides details about what data was involved When a transaction collides with another transaction</td>
-    </tr>
-    <tr>
-      <td>fluo.tx.scan</td>
-      <td>TRACE</td>
-      <td>Provides logging for each cell read by a scan.  Scan summary logged at <code class="highlighter-rouge">fluo.tx</code> level.  This allows suppression of <code class="highlighter-rouge">fluo.tx.scan</code> while still seeing summary.</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>Below is an example log after setting <code class="highlighter-rouge">fluo.tx</code> to TRACE. The number following <code class="highlighter-rouge">txid: </code> is the
-transactions start timestamp from the Oracle.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>2015-02-11 18:24:05,341 [fluo.tx ] TRACE: txid: 3 begin() thread: 198
-2015-02-11 18:24:05,343 [fluo.tx ] TRACE: txid: 3 class: com.SimpleLoader
-2015-02-11 18:24:05,357 [fluo.tx ] TRACE: txid: 3 get(4333, stat count ) -&gt; null
-2015-02-11 18:24:05,357 [fluo.tx ] TRACE: txid: 3 set(4333, stat count , 1)
-2015-02-11 18:24:05,441 [fluo.tx ] TRACE: txid: 3 commit() -&gt; SUCCESSFUL commitTs: 4
-2015-02-11 18:24:05,341 [fluo.tx ] TRACE: txid: 5 begin() thread: 198
-2015-02-11 18:24:05,442 [fluo.tx ] TRACE: txid: 3 close()
-2015-02-11 18:24:05,343 [fluo.tx ] TRACE: txid: 5 class: com.SimpleLoader
-2015-02-11 18:24:05,357 [fluo.tx ] TRACE: txid: 5 get(4333, stat count ) -&gt; 1
-2015-02-11 18:24:05,357 [fluo.tx ] TRACE: txid: 5 set(4333, stat count , 2)
-2015-02-11 18:24:05,441 [fluo.tx ] TRACE: txid: 5 commit() -&gt; SUCCESSFUL commitTs: 6
-2015-02-11 18:24:05,442 [fluo.tx ] TRACE: txid: 5 close()
-</code></pre>
-</div>
-
-<p>The log above traces the following sequence of events.</p>
-
-<ul>
-  <li>Transaction T1 has a start timestamp of <code class="highlighter-rouge">3</code></li>
-  <li>Thread with id <code class="highlighter-rouge">198</code> is executing T1, its running code from the class <code class="highlighter-rouge">com.SimpleLoader</code></li>
-  <li>T1 reads row <code class="highlighter-rouge">4333</code> and column <code class="highlighter-rouge">stat count</code> which does not exist</li>
-  <li>T1 sets row <code class="highlighter-rouge">4333</code> and column <code class="highlighter-rouge">stat count</code> to <code class="highlighter-rouge">1</code></li>
-  <li>T1 commits successfully and its commit timestamp from the Oracle is <code class="highlighter-rouge">4</code>.</li>
-  <li>Transaction T2 has a start timestamp of <code class="highlighter-rouge">5</code> (because its <code class="highlighter-rouge">5</code> &gt; <code class="highlighter-rouge">4</code> it can see what T1 wrote).</li>
-  <li>T2 reads a value of <code class="highlighter-rouge">1</code> for row <code class="highlighter-rouge">4333</code> and column <code class="highlighter-rouge">stat count</code></li>
-  <li>T2 sets row <code class="highlighter-rouge">4333</code> and column <code class="highlighter-rouge">stat count</code> to <code class="highlighter-rouge">2</code></li>
-  <li>T2 commits successfully with a commit timestamp of <code class="highlighter-rouge">6</code></li>
-</ul>
-
-<p>Below is an example log after only setting <code class="highlighter-rouge">fluo.tx.collisions</code> to TRACE. This setting will only log
-trace information when a collision occurs. Unlike the previous example, what the transaction read
-and wrote is not logged. This shows that a transaction with a start timestamp of <code class="highlighter-rouge">106</code> and a class
-name of <code class="highlighter-rouge">com.SimpleLoader</code> collided with another transaction on row <code class="highlighter-rouge">r1</code> and column <code class="highlighter-rouge">fam1 qual1</code>.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>2015-02-11 18:17:02,639 [tx.collisions] TRACE: txid: 106 class: com.SimpleLoader
-2015-02-11 18:17:02,639 [tx.collisions] TRACE: txid: 106 collisions: {r1=[fam1 qual1 ]}
-</code></pre>
-</div>
-
-<p>When applications read and write arbitrary binary data, this does not log so well. In order to make
-the trace logs human readable, non ASCII chars are escaped using hex. The convention used it <code class="highlighter-rouge">\xDD</code>
-where D is a hex digit. Also the <code class="highlighter-rouge">\</code> character is escaped to make the output unambiguous.</p>
+<p><a href="/docs/fluo/1.2/administration/initialize/">Initialize</a> your Fluo application before running it.</p>
 
 
 
     <div class="row" style="margin-top: 20px;">
       <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
-      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/master/_fluo-1-2/development/applications.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/master/_fluo-1-2/getting-started/create-application.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
     </div>  
   </div>
 </div>
