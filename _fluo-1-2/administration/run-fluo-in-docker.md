@@ -20,30 +20,8 @@ While it is easier to pull from DockerHub, the image will default to the softwar
 | [Hadoop]    | 2.7.3   |
 | [Zookeeper] | 3.4.9   |
 
-If these versions do not match what is running on your cluster, you should consider building
-your own image with matching versions. However, Fluo must be 1.2+. Below are instructions for
-building an image:
-
-1. Clone the Fluo docker repo
-
-        git clone git@github.com:apache/fluo-docker.git
-
-2. Until Fluo 1.2 is released, build a Fluo tarball distribution and copy it to the root
-   directory of the repo.
-
-        git clone git@github.com:apache/fluo.git
-        cd fluo/
-        mvn clean package
-        cp modules/distribution/target/fluo-1.2.0-SNAPSHOT-bin.tar.gz /path/to/fluo-docker/
-
-3. Build the default Fluo docker image using the command below.
-
-        cd /path/to/fluo-docker
-        docker build -t fluo .
-
-   Or build the Fluo docker image with specific versions of Hadoop, Zookeeper, etc using the command below:
-
-        docker build --build-arg ZOOKEEPER_VERSION=3.4.8 --build-arg ACCUMULO_VERSION=1.7.3 --build-arg HADOOP_VERSION=2.7.0 -t fluo .
+If these versions do not match what is running on your cluster, you should consider [building
+your own image][build-image] with matching versions.
 
 ## Image basics
 
@@ -126,6 +104,7 @@ The JSON below can be used to start Fluo worker(s). Modify instances to start mu
 
 Learn how to [manage Fluo applications][manage].
 
+[build-image]: https://github.com/apache/fluo-docker/blob/master/README.md#build-the-docker-image
 [manage]: {{ page.docs_base }}/administration/manage-applications/
 [Fluo]: https://fluo.apache.org/
 [Accumulo]: https://accumulo.apache.org/
