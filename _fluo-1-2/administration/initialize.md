@@ -68,7 +68,7 @@ Run your Fluo application using one of the methods below:
 
 * [Run Fluo processes][process]
 * [Run Fluo in YARN][yarn]
-* [Run Fluo in Docker][docker]
+* [Run Fluo in Docker][docker] which enables running in Mesos and Kubernetes
 
 Also, learn how to [manage Fluo applications][manage].
 

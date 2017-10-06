@@ -48,9 +48,12 @@ application is named `myapp` and was initialized using a Zookeeper node on `zkho
 
 Use the `docker` command to start local docker containers.
 
-1. Start a Fluo oracle
+1. Start a Fluo oracle for `myapp` application connecting to a Zookeeper at `zkhost`.
 
         docker run -d --network="host" apache/fluo oracle -a myapp -o fluo.connection.zookeepers=zkhost/fluo
+
+    The command above uses `-d` to run the container in the background and `--network="host"` to run the container
+    on the host's network stack.
 
 2. Start Fluo worker(s). Execute this command multiple times to start multiple workers.
 
