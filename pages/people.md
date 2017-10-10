@@ -31,6 +31,7 @@ based on commits.
 | [Kenneth McFarland](https://github.com/kpm1985)          |                                     | [PT][pt] |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt] |
+| [Joseph Koshakow](https://github.com/jkosh44)            |                                     | [ET][et]   |
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: https://hortonworks.com/
