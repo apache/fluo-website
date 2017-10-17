@@ -18,10 +18,10 @@ Follow the steps below to run a Fluo application:
     * [Run Fluo in YARN][yarn]
     * [Run Fluo in Docker][docker] which enables running in Mesos and Kubernetes
 
-[install]: {{ page.docs_base }}/getting-started/install-fluo/
-[create]: {{ page.docs_base }}/getting-started/create-application/
+[install]: {{ page.docs_base }}/getting-started/install-fluo
+[create]: {{ page.docs_base }}/getting-started/create-application
 [example]: /related-projects/
-[initialize]: {{ page.docs_base }}/administration/initialize/
-[process]: {{ page.docs_base }}/administration/run-fluo-processes/
-[yarn]: {{ page.docs_base }}/administration/run-fluo-in-yarn/
-[docker]: {{ page.docs_base }}/administration/run-fluo-in-docker/
+[initialize]: {{ page.docs_base }}/administration/initialize
+[process]: {{ page.docs_base }}/administration/run-fluo-processes
+[yarn]: {{ page.docs_base }}/administration/run-fluo-in-yarn
+[docker]: {{ page.docs_base }}/administration/run-fluo-in-docker

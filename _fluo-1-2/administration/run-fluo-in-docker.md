@@ -108,10 +108,10 @@ The JSON below can be used to start Fluo worker(s). Modify instances to start mu
 Learn how to [manage Fluo applications][manage].
 
 [build-image]: https://github.com/apache/fluo-docker/blob/master/README.md#build-the-docker-image
-[manage]: {{ page.docs_base }}/administration/manage-applications/
+[manage]: {{ page.docs_base }}/administration/manage-applications
 [Fluo]: https://fluo.apache.org/
 [Accumulo]: https://accumulo.apache.org/
 [Hadoop]: https://hadoop.apache.org/
 [Zookeeper]: https://zookeeper.apache.org/
-[intialize]: {{ page.docs_base }}/administration/initialize/
+[intialize]: {{ page.docs_base }}/administration/initialize
 [Marathon]: https://mesosphere.github.io/marathon/

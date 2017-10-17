@@ -101,6 +101,10 @@ probably increase the `tserver.server.threads.minimum` Accumulo setting.
 
 Using at least Accumulo 1.6.1 is recommended because multiple performance bugs were fixed.
 
+## Next Steps
+
+[Create a Fluo application][create] to run or use [an example application][related].
+
 [Accumulo]: https://accumulo.apache.org/
 [Hadoop]: http://hadoop.apache.org/
 [Zookeeper]: http://zookeeper.apache.org/
@@ -113,3 +117,4 @@ Using at least Accumulo 1.6.1 is recommended because multiple performance bugs w
 [fluo.properties.deprecated]: {{ page.github_base }}/modules/distribution/src/main/config/fluo.properties.deprecated
 [fluo-env.sh]: {{ page.github_base }}/modules/distribution/src/main/config/fluo-env.sh
 [lib/ahz/pom.xml]: {{ page.github_base }}/modules/distribution/src/main/lib/ahz/pom.xml
+[create]: {{ page.docs_base }}/getting-started/create-application

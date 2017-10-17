@@ -91,10 +91,10 @@ When you want you stop your Fluo application, use the the YARN resource manager 
 [Fluo]: https://fluo.apache.org/
 [YARN]: https://hadoop.apache.org/
 [related]: /related-projects/
-[install]: {{ page.docs_base }}/getting-started/install-fluo/
-[application]: {{ page.docs_base }}/getting-started/create-application/
-[initialize]: {{ page.docs_base }}/administration/initialize/
-[manage]: {{ page.docs_base }}/administration/manage-applications/
+[install]: {{ page.docs_base }}/getting-started/install-fluo
+[application]: {{ page.docs_base }}/getting-started/create-application
+[initialize]: {{ page.docs_base }}/administration/initialize
+[manage]: {{ page.docs_base }}/administration/manage-applications
 [release]: /download/
 [fluo-yarn-env.sh]: {{ page.github_yarn}}/distribution/conf/fluo-yarn-env.sh
 [fluo-yarn.properties]: {{ page.github_yarn}}/distribution/conf/fluo-yarn.properties

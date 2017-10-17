@@ -40,7 +40,7 @@ To stop your Fluo application, run `jps -m | grep Fluo` to find process IDs and 
 
 Learn how to [manage Fluo applications][manage].
 
-[install-fluo]: {{ page.docs_base }}/getting-started/install-fluo/
-[manage]: {{ page.docs_base }}/administration/manage-applications/
+[install-fluo]: {{ page.docs_base }}/getting-started/install-fluo
+[manage]: {{ page.docs_base }}/administration/manage-applications
 [fluo-env.sh]: {{ page.github_base}}/modules/distribution/src/main/config/fluo-env.sh
 [fluo-conn.properties]: {{ page.github_base}}/modules/distribution/src/main/config/fluo-conn.properties
