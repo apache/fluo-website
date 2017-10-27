@@ -31,6 +31,7 @@ based on commits.
 | [Garvit Bansal](https://github.com/Garvit244)            | [Flipkart](https://www.flipkart.com)| [IST][ist] |
 | [Joseph Koshakow](https://github.com/jkosh44)            |                                     | [ET][et]   |
 | [Kenneth McFarland](https://github.com/kpm1985)          |                                     | [PT][pt]   |
+| [Lucas Lima Vieira](https://github.com/llvieira)         |                                     | [BRT][brt] |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
 
@@ -42,3 +43,4 @@ based on commits.
 [pt]: https://www.timeanddate.com/time/zones/pt
 [ist]: https://www.timeanddate.com/time/zones/ist
 [PMC]: https://www.apache.org/foundation/how-it-works.html#pmc
+[brt]: https://www.timeanddate.com/time/zones/brt
