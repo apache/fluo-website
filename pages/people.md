@@ -32,6 +32,7 @@ based on commits.
 | [Joseph Koshakow](https://github.com/jkosh44)            |                                     | [ET][et]   |
 | [Kenneth McFarland](https://github.com/kpm1985)          |                                     | [PT][pt]   |
 | [Lucas Lima Vieira](https://github.com/llvieira)         |                                     | [BRT][brt] |
+| [Manjiri Tapaswi](https://github.com/mptap)              |                                     | [PT][pt]   |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
 
