@@ -16,7 +16,7 @@ conduct also.
 
 Contributions can be made to the following repositories.  This page contains general instructions
 for all repositories.  Each repository also has a `CONTRIBUTING.md` file containing instructions
-specifaclly for it. For the links columns below, `I` is for issues and `C` is for CONTRIBUTING.md. 
+specifically for it. For the links columns below, `I` is for issues and `C` is for CONTRIBUTING.md. 
 
 | Repository        | Links           | Description
 | ----------------- | --------------- | -----------
@@ -49,7 +49,7 @@ specifaclly for it. For the links columns below, `I` is for issues and `C` is fo
 
 1. Create a [Pull Request] in the appropriate repository.  If the work is not complete and the Pull Request is for feedback, please put `[WIP]` in the subject.
 1. At least one committer (and others in the community) will review your pull request and add any comments to your code.
-1. Push any changes from the review to the branch as new commits so the reviewer only needs to review new changes.  Please avoid squasing commits after the review starts.  Squashing makes it hard for the reviewer to follow the changes.
+1. Push any changes from the review to the branch as new commits so the reviewer only needs to review new changes.  Please avoid squashing commits after the review starts.  Squashing makes it hard for the reviewer to follow the changes.
 1. Repeat this process until a reviewer approves the pull request.
 1. When the review process is finished, all commits on the pull request may be squashed by a committer.  Please avoid squashing as it makes it difficult for the committer to know if they are merging what was reviewed.
 

@@ -7,7 +7,7 @@ permalink: /related-projects/
 This page list external projects that build on Apache Fluo and may be useful.
 These projects are not necessarily affiliated with or endorsed by the 
 [Apache Software Foundation][asf]. If you would like to add a project to this 
-list, please open an issue or submit a pull request [on Github][web-ghr].
+list, please open an issue or submit a pull request [on GitHub][web-ghr].
 
 ### Projects Using Fluo
 
