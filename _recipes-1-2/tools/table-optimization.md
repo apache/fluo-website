@@ -39,7 +39,7 @@ TableOperations.optimizeTable(fluoConf);
 ## Command Example
 
 Fluo Recipes provides an easy way to optimize a Fluo table for configured
-recipes from the command line.  This should be done after configuring reciped
+recipes from the command line.  This should be done after configuring recipes
 and initializing Fluo.  Below are example command for initializing in this way.
 
 ```bash
@@ -58,8 +58,8 @@ fluo exec app1 org.apache.fluo.recipes.accumulo.cmds.OptimizeTable
 
 ## Table optimization registry
 
-Recipes register themself by calling [TableOptimizations.registerOptimization()][1].  Anyone can use
-this mechanism, its not limited to use by exisitng recipes.
+Recipes register themselves by calling [TableOptimizations.registerOptimization()][1].  Anyone can use
+this mechanism, its not limited to use by existing recipes.
 
 [1]: {{ page.javadoc_core }}/org/apache/fluo/recipes/core/common/TableOptimizations.html
 [2]: {{ page.javadoc_accumulo }}/org/apache/fluo/recipes/accumulo/ops/TableOperations.html

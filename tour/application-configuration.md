@@ -14,7 +14,7 @@ To use application configuration, set properties with the prefix `fluo.app` in y
 file before initialization.  Alternatively use [FluoConfiguration.getAppConfiguration()][fcogac] to
 set these properties programmatically.  After Fluo is initialized this information can be accessed
 anywhere by calling [FluoClient.getAppConfiguration()][fclgac],
-[ObserverProvider.Context.getAppConfigurtaion()][opgac], or [Loader.Context.getAppConfiguration()][lcgac].
+[ObserverProvider.Context.getAppConfiguration()][opgac], or [Loader.Context.getAppConfiguration()][lcgac].
 
 The following is a simple example of using application config.   This example sets some application
 config before initialization.  After initialization the configuration is accessed via

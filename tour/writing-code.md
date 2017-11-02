@@ -11,7 +11,7 @@ obtain, edit, and run this basic skeleton.
 git clone -b fluo-tour https://gitbox.apache.org/repos/asf/fluo-website fluo-tour
 cd fluo-tour
 
-#edit Main (all of the following excercises will require this)
+#edit Main (all of the following exercises will require this)
 nano src/main/java/ft/Main.java
 
 #using Maven, run Main (all of the following exercises will require this)

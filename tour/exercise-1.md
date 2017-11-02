@@ -467,7 +467,7 @@ Then modify `preInit()` in `Main` to the following.
   }
 ```
 
-Add a constuctor to `ContentObserver` and modify `adjustCounts()` to the
+Add a constructor to `ContentObserver` and modify `adjustCounts()` to the
 following.
 
 ```java

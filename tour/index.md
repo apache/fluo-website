@@ -25,7 +25,7 @@ updated using them. Later in the tour, you can implement this use case.
 We recommend following the tour in order. However, all pages are listed below for review.  When on a
 tour page, the left and right keys on the keyboard can be used to navigate.  If you have any
 questions or suggestions while going through the tour, please contact us.  There are multiple
-options for getting in touch : [mailing list, IRC][contact], and [Github Issues][issues].  Any
+options for getting in touch : [mailing list, IRC][contact], and [GitHub Issues][issues].  Any
 thoughts, solutions, etc  related to this tour can also be tweeted using the hashtag
 [#apachefluotour][aft].
 
