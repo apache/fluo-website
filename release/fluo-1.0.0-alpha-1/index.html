@@ -122,7 +122,7 @@
 
 
 <div class="post-content">
-  <p>Fluo 1.0.0-alpha-1 is the first official release of Fluo. It contains 83 initial tickets marked for this first milestone. The roadmap for this release included a working initial implementation, completing an initial pass at the client API (which will be finalized in 1.0.0), and writing a stress test application.  This release has not been tested much at scale and is not ready for production use.  More scale and peformance testing will be done for the beta release.</p>
+  <p>Fluo 1.0.0-alpha-1 is the first official release of Fluo. It contains 83 initial tickets marked for this first milestone. The roadmap for this release included a working initial implementation, completing an initial pass at the client API (which will be finalized in 1.0.0), and writing a stress test application.  This release has not been tested much at scale and is not ready for production use.  More scale and performance testing will be done for the beta release.</p>
 
 <p>Below are resources for this release:</p>
 
@@ -179,7 +179,7 @@
   <li><a href="https://github.com/fluo-io/fluo/issues/98">Fluo-98</a>   - Create a Range class for Fluo</li>
   <li><a href="https://github.com/fluo-io/fluo/issues/123">Fluo-123</a> - Hide implementation of Bytes in the API</li>
   <li><a href="https://github.com/fluo-io/fluo/issues/130">Fluo-130</a> - Expose MiniFluo in public API</li>
-  <li><a href="https://github.com/fluo-io/fluo/issues/131">Fluo-131</a> - Make LoaderExector implement closeable</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/131">Fluo-131</a> - Make LoaderExecutor implement closeable</li>
   <li><a href="https://github.com/fluo-io/fluo/issues/147">Fluo-147</a> - Create fluo-accumulo module for Accumulo iterators and formatter</li>
   <li><a href="https://github.com/fluo-io/fluo/issues/175">Fluo-175</a> - Add newTransaction() method to FluoClient</li>
   <li><a href="https://github.com/fluo-io/fluo/issues/186">Fluo-186</a> - Add Exceptions to API</li>
@@ -191,7 +191,7 @@
 
 <h2 id="current-status-of-percolator-implementation">Current Status of Percolator Implementation</h2>
 
-<p>The following tables identify the features necessary for a full implementation of Percolator and the current state of Fluo with regards to the implementation. For alpha, a test to excercise some of these features at scale was created, however, it was not run at scale for long periods. One of the goals for beta is to have at least a 24hr run of the scale test, on at least 20 nodes, succeed.</p>
+<p>The following tables identify the features necessary for a full implementation of Percolator and the current state of Fluo with regards to the implementation. For alpha, a test to exercise some of these features at scale was created, however, it was not run at scale for long periods. One of the goals for beta is to have at least a 24hr run of the scale test, on at least 20 nodes, succeed.</p>
 
 <h3 id="necessary-features">Necessary features:</h3>
 
@@ -235,7 +235,7 @@
       <td>IT,CST</td>
     </tr>
     <tr>
-      <td>Multithreaded Transasctions</td>
+      <td>Multithreaded Transactions</td>
       <td>Allows highly parallel execution of transactions and synchronization only during get() and commit() upon which transactions actually collide.</td>
       <td>IT,CST</td>
     </tr>

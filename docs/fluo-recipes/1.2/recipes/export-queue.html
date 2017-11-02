@@ -253,7 +253,7 @@ transaction.</p>
     <span class="kd">static</span> <span class="kd">final</span> <span class="n">Column</span> <span class="n">UPDATE_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"meta"</span><span class="o">,</span> <span class="s">"numUpdates"</span><span class="o">);</span>
     <span class="kd">static</span> <span class="kd">final</span> <span class="n">Column</span> <span class="n">COUNTER_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"meta"</span><span class="o">,</span> <span class="s">"counter1"</span><span class="o">);</span>
 
-    <span class="c1">//reperesents a Query system extrnal to Fluo that is updated by Fluo</span>
+    <span class="c1">// represents a Query system external to Fluo that is updated by Fluo</span>
     <span class="n">QuerySystem</span> <span class="n">querySystem</span><span class="o">;</span>
 
     <span class="nd">@Override</span>
@@ -395,8 +395,7 @@ application.</p>
 </code></pre>
 </div>
 
-<p>Below is updated version of the observer from above thats now using an export
-queue.</p>
+<p>Below is updated version of the observer from above that is now using an export queue.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">implements</span> <span class="n">StringObserver</span> <span class="o">{</span>
 
@@ -503,7 +502,7 @@ that creates the export value.</p>
 <p>In the example above only one transaction will succeed because both are setting
 <code class="highlighter-rouge">row1 fam1:qual1</code>.  Since adding to the export queue is part of the
 transaction, only the transaction that succeeds will add something to the
-queue.  If the funtion ek() in the example is deterministic, then both
+queue.  If the function ek() in the example is deterministic, then both
 transactions would have been trying to add the same key to the export queue.</p>
 
 <p>With the above method, we know that transactions adding entries to the queue for
@@ -517,7 +516,7 @@ same key.  Both transactions succeed because they are writing to different
 cells (<code class="highlighter-rouge">rowB fam1:qual2</code> and <code class="highlighter-rouge">rowA fam1:qual2</code>).  This approach makes it more
 difficult to reason about export entries with the same key, because the
 transactions adding those entries could have overlapped in time.  This is an
-example of write skew mentioned in the Percolater paper.</p>
+example of write skew mentioned in the Percolator paper.</p>
 
 <ol>
   <li>TH1 : key1 = ek(<code class="highlighter-rouge">row1</code>,<code class="highlighter-rouge">fam1:qual1</code>)</li>
