@@ -7,7 +7,7 @@ the `exercise(MiniFluo, FluoClient)` function in [src/main/java/ft/Main.java][ma
 `ft.Main` as previously mentioned.
 
 ```java
-  private static void exercises(MiniFluo mini, FluoClient client) {
+  private static void exercise(MiniFluo mini, FluoClient client) {
     String row = "kerbalnaut0001";
     Column fName = new Column("name", "first");
     Column lName = new Column("name", "last");
