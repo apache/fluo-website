@@ -198,7 +198,7 @@ u:http://oldnews.com/a23 uri hash	a6c4d1f
 
 Now that you have data loading, create an observer that watches the reference
 status column.  This observer should increment word counts when new content is
-referenced and decrement word counts when content is dereferenced.  The observer should also delete the content if zero URLs reference this one and when content's URL reference counts goes to zero, if it was processed before then its word counts should be decremented before deleting.
+referenced and decrement word counts when content is dereferenced.  The observer should also delete the content if zero URLs reference this one. If content's URL reference counts goes to zero and it was processed before, then its word counts should be decremented before deleting.
 
 Make sure you handle the following scenario correctly.
 
