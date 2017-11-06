@@ -197,9 +197,15 @@ u:http://oldnews.com/a23 uri hash	a6c4d1f
 ## Part 2 : Computing word counts.
 
 Now that you have data loading, create an observer that watches the reference
-status column.  This observer should increment word counts when new content is
-referenced and decrement word counts when content is dereferenced.  The
-observer should also delete the content when its dereferenced.
+status column (*doc:refs*).  This observer should take the following actions 
+based on the values of the columns *doc:refs* and *doc:processed*.  
+
+| doc:refs     | doc:processed       | Action
+| ------------ | ------------------- | ----------
+| referenced   | false               | Increment word counts and set *doc:processed* to *true*
+| referenced   | true                | None
+| unreferenced | false               | Delete content
+| unreferenced | true                | Delete content and decrement word counts
 
 Make sure you handle the following scenario correctly.
 
