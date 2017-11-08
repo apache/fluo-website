@@ -36,6 +36,7 @@ based on commits.
 | [Michael Miller](https://github.com/milleruntime)        | [Centroid LLC][centroid]            | [ET][et]   |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
+| [Sri Kailash](https://github.com/srikailash)		   | [Booking.com](https://booking.com)  | [CEST][cst]|
 
 [tc]: http://www.tetraconcepts.com/
 [hw]: https://hortonworks.com/
@@ -47,3 +48,4 @@ based on commits.
 [PMC]: https://www.apache.org/foundation/how-it-works.html#pmc
 [brt]: https://www.timeanddate.com/time/zones/brt
 [centroid]: http://www.centroid-llc.com/
+[cst]:https://www.timeanddate.com/time/zones/cest
