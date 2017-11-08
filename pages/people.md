@@ -33,6 +33,7 @@ based on commits.
 | [Kenneth McFarland](https://github.com/kpm1985)          |                                     | [PT][pt]   |
 | [Lucas Lima Vieira](https://github.com/llvieira)         |                                     | [BRT][brt] |
 | [Manjiri Tapaswi](https://github.com/mptap)              |                                     | [PT][pt]   |
+| [Michael Miller](https://github.com/milleruntime)        | [Centroid LLC][centroid]            | [ET][et]   |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
 
@@ -45,3 +46,4 @@ based on commits.
 [ist]: https://www.timeanddate.com/time/zones/ist
 [PMC]: https://www.apache.org/foundation/how-it-works.html#pmc
 [brt]: https://www.timeanddate.com/time/zones/brt
+[centroid]: http://www.centroid-llc.com/
