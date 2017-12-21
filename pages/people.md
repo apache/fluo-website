@@ -27,6 +27,7 @@ based on commits.
 
 | Name                                                     | Organization                        | Timezone   |
 -----------------------------------------------------------|-------------------------------------|------------|
+| [Alan Camillo](https://github.com/alanblueshift)         |                                     |            |
 | [Amal Krishnan](https://github.com/krishamal)            |                                     | [IST][ist] |
 | [Eric Newton](https://github.com/ericnewton)             |                                     | [ET][et]   |
 | [Garvit Bansal](https://github.com/Garvit244)            | [Flipkart](https://www.flipkart.com)| [IST][ist] |
