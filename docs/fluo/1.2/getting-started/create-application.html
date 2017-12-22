@@ -273,9 +273,8 @@ create a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incub
 
 <ol>
   <li>
-    <p>Create one or more classes that extend <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/Observer.html">Observer</a> like the example below. Please use <a href="http://www.slf4j.org/">slf4j</a> for
-any logging in observers as <a href="http://www.slf4j.org/">slf4j</a> supports multiple logging implementations. This is
-necessary as Fluo applications have a hard requirement on <a href="http://logback.qos.ch/">logback</a> when running in YARN.</p>
+    <p>Create one or more classes that extend <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/Observer.html">Observer</a> like the example below. It is a good idea to
+use <a href="http://www.slf4j.org/">slf4j</a> for any logging in observers as <a href="http://www.slf4j.org/">slf4j</a> supports multiple logging implementations.</p>
 
     <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">InvertObserver</span> <span class="kd">implements</span> <span class="n">Observer</span> <span class="o">{</span>
 
@@ -297,13 +296,13 @@ register multiple observers.</p>
 
     <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">AppObserverProvider</span> <span class="kd">implements</span> <span class="n">ObserverProvider</span> <span class="o">{</span>
   <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="n">Registry</span> <span class="n">or</span><span class="o">,</span> <span class="n">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="n">Registry</span> <span class="n">reg</span><span class="o">,</span> <span class="n">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
     <span class="c1">//setup InvertObserver to be triggered when the column obs:data is modified</span>
-    <span class="n">or</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"obs"</span><span class="o">,</span> <span class="s">"data"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">)</span>
+    <span class="n">reg</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"obs"</span><span class="o">,</span> <span class="s">"data"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">)</span>
       <span class="o">.</span><span class="na">useObserver</span><span class="o">(</span><span class="k">new</span> <span class="n">InvertObserver</span><span class="o">());</span>
         
     <span class="c1">//Observer is a Functional interface.  So Observers can be written as lambdas.</span>
-    <span class="n">or</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"new"</span><span class="o">,</span><span class="s">"data"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">WEAK</span><span class="o">)</span>
+    <span class="n">reg</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"new"</span><span class="o">,</span><span class="s">"data"</span><span class="o">),</span> <span class="n">NotificationType</span><span class="o">.</span><span class="na">WEAK</span><span class="o">)</span>
       <span class="o">.</span><span class="na">useObserver</span><span class="o">((</span><span class="n">tx</span><span class="o">,</span><span class="n">row</span><span class="o">,</span><span class="n">col</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
          <span class="n">Bytes</span> <span class="n">combined</span> <span class="o">=</span> <span class="n">combineNewAndOld</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span><span class="n">row</span><span class="o">);</span>
          <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="k">new</span> <span class="n">Column</span><span class="o">(</span><span class="s">"current"</span><span class="o">,</span><span class="s">"data"</span><span class="o">),</span> <span class="n">combined</span><span class="o">);</span>
@@ -313,9 +312,11 @@ register multiple observers.</p>
 </code></pre>
     </div>
   </li>
-  <li>Build a jar containing these classes and include this jar in the <code class="highlighter-rouge">lib/</code> directory of your Fluo
-application.</li>
-  <li>Configure your Fluo application to use this observer provider by modifying the Application section of
+  <li>Build a jar containing these classes. Put this jar and any other dependencies required for your
+application in a directory. Set <code class="highlighter-rouge">fluo.observer.init.dir</code> in <a href="https://github.com/apache/fluo/blob/master/modules/distribution/src/main/config/fluo-app.properties">fluo-app.properties</a> to the path of
+this directory. When your application is initialized, these jars will be loaded to HDFS to make
+them accessible to all of your Fluo workers on the cluster.</li>
+  <li>Configure your Fluo application to use your observer provider by modifying the Application section of
 <a href="https://github.com/apache/fluo/blob/master/modules/distribution/src/main/config/fluo-app.properties">fluo-app.properties</a>. Set <code class="highlighter-rouge">fluo.observer.provider</code> to the observer provider class name.</li>
   <li>Initialize your Fluo application as described in the next section.  During initialization Fluo
 will obtain the observed columns from the ObserverProvider and persist the columns in Zookeeper.
