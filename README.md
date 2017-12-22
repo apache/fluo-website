@@ -69,8 +69,8 @@ The commands below serve as a guide for committers who wish to publish the web s
 
 In the commands above `upstream` is 
 
-`$ git remote -v | grep upstream
+```
+$ git remote -v | grep upstream
 upstream	https://gitbox.apache.org/repos/asf/fluo-website/ (fetch)
 upstream	https://gitbox.apache.org/repos/asf/fluo-website/ (push)``
-
 ```
