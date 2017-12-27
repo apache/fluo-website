@@ -1,6 +1,8 @@
 ---
 ---
 
+@import "syntax-highlighting";
+
 table {
  margin: 10px 0px 30px 0px;
  padding: 10px 5px 10px 5px;
@@ -38,11 +40,6 @@ code {
 
 tr:nth-child(even) {background: #F3F3F3}
 tr:nth-child(odd) {background: #FFF}
-
-.highlight {
-  padding-left: 8px;
-  padding-bottom: 4px;
-}
 
 .post-title-home {
   a {
@@ -99,5 +96,3 @@ tr:nth-child(odd) {background: #FFF}
     height: 30px;
   }
 }
-
-@import "pygments-tomorrow";
