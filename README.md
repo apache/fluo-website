@@ -44,3 +44,33 @@ replace any reference to `fluo` with `recipes`.
 
 3. Update `_config.yml` by adding a `fluo-1-3` collection and setting default values for it.
    You may want to keep 1.2 values for github & javadocs until 1.3 is released.
+   
+## Committer instructions
+
+To publish Fluo's website the `gh-pages` branch must be rendered into the `asf-site` 
+branch.  The script `_scripts/git-hooks/post-commit` automates rendering into the `asf-site` branch.
+The commands below serve as a guide for committers who wish to publish the web site.
+
+```bash
+ # ensure local asf-site branch is up to date
+ git checkout asf-site 
+ git pull upstream asf-site
+
+ # switch to gh-pages branch, update it, and build new site 
+ git checkout gh-pages
+ git pull upstream gh-pages 
+ ./_scripts/git-hooks/post-commit 
+
+ # switch to asf-site, look at the commit created by post-commit script, and push it if ok
+ git checkout asf-site 
+ git log -p
+ git push upstream asf-site 
+```
+
+In the commands above `upstream` is 
+
+```
+$ git remote -v | grep upstream
+upstream	https://gitbox.apache.org/repos/asf/fluo-website/ (fetch)
+upstream	https://gitbox.apache.org/repos/asf/fluo-website/ (push)``
+```

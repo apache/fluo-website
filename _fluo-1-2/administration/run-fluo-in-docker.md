@@ -113,5 +113,5 @@ Learn how to [manage Fluo applications][manage].
 [Accumulo]: https://accumulo.apache.org/
 [Hadoop]: https://hadoop.apache.org/
 [Zookeeper]: https://zookeeper.apache.org/
-[intialize]: {{ page.docs_base }}/administration/initialize
+[initialize]: {{ page.docs_base }}/administration/initialize
 [Marathon]: https://mesosphere.github.io/marathon/

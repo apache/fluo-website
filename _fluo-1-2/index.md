@@ -1,4 +1,4 @@
 ---
 title: Apache Fluo documentation
-redirect_to: getting-started/design
+redirect_to: /docs/fluo/1.2/getting-started/design
 ---

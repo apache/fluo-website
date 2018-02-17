@@ -4,7 +4,7 @@ date: 2015-12-22 15:30:00 +0000
 redirect_from: /beta-2-pre-release-stress-test/
 ---
 
-In preperation for a beta 2 release, the [stress test][3] was run again on EC2.
+In preparation for a beta 2 release, the [stress test][3] was run again on EC2.
 The test went well outperforming the [first stress test][1] and [beta-1 stress
 test][2]. 
 
@@ -18,7 +18,7 @@ computed 1,019,481,332 unique integers.
 The test took a total of 7 hours 30 minutes and 30 seconds.  Over this time
 period 61.7 million NodeObserver and 20 million NodeLoader transactions were
 executed.  The average rate of transactions per second for the entire test was
-2,968 tansactions per second.  At the conclusion of the test, the stress table
+2,968 transactions per second.  At the conclusion of the test, the stress table
 had 3.87 billion entries.
 
 The test was run with the following environment.

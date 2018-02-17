@@ -73,9 +73,8 @@ It may help to reference the [API javadocs][API] while you are learning the Fluo
 
 To create an observer, follow these steps:
 
-1.  Create one or more classes that extend [Observer] like the example below. Please use [slf4j] for
-    any logging in observers as [slf4j] supports multiple logging implementations. This is
-    necessary as Fluo applications have a hard requirement on [logback] when running in YARN.
+1.  Create one or more classes that extend [Observer] like the example below. It is a good idea to
+    use [slf4j] for any logging in observers as [slf4j] supports multiple logging implementations.
 
     ```java
     public class InvertObserver implements Observer {
@@ -97,13 +96,13 @@ To create an observer, follow these steps:
     ```java
     class AppObserverProvider implements ObserverProvider {
       @Override
-      public void provide(Registry or, Context ctx) {
+      public void provide(Registry reg, Context ctx) {
         //setup InvertObserver to be triggered when the column obs:data is modified
-        or.forColumn(new Column("obs", "data"), NotificationType.STRONG)
+        reg.forColumn(new Column("obs", "data"), NotificationType.STRONG)
           .useObserver(new InvertObserver());
         
         //Observer is a Functional interface.  So Observers can be written as lambdas.
-        or.forColumn(new Column("new","data"), NotificationType.WEAK)
+        reg.forColumn(new Column("new","data"), NotificationType.WEAK)
           .useObserver((tx,row,col) -> {
              Bytes combined = combineNewAndOld(tx,row);
              tx.set(row, new Column("current","data"), combined);
@@ -112,9 +111,11 @@ To create an observer, follow these steps:
     }
     ```
 
-3.  Build a jar containing these classes and include this jar in the `lib/` directory of your Fluo
-    application.
-4.  Configure your Fluo application to use this observer provider by modifying the Application section of
+3.  Build a jar containing these classes. Put this jar and any other dependencies required for your
+    application in a directory. Set `fluo.observer.init.dir` in [fluo-app.properties] to the path of
+    this directory. When your application is initialized, these jars will be loaded to HDFS to make
+    them accessible to all of your Fluo workers on the cluster.
+4.  Configure your Fluo application to use your observer provider by modifying the Application section of
     [fluo-app.properties]. Set `fluo.observer.provider` to the observer provider class name.
 5.  Initialize your Fluo application as described in the next section.  During initialization Fluo
     will obtain the observed columns from the ObserverProvider and persist the columns in Zookeeper.

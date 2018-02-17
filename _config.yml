@@ -2,8 +2,9 @@
 title: Apache Fluo
 url: "https://fluo.apache.org/" # the base hostname & protocol for your site
 timezone: Etc/UTC
-
 permalink: pretty
+
+markdown: kramdown
 
 # Collection names cannot contain periods
 collections:
@@ -92,12 +93,7 @@ old_api_base: "https://javadoc.io/doc/io.fluo"
 old_api_static: "https://static.javadoc.io/io.fluo"
 
 whitelist: [jekyll-redirect-from]
-gems: [jekyll-redirect-from]
+plugins: [jekyll-redirect-from]
 
 #Social
 twitter_username: "ApacheFluo"
-
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
-  hard_wrap: false
