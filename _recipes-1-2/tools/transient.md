@@ -7,7 +7,7 @@ order: 2
 ## Background
 
 Some recipes store transient data in a portion of the Fluo table.  Transient
-data is data thats continually being added and deleted.  Also these transient
+data is data that's continually being added and deleted.  Also these transient
 data ranges contain no long term data.  The way Fluo works, when data is
 deleted a delete marker is inserted but the data is actually still there.  Over
 time these transient ranges of the table will have a lot more delete markers

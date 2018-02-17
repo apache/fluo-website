@@ -46,7 +46,7 @@ that does not last.
 CPU Utilization 
 ---------------
 
-Inorder to get higher throughput changes were made to reduce CPU usage and
+In order to get higher throughput changes were made to reduce CPU usage and
 evenly spread CPU usage across the cluster.  The following plot shows the CPU
 usage of all nodes across the cluster during the test.  Unfortunately this data
 was not kept for the previous run.  One issue that caused problems in the

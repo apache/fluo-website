@@ -10,7 +10,7 @@ When many transactions try to modify the same keys, collisions will occur.  Too 
 cause transactions to fail and throughput to nose dive.  For example, consider [phrasecount]
 which has many transactions processing documents.  Each transaction counts the phrases in a document
 and then updates global phrase counts.  Since transaction attempts to update many phrases
-, the probability of collisions is high.
+, the probbaility of collisions is high.
 
 ## Solution
 
@@ -195,7 +195,7 @@ This recipe makes two important guarantees about updates for a key when it
 calls `process()` on a [ChangeObserver].
 
  * The new value reported for an update will be derived from combining all
-   updates that were committed before the transaction thats processing updates
+   updates that were committed before the transaction that's processing updates
    started.  The implementation may have to make multiple passes over queued
    updates to achieve this.  In the situation where TX1 queues a `+1` and later
    TX2 queues a `-1` for the same key, there is no need to worry about only seeing
