@@ -144,6 +144,72 @@ When the vote passes on a release candidate, follow the steps below to complete 
 
  8.  Send an email to `dev@fluo.apache.org` announcing new release.
 
+### Test a Fluo release
+
+Below are two common testing strategies to verify a Fluo release candidate:
+
+1. Run the integration tests of projects that depend on Fluo (using the release candidate jars)
+
+1. Run example Fluo applications (using the release candidate tarball)
+
+These strategies are described below with step-by-step instructions.
+
+#### Run integration tests
+
+A Fluo release can be tested by running the integration tests of projects that use Fluo.
+
+1. Before running integration tests, you'll need the following information:
+    * Release version (example: `1.2.0`)
+    * Staging repo (example: `https://repository.apache.org/content/repositories/orgapachefluo-1023/`)
+        * Note: The staging repo changes with each release candidate.
+
+1. Add the following configuration to `~/.m2/settings.xml` to instruct Maven to build using the staging repo
+   for the release candidate. Also, make sure that the `fluoRC` profile is active while you are testing the release
+   but comment out `<activeProfiles>` section after you are done testing.
+    ```xml
+    <profiles>
+      <profile>
+        <id>fluoRC</id>
+        <repositories>
+          <repository>
+            <id>fluorc</id>
+            <name>fluorc</name>
+            <url>https://repository.apache.org/content/repositories/orgapachefluo-1023/</url>
+          </repository>
+        </repositories>
+        <pluginRepositories>
+          <pluginRepository>
+            <id>fluorcp</id>
+            <name>fluorcp</name>
+            <url>https://repository.apache.org/content/repositories/orgapachefluo-1023/</url>
+          </pluginRepository>
+        </pluginRepositories>
+      </profile>
+    </profiles>
+    <activeProfiles>
+      <activeProfile>fluoRC</activeProfile>
+    </activeProfiles>
+    ```
+1. Clone a project that uses Fluo like the [Fluo Recipes] project below:
+    ```shell
+    $ git clone https://github.com/apache/fluo-recipes.git
+    ```
+    In addition to [Fluo Recipes], there are several projects containing example Fluo applications
+    that have integration tests:
+    * [Phrasecount] - `https://github.com/astralway/phrasecount.git`
+    * [Stresso] - `https://github.com/astralway/stresso.git`
+    * [Webindex] - `https://github.com/astralway/webindex.git`
+1. Run the integration tests using `mvn verify`.  Make sure to set the `fluo.version` to the release
+   version.
+    ```shell
+    $ mvn clean verify -Dfluo.version=1.2.0
+    ```
+1. After you are done testing, remember to comment out `<activeProfiles>` in your `~/.m2/settings.xml`
+
+[Fluo Recipes]: https://github.com/apache/fluo-recipes
+[Phrasecount]: https://github.com/astralway/phrasecount
+[Stresso]: https://github.com/astralway/stresso
+[Webindex]: https://github.com/astralway/webindex
 [website README]: https://github.com/apache/fluo-website/blob/master/README.md
 [example-email]: https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E
 [KEYS]: https://www.apache.org/dist/fluo/KEYS
