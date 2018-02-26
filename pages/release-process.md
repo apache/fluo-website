@@ -148,10 +148,10 @@ When the vote passes on a release candidate, follow the steps below to complete 
 
 #### Set up environment for all tests
 
-1. Set the release version, staging repo, and alias to configure Maven with temporary settings:
+1. Set the release version, ID for staging repo, and alias to configure Maven with temporary settings:
    ```shell
    export RC_VERSION=1.2.0
-   export RC_STAGING=https://repository.apache.org/content/repositories/orgapachefluo-1023/
+   export RC_STAGING=1023
    alias mvn='mvn -s /tmp/fluo-rc-maven.xml'
    ```
 1. Create temporary Maven settings
@@ -165,14 +165,14 @@ When the vote passes on a release candidate, follow the steps below to complete 
            <repository>
              <id>fluorc</id>
              <name>fluorc</name>
-             <url>\${env.RC_STAGING}</url>
+             <url>https://repository.apache.org/content/repositories/orgapachefluo-\${env.RC_STAGING}/</url>
            </repository>
          </repositories>
          <pluginRepositories>
            <pluginRepository>
              <id>fluorcp</id>
              <name>fluorcp</name>
-             <url>\${env.RC_STAGING}</url>
+             <url>https://repository.apache.org/content/repositories/orgapachefluo-\${env.RC_STAGING}/</url>
            </pluginRepository>
          </pluginRepositories>
        </profile>
@@ -183,9 +183,9 @@ When the vote passes on a release candidate, follow the steps below to complete 
    </settings>
    EOF
    ```
-1. If a new release candidate is made, update your staging repo.
+1. If a new release candidate is made, update your staging repo ID.
    ```shell
-   $ export RC_STAGING=https://repository.apache.org/content/repositories/orgapachefluo-1024/
+   $ export RC_STAGING=1024
    ```
 
 #### Run the integration tests of projects that use Fluo
@@ -196,7 +196,7 @@ When the vote passes on a release candidate, follow the steps below to complete 
     ```
 1. Run the integration test
     ```shell
-    $ mvn -s $FLUO_MAVEN clean verify -Dfluo.version=$RC_VERSION
+    $ mvn clean verify -Dfluo.version=$RC_VERSION
     ```
 Below are more projects with integration tests:
 * [Phrasecount] - `https://github.com/astralway/phrasecount.git`
@@ -213,7 +213,7 @@ Below are more projects with integration tests:
    ```
 1. Download release tarball
    ```shell
-   wget -P downloads/ ${RC_STAGING}/org/apache/fluo/fluo/${RC_VERSION}/fluo-${RC_VERSION}-bin.tar.gz
+   wget -P downloads/ https://repository.apache.org/content/repositories/orgapachefluo-${RC_STAGING}/org/apache/fluo/fluo/${RC_VERSION}/fluo-${RC_VERSION}-bin.tar.gz
    ```
 1. Set `FLUO_VERSION` and `FLUO_HASH` in `conf/uno.conf`.
    ```shell
