@@ -150,15 +150,15 @@ When the vote passes on a release candidate, follow the steps below to complete 
 
 Set up required for all tests:
 
-1. Set the release version, staging repo, and path to release Maven settings:
+1. Set the release version, staging repo, and alias to configure Maven with temporary settings:
    ```shell
    export RC_VERSION=1.2.0
    export RC_STAGING=https://repository.apache.org/content/repositories/orgapachefluo-1023/
-   export FLUO_MAVEN=/tmp/fluo-maven.xml
+   alias mvn='mvn -s /tmp/fluo-rc-maven.xml'
    ```
-1. Create Maven settings
+1. Create temporary Maven settings
    ```shell
-   $ cat <<EOF >$FLUO_MAVEN
+   $ cat <<EOF >/tmp/fluo-rc-maven.xml
    <settings>
      <profiles>
        <profile>
@@ -205,7 +205,8 @@ Set up required to run example Fluo applications
    ```
 1. Set `FLUO_VERSION` and `FLUO_HASH` in `conf/uno.conf`.
    ```shell
-   vim conf/uno.conf
+   sed -i "s/export FLUO_VERSION=[^ ]*/export FLUO_VERSION=$RC_VERSION/" conf/uno.conf
+   sed -i "s/export FLUO_HASH=[^ ]*/export FLUO_HASH=$(shasum -a 256 downloads/fluo-${RC_VERSION}-bin.tar.gz | cut -d ' ' -f 1)/" conf/uno.conf
    ```
 1. Set up Fluo and your shell
    ```shell
