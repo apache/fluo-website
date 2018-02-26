@@ -146,9 +146,7 @@ When the vote passes on a release candidate, follow the steps below to complete 
 
 ### Test a Fluo release
 
-#### Set up your environment
-
-Set up required for all tests:
+#### Set up environment for all tests
 
 1. Set the release version, staging repo, and alias to configure Maven with temporary settings:
    ```shell
@@ -190,31 +188,7 @@ Set up required for all tests:
    $ export RC_STAGING=https://repository.apache.org/content/repositories/orgapachefluo-1024/
    ```
 
-Set up required to run example Fluo applications
-
-1. Clone [Uno] and fetch Fluo dependencies
-   ```shell
-   git clone https://github.com/astralway/uno.git
-   cd uno
-   ./bin/uno fetch fluo
-   ```
-1. Download release tarball and calculate hash
-   ```shell
-   wget -P downloads/ ${RC_STAGING}/org/apache/fluo/fluo/${RC_VERSION}/fluo-${RC_VERSION}-bin.tar.gz
-   shasum -a 256 downloads/fluo-${RC_VERSION}-bin.tar.gz
-   ```
-1. Set `FLUO_VERSION` and `FLUO_HASH` in `conf/uno.conf`.
-   ```shell
-   sed -i "s/export FLUO_VERSION=[^ ]*/export FLUO_VERSION=$RC_VERSION/" conf/uno.conf
-   sed -i "s/export FLUO_HASH=[^ ]*/export FLUO_HASH=$(shasum -a 256 downloads/fluo-${RC_VERSION}-bin.tar.gz | cut -d ' ' -f 1)/" conf/uno.conf
-   ```
-1. Set up Fluo and your shell
-   ```shell
-   ./bin/uno setup fluo
-   eval "$(./bin/uno env)"
-   ```
-
-### Run the integration tests of projects that use Fluo
+#### Run the integration tests of projects that use Fluo
 
 1. Clone the [Fluo Recipes] project:
     ```shell
@@ -229,7 +203,30 @@ Below are more projects with integration tests:
 * [Stresso] - `https://github.com/astralway/stresso.git`
 * [Webindex] - `https://github.com/astralway/webindex.git`
 
-### Run Phrasecount example application
+#### Setup Uno to run Fluo example applications
+
+1. Clone [Uno] and fetch Fluo dependencies
+   ```shell
+   git clone https://github.com/astralway/uno.git
+   cd uno
+   ./bin/uno fetch fluo
+   ```
+1. Download release tarball
+   ```shell
+   wget -P downloads/ ${RC_STAGING}/org/apache/fluo/fluo/${RC_VERSION}/fluo-${RC_VERSION}-bin.tar.gz
+   ```
+1. Set `FLUO_VERSION` and `FLUO_HASH` in `conf/uno.conf`.
+   ```shell
+   sed -i "s/export FLUO_VERSION=[^ ]*/export FLUO_VERSION=$RC_VERSION/" conf/uno.conf
+   sed -i "s/export FLUO_HASH=[^ ]*/export FLUO_HASH=$(shasum -a 256 downloads/fluo-${RC_VERSION}-bin.tar.gz | cut -d ' ' -f 1)/" conf/uno.conf
+   ```
+1. Set up Fluo and your shell
+   ```shell
+   ./bin/uno setup fluo
+   eval "$(./bin/uno env)"
+   ```
+
+#### Run phrasecount example
 
 1. Clone project
    ```shell
