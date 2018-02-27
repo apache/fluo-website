@@ -54,7 +54,7 @@ defaults:
       version: "1.2.0"
       minor_release: "1.2"
       docs_base: "/docs/fluo/1.2"
-      javadoc_base: "https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating"
+      javadoc_base: "https://static.javadoc.io/org.apache.fluo/fluo-api/1.2.0"
       github_base: "https://github.com/apache/fluo/blob/master"
       github_yarn: "https://github.com/apache/fluo-yarn/blob/master"
   -
@@ -79,7 +79,7 @@ num_home_posts: 5
 color: default
 
 # Fluo specific settings
-latest_fluo_release: "1.1.0-incubating"
+latest_fluo_release: "1.2.0"
 latest_recipes_release: "1.1.0-incubating"
 
 # Sets links to external API
