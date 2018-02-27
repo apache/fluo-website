@@ -144,6 +144,110 @@ When the vote passes on a release candidate, follow the steps below to complete 
 
  8.  Send an email to `dev@fluo.apache.org` announcing new release.
 
+### Test a Fluo release
+
+#### Set up environment for all tests
+
+1. Set the release version, ID for staging repo, and alias to configure Maven with temporary settings:
+   ```shell
+   export RC_VERSION=1.2.0
+   export RC_STAGING=1023
+   alias mvn='mvn -s /tmp/fluo-rc-maven.xml'
+   ```
+1. Create temporary Maven settings
+   ```shell
+   $ cat <<EOF >/tmp/fluo-rc-maven.xml
+   <settings>
+     <profiles>
+       <profile>
+         <id>fluoRC</id>
+         <repositories>
+           <repository>
+             <id>fluorc</id>
+             <name>fluorc</name>
+             <url>https://repository.apache.org/content/repositories/orgapachefluo-\${env.RC_STAGING}/</url>
+           </repository>
+         </repositories>
+         <pluginRepositories>
+           <pluginRepository>
+             <id>fluorcp</id>
+             <name>fluorcp</name>
+             <url>https://repository.apache.org/content/repositories/orgapachefluo-\${env.RC_STAGING}/</url>
+           </pluginRepository>
+         </pluginRepositories>
+       </profile>
+     </profiles>
+     <activeProfiles>
+       <activeProfile>fluoRC</activeProfile>
+     </activeProfiles>
+   </settings>
+   EOF
+   ```
+1. If a new release candidate is made, update your staging repo ID.
+   ```shell
+   $ export RC_STAGING=1024
+   ```
+
+#### Run the integration tests of projects that use Fluo
+
+1. Clone the [Fluo Recipes] project:
+    ```shell
+    $ git clone https://github.com/apache/fluo-recipes.git
+    ```
+1. Run the integration test
+    ```shell
+    $ mvn clean verify -Dfluo.version=$RC_VERSION
+    ```
+Below are more projects with integration tests:
+* [Phrasecount] - `https://github.com/astralway/phrasecount.git`
+* [Stresso] - `https://github.com/astralway/stresso.git`
+* [Webindex] - `https://github.com/astralway/webindex.git`
+
+#### Setup Uno to run Fluo example applications
+
+1. Clone [Uno] and fetch Fluo dependencies
+   ```shell
+   git clone https://github.com/astralway/uno.git
+   cd uno
+   ./bin/uno fetch fluo
+   ```
+1. Download release tarball
+   ```shell
+   wget -P downloads/ https://repository.apache.org/content/repositories/orgapachefluo-${RC_STAGING}/org/apache/fluo/fluo/${RC_VERSION}/fluo-${RC_VERSION}-bin.tar.gz
+   ```
+1. Set `FLUO_VERSION` and `FLUO_HASH` in `conf/uno.conf`.
+   ```shell
+   sed -i "s/export FLUO_VERSION=[^ ]*/export FLUO_VERSION=$RC_VERSION/" conf/uno.conf
+   sed -i "s/export FLUO_HASH=[^ ]*/export FLUO_HASH=$(shasum -a 256 downloads/fluo-${RC_VERSION}-bin.tar.gz | cut -d ' ' -f 1)/" conf/uno.conf
+   ```
+1. Set up Fluo and your shell
+   ```shell
+   ./bin/uno setup fluo
+   eval "$(./bin/uno env)"
+   ```
+
+#### Run phrasecount example
+
+1. Clone project
+   ```shell
+   git clone https://github.com/astralway/phrasecount.git
+   cd phrasecount
+   ```
+1. Create sample data
+   ```shell
+   mkdir data
+   cp README.md data/README.txt
+   ```
+1. Run phrasecount
+   ```shell
+   ./bin/run.sh data/
+   ```
+
+[Fluo Recipes]: https://github.com/apache/fluo-recipes
+[Phrasecount]: https://github.com/astralway/phrasecount
+[Uno]: https://github.com/astralway/uno
+[Stresso]: https://github.com/astralway/stresso
+[Webindex]: https://github.com/astralway/webindex
 [website README]: https://github.com/apache/fluo-website/blob/master/README.md
 [example-email]: https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E
 [KEYS]: https://www.apache.org/dist/fluo/KEYS
