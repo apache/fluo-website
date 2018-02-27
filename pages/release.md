@@ -4,7 +4,7 @@ title: Releases
 permalink: "/release/"
 ---
 
-Apache Fluo and Apache Fluo Recipes are released separately on their own schedule.
+Apache Fluo has several projects that are released separately on their own schedule.
 
 {% for release in site.categories.release %}
 {% unless release.historical or release.draft %}
