@@ -80,6 +80,7 @@ color: default
 
 # Fluo specific settings
 latest_fluo_release: "1.2.0"
+latest_fluo_minor: "1.2"
 latest_recipes_release: "1.1.0-incubating"
 
 # Sets links to external API
