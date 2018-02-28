@@ -15,9 +15,9 @@ or cluster:
 
 | Software    | Recommended Version | Minimum Version |
 |-------------|---------------------|-----------------|
-| [Accumulo]  | 1.7.2               | 1.6.1           |
-| [Hadoop]    | 2.7.2               | 2.6.0           |
-| [Zookeeper] | 3.4.8               |                 |
+| [Accumulo]  | 1.8.1               | 1.7.0           |
+| [Hadoop]    | 2.7.5               | 2.6.0           |
+| [Zookeeper] | 3.4.11              |                 |
 | [Java]      | JDK 8               | JDK 8           |
 
 ## Obtain a distribution
