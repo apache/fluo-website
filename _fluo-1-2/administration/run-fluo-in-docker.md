@@ -38,10 +38,34 @@ docker run apache/fluo version
 docker run apache/fluo classpath
 ```
 
+## Initialize application
+
+Before starting a Fluo oracle and worker using the Fluo Docker image,
+[initialize your Fluo application][initialize].  Initialization can also be
+done using Docker.  To do this, the applications jars and config file need to
+be mapped into the docker container.  To understand how to do this, assume the
+following setup for local files outside of Docker.
+
+ * Application jars in `/home/user1/myapp/lib`
+ * `fluo-app.properties` in `/home/user1/myapp/conf`
+ * `fluo.observer.init.dir=/opt/myapp/lib` is set in `fluo-app.properties` along with any other properties needed
+
+With this setup, the following Docker command will initialize `myapp`. Fluo
+init runs in docker as root, so `HADOOP_USER_NAME` is set in order to avoid
+copying into HDFS as root.  The Docker run option `-v
+/home/user1/myapp:/opt/myapp` maps the local directory `/home/user1/myapp` into
+the container at `/opt/myapp`.
+
+```bash
+docker run --network="host" -v /home/user1/myapp:/opt/myapp \
+           -e HADOOP_USER_NAME=`whoami` \
+           apache/fluo init -a myapp -f -p /opt/myapp/conf/fluo-app.properties \
+                            -o fluo.connection.zookeepers=zkhost/fluo
+```
+
 ## Run application in Docker
 
-Before starting a Fluo oracle and worker using the Fluo Docker image, [initialize your Fluo application][initialize]. 
-Next, choose a method below to run the oracle and worker(s) of your Fluo application. In the examples below, the Fluo
+After initializing, choose a method below to run the oracle and worker(s) of your Fluo application. In the examples below, the Fluo
 application is named `myapp` and was initialized using a Zookeeper node on `zkhost`.
 
 ### Docker engine
