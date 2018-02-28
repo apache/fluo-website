@@ -6,7 +6,7 @@ order: 4
 
 ## Obtain the Docker image
 
-To obtain the docker image created by this project, you can either pull it from DockerHub at
+To obtain the docker image created by this project, you can either pull it from DockerHub (**Its not on DockerHub yet, this should happen soon**) at
 `apache/fluo` or build it yourself. To pull the image from DockerHub, run the command below:
 
     docker pull apache/fluo
