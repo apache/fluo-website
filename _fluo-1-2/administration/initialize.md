@@ -33,7 +33,7 @@ initialization does and some of the properties that may be set for initializatio
 ## Instructions
 
 Below are the steps to initialize an application from the command line. It is also possible to
-initialize an application using Fluo's Java API.
+initialize an application using Fluo's [Java API][initAPI].
 
 1. Create a copy of [fluo-app.properties] for your Fluo application. 
 
@@ -79,3 +79,4 @@ Also, learn how to [manage Fluo applications][manage].
 [yarn]: {{ page.docs_base }}/administration/run-fluo-in-yarn
 [docker]: {{ page.docs_base }}/administration/run-fluo-in-docker
 [manage]: {{ page.docs_base }}/administration/manage-applications
+[initAPI]: {{ page.javadoc_base }}/org/apache/fluo/api/client/FluoAdmin.html#initialize-org.apache.fluo.api.client.FluoAdmin.InitializationOptions-
