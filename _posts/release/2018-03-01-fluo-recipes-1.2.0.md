@@ -24,7 +24,7 @@ Below are resources for this release:
   * [fluo-recipes-1.2.0-source-release.tar.gz][src-release] - [ASC][src-asc] [MD5][md5] [SHA][sha]
 * View the [documentation][docs] for this release
 * Read the javadocs: <a href="{{ site.api_base }}/fluo-recipes-core/1.2.0/" target="_blank">core</a>, <a href="{{ site.api_base }}/fluo-recipes-accumulo/1.2.0/" target="_blank">accumulo</a>, <a href="{{ site.api_base }}/fluo-recipes-kryo/1.2.0/" target="_blank">kryo</a>, <a href="{{ site.api_base }}/fluo-recipes-spark/1.2.0/" target="_blank">spark</a>, <a href="{{ site.api_base }}/fluo-recipes-test/1.2.0/" target="_blank">test</a>
-* View [changes].
+* View [all changes][changes].
 
 ## Notable Changes
 
