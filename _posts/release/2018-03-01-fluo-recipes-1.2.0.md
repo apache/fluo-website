@@ -38,6 +38,7 @@ and moved to Fluo Website repo.
 Fluo Recipes was updated (in [#146]) to build using Fluo 1.2.0 and Accumulo 1.7.3
 
 [#144]: https://github.com/apache/fluo-recipes/pull/144
+[#146]: https://github.com/apache/fluo-recipes/pull/146
 [procedures]: https://www.apache.org/info/verification
 [KEYS]: https://www.apache.org/dist/incubator/fluo/KEYS
 [src-release]: https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz
