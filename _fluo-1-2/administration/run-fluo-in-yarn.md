@@ -8,14 +8,16 @@ An Apache Fluo application can be started in Hadoop YARN using the Fluo YARN lau
 
 ## Requirements
 
-The Fluo YARN launcher requires [Apache Fluo][Fluo] and [Hadoop YARN][YARN] to be installed:
+To launch a Fluo application in [YARN], you'll need the following software installed.
 
-| Software    | Recommended Version | Minimum Version |
-|-------------|---------------------|-----------------|
-| [Fluo]      | 1.2.0               | 1.2.0           |
-| [YARN]      | 2.7.2               | 2.6.0           |
+| Software             | Recommended Version | Minimum Version |
+|----------------------|---------------------|-----------------|
+| [Fluo][archive]      | 1.2.0               | 1.2.0           |
+| [Fluo YARN][archive] | 1.0.0               | 1.0.0           |
+| [YARN]               | 2.7.2               | 2.6.0           |
 
-See the [related projects page][related] for external projects that may help in setting up these dependencies.
+Instructions for installing Fluo YARN can be found below. See the [related projects page][related] for external projects
+that may help in setting up all of these dependencies.
 
 ## Set up your Fluo application
 
@@ -26,9 +28,9 @@ and worker processes if you are running in YARN.
 
 ## Install and Configure Fluo YARN launcher
 
-Before you can install the Fluo YARN launcher, you will need to obtain a distribution tarball (**fluo-yarn is not yet released, this should happen soon**). It is
-recommended that you download the [latest release][release]. You can also build a distribution from the
-master branch by following these steps which create a tarball in `distribution/target`:
+To install the Fluo YARN launcher, you will need to obtain a distribution tarball. It is recommended that you
+download the [latest release]. You can also build a distribution from the master branch by following these steps
+which create a tarball in `distribution/target`:
 
     git clone https://github.com/apache/fluo-yarn.git
     cd fluo-yarn/
@@ -95,7 +97,8 @@ When you want you stop your Fluo application, use the the YARN resource manager 
 [application]: {{ page.docs_base }}/getting-started/create-application
 [initialize]: {{ page.docs_base }}/administration/initialize
 [manage]: {{ page.docs_base }}/administration/manage-applications
-[release]: /download/
+[latest release]: /release/fluo-yarn-{{ site.latest_fluo_yarn_release }}/
+[archive]: /release/
 [fluo-yarn-env.sh]: {{ page.github_yarn}}/distribution/conf/fluo-yarn-env.sh
 [fluo-yarn.properties]: {{ page.github_yarn}}/distribution/conf/fluo-yarn.properties
 [log4j.properties]: {{ page.github_yarn}}/distribution/conf/log4j.properties

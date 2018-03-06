@@ -81,7 +81,9 @@ color: default
 # Fluo specific settings
 latest_fluo_release: "1.2.0"
 latest_fluo_minor: "1.2"
-latest_recipes_release: "1.1.0-incubating"
+latest_recipes_release: "1.2.0"
+latest_recipes_minor: "1.2"
+latest_fluo_yarn_release: "1.0.0"
 
 # Sets links to external API
 api_base: "https://javadoc.io/doc/org.apache.fluo"

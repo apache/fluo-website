@@ -1,8 +1,6 @@
 ---
 title: Apache Fluo Recipes 1.2.0 released
-date: 2018-03-01 10:30:00 +0000
 version: fluo-recipes-1.2.0
-draft: true
 ---
 
 Apache Fluo Recipes builds on the Apache Fluo API to provide libraries of common code for Fluo developers.
@@ -21,7 +19,7 @@ Below are resources for this release:
   </dependency>
   ```
 * A source release tarball is available. It can be verified by these [procedures] using these [KEYS]
-  * [fluo-recipes-1.2.0-source-release.tar.gz][src-release] - [ASC][src-asc] [MD5][md5] [SHA][sha]
+  * [fluo-recipes-1.2.0-source-release.tar.gz][src-release] - [ASC][src-asc] [SHA-512][sha]
 * View the [documentation][docs] for this release
 * Read the javadocs: <a href="{{ site.api_base }}/fluo-recipes-core/1.2.0/" target="_blank">core</a>, <a href="{{ site.api_base }}/fluo-recipes-accumulo/1.2.0/" target="_blank">accumulo</a>, <a href="{{ site.api_base }}/fluo-recipes-kryo/1.2.0/" target="_blank">kryo</a>, <a href="{{ site.api_base }}/fluo-recipes-spark/1.2.0/" target="_blank">spark</a>, <a href="{{ site.api_base }}/fluo-recipes-test/1.2.0/" target="_blank">test</a>
 * View [all changes][changes].
@@ -40,11 +38,10 @@ Fluo Recipes was updated (in [#146]) to build using Fluo 1.2.0 and Accumulo 1.7.
 [#144]: https://github.com/apache/fluo-recipes/pull/144
 [#146]: https://github.com/apache/fluo-recipes/pull/146
 [procedures]: https://www.apache.org/info/verification
-[KEYS]: https://www.apache.org/dist/incubator/fluo/KEYS
-[src-release]: https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz
-[src-asc]: https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.asc
-[md5]: https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.md5
-[sha]: https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.sha
+[KEYS]: https://www.apache.org/dist/fluo/KEYS
+[src-release]: https://www.apache.org/dyn/closer.lua/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz
+[src-asc]: https://www.apache.org/dist/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.asc
+[sha]: https://www.apache.org/dist/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.sha512
 [docs]: /docs/fluo-recipes/1.2/
 [central]: http://search.maven.org/#search|ga|1|fluo-recipes
-[changes]: https://github.com/apache/incubator-fluo-recipes/milestone/2?closed=1
+[changes]: https://github.com/apache/fluo-recipes/milestone/2?closed=1

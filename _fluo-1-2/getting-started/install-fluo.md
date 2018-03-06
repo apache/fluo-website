@@ -23,8 +23,8 @@ or cluster:
 ## Obtain a distribution
 
 Before you can install Fluo, you will need to obtain a distribution tarball. It is recommended that
-you download the [latest release][release]. You can also build a distribution from the master
-branch by following these steps which create a tarball in `modules/distribution/target`:
+you download the [latest release]. You can also build a distribution from the master branch by following
+these steps which create a tarball in `modules/distribution/target`:
 
     git clone https://github.com/apache/fluo.git
     cd fluo/
@@ -110,7 +110,7 @@ Using at least Accumulo 1.6.1 is recommended because multiple performance bugs w
 [Zookeeper]: http://zookeeper.apache.org/
 [Java]: http://openjdk.java.net/
 [related]: /related-projects/
-[release]: /download/
+[latest release]: /release/fluo-{{ site.latest_fluo_release }}/
 [fluo-conn.properties]: {{ page.github_base }}/modules/distribution/src/main/config/fluo-conn.properties
 [fluo-app.properties]: {{ page.github_base }}/modules/distribution/src/main/config/fluo-app.properties
 [log4j.properties]: {{ page.github_base }}/modules/distribution/src/main/config/log4j.properties
