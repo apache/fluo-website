@@ -1,6 +1,5 @@
 ---
 title: Apache Fluo Recipes 1.2.0 released
-date: 2018-03-01 10:30:00 +0000
 version: fluo-recipes-1.2.0
 ---
 
