@@ -6,6 +6,8 @@ permalink: pretty
 
 markdown: kramdown
 
+repository: apache/fluo-website
+
 # Collection names cannot contain periods
 collections:
   fluo-1-2:
