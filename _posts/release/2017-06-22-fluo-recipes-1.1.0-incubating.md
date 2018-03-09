@@ -1,5 +1,5 @@
 ---
-title: Apache Fluo Recipes 1.1.0-incubating released
+title: Apache Fluo Recipes 1.1.0-incubating
 date: 2017-06-22 10:30:00 +0000
 version: fluo-recipes-1.1.0-incubating
 ---
