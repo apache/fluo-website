@@ -1,8 +1,10 @@
 ---
-layout: page
-title: Current Releases
+layout: default
+title: Releases
 permalink: "/release/"
 ---
+
+## Current
 
 <div class="row">
   <a href="/release/fluo-{{ site.latest_fluo_release }}">
@@ -25,7 +27,7 @@ permalink: "/release/"
   </a>
 </div>
 
-## Release Archive
+## Archive
 
 {% assign visible_releases = site.categories.release | where:"draft",false | where:"historical",false %}
 {% assign header_year = visible_releases[0].date | date: "%Y" %}
@@ -45,4 +47,4 @@ permalink: "/release/"
 
 <hr>
 
-Releases before joining Apache have been [archived](/pre-asf-release/).
+Releases before joining Apache are in [pre-ASF archive](/pre-asf-release/).
