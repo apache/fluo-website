@@ -39,6 +39,8 @@ defaults:
       layout: "release"
       category: "release"
       permalink: "/:categories/:title/"
+      draft: false
+      historical: false
   - 
     scope:
       path: "tour"

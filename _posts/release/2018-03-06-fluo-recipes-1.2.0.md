@@ -1,5 +1,5 @@
 ---
-title: Apache Fluo Recipes 1.2.0 released
+title: Apache Fluo Recipes 1.2.0
 version: fluo-recipes-1.2.0
 ---
 
