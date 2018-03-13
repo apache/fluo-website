@@ -106,7 +106,13 @@ would be 2 and the mean would be (5+3)/2.
 ## View metrics in Grafana/InfuxDB
 
 Fluo metrics can be sent to [InfluxDB], a time series database, and made viewable in [Grafana], 
-a visualization tool by following the instructions below:
+a visualization tool. Below is a screenshot of Fluo metrics in Grafana:
+
+<img src='/resources/docs/fluo-metrics-1.png' width="100%">
+<img src='/resources/docs/fluo-metrics-2.png' width="100%">
+<img src='/resources/docs/fluo-metrics-3.png' width="100%">
+
+Following the instructions below to set this up:
 
 1.  Follow the standard installation instructions for [InfluxDB] and [Grafana]. As for versions,
     the instructions below were written using InfluxDB v0.9.4.2 and Grafana v2.5.0.
