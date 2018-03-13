@@ -45,7 +45,7 @@ Steps for troubleshooting problems with Fluo applications.
       This can be fixed by giving more resources to your cluster manager or decrease the number/resources of Fluo workers.
     * Cluster managers can kill Fluo processes if they use too much memory. This can be fixed by allocating more memory to your workers.
 
-1. Run [jstack] to get stack traces of threads in your Fluo application processes and look for any dead locks.
+1. Run [jstack] to get stack traces of threads in your Fluo application processes and look for any stuck threads.
 
 1. Consider configuring your Fluo application to [report metrics][metrics] so that they are viewable in Grafana/InfluxDB. Metrics
    can are helpfu in debugging performance issues.
