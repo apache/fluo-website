@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Releases
-permalink: "/release/"
+permalink: /releases/
+redirect_from: /release/
 ---
 
 ## Current
@@ -10,7 +11,7 @@ permalink: "/release/"
   <a href="/release/fluo-{{ site.latest_fluo_release }}">
     <div class="col-sm-4 btn btn-info">
       <h3>Fluo {{ site.latest_fluo_release }}</h3>
-      <p>Core project containing 'fluo' command to initialize<br> applications, start oracle and worker processes, and<br>manage running applicaitons.</p>
+      <p>Core project containing 'fluo' command that initializes<br> applications, starts oracle and worker processes, and<br>manages running applications</p>
     </div>
   </a>
   <a href="/release/fluo-yarn-{{ site.latest_fluo_yarn_release }}">
