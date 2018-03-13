@@ -98,7 +98,7 @@ When you want you stop your Fluo application, use the the YARN resource manager 
 [initialize]: {{ page.docs_base }}/administration/initialize
 [manage]: {{ page.docs_base }}/administration/manage-applications
 [latest release]: /release/fluo-yarn-{{ site.latest_fluo_yarn_release }}/
-[archive]: /release/
+[archive]: /releases/
 [fluo-yarn-env.sh]: {{ page.github_yarn}}/distribution/conf/fluo-yarn-env.sh
 [fluo-yarn.properties]: {{ page.github_yarn}}/distribution/conf/fluo-yarn.properties
 [log4j.properties]: {{ page.github_yarn}}/distribution/conf/log4j.properties
