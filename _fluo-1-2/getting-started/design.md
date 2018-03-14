@@ -8,6 +8,11 @@ The diagram below provides an overview of Apache Fluo's design.
 
 ![fluo-architecture][1]
 
+## Background
+
+The design of Apache Fluo is inspired by Google's [Percolator][percolator] which is described as
+being used to populate Google's search index.
+
 ## Fluo Application
 
 A **Fluo application** maintains a large scale computation using a series of small transactional
@@ -42,4 +47,5 @@ Fluo requires the following software to be running on the cluster:
 * **Zookeeper** - Fluo stores its metadata and state information in Zookeeper. Zookeeper is also
   required for Accumulo.
 
+[percolator]: https://research.google.com/pubs/pub36726.html
 [1]: /resources/docs/fluo-architecture.png
