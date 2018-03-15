@@ -6,8 +6,8 @@ order: 4
 
 ## Obtain the Docker image
 
-To obtain the docker image created by this project, you can either pull it from DockerHub (**Its not on DockerHub yet, this should happen soon**) at
-`apache/fluo` or build it yourself. To pull the image from DockerHub, run the command below:
+To obtain the docker image created by this project, you can either pull it from [DockerHub] at
+[apache/fluo][fluo-dockerhub] or build it yourself. To pull the image from DockerHub, run the command below:
 
     docker pull apache/fluo
 
@@ -17,8 +17,8 @@ While it is easier to pull from DockerHub, the image will default to the softwar
 |-------------|---------|
 | [Fluo]      | 1.2.0   |
 | [Accumulo]  | 1.8.1   |
-| [Hadoop]    | 2.7.3   |
-| [Zookeeper] | 3.4.9   |
+| [Hadoop]    | 2.7.5   |
+| [Zookeeper] | 3.4.11   |
 
 If these versions do not match what is running on your cluster, you should consider [building
 your own image][build-image] with matching versions.
@@ -131,6 +131,8 @@ The JSON below can be used to start Fluo worker(s). Modify instances to start mu
 
 Learn how to [manage Fluo applications][manage].
 
+[DockerHub]: https://hub.docker.com/
+[fluo-dockerhub]: https://hub.docker.com/r/apache/fluo/
 [build-image]: https://github.com/apache/fluo-docker/blob/master/README.md#build-the-docker-image
 [manage]: {{ page.docs_base }}/administration/manage-applications
 [Fluo]: https://fluo.apache.org/
