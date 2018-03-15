@@ -299,6 +299,6 @@ example of write skew mentioned in the Percolator paper.
 
 [Exporter]: {{ page.javadoc_core }}/org/apache/fluo/recipes/core/export/function/Exporter.html
 [serial]: https://en.wikipedia.org/wiki/Serializability
-[aeq]: {{ page.docs_base }}/recipes/accumulo-export-queue/
+[aeq]: {{ page.docs_base }}/recipes/accumulo-export/
 [transient]: {{ page.docs_base }}/tools/transient/
 [table-opt]: {{ page.docs_base }}/tools/table-optimization/

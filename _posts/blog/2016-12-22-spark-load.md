@@ -230,7 +230,7 @@ implications of early vs late binding is something to consider.
 [LoaderExecutor]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/LoaderExecutor.html
 [bi2fluo]:{{ site.fluo_recipes_spark_static }}/{{ site.latest_recipes_release }}/org/apache/fluo/recipes/spark/FluoSparkHelper.html#bulkImportRcvToFluo-org.apache.spark.api.java.JavaPairRDD-org.apache.fluo.recipes.spark.FluoSparkHelper.BulkImportOptions-
 [cfminit]:{{ site.fluo_recipes_core_static }}/{{ site.latest_recipes_release }}/org/apache/fluo/recipes/core/map/CollisionFreeMap.html#getInitializer-java.lang.String-int-org.apache.fluo.recipes.core.serialization.SimpleSerializer-
-[cfm]: /docs/fluo-recipes/{{ site.latest_recipes_release }}/cfm/
+[cfm]: /docs/fluo-recipes/1.0.0-incubating/cfm/
 [fluo-813]: https://github.com/apache/incubator-fluo/issues/813
 [AccumuloOutputFormat]: http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/client/mapred/AccumuloOutputFormat.html
 [Mutation]: http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Mutation.html
