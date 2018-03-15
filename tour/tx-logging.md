@@ -39,6 +39,4 @@ TRACE: txid: 8 thread : 10 time: ... #ret: 1 #set: 0 #collisions: 0 waitTime: 0 
 ```
 
 More information about configuring logging is available in [the logging
-documentation](/docs/fluo/{{ site.latest_fluo_release }}/applications/#debugging-applications).
-
-
+documentation](/docs/fluo/{{ site.latest_fluo_minor }}/administration/manage-applications#debugging-applications).
