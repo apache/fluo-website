@@ -8,17 +8,17 @@ permalink: /people/
 
 ## [PMC]/[Committers]
 
-| Name                                               | Organization                   | Timezone | PMC | Committer |
------------------------------------------------------|--------------------------------|----------|:---:|:---------:|
-| [Billie Rinaldi](https://github.com/billierinaldi) | [Hortonworks][hw]              | [ET][et] | ✔️   | ✔️         |
-| [Corey Nolet](https://github.com/cjnolet)          | [Tetra Concepts LLC][tc]       | [ET][et] | ✔️   | ✔️         |
-| [Christopher McTague](https://github.com/cjmctague)| [Peterson Technologies][ptech] | [ET][et] | ✔️   | ✔️         |
-| [Christopher Tubbs](https://github.com/ctubbsii)   |                                | [ET][et] | ✔️   | ✔️         |
-| [Drew Farris](https://github.com/drewfarris)       | [Booz Allen Hamilton][bah]     | [ET][et] | ✔️   | ✔️         |
-| [Josh Elser](https://github.com/joshelser)         | [Hortonworks][hw]              | [ET][et] | ✔️   | ✔️         |
-| [Keith Turner](https://github.com/keith-turner)    | [Peterson Technologies][ptech] | [ET][et] | ✔️   | ✔️         |
-| [Kenneth McFarland](https://github.com/kpm1985)    |                                | [PT][pt] |     | ✔️         |
-| [Mike Walch](https://github.com/mikewalch)         | [Peterson Technologies][ptech] | [ET][et] | ✔️   | ✔️         |
+| Name                                               | Organization                   | Timezone |
+-----------------------------------------------------|--------------------------------|----------|
+| [Billie Rinaldi](https://github.com/billierinaldi) | [Hortonworks][hw]              | [ET][et] |
+| [Corey Nolet](https://github.com/cjnolet)          | [Tetra Concepts LLC][tc]       | [ET][et] |
+| [Christopher McTague](https://github.com/cjmctague)| [Peterson Technologies][ptech] | [ET][et] |
+| [Christopher Tubbs](https://github.com/ctubbsii)   |                                | [ET][et] |
+| [Drew Farris](https://github.com/drewfarris)       | [Booz Allen Hamilton][bah]     | [ET][et] |
+| [Josh Elser](https://github.com/joshelser)         | [Hortonworks][hw]              | [ET][et] |
+| [Keith Turner](https://github.com/keith-turner)    | [Peterson Technologies][ptech] | [ET][et] |
+| [Kenneth McFarland](https://github.com/kpm1985)    |                                | [PT][pt] |
+| [Mike Walch](https://github.com/mikewalch)         | [Peterson Technologies][ptech] | [ET][et] |
 
 ## Contributors
 
