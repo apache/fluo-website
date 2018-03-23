@@ -31,21 +31,20 @@ title: Scanning Code
 
     try(Snapshot s1 = client.newSnapshot()) {
        //scan over an entire row
-       CellScanner cellScanner = s1.scanner().over(Span.exact("kerbalnaut0002")).build();
+       CellScanner cellScanner = s1.scanner().over("kerbalnaut0002").build();
        System.out.println("Scan 1 :");
        for (RowColumnValue rcv : cellScanner) {
          System.out.println("\t"+rcv);
        }
 
        //scan over a row and column family
-       cellScanner = s1.scanner().over(Span.exact("kerbalnaut0002", new Column("name"))).build();
+       cellScanner = s1.scanner().over("kerbalnaut0002", new Column("name")).build();
        System.out.println("\nScan 2 :");
-       for (RowColumnValue rcv : cellScanner) {
-         System.out.println("\t"+rcv);
-       }
+       //use Java 8 stream to print instead of foreach loop
+       cellScanner.stream().map(rcv -> "\t"+rcv).forEach(System.out::println);
 
        //scan over two columns
-       cellScanner = s1.scanner().over(Span.prefix("kerbalnaut")).fetch(fName, bravery).build();
+       cellScanner = s1.scanner().overPrefix("kerbalnaut").fetch(fName, bravery).build();
        System.out.println("\nScan 3 :");
        //use Java lambda's to print instead of foreach loop
        cellScanner.forEach(rcv -> System.out.println("\t"+rcv));
