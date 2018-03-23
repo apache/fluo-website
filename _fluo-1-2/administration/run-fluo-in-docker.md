@@ -38,6 +38,11 @@ docker run apache/fluo version
 docker run apache/fluo classpath
 ```
 
+This Docker image only runs Fluo, it does not run Accumulo, Hadoop, or
+ZooKeeper processes.  These systems must be run separately and the Docker image
+configured to use them.
+
+
 ## Initialize application
 
 Before starting a Fluo oracle and worker using the Fluo Docker image,
