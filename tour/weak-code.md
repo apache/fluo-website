@@ -15,7 +15,7 @@ title: Weak Notification Code
       StringObserver summingObs = (tx, row, col) -> {
         int sum = Integer.parseInt(tx.gets(row, TOTAL_COL, "0"));
 
-        CellScanner scanner = tx.scanner().over(Span.prefix(row + "/")).build();
+        CellScanner scanner = tx.scanner().overPrefix(row + "/").build();
         for (RowColumnValue rcv : scanner) {
           sum += Integer.parseInt(rcv.getsValue());
           tx.delete(rcv.getRow(), rcv.getColumn());

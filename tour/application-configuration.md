@@ -67,7 +67,7 @@ configuration.
         Column exportNtfyCol = new Column("ET", exportId);
 
         Observer exportObserver = (tx, row, col) -> {
-          CellScanner scanner = tx.scanner().over(Span.exact(row)).build();
+          CellScanner scanner = tx.scanner().over(row).build();
 
           for (RowColumnValue rcv : scanner) {
             System.out.printf("Exporting val=%s from row=%s to db=%s table=%s\n", rcv.getsValue(),
@@ -136,5 +136,3 @@ Exporting val=555 from row=e:99 to db=db1 table=bigtable
 [lcgac]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/client/Loader.Context.html#getAppConfiguration--
 [ospec]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release}}/org/apache/fluo/api/config/ObserverSpecification.html
 [ocgp]: {{ site.fluo_api_static }}/{{ site.latest_fluo_release }}/org/apache/fluo/api/observer/Observer.Context.html#getObserverConfiguration--
-
-
