@@ -11,6 +11,8 @@ docs:
  - tx-logging
  - write-skew
  - write-skew-code
+ - read-lock
+ - read-lock-code
  - scanning
  - scanning-code
  - multi-get

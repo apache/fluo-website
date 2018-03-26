@@ -27,4 +27,5 @@ different keys.
 The changes made by *tx3* will not be seen by *tx2*. This behavior is OK if the update made by *tx3*
 triggers a later update of *n0:data:sum*. Later pages in the tour will show that Observers can work
 this way, so that eventually the changes made by *tx3* are incorporated.  The [Weak Notification
-Exercise](/tour/weak-notifications/) later in the tour shows an example of this.
+Exercise](/tour/weak-notifications/) later in the tour shows an example of this. Another strategy
+for dealing with write skew is [read locks](/tour/read-lock/).
