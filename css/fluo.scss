@@ -13,13 +13,13 @@ th, td {
   border-bottom: 1px solid #ddd;
 }
 
-p { 
+p {
   line-height: 25px;
   padding-top: 5px;
   font-size: 16px;
 }
 
-li { 
+li {
   line-height: 25px;
 }
 
@@ -47,10 +47,28 @@ tr:nth-child(odd) {background: #FFF}
   }
 }
 
-.footer {
-  margin: 10px 0 30px;
-  font-size: 12px;
+footer {
+    margin: 10px 0 30px;
   color: #aaa;
+  padding: 8px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+footer > hr {
+  width: 80%;
+}
+
+footer > p {
+  line-height: 1.5em;
+  padding-top: 1em;
+  font-size: 12px;
+  width: 60%;
+  margin: auto;
+}
+
+#asf-logo {
+  float: left;
 }
 
 // index.html
@@ -79,7 +97,7 @@ tr:nth-child(odd) {background: #FFF}
   margin-bottom: 20px;
 }
 
-// page 
+// page
 #page-content {
   margin-top: 20px;
 }
