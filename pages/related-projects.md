@@ -20,8 +20,8 @@ list, please open an issue or submit a pull request [on GitHub][web-ghr].
 
 ### Example Fluo applications
 
-* [Quickstart] - Enables you to quickly get started writing code that uses Apache Fluo
 * [Phrasecount] - Example Apache Fluo application that counts phrases in documents
+* [Mixer] - Prototype showing how to use Apache Fluo to continuously merge multiple large graphs into a single derived one.
 * [Jaccard] - Example Apache Fluo application that computes and indexes the Jaccard between all pairs in a bipartite graph.
 * [Webindex] - Apache Fluo application that creates web index using Common Crawl data
 * [Stresso] - An example application designed to stress Apache Fluo
@@ -33,8 +33,8 @@ list, please open an issue or submit a pull request [on GitHub][web-ghr].
 [Uno]: https://github.com/astralway/uno
 [Webindex]: https://github.com/astralway/webindex
 [Stresso]: https://github.com/astralway/stresso
-[Quickstart]: https://github.com/astralway/quickstart
 [Phrasecount]: https://github.com/astralway/phrasecount
 [Jaccard]: https://github.com/keith-turner/jaccard
 [web-ghr]: https://github.com/apache/fluo-website
 [Rya]: https://rya.apache.org
+[Mixer]: https://github.com/keith-turner/mixer
