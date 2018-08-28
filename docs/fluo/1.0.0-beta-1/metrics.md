@@ -73,7 +73,7 @@ shortened to `i.f`.
 Since multiple processes can report the same metrics to services like Graphite
 or Ganglia, each process adds a unique id.  When running in yarn, this id is of
 the format `worker-<instance id>` or `oracle-<instance id>`.  When not running
-from yarn, this id consist of a hostname and a base36 long thats unique across
+from yarn, this id consist of a hostname and a base36 long that's unique across
 all fluo processes.  In the table below this composite id is represented with
 `<pid>`. 
 
@@ -83,7 +83,7 @@ all fluo processes.  In the table below this composite id is represented with
 |i.f.&lt;pid&gt;.tx.time.&lt;cn&gt;                   | [Timer][T]     | *WHEN:* After each transaction. *WHAT:* Time transaction took to execute.  Updated for failed and successful transactions. |
 |i.f.&lt;pid&gt;.tx.collisions.&lt;cn&gt;             | [Histogram][H] | *WHEN:* After each transaction. *COND:* &gt; 0 *WHAT:* Number of collisions a transaction had.  |
 |i.f.&lt;pid&gt;.tx.set.&lt;cn&gt;                    | [Histogram][H] | *WHEN:* After each transaction. *WHAT:* Number of row/columns set by transaction |
-|i.f.&lt;pid&gt;.tx.read.&lt;cn&gt;                   | [Histogram][H] | *WHEN:* After each transaction. *WHAT:* Number of row/columns read by transaction that existed.  There is currently no count of all reads (including non-existant data) |
+|i.f.&lt;pid&gt;.tx.read.&lt;cn&gt;                   | [Histogram][H] | *WHEN:* After each transaction. *WHAT:* Number of row/columns read by transaction that existed.  There is currently no count of all reads (including nonexistent data) |
 |i.f.&lt;pid&gt;.tx.locks.timedout.&lt;cn&gt;         | [Histogram][H] | *WHEN:* After each transaction. *COND:* &gt; 0 *WHAT:* Number of timedout locks rolled back by transaction.  These are locks that are held for very long periods by another transaction that appears to be alive based on zookeeper.  |
 |i.f.&lt;pid&gt;.tx.locks.dead.&lt;cn&gt;             | [Histogram][H] | *WHEN:* After each transaction. *COND:* &gt; 0 *WHAT:* Number of dead locks rolled by a transaction.  These are locks held by a process that appears to be dead according to zookeeper.  |
 |i.f.&lt;pid&gt;.tx.status.&lt;status&gt;.&lt;cn&gt;  | [Counter][C]   | *WHEN:* After each transaction.  *WHAT:* Counts for the different ways a transaction can terminate |

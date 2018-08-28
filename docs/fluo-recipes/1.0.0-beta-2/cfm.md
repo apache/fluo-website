@@ -184,7 +184,7 @@ public class WordCountMap {
       }
 
       if (sum == 0) {
-        //returning absent will cause the collision free map to delte the current key
+        //returning absent will cause the collision free map to delete the current key
         return Optional.absent();
       } else {
         return Optional.of(sum);
@@ -224,7 +224,7 @@ This recipe makes two important guarantees about updates for a key when it
 calls `updatingValues()` on an `UpdateObserver`.
 
  * The new value reported for an update will be derived from combining all
-   updates that were committed before the transaction thats processing updates
+   updates that were committed before the transaction that's processing updates
    started.  The implementation may have to make multiple passes over queued
    updates to achieve this.  In the situation where TX1 queues a `+1` and later
    TX2 queues a `-1` for the same key, there is no need to worry about only seeing

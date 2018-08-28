@@ -32,7 +32,7 @@ public class MyObserver extends AbstractObserver {
 
     private static final TYPEL = new TypeLayer(new StringEncoder());
 
-    //reperesents a Query system extrnal to Fluo that is updated by Fluo
+    //represents a Query system external to Fluo that is updated by Fluo
     QuerySystem querySystem;
 
     @Override
@@ -158,7 +158,7 @@ application.
    //initialize Fluo using fluoConfig
 ```
 
-Below is updated version of the observer from above thats now using the export
+Below is updated version of the observer from above that's now using the export
 queue.
 
 ```java
@@ -257,7 +257,7 @@ that creates the export value.
 In the example above only one transaction will succeed because both are setting
 `row1 fam1:qual1`.  Since adding to the export queue is part of the
 transaction, only the transaction that succeeds will add something to the
-queue.  If the funtion ek() in the example is deterministic, then both
+queue.  If the function ek() in the example is deterministic, then both
 transactions would have been trying to add the same key to the export queue.
 
 With the above method, we know that transactions adding entries to the queue for
@@ -271,7 +271,7 @@ same key.  Both transactions succeed because they are writing to different
 cells (`rowB fam1:qual2` and `rowA fam1:qual2`).  This approach makes it more
 difficult to reason about export entries with the same key, because the
 transactions adding those entries could have overlapped in time.  This is an
-example of write skew mentioned in the Percolater paper.
+example of write skew mentioned in the Percolator paper.
  
  1. TH1 : key1 = ek(`row1`,`fam1:qual1`)
  1. TH1 : val1 = ev(tx1.get(`row1`,`fam1:qual1`), tx1.get(`rowA`,`fam1:qual2`))

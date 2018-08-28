@@ -10,7 +10,7 @@ When many transactions try to modify the same keys, collisions will occur.  Too 
 cause transactions to fail and throughput to nose dive.  For example, consider [phrasecount]
 which has many transactions processing documents.  Each transaction counts the phrases in a document
 and then updates global phrase counts.  Since transaction attempts to update many phrases
-, the probbaility of collisions is high.
+, the probability of collisions is high.
 
 ## Solution
 

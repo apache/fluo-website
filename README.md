@@ -1,7 +1,7 @@
 # Apache Fluo website
 
 Code powering the Apache Fluo website ([https://fluo.apache.org](https://fluo.apache.org)).
-[Contributing](CONTRIBUTING.md) decribes how to test locally.
+[Contributing](CONTRIBUTING.md) describes how to test locally.
 
 ## Update website for new release
 

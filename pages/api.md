@@ -12,7 +12,7 @@ redirect_from:
 
 #### Apache Fluo API
 
-* <a href="{{ site.fluo_api_base }}/1.2.0/" target="_blank">1.2.0</a> - Februrary 26, 2018
+* <a href="{{ site.fluo_api_base }}/1.2.0/" target="_blank">1.2.0</a> - February 26, 2018
 * <a href="{{ site.fluo_api_base }}/1.1.0-incubating/" target="_blank">1.1.0-incubating</a> - June 12, 2017
 * <a href="{{ site.fluo_api_base }}/1.0.0-incubating/" target="_blank">1.0.0-incubating</a> - October 14, 2016
 
