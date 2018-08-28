@@ -52,13 +52,13 @@ Below are Maven dependencies for Fluo Recipes.
       <artifactId>fluo-recipes-kryo</artifactId>
       <version>${fluo-recipes.version}</version>
     </dependency>
-    <!--optional dependency assist w/ integration Accumulo and Fluo  -->
+    <!--optional dependency assist w/ integrating Accumulo and Fluo  -->
     <dependency>
       <groupId>io.fluo</groupId>
       <artifactId>fluo-recipes-accumulo</artifactId>
       <version>${fluo-recipes.version}</version>
     </dependency>
-    <!--optional dependency assist w/ integration Spark and Fluo -->
+    <!--optional dependency assist w/ integrating Spark and Fluo -->
     <dependency>
       <groupId>io.fluo</groupId>
       <artifactId>fluo-recipes-spark</artifactId>
