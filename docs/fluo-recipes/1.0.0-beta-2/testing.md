@@ -3,7 +3,7 @@ layout: recipes-doc
 title: Testing
 version: 1.0.0-beta-2
 ---
-Fluo includes MiniFluo which makes it possible to write an integeration test that
+Fluo includes MiniFluo which makes it possible to write an integration test that
 runs against a real Fluo instance.  Fluo Recipes provides the following utility
 code for writing an integration test.
 

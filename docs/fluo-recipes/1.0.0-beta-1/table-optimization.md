@@ -41,7 +41,7 @@ selective optimizations is need look into using the following methods instead.
 ## Command Example
 
 Fluo Recipes provides an easy way to optimize a Fluo table for configured
-recipes from the command line.  This should be done after configuring reciped
+recipes from the command line.  This should be done after configuring recipes
 and initializing Fluo.  Below are example command for initializing in this way.
 
 ```bash

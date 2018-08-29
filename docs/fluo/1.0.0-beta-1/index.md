@@ -5,7 +5,7 @@ redirect_from: /docs/1.0.0-beta-1/
 version: 1.0.0-beta-1
 ---
 
-**Fluo is transaction layer that enables incremental processsing on big data.**
+**Fluo is transaction layer that enables incremental processing on big data.**
 
 Fluo is an implementation of [Percolator] built on [Accumulo] that runs in [YARN]. 
 It is not recommended for production use yet.
