@@ -34,14 +34,14 @@ This website was made using:
 [hadoop]: https://hadoop.apache.org/
 [twill]: https://twill.apache.org/
 [zookeeper]: https://zookeeper.apache.org/
-[dropwizard]: http://dropwizard.github.io/metrics/3.1.0/
-[junit]: http://junit.org/
+[dropwizard]: https://metrics.dropwizard.io/3.1.0/
+[junit]: https://junit.org/
 [guava]: https://github.com/google/guava
 [maven]: https://maven.apache.org/
 [slf4j]: https://www.slf4j.org/
 [travisci]: https://travis-ci.org/
 [bootstrap]: https://getbootstrap.com/
-[fontawesome]: http://fontawesome.io/
+[fontawesome]: https://fontawesome.com/
 [jekyll]: https://jekyllrb.com/
 [jquery]: https://jquery.com/
 [kryo]: https://github.com/EsotericSoftware/kryo

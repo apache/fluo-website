@@ -242,5 +242,5 @@ implications of early vs late binding is something to consider.
 [bulk_readme]: http://accumulo.apache.org/1.8/examples/bulkIngest
 [bulk_code]: https://github.com/apache/accumulo/tree/rel/1.8.0/examples/simple/src/main/java/org/apache/accumulo/examples/simple/mapreduce/bulk
 [AccumuloRangePartitioner]: https://github.com/apache/incubator-fluo-recipes/blob/rel/fluo-recipes-1.0.0-incubating/modules/spark/src/main/java/org/apache/fluo/recipes/spark/AccumuloRangePartitioner.java
-[Webindex]: https://github.com/astralway/webindex
+[Webindex]: https://github.com/apache/fluo-examples/tree/master/webindex
 [spark]: https://spark.apache.org

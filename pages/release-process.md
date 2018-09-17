@@ -198,16 +198,17 @@ When the vote passes on a release candidate, follow the steps below to complete 
     ```shell
     $ mvn clean verify -Dfluo.version=$RC_VERSION
     ```
-Below are more projects with integration tests:
-* [Phrasecount] - `https://github.com/astralway/phrasecount.git`
-* [Stresso] - `https://github.com/astralway/stresso.git`
-* [Webindex] - `https://github.com/astralway/webindex.git`
+Below are more projects with integration tests which can be found at - `https://github.com/apache/fluo-examples.git`:
+* [Phrasecount] 
+* [Stresso]
+* [Webindex] 
+
 
 #### Setup Uno to run Fluo example applications
 
 1. Clone [Uno] and fetch Fluo dependencies
    ```shell
-   git clone https://github.com/astralway/uno.git
+   git clone https://github.com/apache/fluo-uno.git
    cd uno
    ./bin/uno fetch fluo
    ```
@@ -230,7 +231,7 @@ Below are more projects with integration tests:
 
 1. Clone project
    ```shell
-   git clone https://github.com/astralway/phrasecount.git
+   git clone https://github.com/apache/fluo-examples.git
    cd phrasecount
    ```
 1. Create sample data
@@ -244,10 +245,10 @@ Below are more projects with integration tests:
    ```
 
 [Fluo Recipes]: https://github.com/apache/fluo-recipes
-[Phrasecount]: https://github.com/astralway/phrasecount
-[Uno]: https://github.com/astralway/uno
-[Stresso]: https://github.com/astralway/stresso
-[Webindex]: https://github.com/astralway/webindex
+[Uno]:https://github.com/apache/fluo-uno
+[Webindex]: https://github.com/apache/fluo-examples/tree/master/webindex
+[Stresso]: https://github.com/apache/fluo-examples/tree/master/stresso
+[Phrasecount]: https://github.com/apache/fluo-examples/tree/master/phrasecount
 [website README]: https://github.com/apache/fluo-website/blob/master/README.md
 [example-email]: https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E
 [KEYS]: https://www.apache.org/dist/fluo/KEYS

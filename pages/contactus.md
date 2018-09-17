@@ -37,7 +37,13 @@ current issues.
 
  * [Fluo issues][fi]
  * [Fluo Recipes issues][ri]
- * [Website issues][wi]
+ * [Fluo Website issues][wi]
+ * [Fluo Yarn issues][yi]
+ * [Fluo Docker issues][di]
+ * [Fluo Bytes issues][bi]
+ * [Fluo Uno issues][ui]
+ * [Fluo Mucho issues][mi]
+ * [Fluo Examples issues][ei]
 
 ### IRC
 
@@ -53,6 +59,12 @@ Contributions are welcome to all Apache Fluo projects! If you would like help ge
 [fi]: https://github.com/apache/fluo/issues
 [ri]: https://github.com/apache/fluo-recipes/issues
 [wi]: https://github.com/apache/fluo-website/issues
+[yi]: https://github.com/apache/fluo-yarn/issues
+[di]: https://github.com/apache/fluo-docker/issues
+[bi]: https://github.com/apache/fluo-bytes/issues
+[ui]: https://github.com/apache/fluo-uno/issues
+[mi]: https://github.com/apache/fluo-muchos/issues
+[ei]: https://github.com/apache/fluo-examples/issues
 [fnf]: irc://chat.freenode.net/fluo
 [fn]: https://freenode.net/
 [htc]: /how-to-contribute/
