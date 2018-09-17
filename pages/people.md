@@ -30,7 +30,7 @@ based on commits.
 | [Alan Camillo](https://github.com/alanblueshift)         |                                     |            |
 | [Amal Krishnan](https://github.com/krishamal)            |                                     | [IST][ist] |
 | [Eric Newton](https://github.com/ericnewton)             |                                     | [ET][et]   |
-| [Furkan KAMACI](https://github.com/kamaci)               | [LAGOM](https://www.lagom.ai)      | [TRT][trt] |
+| [Furkan KAMACI](https://github.com/kamaci)               | [LAGOM](https://www.lagom.ai)       | [TRT][trt] |
 | [Garvit Bansal](https://github.com/Garvit244)            | [Flipkart](https://www.flipkart.com)| [IST][ist] |
 | [Joseph Koshakow](https://github.com/jkosh44)            |                                     | [ET][et]   |
 | [Lucas Lima Vieira](https://github.com/llvieira)         |                                     | [BRT][brt] |
@@ -38,12 +38,12 @@ based on commits.
 | [Michael Miller](https://github.com/milleruntime)        | [Centroid LLC][centroid]            | [ET][et]   |
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
-| [Sri Kailash](https://github.com/srikailash)		   | [Booking.com](https://booking.com)  | [CEST][cst]|
+| [Sri Kailash](https://github.com/srikailash)		       | [Booking.com](https://booking.com)  | [CEST][cst]|
 
 [Committers]: https://www.apache.org/foundation/how-it-works.html#committers
 [tc]: http://www.tetraconcepts.com/
 [hw]: https://hortonworks.com/
-[ptech]: http://www.ptech-llc.com/
+[ptech]: https://www.ptech-llc.com/
 [bah]: https://www.boozallen.com/
 [et]: https://www.timeanddate.com/time/zones/et
 [pt]: https://www.timeanddate.com/time/zones/pt

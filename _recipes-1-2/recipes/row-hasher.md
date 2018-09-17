@@ -117,5 +117,5 @@ Balancing config will spread the tablets evenly across the tablet servers,
 which will spread the computation evenly. See the [table optimizations][2]
 documentation for information on how to apply the optimizations.
  
-[1]: https://github.com/astralway/webindex
+[1]: https://github.com/apache/fluo-examples/tree/master/webindex
 [2]: {{ page.docs_base }}/tools/table-optimization/

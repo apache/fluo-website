@@ -23,9 +23,12 @@ specifically for it. For the links columns below, `I` is for issues and `C` is f
 | [Fluo][f]         | [I][fi] [C][fc] | Core Project
 | [Fluo Recipes][r] | [I][ri] [C][rc] | Recipes that build on core.  Code for interoperating with other projects.
 | [Website][w]      | [I][wi] [C][wc] | Source for this website.
-| [Fluo Yarn][y]    | [I][yi] [C][yc] | Enables launching Fluo using YARN
+| [Fluo Yarn][y]    | [I][yi] [C][yc] | Enables launching Fluo using YARN.
 | [Fluo Docker][d]  | [I][di] [C][dc] | Support for running Fluo in Docker.  Enables launching Fluo in Mesos and Kubernetes.
 | [Fluo Bytes][b]   | [I][bi] [C][bc] | An immutable Byte wrapper for Java suitable for use in APIs. 
+| [Fluo Uno][u]     | [I][ui]         | Uno automates setting up Apache Accumulo or Apache Fluo (and their dependencies) on a single machine.
+| [Fluo Muchos][m]  | [I][mi]         | Muchos automates setting up Apache Accumulo or Apache Fluo (and their dependencies) on a cluster.
+| [Fluo Examples][e]| [I][ei]         | Collection of example projects that utilizes Apache Fluo.
 
 ### Contribution workflow
 
@@ -85,12 +88,18 @@ To properly format code in Eclipse :
 [y]: https://github.com/apache/fluo-yarn
 [d]: https://github.com/apache/fluo-docker
 [b]: https://github.com/apache/fluo-bytes
+[u]: https://github.com/apache/fluo-uno
+[m]: https://github.com/apache/fluo-muchos
+[e]: https://github.com/apache/fluo-examples
 [fi]: https://github.com/apache/fluo/issues
 [ri]: https://github.com/apache/fluo-recipes/issues
 [wi]: https://github.com/apache/fluo-website/issues
 [yi]: https://github.com/apache/fluo-yarn/issues
 [di]: https://github.com/apache/fluo-docker/issues
 [bi]: https://github.com/apache/fluo-bytes/issues
+[ui]: https://github.com/apache/fluo-uno/issues
+[mi]: https://github.com/apache/fluo-muchos/issues
+[ei]: https://github.com/apache/fluo-examples/issues
 [fc]: https://github.com/apache/fluo/blob/master/CONTRIBUTING.md
 [rc]: https://github.com/apache/fluo-recipes/blob/master/CONTRIBUTING.md
 [wc]: https://github.com/apache/fluo-website/blob/gh-pages/CONTRIBUTING.md
@@ -101,7 +110,7 @@ To properly format code in Eclipse :
 [stackoverflow]: https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git
 [rtc]: https://www.apache.org/foundation/glossary.html#ReviewThenCommit
 [acc]: https://www.apache.org/foundation/policies/conduct.html
-[helpwanted]: https://github.com/search?utf8=%E2%9C%93&q=repo%3Aapache%2Ffluo+repo%3Aapache%2Ffluo-recipes+repo%3Aapache%2Ffluo-bytes+repo%3Aapache%2Ffluo-website+repo%3Aapache%2Ffluo-yarn+repo%3Aapache%2Ffluo-docker+label%3A%22help+wanted%22+type%3Aissue+state%3Aopen&type=Issues
+[helpwanted]: https://github.com/search?q=repo%3Aapache%2Ffluo+repo%3Aapache%2Ffluo-recipes+repo%3Aapache%2Ffluo-bytes+repo%3Aapache%2Ffluo-website+repo%3Aapache%2Ffluo-yarn+repo%3Aapache%2Ffluo-docker+repo%3Aapache%2Ffluo-uno+repo%3Aapache%2Ffluo-muchos+repo%3Aapache%2Ffluo-examples+label%3A%22help+wanted%22+type%3Aissue+state%3Aopen&type=Issues
 [cu]: /contactus/
 [Fork]: https://help.github.com/articles/fork-a-repo/
 [Pull Request]: https://help.github.com/articles/about-pull-requests/

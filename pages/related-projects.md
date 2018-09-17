@@ -29,11 +29,11 @@ list, please open an issue or submit a pull request [on GitHub][web-ghr].
 [asf]: https://www.apache.org/
 [Fluo]: https://github.com/apache/fluo
 [Fluo Recipes]: https://github.com/apache/fluo-recipes
-[Muchos]: https://github.com/astralway/muchos
-[Uno]: https://github.com/astralway/uno
-[Webindex]: https://github.com/astralway/webindex
-[Stresso]: https://github.com/astralway/stresso
-[Phrasecount]: https://github.com/astralway/phrasecount
+[Muchos]: https://github.com/apache/fluo-muchos
+[Uno]: https://github.com/apache/fluo-uno
+[Webindex]: https://github.com/apache/fluo-examples/tree/master/webindex
+[Stresso]: https://github.com/apache/fluo-examples/tree/master/stresso
+[Phrasecount]: https://github.com/apache/fluo-examples/tree/master/phrasecount
 [Jaccard]: https://github.com/keith-turner/jaccard
 [web-ghr]: https://github.com/apache/fluo-website
 [Rya]: https://rya.apache.org
