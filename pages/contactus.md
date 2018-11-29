@@ -45,10 +45,6 @@ current issues.
  * [Fluo Mucho issues][mi]
  * [Fluo Examples issues][ei]
 
-### IRC
-
-Drop by and chat about Apache Fluo at [#fluo][fnf] on [freenode][fn].
-
 ### Contributions 
 
 Contributions are welcome to all Apache Fluo projects! If you would like help getting started contributing, please contact us on the dev list.  We will work with you to help find something that interest you.  All projects follow a [review-then-commit][rtc] process. If you are interested in contributing, read our [How To Contribute][htc] page.
@@ -65,8 +61,6 @@ Contributions are welcome to all Apache Fluo projects! If you would like help ge
 [ui]: https://github.com/apache/fluo-uno/issues
 [mi]: https://github.com/apache/fluo-muchos/issues
 [ei]: https://github.com/apache/fluo-examples/issues
-[fnf]: irc://chat.freenode.net/fluo
-[fn]: https://freenode.net/
 [htc]: /how-to-contribute/
 [rtc]: https://www.apache.org/foundation/glossary.html#ReviewThenCommit
 [dev-arch]: https://lists.apache.org/list.html?dev@fluo.apache.org
