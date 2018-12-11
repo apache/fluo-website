@@ -29,6 +29,10 @@ dev@fluo.apache.org           | [Subscribe][dev-sub]     | [Unsubscribe][dev-uns
 notifications@fluo.apache.org | [Subscribe][ntfy-sub]    | [Unsubscribe][ntfy-unsub]   | [Archive][ntfy-arch]
 commits@fluo.apache.org       | [Subscribe][commits-sub] | [Unsubscribe][commits-unsub]| [Archive][commits-arch]
 
+### Slack
+
+Drop by and chat about Fluo at the `#fluo` channel on the [ASF Slack workspace][asf-slack]. Join using this [invite link][slack-invite]. If you have trouble joining, email `dev@fluo.apache.org` for an invite.
+
 ### Issues
 
 Fluo uses GitHub issues to track bugs and new features.  Fluo has multiple git repositories, each
@@ -72,3 +76,5 @@ Contributions are welcome to all Apache Fluo projects! If you would like help ge
 [ntfy-unsub]: mailto:notifications-unsubscribe@fluo.apache.org
 [commits-sub]: mailto:commits-subscribe@fluo.apache.org
 [commits-unsub]: mailto:commits-unsubscribe@fluo.apache.org
+[asf-slack]: https://the-asf.slack.com/
+[slack-invite]: https://s.apache.org/slack-invite
