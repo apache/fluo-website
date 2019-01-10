@@ -39,6 +39,7 @@ based on commits.
 | [Michael Wall](https://github.com/mjwall)                |                                     | [ET][et]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna) | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
 | [Sri Kailash](https://github.com/srikailash)		       | [Booking.com](https://booking.com)  | [CEST][cst]|
+| [Jeffrey Zeiberg](https://github.com/jzeiberg)           |[ASRC Federal](https://www.asrc.com) | [ET][et]   |
 
 [Committers]: https://www.apache.org/foundation/how-it-works.html#committers
 [tc]: http://www.tetraconcepts.com/
