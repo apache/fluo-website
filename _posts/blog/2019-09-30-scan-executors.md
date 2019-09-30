@@ -60,7 +60,7 @@ of only executors).
 
 At the time of this writing no released version of Fluo supports Accumulo 2.0.
 Once Fluo 1.3.0 is released with Accumulo 2.0, Hadoop 3.0, and Java 11 support
-it will include the support for scan executors.
+it will include support for scan executors.
 
 [1]: https://accumulo.apache.org/docs/2.x/administration/scan-executors
 [2]: https://github.com/apache/fluo/blob/57b154e13c5c0877bb565fcabf620aa0f30c9f24/modules/core/src/main/java/org/apache/fluo/core/worker/finder/hash/ScanTask.java#L197
