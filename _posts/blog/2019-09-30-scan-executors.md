@@ -7,7 +7,7 @@ author: Keith Turner
 Accumulo 2.0 introduced [Scan Executors][1] giving control over processing of
 scans in Accumulo tablet servers. Fluo has a good use case for scan executors,
 notification scans.  Fluo worker processes continually scan for notifications
-markers that indicate there is work to do. All workers continually scanning for
+that indicate there is work to do. All workers continually scanning for
 notifications can place a lot of load on Accumulo tablet servers which could
 negatively impact transactions.  The new scan executor feature provides a way
 to limit this load.
