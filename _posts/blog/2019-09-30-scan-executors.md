@@ -58,7 +58,7 @@ approach I settled on its place is less cumbersome (it only requires Accumulo
 config) and more flexible (it supports executors and/or prioritization instead
 of only executors).
 
-At the time of this writing no released version of Fluo supports Accumulo 2.0.
+At the time of this writing, no released version of Fluo supports Accumulo 2.0.
 Once Fluo 1.3.0 is released with Accumulo 2.0, Hadoop 3.0, and Java 11 support,
 it will include support for scan executors.
 
