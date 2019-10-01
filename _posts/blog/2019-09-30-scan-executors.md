@@ -25,7 +25,7 @@ config -t fluo_table -s table.scan.dispatcher=org.apache.accumulo.core.spi.scan.
 config -t fluo_table -s table.scan.dispatcher.opts.executor.fluo-ntfy=fnotify
 ```
 
-The system setting `tserver.scan.executors.fnotify.threads=1` creates a single
+The system setting `tserver.scan.executors.fnotify.threads=1` creates a single-threaded
 threaded scan executor in each tablet server named `fnotify`. The two per table
 settings configure a scan dispatcher (the SimpleScanDispatcher is built into
 Accumulo) on the table `fluo_table`.  The scan dispatcher is configured such that when
