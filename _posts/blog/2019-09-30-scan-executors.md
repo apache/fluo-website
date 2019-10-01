@@ -15,7 +15,7 @@ to limit this load.
 Fluo utilizes this feature by [setting scan hints][2] for notification scans
 indicating `scan_type=fluo-ntfy`.  These hints are passed to Accumulo tablet
 servers and are ignored by default. For these scan types, Accumulo could be
-configured to either send them to special thread pool and/or prioritize them
+configured to either send them to a special thread pool and/or prioritize them
 differently within a thread pool.  Below is an example of Accumulo shell
 commands that set up a special executor for notification scans.
 
