@@ -6,11 +6,10 @@ author: Keith Turner
 
 Accumulo 2.0 introduced [Scan Executors][1] giving control over processing of
 scans in Accumulo tablet servers. Fluo has a good use case for scan executors:
-notification scans.  Fluo workers continually scan for notifications
-which indicate there is work to do. All workers continually scanning for
-notifications can place a lot of load on Accumulo tablet servers which could
-negatively impact transactions.  The new scan executor feature provides a way
-to limit this load.
+notification scans.  Fluo workers continually scan for notifications to find
+transactions to execute. All workers continually scanning for notifications
+puts load on Accumulo tablet servers which could negatively impact
+transactions.  Scan executors provides a way to limit this load.
 
 Fluo utilizes this feature by [setting scan hints][2] for notification scans
 indicating `scan_type=fluo-ntfy`.  These hints are passed to Accumulo tablet
