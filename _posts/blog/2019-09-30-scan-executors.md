@@ -49,7 +49,7 @@ anything Accumulo does with that information.  This allows administrators to
 configure Accumulo in many different ways to handle notification scans, without
 any changes to Fluo.
 
-For my first pass at using scan executors I tried a prescriptive approach. I
+For my first pass at using scan executors, I tried a prescriptive approach. I
 attempted to use scan hints to explicitly name an executor for notification
 scans.  I realized this would require Fluo configuration to provide the name of
 the scan executor. Forcing a user to specify Accumulo and Fluo configuration
