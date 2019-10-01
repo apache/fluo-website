@@ -54,7 +54,7 @@ attempted to use scan hints to explicitly name an executor for notification
 scans.  I realized this would require Fluo configuration to provide the name of
 the scan executor. Forcing a user to specify Accumulo and Fluo configuration
 was very cumbersome so I abandoned the prescriptive approach.  The descriptive
-approach I settled on its place is less cumbersome (it only requires Accumulo
+approach I settled on in its place is less cumbersome (it only requires Accumulo
 config) and more flexible (it supports executors and/or prioritization instead
 of only executors).
 
