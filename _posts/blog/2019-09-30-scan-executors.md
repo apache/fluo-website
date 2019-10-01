@@ -28,7 +28,7 @@ config -t fluo_table -s table.scan.dispatcher.opts.executor.fluo-ntfy=fnotify
 The system setting `tserver.scan.executors.fnotify.threads=1` creates a single
 threaded scan executor in each tablet server named `fnotify`. The two per table
 settings configure a scan dispatcher (the SimpleScanDispatcher is built into
-Accumulo) on the fluo table.  The scan dispatcher is configured such that when
+Accumulo) on the table `fluo_table`.  The scan dispatcher is configured such that when
 a scan hint of `scan_type=fluo-ntfy` is seen it runs on the executor `fnotify`.
 All other scans will run on the default executor. This has the effect running
 all notification scans on a single dedicated thread in each tablet server.
