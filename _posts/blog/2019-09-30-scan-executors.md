@@ -41,7 +41,7 @@ tablet server. This inspection revealed that notification scans were all
 running in single thread which was using 100% of a single core.  This left all
 of the other cores free to process transactions.  Further testing to see how
 this impacts throughput is needed. Observing the worker debug logs, all of them
-seemed to complete notification scans quickly finding new work.
+seemed to complete notification scans, quickly finding new work.
 
 Fluo took a descriptive approach to using scan hints, where it described what
 type of scan was running to Accumulo.  However, Fluo does not care what if
