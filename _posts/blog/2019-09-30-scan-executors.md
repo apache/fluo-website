@@ -36,7 +36,7 @@ all notification scans on a single dedicated thread in each tablet server.
 The above setting were tested in a scenario where 20 Fluo worker were run
 against a single tablet server with 20 tablets.  The Fluo stress test was run
 with a low ingest rate, resulting in continual notification scanning by the 20
-workers.  While the test was running, jstack and top were used to inspect the
+workers.  While the test was running, `jstack` and `top` were used to inspect the
 tablet server. This inspection revealed that notification scans were all
 running in single thread which was using 100% of a single core.  This left all
 of the other cores free to process transactions.  Further testing to see how
