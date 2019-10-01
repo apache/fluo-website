@@ -43,7 +43,7 @@ of the other cores free to process transactions.  Further testing to see how
 this impacts throughput is needed. Observing the worker debug logs, all of them
 seemed to complete notification scans, quickly finding new work.
 
-Fluo took a descriptive approach to using scan hints, where it described what
+Fluo took a descriptive approach to using scan hints, where it described to Accumulo
 type of scan was running to Accumulo.  However, Fluo does not care what if
 anything, Accumulo does with that information.  This allows administrators to
 configure Accumulo in many different ways to handle notification scans, without
