@@ -44,7 +44,7 @@ this impacts throughput is needed. Observing the worker debug logs, all of them
 seemed to complete notification scans, quickly finding new work.
 
 Fluo took a descriptive approach to using scan hints, where it described to Accumulo
-type of scan was running to Accumulo.  However, Fluo does not care what if
+the type of scan it was running.  However, Fluo does not care what, if
 anything, Accumulo does with that information.  This allows administrators to
 configure Accumulo in many different ways to handle notification scans, without
 any changes to Fluo.
