@@ -29,6 +29,7 @@ based on commits.
 -----------------------------------------------------------|-------------------------------------|------------|
 | [Alan Camillo](https://github.com/alanblueshift)         |                                     |            |
 | [Amal Krishnan](https://github.com/krishamal)            |                                     | [IST][ist] |
+| [Arvind Shyamsundar](https://github.com/arvindshmicrosoft/) | [Microsoft][msft] | [PT][pt] |
 | [Eric Newton](https://github.com/ericnewton)             |                                     | [ET][et]   |
 | [Furkan KAMACI](https://github.com/kamaci)               | [LAGOM](https://www.lagom.ai)       | [TRT][trt] |
 | [Garvit Bansal](https://github.com/Garvit244)            | [Flipkart](https://www.flipkart.com)| [IST][ist] |
@@ -43,7 +44,6 @@ based on commits.
 | [Russell Carter Jr](https://github.com/rcarterjr)        | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
 | [Sri Kailash](https://github.com/srikailash)		         | [Booking.com](https://booking.com)  | [CEST][cst]|
 | [Tanisha Faulkner](https://github.com/plainolneesh)     | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
-| [Arvind Shyamsundar](https://github.com/arvindshmicrosoft/) | [Microsoft](https://www.microsoft.com) | [PT][pt] |
 
 [Committers]: https://www.apache.org/foundation/how-it-works.html#committers
 [tc]: http://www.tetraconcepts.com/
@@ -54,6 +54,7 @@ based on commits.
 [pt]: https://www.timeanddate.com/time/zones/pt
 [ist]: https://www.timeanddate.com/time/zones/ist
 [PMC]: https://www.apache.org/foundation/how-it-works.html#pmc
+[msft]: https://www.microsoft.com
 [brt]: https://www.timeanddate.com/time/zones/brt
 [centroid]: http://www.centroid-llc.com/
 [cst]:https://www.timeanddate.com/time/zones/cest
