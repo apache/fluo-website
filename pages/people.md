@@ -10,7 +10,7 @@ permalink: /people/
 
 | Name                                               | Organization                   | Timezone |
 -----------------------------------------------------|--------------------------------|----------|
-| [Billie Rinaldi](https://github.com/billierinaldi) | [Hortonworks][hw]              | [ET][et] |
+| [Billie Rinaldi](https://github.com/billierinaldi) | [Microsoft][msft]              | [ET][et] |
 | [Corey Nolet](https://github.com/cjnolet)          | [Tetra Concepts LLC][tc]       | [ET][et] |
 | [Christopher McTague](https://github.com/cjmctague)| [Peterson Technologies][ptech] | [ET][et] |
 | [Christopher Tubbs](https://github.com/ctubbsii)   |                                | [ET][et] |
