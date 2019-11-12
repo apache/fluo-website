@@ -18,6 +18,7 @@ permalink: /people/
 | [Josh Elser](https://github.com/joshelser)         | [Hortonworks][hw]              | [ET][et] |
 | [Keith Turner](https://github.com/keith-turner)    | [Peterson Technologies][ptech] | [ET][et] |
 | [Kenneth McFarland](https://github.com/kpm1985)    |                                | [PT][pt] |
+| [Michael Miller](https://github.com/milleruntime)  | [Centroid LLC][centroid]       | [ET][et] |
 | [Mike Walch](https://github.com/mikewalch)         | [Peterson Technologies][ptech] | [ET][et] |
 
 ## Contributors
@@ -38,7 +39,6 @@ based on commits.
 | [Joseph Koshakow](https://github.com/jkosh44)               |                                     | [ET][et]   |
 | [Lucas Lima Vieira](https://github.com/llvieira)            |                                     | [BRT][brt] |
 | [Manjiri Tapaswi](https://github.com/mptap)                 |                                     | [PT][pt]   |
-| [Michael Miller](https://github.com/milleruntime)           | [Centroid LLC][centroid]            | [ET][et]   |
 | [Michael Wall](https://github.com/mjwall)                   |                                     | [ET][et]   |
 | [Nikhil Manchanda](https://github.com/slicknik)             | [Microsoft][msft]                   | [PT][pt]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna)    | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
