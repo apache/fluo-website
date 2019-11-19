@@ -8,19 +8,20 @@ permalink: /people/
 
 ## [PMC]/[Committers]
 
-| Name                                               | Organization                   | Timezone |
------------------------------------------------------|--------------------------------|----------|
-| [Billie Rinaldi](https://github.com/billierinaldi) | [Microsoft][msft]              | [ET][et] |
-| [Corey Nolet](https://github.com/cjnolet)          | [Tetra Concepts LLC][tc]       | [ET][et] |
-| [Christopher McTague](https://github.com/cjmctague)| [Peterson Technologies][ptech] | [ET][et] |
-| [Christopher Tubbs](https://github.com/ctubbsii)   |                                | [ET][et] |
-| [Drew Farris](https://github.com/drewfarris)       | [Booz Allen Hamilton][bah]     | [ET][et] |
-| [Joseph Koshakow](https://github.com/jkosh44)      |                                | [ET][et] |
-| [Josh Elser](https://github.com/joshelser)         | [Hortonworks][hw]              | [ET][et] |
-| [Keith Turner](https://github.com/keith-turner)    | [Peterson Technologies][ptech] | [ET][et] |
-| [Kenneth McFarland](https://github.com/kpm1985)    |                                | [PT][pt] |
-| [Michael Miller](https://github.com/milleruntime)  | [Centroid LLC][centroid]       | [ET][et] |
-| [Mike Walch](https://github.com/mikewalch)         | [Peterson Technologies][ptech] | [ET][et] |
+| Name                                                        | Organization                        | Timezone   |
+--------------------------------------------------------------|-------------------------------------|------------|
+| [Arvind Shyamsundar](https://github.com/arvindshmicrosoft/) | [Microsoft][msft]                   | [PT][pt]   |
+| [Billie Rinaldi](https://github.com/billierinaldi)          | [Microsoft][msft]                   | [ET][et]   |
+| [Corey Nolet](https://github.com/cjnolet)                   | [Tetra Concepts LLC][tc]            | [ET][et]   |
+| [Christopher McTague](https://github.com/cjmctague)         | [Peterson Technologies][ptech]      | [ET][et]   |
+| [Christopher Tubbs](https://github.com/ctubbsii)            |                                     | [ET][et]   |
+| [Drew Farris](https://github.com/drewfarris)                | [Booz Allen Hamilton][bah]          | [ET][et]   |
+| [Joseph Koshakow](https://github.com/jkosh44)               |                                     | [ET][et]   |
+| [Josh Elser](https://github.com/joshelser)                  | [Hortonworks][hw]                   | [ET][et]   |
+| [Keith Turner](https://github.com/keith-turner)             | [Peterson Technologies][ptech]      | [ET][et]   |
+| [Kenneth McFarland](https://github.com/kpm1985)             |                                     | [PT][pt]   |
+| [Michael Miller](https://github.com/milleruntime)           | [Centroid LLC][centroid]            | [ET][et]   |
+| [Mike Walch](https://github.com/mikewalch)                  | [Peterson Technologies][ptech]      | [ET][et]   |
 
 ## Contributors
 
@@ -31,7 +32,6 @@ based on commits.
 --------------------------------------------------------------|-------------------------------------|------------|
 | [Alan Camillo](https://github.com/alanblueshift)            |                                     |            |
 | [Amal Krishnan](https://github.com/krishamal)               |                                     | [IST][ist] |
-| [Arvind Shyamsundar](https://github.com/arvindshmicrosoft/) | [Microsoft][msft]                   | [PT][pt]   |
 | [Eric Newton](https://github.com/ericnewton)                |                                     | [ET][et]   |
 | [Furkan KAMACI](https://github.com/kamaci)                  | [LAGOM](https://www.lagom.ai)       | [TRT][trt] |
 | [Garvit Bansal](https://github.com/Garvit244)               | [Flipkart](https://www.flipkart.com)| [IST][ist] |
