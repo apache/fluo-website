@@ -5,12 +5,12 @@ permalink: /how-to-contribute/
 ---
 
 Contributions are welcome to all Apache Fluo repositories.  All repositories follow a
-[review-then-commit][rtc] process.  This means all contributions must pass any integration tests and
-be reviewed before being committed. Code reviews are done by commenting on a GitHub pull request.
-If you would like to contribute, but are not sure where to start then [contact us][cu] and/or look
-at issues marked [helpwanted].  Fluo committers will follow the [Apache Code of Conduct][acc] when
-corresponding with a contributor.  We respectfully ask all contributors to follow this code of
-conduct also.
+[review-then-commit][rtc] process.  Prior to commit all contributions must pass any integration
+tests and be approved by at least one other committer. Code reviews are done by commenting on a
+GitHub pull request. If you would like to contribute, but are not sure where to start then
+[contact us][cu] and/or look at issues marked [helpwanted]. Fluo committers will follow the
+[Apache Code of Conduct][acc] when corresponding with a contributor. We respectfully ask all
+contributors to follow this code of conduct also.
 
 ### Repositories
 
