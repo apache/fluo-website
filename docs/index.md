@@ -16,7 +16,7 @@ redirect_from:
 
 ### Apache Fluo Recipes documentation
 
-* [1.2][recipes-1.2] - March 1, 2018
+* [1.2][recipes-1.2] - March 6, 2018
 * [1.1.0-incubating][recipes-1.1] - June 22, 2017
 * [1.0.0-incubating][recipes-1.0] - October 28, 2016
 
