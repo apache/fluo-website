@@ -18,7 +18,7 @@ permalink: /people/
 | [Drew Farris](https://github.com/drewfarris)                | [Booz Allen Hamilton][bah]          | [ET][et]   |
 | [Joseph Koshakow](https://github.com/jkosh44)               |                                     | [ET][et]   |
 | [Josh Elser](https://github.com/joshelser)                  | [Hortonworks][hw]                   | [ET][et]   |
-| [Keith Turner](https://github.com/keith-turner)             | [Peterson Technologies][ptech]      | [ET][et]   |
+| [Keith Turner](https://github.com/keith-turner)             | [Microsoft][msft]                   | [ET][et]   |
 | [Kenneth McFarland](https://github.com/kpm1985)             |                                     | [PT][pt]   |
 | [Michael Miller](https://github.com/milleruntime)           | [Centroid LLC][centroid]            | [ET][et]   |
 | [Mike Walch](https://github.com/mikewalch)                  | [Peterson Technologies][ptech]      | [ET][et]   |
