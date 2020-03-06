@@ -38,10 +38,10 @@ Fluo Recipes was updated (in [#146]) to build using Fluo 1.2.0 and Accumulo 1.7.
 [#144]: https://github.com/apache/fluo-recipes/pull/144
 [#146]: https://github.com/apache/fluo-recipes/pull/146
 [procedures]: https://www.apache.org/info/verification
-[KEYS]: https://www.apache.org/dist/fluo/KEYS
+[KEYS]: https://downloads.apache.org/fluo/KEYS
 [src-release]: https://www.apache.org/dyn/closer.lua/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz
-[src-asc]: https://www.apache.org/dist/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.asc
-[src-sha]: https://www.apache.org/dist/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.sha512
+[src-asc]: https://downloads.apache.org/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.asc
+[src-sha]: https://downloads.apache.org/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.sha512
 [docs]: /docs/fluo-recipes/1.2/
 [central]: http://search.maven.org/#search|ga|1|fluo-recipes
 [changes]: https://github.com/apache/fluo-recipes/milestone/2?closed=1
