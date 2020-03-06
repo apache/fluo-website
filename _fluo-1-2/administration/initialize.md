@@ -53,14 +53,14 @@ initialize an application using Fluo's [Java API][initAPI].
 
 3. Run the command below to initialize your Fluo application. Change `myapp` to your application name:
 
-        fluo init myapp /path/to/myapp/fluo-app.properties
+        fluo init -a myapp -p /path/to/myapp/fluo-app.properties
 
    A Fluo application only needs to be initialized once. After initialization, the Fluo application
    name is used to start/stop the application and scan the Fluo table.
 
 4. Run `fluo list` which connects to Fluo and lists applications to verify initialization.
 
-5. Run `fluo config myapp` to see what configuration is stored in ZooKeeper.
+5. Run `fluo config -a myapp` to see what configuration is stored in ZooKeeper.
 
 ## Next Steps
 
