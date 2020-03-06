@@ -21,9 +21,9 @@ Follow the instructions below to start Fluo processes.
    are typically run with one oracle process and multiple worker processes. The commands below will start
    a Fluo oracle and two workers on your local machine:
 
-        fluo oracle myapp &> oracle.log &
-        fluo worker myapp &> worker1.log &
-        fluo worker myapp &> worker2.log &
+        fluo oracle -a myapp &> oracle.log &
+        fluo worker -a myapp &> worker1.log &
+        fluo worker -a myapp &> worker2.log &
 
    The commands will retrieve your application configuration and observer jars (using your
    application name) before starting the oracle or worker process.

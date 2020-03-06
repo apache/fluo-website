@@ -8,8 +8,8 @@ This page contains information on managing Fluo applications.
 
 ## Viewing data
 
-When you have data in your Fluo application, you can view it using the command `fluo scan myapp`. 
-Pipe the output to `less` using the command `fluo scan myapp | less` if you want to page through the data.
+When you have data in your Fluo application, you can view it using the command `fluo scan -a myapp`. 
+Pipe the output to `less` using the command `fluo scan -a myapp | less` if you want to page through the data.
 
 ## Get status of all applications
 
