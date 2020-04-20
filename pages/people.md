@@ -62,4 +62,4 @@ based on commits.
 [centroid]: http://www.centroid-llc.com/
 [cst]:https://www.timeanddate.com/time/zones/cest
 [trt]: https://www.timeanddate.com/time/zones/trt
-
+[bst]: https://www.timeanddate.com/time/zones/bst
