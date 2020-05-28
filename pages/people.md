@@ -47,6 +47,7 @@ based on commits.
 | [Shan Nawaz](https://github.com/shannawaz)                  | [Microsoft][msft]                   | [ET][et]   |
 | [Sri Kailash](https://github.com/srikailash)                | [Booking.com](https://booking.com)  | [CEST][cst]|
 | [Tanisha Faulkner](https://github.com/plainolneesh)         | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
+| [Bhuvan Mysore Sreenivas](https://github.com/flyingcanopy)  |                                     | [IST][ist] |
 
 [Committers]: https://www.apache.org/foundation/how-it-works.html#committers
 [tc]: http://www.tetraconcepts.com/
