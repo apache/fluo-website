@@ -33,6 +33,7 @@ based on commits.
 --------------------------------------------------------------|-------------------------------------|------------|
 | [Alan Camillo](https://github.com/alanblueshift)            |                                     |            |
 | [Amal Krishnan](https://github.com/krishamal)               |                                     | [IST][ist] |
+| [Bhuvan Mysore](https://github.com/flyingcanopy)            |                                     | [IST][ist] |
 | [Eric Newton](https://github.com/ericnewton)                |                                     | [ET][et]   |
 | [Furkan KAMACI](https://github.com/kamaci)                  | [LAGOM](https://www.lagom.ai)       | [TRT][trt] |
 | [Garvit Bansal](https://github.com/Garvit244)               | [Flipkart](https://www.flipkart.com)| [IST][ist] |
@@ -47,7 +48,6 @@ based on commits.
 | [Shan Nawaz](https://github.com/shannawaz)                  | [Microsoft][msft]                   | [ET][et]   |
 | [Sri Kailash](https://github.com/srikailash)                | [Booking.com](https://booking.com)  | [CEST][cst]|
 | [Tanisha Faulkner](https://github.com/plainolneesh)         | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
-| [Bhuvan Mysore Sreenivas](https://github.com/flyingcanopy)  |                                     | [IST][ist] |
 
 [Committers]: https://www.apache.org/foundation/how-it-works.html#committers
 [tc]: http://www.tetraconcepts.com/
