@@ -33,6 +33,7 @@ based on commits.
 --------------------------------------------------------------|-------------------------------------|------------|
 | [Alan Camillo](https://github.com/alanblueshift)            |                                     |            |
 | [Amal Krishnan](https://github.com/krishamal)               |                                     | [IST][ist] |
+| [Bhuvan Mysore Sreenivas](https://github.com/flyingcanopy)            |                                     | [IST][ist] |
 | [Eric Newton](https://github.com/ericnewton)                |                                     | [ET][et]   |
 | [Furkan KAMACI](https://github.com/kamaci)                  | [LAGOM](https://www.lagom.ai)       | [TRT][trt] |
 | [Garvit Bansal](https://github.com/Garvit244)               | [Flipkart](https://www.flipkart.com)| [IST][ist] |
