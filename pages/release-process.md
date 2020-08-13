@@ -54,7 +54,7 @@ In the following steps `RCV` is short for release candidate version.  For the ca
 make an initial release candidate available for evaluation, but nor for voting, consider using `0`
 for `RCV`.
 
- 1. Branch master (or the current snapshot) and call the branch `<releaseVersion>-rc<RCV>-next`
+ 1. Branch main (or the current snapshot) and call the branch `<releaseVersion>-rc<RCV>-next`
 
  2. Prepare the release which will verify that all tests pass: `mvn release:prepare`
 
@@ -97,12 +97,12 @@ for `RCV`.
 When the vote passes on a release candidate, follow the steps below to complete the release using the chosen RC:
 
  1. Merge your RC branch into the correct branch and push those commits upstream.  The example below
-    assume `master` is the correct branch.  Afterwards, you can delete your RC branch.
+    assume `main` is the correct branch.  Afterwards, you can delete your RC branch.
 
     ```shell
-    git checkout master
+    git checkout main
     git merge <releaseVersion>-rc<RCV>-next
-    git push apache-remote master
+    git push apache-remote main
     ```
 
  2. Release the artifacts at https://repository.apache.org so that they get published in Maven
@@ -246,10 +246,10 @@ Below are more projects with integration tests which can be found at - `https://
 
 [Fluo Recipes]: https://github.com/apache/fluo-recipes
 [Uno]:https://github.com/apache/fluo-uno
-[Webindex]: https://github.com/apache/fluo-examples/tree/master/webindex
-[Stresso]: https://github.com/apache/fluo-examples/tree/master/stresso
-[Phrasecount]: https://github.com/apache/fluo-examples/tree/master/phrasecount
-[website README]: https://github.com/apache/fluo-website/blob/master/README.md
+[Webindex]: https://github.com/apache/fluo-examples/tree/main/webindex
+[Stresso]: https://github.com/apache/fluo-examples/tree/main/stresso
+[Phrasecount]: https://github.com/apache/fluo-examples/tree/main/phrasecount
+[website README]: https://github.com/apache/fluo-website/blob/main/README.md
 [example-email]: https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E
 [KEYS]: https://www.apache.org/dist/fluo/KEYS
 [sigs]: https://www.apache.org/dev/release-distribution.html#sigs-and-sums

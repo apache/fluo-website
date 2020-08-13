@@ -20,29 +20,78 @@ limitations under the License.
 Contributions to the website can be made by submitting pull requests to this repo.  Checkout [How to
 Contribute][contribute] on for general instructions on contributing to Fluo projects.
 
-# Testing locally
+## Local Builds for Testing
 
-If you want to view your changes in your browser before submitting a pull request, you will need
-install all of the gems in the [Gemfile] to serve the website in your browser using [Jekyll]. This
-can be done by following these instructions:
+### Setting up Your Jekyll/Bundler Environment
 
-1. After you have Ruby and RubyGems installed on your machine, install [Bundler]:
+Ruby and RubyGems are required to use Jekyll and Bundler, so first make sure
+you have those on your machine.
 
-        gem install bundler
+If you are using an OS packaged version of Ruby, you may also need to install
+the ruby-dev (Ubuntu) or ruby-devel (Fedora) package as well to build any
+native code for gems that are installed later. Installing these will also
+ensure your system's RubyGems package is installed. Depending on your OS, you
+may also need other packages to install/build gems, such as ruby-full, make,
+gcc, nodejs, build-essentials, or patch.
 
-2. Use [Bundler] to install all gems in the [Gemfile] of this repo.
+Once Ruby, RubyGems, and any necessary native tools are installed, you are
+ready to install [Bundler] to manage the remaining RubyGem dependencies.
+Bundler is included in Ruby 2.6 and later as a default gem, so installing it
+may not be needed.
 
-        cd fluo-website/
-        bundle install
+Because we use [Bundler] to install specific versions of gems, it is not
+recommended to use an OS packaged version of gems other than what comes
+built-in. If you are using an OS packaged version of Ruby, it is __strongly__
+recommended to avoid `sudo` when installing additional gems, in order to avoid
+conflicting with your system's package-managed installation. Instead, you can
+specify a `GEM_HOME` directory for installing gems locally in your home
+directory. You can do this in your `$HOME/.bashrc` file or other appropriate
+place for your environment:
 
-3. Run the following command to have Jekyll serve the website locally:
+```bash
+# in .bashrc
+export GEM_HOME=$HOME/.gem/ruby
+```
 
-        bundle exec jekyll serve --watch
+With Ruby installed on your machine, you can install [Bundler] using the
+command below:
 
-4. Open your web browser to [http://localhost:4000](http://localhost:4000).
+```bash
+# not necessary in Ruby >2.6, since it is a default gem since 2.6
+gem install bundler
+```
 
-[contribute]: https://fluo.apache.org/how-to-contribute/
-[Jekyll]: https://jekyllrb.com/
+Next, use [Bundler] to install [Jekyll] and other dependencies needed to run
+the website (this command assumes your current working directory is your clone
+of this repository with the `main` branch checked out, because that's where
+the Gemfile dependency list exists).
+
+```bash
+bundle install
+```
+
+### Testing with the Built-in Jekyll Webserver
+
+The command to serve the site contents using Jekyll's built-in webserver is as
+follows (this webserver may behave differently than apache.org's servers).
+
+```bash
+bundle exec jekyll serve -w
+```
+
+You do __NOT__ need to execute a `bundle exec jekyll build` command first, as
+the `serve` command is sufficient to both build the site and serve its
+contents. By default, it will also try to re-build any pages you change while
+running the webserver, which can be quite useful if trying to get some CSS or
+HTML styled "just right".
+
+Jekyll will print a local URL where the site can be viewed (usually,
+[http://0.0.0.0:4000/](http://0.0.0.0:4000/)).
+
+
 [Bundler]: https://bundler.io/
-[Gemfile]: Gemfile
-
+[Jekyll]: https://jekyllrb.com/
+[contribute]: https://fluo.apache.org/how-to-contribute/
+[kramdown]: https://kramdown.gettalong.org/
+[production]: https://fluo.apache.org
+[staging]: https://fluo.staged.apache.org

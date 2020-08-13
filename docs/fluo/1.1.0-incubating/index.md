@@ -47,10 +47,10 @@ Below are helpful resources for Fluo application developers:
 [Metrics]: /docs/fluo/1.1.0-incubating/metrics/
 [Contributing]: /docs/fluo/1.1.0-incubating/contributing/
 [Architecture]: /docs/fluo/1.1.0-incubating/architecture/
-[ti]: https://travis-ci.org/apache/incubator-fluo.svg?branch=master
+[ti]: https://travis-ci.org/apache/incubator-fluo.svg?branch=main
 [tl]: https://travis-ci.org/apache/incubator-fluo
 [li]: http://img.shields.io/badge/license-ASL-blue.svg
-[ll]: https://github.com/apache/incubator-fluo/blob/master/LICENSE
+[ll]: https://github.com/apache/incubator-fluo/blob/main/LICENSE
 [mi]: https://maven-badges.herokuapp.com/maven-central/org.apache.fluo/fluo-api/badge.svg
 [ml]: https://maven-badges.herokuapp.com/maven-central/org.apache.fluo/fluo-api/
 [ji]: https://javadoc-emblem.rhcloud.com/doc/org.apache.fluo/fluo-api/badge.svg

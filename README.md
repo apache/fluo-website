@@ -1,6 +1,6 @@
 # Apache Fluo website
 
-Code powering the Apache Fluo website ([https://fluo.apache.org](https://fluo.apache.org)).
+Code powering the Apache Fluo website ([https://fluo.apache.org][production]).
 [Contributing](CONTRIBUTING.md) describes how to test locally.
 
 ## Update website for new release
@@ -45,32 +45,51 @@ replace any reference to `fluo` with `recipes`.
 3. Update `_config.yml` by adding a `fluo-1-3` collection and setting default values for it.
    You may want to keep 1.2 values for github & javadocs until 1.3 is released.
    
-## Committer instructions
+## Publishing
 
-To publish Fluo's website the `gh-pages` branch must be rendered into the `asf-site` 
-branch.  The script `_scripts/git-hooks/post-commit` automates rendering into the `asf-site` branch.
-The commands below serve as a guide for committers who wish to publish the web site.
+### Automatic Staging
+
+Changes pushed to our `main` branch will automatically trigger [Jekyll] to
+build our site from that branch and push the result to our `asf-staging`
+branch, where they will be served on [our default staging site][staging].
+
+### Publishing Staging to Production
+
+First, add our repository as a remote in your local clone, if you haven't
+already done so (these commands assume the name of that remote is 'upstream').
+
+Example:
 
 ```bash
- # ensure local asf-site branch is up to date
- git checkout asf-site 
- git pull upstream asf-site
-
- # switch to gh-pages branch, update it, and build new site 
- git checkout gh-pages
- git pull upstream gh-pages 
- ./_scripts/git-hooks/post-commit 
-
- # switch to asf-site, look at the commit created by post-commit script, and push it if ok
- git checkout asf-site 
- git log -p
- git push upstream asf-site 
+git clone https://github.com/<yourusername>/fluo-website
+cd fluo-website
+git remote add upstream https://github.com/apache/fluo-website
 ```
 
-In the commands above `upstream` is 
+Next, publish the staging site to production by updating the `asf-site` branch
+to match the contents in the `asf-staging` branch:
 
+```bash
+# Step 0: stay in main branch; you never need to switch
+git checkout main
+
+# Step 1: update your upstream remote
+git remote update upstream
+
+# Step 2: push upstream/asf-staging to upstream/asf-site
+# run next command with --dry-run first to see what it will do without making changes
+git push upstream upstream/asf-staging:asf-site
 ```
-$ git remote -v | grep upstream
-upstream	https://gitbox.apache.org/repos/asf/fluo-website/ (fetch)
-upstream	https://gitbox.apache.org/repos/asf/fluo-website/ (push)``
-```
+
+Note that Step 3 should always be a fast-forward merge. That is, there should
+never be any reason to force-push it if everything is done correctly. If extra
+commits are ever added to `asf-site` that are not present in `asf-staging`,
+then those branches will need to be sync'd back up in order to continue
+avoiding force pushes.
+
+The final site can be viewed [here][production].
+
+
+[Jekyll]: https://jekyllrb.com/
+[production]: https://fluo.apache.org
+[staging]: https://fluo.staged.apache.org

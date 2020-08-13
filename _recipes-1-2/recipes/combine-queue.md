@@ -204,7 +204,7 @@ calls `process()` on a [ChangeObserver].
  * The old value will always be what was reported as the new value in the
    previous transaction that called `ChangeObserver.process()`.
 
-[phrasecount]: https://github.com/apache/fluo-examples/tree/master/phrasecount
+[phrasecount]: https://github.com/apache/fluo-examples/tree/main/phrasecount
 [CombineQueue]: {{ page.javadoc_core }}/org/apache/fluo/recipes/core/combine/CombineQueue.html
 [ChangeObserver]: {{ page.javadoc_core }}/org/apache/fluo/recipes/core/combine/ChangeObserver.html
 [Combiner]: {{ page.javadoc_core }}/org/apache/fluo/recipes/core/combine/Combiner.html

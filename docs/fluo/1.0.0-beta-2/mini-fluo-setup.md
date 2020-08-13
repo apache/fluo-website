@@ -25,7 +25,7 @@ First, clone Fluo:
     git clone https://github.com/fluo-io/fluo.git
     cd fluo/
 
-Optionally, check out a stable tag (if you don't want to build a release from master):
+Optionally, check out a stable tag (if you don't want to build a release from main):
 
     git checkout 1.0.0-beta-2
 

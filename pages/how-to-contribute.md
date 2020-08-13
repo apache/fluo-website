@@ -100,12 +100,12 @@ To properly format code in Eclipse :
 [ui]: https://github.com/apache/fluo-uno/issues
 [mi]: https://github.com/apache/fluo-muchos/issues
 [ei]: https://github.com/apache/fluo-examples/issues
-[fc]: https://github.com/apache/fluo/blob/master/CONTRIBUTING.md
-[rc]: https://github.com/apache/fluo-recipes/blob/master/CONTRIBUTING.md
+[fc]: https://github.com/apache/fluo/blob/main/CONTRIBUTING.md
+[rc]: https://github.com/apache/fluo-recipes/blob/main/CONTRIBUTING.md
 [wc]: https://github.com/apache/fluo-website/blob/gh-pages/CONTRIBUTING.md
-[yc]: https://github.com/apache/fluo-yarn/blob/master/CONTRIBUTING.md
-[dc]: https://github.com/apache/fluo-docker/blob/master/CONTRIBUTING.md
-[bc]: https://github.com/apache/fluo-bytes/blob/master/CONTRIBUTING.md
+[yc]: https://github.com/apache/fluo-yarn/blob/main/CONTRIBUTING.md
+[dc]: https://github.com/apache/fluo-docker/blob/main/CONTRIBUTING.md
+[bc]: https://github.com/apache/fluo-bytes/blob/main/CONTRIBUTING.md
 [tutorial]: http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
 [stackoverflow]: https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git
 [rtc]: https://www.apache.org/foundation/glossary.html#ReviewThenCommit

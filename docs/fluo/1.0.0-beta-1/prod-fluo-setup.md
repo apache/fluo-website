@@ -26,14 +26,14 @@ Before you can install Fluo, you will need to obtain a distribution tarball that
 works for your environment. Fluo distributions are built for specific releases
 of Hadoop and Accumulo. If you are using Accumulo 1.6.1 and Hadoop 2.3.0,
 you can download the [latest release][release].  If you need a release for a
-different environment or one built from the master branch, follow these steps:
+different environment or one built from the main branch, follow these steps:
 
 First, clone Fluo:
 
     git clone https://github.com/fluo-io/fluo.git
     cd fluo/
 
-Optionally, check out a stable tag (if you don't want to build a release from master):
+Optionally, check out a stable tag (if you don't want to build a release from main):
 
     git checkout 1.0.0-beta-1
 
