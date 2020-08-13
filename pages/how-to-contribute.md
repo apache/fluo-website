@@ -102,7 +102,7 @@ To properly format code in Eclipse :
 [ei]: https://github.com/apache/fluo-examples/issues
 [fc]: https://github.com/apache/fluo/blob/main/CONTRIBUTING.md
 [rc]: https://github.com/apache/fluo-recipes/blob/main/CONTRIBUTING.md
-[wc]: https://github.com/apache/fluo-website/blob/gh-pages/CONTRIBUTING.md
+[wc]: https://github.com/apache/fluo-website/blob/main/CONTRIBUTING.md
 [yc]: https://github.com/apache/fluo-yarn/blob/main/CONTRIBUTING.md
 [dc]: https://github.com/apache/fluo-docker/blob/main/CONTRIBUTING.md
 [bc]: https://github.com/apache/fluo-bytes/blob/main/CONTRIBUTING.md
