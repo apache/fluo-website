@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.1.0-incubating/install/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Fluo Install Instructions | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="fluo-doc">
+
+  <!-- This layout is only used by old documentation -->
+  <div class="alert alert-danger" role="alert">These docs are for Fluo 1.1.0-incubating which is an old version! Check out the <a href="/docs/fluo/1.2/">latest docs</a>!</div>
+
+  
+
+  <header class="post-header">
+    <h2 class="post-title">Fluo Install Instructions</h2>
+  </header>
+
+  <article id="page-content">
+    <p>Instructions for installing Apache Fluo and starting a Fluo application in YARN on a cluster where
+Accumulo, Hadoop &amp; Zookeeper are running.  If you need help setting up these dependencies, see the
+<a href="https://fluo.apache.org/related-projects/">related projects page</a> for external projects that may help.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>Before you install Fluo, the following software must be installed and running on your local machine
+or cluster:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Software</th>
+      <th>Recommended Version</th>
+      <th>Minimum Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://accumulo.apache.org/">Accumulo</a></td>
+      <td>1.7.2</td>
+      <td>1.6.1</td>
+    </tr>
+    <tr>
+      <td><a href="http://hadoop.apache.org/">Hadoop</a></td>
+      <td>2.7.2</td>
+      <td>2.6.0</td>
+    </tr>
+    <tr>
+      <td><a href="http://zookeeper.apache.org/">Zookeeper</a></td>
+      <td>3.4.8</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="http://openjdk.java.net/">Java</a></td>
+      <td>JDK 8</td>
+      <td>JDK 8</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="obtain-a-distribution">Obtain a distribution</h2>
+
+<p>Before you can install Fluo, you will need to obtain a distribution tarball. It is recommended that
+you download the <a href="https://fluo.apache.org/download/">latest release</a>. You can also build a distribution from the main
+branch by following these steps which create a tarball in <code class="language-plaintext highlighter-rouge">modules/distribution/target</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/apache/incubator-fluo.git
+cd fluo/
+mvn package
+</code></pre></div></div>
+
+<h2 id="install-fluo">Install Fluo</h2>
+
+<p>After you obtain a Fluo distribution tarball, follow these steps to install Fluo.</p>
+
+<ol>
+  <li>
+    <p>Choose a directory with plenty of space and untar the distribution:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tar -xvzf fluo-1.x.x-incubating-bin.tar.gz
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Copy the example configuration to the base of your configuration directory to create the default
+configuration for your Fluo install:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp conf/examples/* conf/
+</code></pre></div>    </div>
+
+    <p>The default configuration will be used as the base configuration for each new application.</p>
+  </li>
+  <li>
+    <p>Modify <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for your environment. However, you should not configure any
+application settings (like observers).</p>
+
+    <p>NOTE - All properties that have a default are set with it. Uncomment a property if you want
+to use a value different than the default. Properties that are unset and uncommented must be
+set by the user.</p>
+  </li>
+  <li>
+    <p>Fluo needs to build its classpath using jars from the versions of Hadoop, Accumulo, and
+Zookeeper that you are using. Choose one of the two ways below to make these jars available
+to Fluo:</p>
+
+    <ul>
+      <li>Set <code class="language-plaintext highlighter-rouge">HADOOP_PREFIX</code>, <code class="language-plaintext highlighter-rouge">ACCUMULO_HOME</code>, and <code class="language-plaintext highlighter-rouge">ZOOKEEPER_HOME</code> in your environment or configure
+ these variables in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo-env.sh">fluo-env.sh</a>. Fluo will look in these locations for jars.</li>
+      <li>
+        <p>Run <code class="language-plaintext highlighter-rouge">./lib/fetch.sh ahz</code> to download Hadoop, Accumulo, and Zookeeper jars to <code class="language-plaintext highlighter-rouge">lib/ahz</code> and
+ configure <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo-env.sh">fluo-env.sh</a> to look in this directory. By default, this command will download the
+ default versions set in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/lib/ahz/pom.xml">lib/ahz/pom.xml</a>. If you are not using the default versions, you can
+ override them:</p>
+
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ./lib/fetch.sh ahz -Daccumulo.version=1.7.2 -Dhadoop.version=2.7.2 -Dzookeeper.version=3.4.8
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Fluo needs more dependencies than what is available from Hadoop, Accumulo, and Zookeeper. These
+extra dependencies need to be downloaded to <code class="language-plaintext highlighter-rouge">lib/</code> using the command below:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./lib/fetch.sh extra
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>You are now ready to use the Fluo command script.</p>
+
+<h2 id="fluo-command-script">Fluo command script</h2>
+
+<p>The Fluo command script is located at <code class="language-plaintext highlighter-rouge">bin/fluo</code> of your Fluo installation. All Fluo commands are
+invoked by this script.</p>
+
+<p>Modify and add the following to your <code class="language-plaintext highlighter-rouge">~/.bashrc</code> if you want to be able to execute the fluo script
+from any directory:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export PATH=/path/to/fluo-1.x.x-incubating/bin:$PATH
+</code></pre></div></div>
+
+<p>Source your <code class="language-plaintext highlighter-rouge">.bashrc</code> for the changes to take effect and test the script</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.bashrc
+fluo
+</code></pre></div></div>
+
+<p>Running the script without any arguments prints a description of all commands.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/fluo
+</code></pre></div></div>
+
+<h2 id="configure-a-fluo-application">Configure a Fluo application</h2>
+
+<p>You are now ready to configure a Fluo application. Use the command below to create the
+configuration necessary for a new application. Feel free to pick a different name (other than
+<code class="language-plaintext highlighter-rouge">myapp</code>) for your application:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fluo new myapp
+</code></pre></div></div>
+
+<p>This command will create a directory for your application at <code class="language-plaintext highlighter-rouge">apps/myapp</code> of your Fluo install which
+will contain a <code class="language-plaintext highlighter-rouge">conf</code> and <code class="language-plaintext highlighter-rouge">lib</code>.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">apps/myapp/conf</code> directory contains a copy of the <code class="language-plaintext highlighter-rouge">fluo.properties</code> from your default
+configuration. This should be configured for your application:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim apps/myapp/fluo.properties
+</code></pre></div></div>
+
+<p>When configuring the observer section in fluo.properties, you can configure your instance for the
+<a href="https://github.com/fluo-io/phrasecount">phrasecount</a> application if you have not created your own application. See the <a href="https://github.com/fluo-io/phrasecount">phrasecount</a>
+example for instructions. You can also choose not to configure any observers but your workers will
+be idle when started.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">apps/myapp/lib</code> directory should contain any observer jars for your application. If you
+configured <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for observers, copy any jars containing these observer classes to this
+directory.</p>
+
+<h2 id="initialize-your-application">Initialize your application</h2>
+
+<p>After your application has been configured, use the command below to initialize it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fluo init myapp
+</code></pre></div></div>
+
+<p>This only needs to be called once and stores configuration in Zookeeper.</p>
+
+<h2 id="start-your-application">Start your application</h2>
+
+<p>A Fluo application consists of one oracle process and multiple worker processes. Before starting
+your application, you can configure the number of worker process in your <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> file.</p>
+
+<p>When you are ready to start your Fluo application on your YARN cluster, run the command below:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fluo start myapp
+</code></pre></div></div>
+
+<p>The start command above will work for a single-node or a large cluster. By using YARN, you do not
+need to deploy the Fluo binaries to every node on your cluster or start processes on every node.</p>
+
+<p>You can use the following command to check the status of your instance:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fluo status myapp
+</code></pre></div></div>
+
+<p>For more detailed information on the YARN containers running Fluo:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fluo info myapp
+</code></pre></div></div>
+
+<p>You can also use <code class="language-plaintext highlighter-rouge">yarn application -list</code> to check the status of your Fluo instance in YARN.</p>
+
+<h2 id="view-fluo-application-logs">View Fluo application logs</h2>
+
+<p>Fluo application logs are viewable within YARN using the methods below:</p>
+
+<ol>
+  <li>
+    <p>View logs using the web interface of the the YARN resource manager
+(<code class="language-plaintext highlighter-rouge">http://&lt;resource manager&gt;:8088/cluster</code>). First, click on the application ID (i.e <code class="language-plaintext highlighter-rouge">application_*</code>)
+of your Fluo application and then click on the latest attempt ID (i.e <code class="language-plaintext highlighter-rouge">appattempt_*</code>). You should
+see a list of containers. There should be a container for the application master (typically
+container 1), a Fluo oracle (typically container 2), and Fluo workers (containers 3+). You can view
+the log files produced by a container by clicking on its ‘logs’ link. Logs from Fluo observers will
+be in the <code class="language-plaintext highlighter-rouge">worker_*.log</code> file for each of your worker containers.</p>
+  </li>
+  <li>
+    <p>View logs on disk in the directory specified by the YARN property <code class="language-plaintext highlighter-rouge">yarn.nodemanager.log-dirs</code> in
+your YARN configuration <code class="language-plaintext highlighter-rouge">yarn-site.xml</code> (see <a href="https://hadoop.apache.org/docs/r2.7.0/hadoop-yarn/hadoop-yarn-common/yarn-default.xml">yarn-default.xml</a> for more info about this property).
+If you are running Fluo on single machine, this method works well. If you are running Fluo on a
+cluster, your containers and their logs will be spread across the cluster.</p>
+  </li>
+</ol>
+
+<p>When running Fluo in YARN, Fluo must use <a href="http://logback.qos.ch/">logback</a> for logging (due to a hard requirement by Twill).
+Logback is configured using <code class="language-plaintext highlighter-rouge">/path/to/fluo/apps/&lt;app_name&gt;/conf/logback.xml</code>. You should review this
+configuration but the root logger is configured by default to print any message that is debug level
+or higher.</p>
+
+<p>In addition the <code class="language-plaintext highlighter-rouge">*.log</code> files, Fluo oracle and worker containers will have <code class="language-plaintext highlighter-rouge">stdout</code> and <code class="language-plaintext highlighter-rouge">stderr</code>
+files. These files may have helpful error messages. Especially, if a process failed to start
+or calls were made to <code class="language-plaintext highlighter-rouge">System.out</code> or <code class="language-plaintext highlighter-rouge">System.err</code> in your application.</p>
+
+<h2 id="view-fluo-application-data">View Fluo application data</h2>
+
+<p>When you have data in your Fluo application, you can view it using the command <code class="language-plaintext highlighter-rouge">fluo scan</code>. Pipe the
+output to <code class="language-plaintext highlighter-rouge">less</code> using the command <code class="language-plaintext highlighter-rouge">fluo scan | less</code> if you want to page through the data.</p>
+
+<h2 id="stop-your-fluo-application">Stop your Fluo application</h2>
+
+<p>Use the following command to stop your Fluo application:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fluo stop myapp
+</code></pre></div></div>
+
+<p>If stop fails, there is also a kill command.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fluo kill myapp
+</code></pre></div></div>
+
+<h2 id="tuning-accumulo">Tuning Accumulo</h2>
+
+<p>Fluo will reread the same data frequently when it checks conditions on mutations. When Fluo
+initializes a table it enables data caching to make this more efficient. However you may need to
+increase the amount of memory available for caching in the tserver by increasing
+<code class="language-plaintext highlighter-rouge">tserver.cache.data.size</code>. Increasing this may require increasing the maximum tserver java heap size
+in <code class="language-plaintext highlighter-rouge">accumulo-env.sh</code>.</p>
+
+<p>Fluo will run many client threads, will want to ensure the tablet server has enough threads. Should
+probably increase the <code class="language-plaintext highlighter-rouge">tserver.server.threads.minimum</code> Accumulo setting.</p>
+
+<p>Using at least Accumulo 1.6.1 is recommended because multiple performance bugs were fixed.</p>
+
+<h2 id="tuning-yarn">Tuning YARN</h2>
+
+<p>When running Fluo oracles and workers in YARN, the number of instances, max memory, and number of
+cores for Fluo processes can be configured in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>. If YARN is killing processes
+consider increasing <code class="language-plaintext highlighter-rouge">twill.java.reserved.memory.mb</code> (which defaults to 200 and is set in
+yarn-site.xml). The <code class="language-plaintext highlighter-rouge">twill.java.reserved.memory.mb</code> config determines the gap between the YARN
+memory limit set in <a href="https://github.com/apache/fluo/blob/rel/fluo-1.1.0-incubating/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> and the java -Xmx setting. For example, if max memory is 1024
+and twill reserved memory is 200, the java -Xmx setting will be 1024-200 = 824 MB.</p>
+
+<h2 id="run-locally-without-yarn">Run locally without YARN</h2>
+
+<p>If you do not have YARN set up, you can start the oracle and worker as a local Fluo process using
+the following commands:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local-fluo start-oracle
+local-fluo start-worker
+</code></pre></div></div>
+
+<p>Use the following commands to stop a local Fluo process:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local-fluo stop-worker
+local-fluo stop-oracle
+</code></pre></div></div>
+
+<p>In a distributed environment, you will need to deploy and configure a Fluo distribution on every
+node in your cluster.</p>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

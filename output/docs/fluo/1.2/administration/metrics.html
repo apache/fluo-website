@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.2/administration/metrics">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Metrics | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+  <div class="col-md-2">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-spy="affix">
+      <div class="panel panel-default">
+      
+      
+      
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="false" aria-controls="collapsegetting-started">
+                  Getting started
+                </a>
+              </h4>
+            </div>
+            <div id="collapsegetting-started" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/design">Design</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/quick-start">Quick Start</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/install-fluo">Install Fluo</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/create-application">Create Application</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseadministration" aria-expanded="true" aria-controls="collapseadministration">
+                  Administration
+                </a>
+              </h4>
+            </div>
+            <div id="collapseadministration" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/initialize">Initialize Application</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-processes">Run Fluo processes</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-yarn">Run Fluo in YARN</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-docker">Run Fluo in Docker</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/manage-applications">Manage Applications</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/metrics">Metrics</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/troubleshooting">Troubleshooting</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+          
+        
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    
+    <p>Fluo 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Administration &nbsp;&gt;&gt;&nbsp; Metrics</p>
+    
+
+    <!--div class="alert alert-warning" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Apache Fluo! <a href="/docs/fluo/1.2/">View documentation for the latest release</a>.</div>-->
+
+    
+    <div class="row">
+      <div class="col-md-10"><h1>Metrics</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/main/_fluo-1-2/administration/metrics.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+    
+    <p>A Fluo application can be configured (in <a href="https://github.com/apache/fluo/blob/main/modules/distribution/src/main/config/fluo-app.properties">fluo-app.properties</a>) to report metrics. When metrics are
+configured, Fluo will report some ‘default’ metrics about an application that help users monitor its
+performance. Users can also write code to report ‘application-specific’ metrics from their
+applications. Both ‘application-specific’ and ‘default’ metrics share the same reporter configured
+by <a href="https://github.com/apache/fluo/blob/main/modules/distribution/src/main/config/fluo-app.properties">fluo-app.properties</a> and are described in detail below.</p>
+
+<h2 id="configuring-reporters">Configuring reporters</h2>
+
+<p>Fluo metrics are not published by default. To publish metrics, configure a reporter in the ‘metrics’
+section of <a href="https://github.com/apache/fluo/blob/main/modules/distribution/src/main/config/fluo-app.properties">fluo-app.properties</a>. There are several different reporter types (i.e Console, CSV,
+Graphite, JMX, SLF4J) that are implemented using <a href="https://dropwizard.github.io/metrics/3.1.0/">Dropwizard</a>. The choice of which reporter to use
+depends on the visualization tool used. If you are not currently using a visualization tool, there
+is documentation at end of this page for reporting Fluo metrics to Grafana/InfluxDB.</p>
+
+<h2 id="metrics-names">Metrics names</h2>
+
+<p>When Fluo metrics are reported, they are published using a naming scheme that encodes additional
+information. This additional information is represented using all caps variables (i.e <code class="language-plaintext highlighter-rouge">METRIC</code>)
+below.</p>
+
+<p>Default metrics start with <code class="language-plaintext highlighter-rouge">fluo.class</code> or <code class="language-plaintext highlighter-rouge">fluo.system</code> and have following naming schemes:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    fluo.class.APPLICATION.REPORTER_ID.METRIC.CLASS
+    fluo.system.APPLICATION.REPORTER_ID.METRIC
+</code></pre></div></div>
+
+<p>Application metrics start with <code class="language-plaintext highlighter-rouge">fluo.app</code> and have following scheme:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    fluo.app.REPORTER_ID.METRIC
+</code></pre></div></div>
+
+<p>The variables below describe the additional information that is encoded in metrics names.</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">APPLICATION</code> - Fluo application name</li>
+  <li><code class="language-plaintext highlighter-rouge">REPORTER_ID</code> - Unique ID of the Fluo oracle, worker, or client that is reporting the metric.
+ When running in YARN, this ID is of the format <code class="language-plaintext highlighter-rouge">worker-INSTANCE_ID</code> or <code class="language-plaintext highlighter-rouge">oracle-INSTANCE_ID</code>
+ where <code class="language-plaintext highlighter-rouge">INSTANCE_ID</code> corresponds to instance number. When not running in YARN, this ID consists
+ of a hostname and a base36 long that is unique across all fluo processes.</li>
+  <li><code class="language-plaintext highlighter-rouge">METRIC</code> - Name of the metric. For ‘default’ metrics, this is set by Fluo. For ‘application’
+ metrics, this is set by user. Name should be unique and avoid using period ‘.’ in name.</li>
+  <li><code class="language-plaintext highlighter-rouge">CLASS</code> - Name of Fluo observer or loader class that produced metric. This allows things like
+ transaction collisions to be tracked per class.</li>
+</ol>
+
+<h2 id="application-specific-metrics">Application-specific metrics</h2>
+
+<p>Application metrics are implemented by retrieving a <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/metrics/MetricsReporter.html">MetricsReporter</a> from an <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/observer/Observer.html">Observer</a>, <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/client/Loader.html">Loader</a>,
+or <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>.  These metrics are named using the format <code class="language-plaintext highlighter-rouge">fluo.app.REPORTER_ID.METRIC</code>.</p>
+
+<h2 id="default-metrics">Default metrics</h2>
+
+<p>Default metrics report for a particular Observer/Loader class or system-wide.</p>
+
+<p>Below are metrics that are reported from each Observer/Loader class that is configured in a Fluo
+application. These metrics are reported after each transaction and named using the format
+<code class="language-plaintext highlighter-rouge">fluo.class.APPLICATION.REPORTER_ID.METRIC.CLASS</code>.</p>
+
+<ul>
+  <li>tx_lock_wait_time - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#timers">Timer</a>
+    <ul>
+      <li>Time transaction spent waiting on locks held by other transactions.</li>
+      <li>Only updated for transactions that have non-zero lock time.</li>
+    </ul>
+  </li>
+  <li>tx_execution_time - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#timers">Timer</a>
+    <ul>
+      <li>Time transaction took to execute.</li>
+      <li>Updated for failed and successful transactions.</li>
+      <li>This does not include commit time, only the time from start until commit is called.</li>
+    </ul>
+  </li>
+  <li>tx_with_collision - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#meters">Meter</a>
+    <ul>
+      <li>Rate of transactions with collisions.</li>
+    </ul>
+  </li>
+  <li>tx_collisions - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#meters">Meter</a>
+    <ul>
+      <li>Rate of collisions.</li>
+    </ul>
+  </li>
+  <li>tx_entries_set - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#meters">Meter</a>
+    <ul>
+      <li>Rate of row/columns set by transaction</li>
+    </ul>
+  </li>
+  <li>tx_entries_read - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#meters">Meter</a>
+    <ul>
+      <li>Rate of row/columns read by transaction that existed.</li>
+      <li>There is currently no count of all reads (including non-existent data)</li>
+    </ul>
+  </li>
+  <li>tx_locks_timedout - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#meters">Meter</a>
+    <ul>
+      <li>Rate of timedout locks rolled back by transaction.</li>
+      <li>These are locks that are held for very long periods by another transaction that appears to be
+alive based on zookeeper.</li>
+    </ul>
+  </li>
+  <li>tx_locks_dead - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#meters">Meter</a>
+    <ul>
+      <li>Rate of dead locks rolled by a transaction.</li>
+      <li>These are locks held by a process that appears to be dead according to zookeeper.</li>
+    </ul>
+  </li>
+  <li>tx_status_<code class="language-plaintext highlighter-rouge">&lt;STATUS&gt;</code> - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#meters">Meter</a>
+    <ul>
+      <li>Rate of different ways (i.e <code class="language-plaintext highlighter-rouge">&lt;STATUS&gt;</code>) a transaction can terminate</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Below are system-wide metrics that are reported for the entire Fluo application. These metrics are
+named using the format <code class="language-plaintext highlighter-rouge">fluo.system.APPLICATION.REPORTER_ID.METRIC</code>.</p>
+
+<ul>
+  <li>oracle_response_time - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#timers">Timer</a>
+    <ul>
+      <li>Time each RPC call to oracle for stamps took</li>
+    </ul>
+  </li>
+  <li>oracle_client_stamps - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a>
+    <ul>
+      <li>Number of stamps requested for each request for stamps to the server</li>
+    </ul>
+  </li>
+  <li>oracle_server_stamps - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a>
+    <ul>
+      <li>Number of stamps requested for each request for stamps from a client</li>
+    </ul>
+  </li>
+  <li>worker_notifications_queued - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#gauges">Gauge</a>
+    <ul>
+      <li>The current number of notifications queued for processing.</li>
+    </ul>
+  </li>
+  <li>transactor_committing - <a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#gauges">Gauge</a>
+    <ul>
+      <li>The current number of transactions that are working their way through the commit steps.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Histograms and Timers have a counter. In the case of a histogram, the counter is the number of times
+the metric was updated and not a sum of the updates. For example if a request for 5 timestamps was
+made to the oracle followed by a request for 3 timestamps, then the count for <code class="language-plaintext highlighter-rouge">oracle_server_stamps</code>
+would be 2 and the mean would be (5+3)/2.</p>
+
+<h2 id="view-metrics-in-grafanainfuxdb">View metrics in Grafana/InfuxDB</h2>
+
+<p>Fluo metrics can be sent to <a href="https://influxdb.com/">InfluxDB</a>, a time series database, and made viewable in <a href="http://grafana.org/">Grafana</a>, 
+a visualization tool. Below is a screenshot of Fluo metrics in Grafana:</p>
+
+<p><img src="/resources/docs/fluo-metrics-1.png" width="100%" />
+<img src="/resources/docs/fluo-metrics-2.png" width="100%" />
+<img src="/resources/docs/fluo-metrics-3.png" width="100%" /></p>
+
+<p>Following the instructions below to set this up:</p>
+
+<ol>
+  <li>
+    <p>Follow the standard installation instructions for <a href="https://influxdb.com/">InfluxDB</a> and <a href="http://grafana.org/">Grafana</a>. As for versions,
+the instructions below were written using InfluxDB v0.9.4.2 and Grafana v2.5.0.</p>
+  </li>
+  <li>
+    <p>Add the following to your InfluxDB configuration to configure it accept metrics in Graphite
+format from Fluo. The configuration below contains templates that transform the Graphite
+metrics into a format that is usable in InfluxDB.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[graphite]]
+  bind-address = ":2003"
+  enabled = true
+  database = "fluo_metrics"
+  protocol = "tcp"
+  consistency-level = "one"
+  separator = "_"
+  batch-size = 1000
+  batch-pending = 5
+  batch-timeout = "1s"
+  templates = [
+    "fluo.class.*.*.*.*.* ..app.host.measurement.observer.field",
+    "fluo.class.*.*.*.* ..app.host.measurement.observer",
+    "fluo.system.*.*.*.* ..app.host.measurement.field",
+    "fluo.system.*.*.* ..app.host.measurement",
+    "fluo.app.*.*.* ..host.measurement.field",
+    "fluo.app.*.* ..host.measurement",
+  ]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Fluo distributes a file called <code class="language-plaintext highlighter-rouge">fluo_metrics_setup.txt</code> that contains a list of commands that
+setup InfluxDB. These commands will configure an InfluxDB user, retention policies, and
+continuous queries that downsample data for the historical dashboard in Grafana. Run the command
+below to execute the commands in this file:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $INFLUXDB_HOME/bin/influx -import -path $FLUO_HOME/contrib/influxdb/fluo_metrics_setup.txt
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Configure the <code class="language-plaintext highlighter-rouge">fluo-app.properties</code> of your Fluo application to send Graphite metrics to InfluxDB.
+Below is example configuration. Remember to replace <code class="language-plaintext highlighter-rouge">&lt;INFLUXDB_HOST&gt;</code> with the actual host.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> fluo.metrics.reporter.graphite.enable=true
+ fluo.metrics.reporter.graphite.host=&lt;INFLUXDB_HOST&gt;
+ fluo.metrics.reporter.graphite.port=2003
+ fluo.metrics.reporter.graphite.frequency=30
+</code></pre></div>    </div>
+
+    <p>The reporting frequency of 30 sec is required if you are using the provided Grafana dashboards
+ that are configured in the next step.</p>
+  </li>
+  <li>
+    <p>Grafana needs to be configured to load dashboard JSON templates from a directory. Fluo
+distributes two Grafana dashboard templates in its tarball distribution in the directory
+<code class="language-plaintext highlighter-rouge">contrib/grafana</code>. Before restarting Grafana, you should copy the templates from your Fluo
+installation to the <code class="language-plaintext highlighter-rouge">dashboards/</code> directory configured below.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[dashboards.json]
+enabled = true
+path = &lt;GRAFANA_HOME&gt;/dashboards
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>If you restart Grafana, you will see the Fluo dashboards configured but all of their charts will
+be empty unless you have a Fluo application running and configured to send data to InfluxDB.
+When you start sending data, you may need to refresh the dashboard page in the browser to start
+viewing metrics.</p>
+  </li>
+</ol>
+
+
+
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/main/_fluo-1-2/administration/metrics.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+  </div>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

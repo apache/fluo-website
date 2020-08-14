@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.2/getting-started/design">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Design | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+  <div class="col-md-2">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-spy="affix">
+      <div class="panel panel-default">
+      
+      
+      
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="true" aria-controls="collapsegetting-started">
+                  Getting started
+                </a>
+              </h4>
+            </div>
+            <div id="collapsegetting-started" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/design">Design</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/quick-start">Quick Start</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/install-fluo">Install Fluo</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/create-application">Create Application</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseadministration" aria-expanded="false" aria-controls="collapseadministration">
+                  Administration
+                </a>
+              </h4>
+            </div>
+            <div id="collapseadministration" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/initialize">Initialize Application</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-processes">Run Fluo processes</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-yarn">Run Fluo in YARN</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-docker">Run Fluo in Docker</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/manage-applications">Manage Applications</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/metrics">Metrics</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/troubleshooting">Troubleshooting</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+          
+        
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    
+    <p>Fluo 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Getting started &nbsp;&gt;&gt;&nbsp; Design</p>
+    
+
+    <!--div class="alert alert-warning" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Apache Fluo! <a href="/docs/fluo/1.2/">View documentation for the latest release</a>.</div>-->
+
+    
+    <div class="row">
+      <div class="col-md-10"><h1>Design</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/main/_fluo-1-2/getting-started/design.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+    
+    <p>The diagram below provides an overview of Apache Fluo’s design.</p>
+
+<p><img src="/resources/docs/fluo-architecture.png" alt="fluo-architecture" /></p>
+
+<h2 id="background">Background</h2>
+
+<p>The design of Apache Fluo is inspired by Google’s <a href="https://research.google.com/pubs/pub36726.html">Percolator</a> which is described as
+being used to populate Google’s search index.</p>
+
+<h2 id="fluo-application">Fluo Application</h2>
+
+<p>A <strong>Fluo application</strong> maintains a large scale computation using a series of small transactional
+updates. Fluo applications store their data in a <strong>Fluo table</strong> which has a similar structure (row,
+column, value) to an <strong>Accumulo table</strong> except that a Fluo table has no timestamps. A Fluo table
+is implemented using an Accumulo table. While you could scan the Accumulo table used to implement
+a Fluo table using an Accumulo client, you would read extra implementation-related data in addition
+to your data. Therefore, developers should only interact with the data in a Fluo table by writing
+Fluo client or observer code:</p>
+
+<ul>
+  <li><strong>Clients</strong> ingest data or interact with Fluo from external applications (REST services,
+crawlers, etc).  These are generally user started process that use the Fluo API.</li>
+  <li><strong>Observers</strong> are user provided functions run by Fluo Workers that execute transactions in response to notifications. Notifications are set by Fluo transactions, executing in a client or observer, when a requested column is modified.</li>
+</ul>
+
+<p>Multiple Fluo applications can run on a cluster at the same time. Fluo applications
+consist of an oracle process and a configurable number of worker processes:</p>
+
+<ul>
+  <li>The <strong>Oracle</strong> process allocates timestamps for transactions. While only one Oracle is required,
+Fluo can be configured to run extra Oracles that can take over if the primary Oracle fails.</li>
+  <li><strong>Worker</strong> processes run user code (called <strong>observers</strong>) that perform transactions. All workers
+ run the same observers. The number of worker instances are configured to handle the processing
+ workload.</li>
+</ul>
+
+<h2 id="fluo-dependencies">Fluo Dependencies</h2>
+
+<p>Fluo requires the following software to be running on the cluster:</p>
+
+<ul>
+  <li><strong>Accumulo</strong> - Fluo stores its data in Accumulo and uses Accumulo’s conditional mutations for
+transactions.</li>
+  <li><strong>Hadoop</strong> - Each Fluo application run its oracle and worker processes as Hadoop YARN
+applications. HDFS is also required for Accumulo.</li>
+  <li><strong>Zookeeper</strong> - Fluo stores its metadata and state information in Zookeeper. Zookeeper is also
+required for Accumulo.</li>
+</ul>
+
+
+
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/main/_fluo-1-2/getting-started/design.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+  </div>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

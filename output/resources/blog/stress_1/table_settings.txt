@@ -1,0 +1,49 @@
+root@accumulo> config -t stress
+-----------+------------------------------------------------------------------------+---------------------------------------------------------------
+SCOPE      | NAME                                                                   | VALUE
+-----------+------------------------------------------------------------------------+---------------------------------------------------------------
+default    | table.balancer ....................................................... | org.apache.accumulo.server.master.balancer.DefaultLoadBalancer
+table      |    @override ......................................................... | accumulo.balancer.StressBalancer
+default    | table.bloom.enabled .................................................. | false
+default    | table.bloom.error.rate ............................................... | 0.5%
+table      |    @override ......................................................... | 10%
+default    | table.bloom.hash.type ................................................ | murmur
+default    | table.bloom.key.functor .............................................. | org.apache.accumulo.core.file.keyfunctor.RowFunctor
+default    | table.bloom.load.threshold ........................................... | 1
+default    | table.bloom.size ..................................................... | 1048576
+table      |    @override ......................................................... | 4194304
+default    | table.cache.block.enable ............................................. | false
+table      |    @override ......................................................... | true
+default    | table.cache.index.enable ............................................. | true
+default    | table.classpath.context .............................................. | 
+table      |    @override ......................................................... | fluo
+default    | table.compaction.major.everything.idle ............................... | 1h
+default    | table.compaction.major.ratio ......................................... | 3
+table      |    @override ......................................................... | 1.5
+default    | table.compaction.minor.idle .......................................... | 5m
+default    | table.compaction.minor.logs.threshold ................................ | 3
+default    | table.failures.ignore ................................................ | false
+default    | table.file.blocksize ................................................. | 0B
+default    | table.file.compress.blocksize ........................................ | 100K
+default    | table.file.compress.blocksize.index .................................. | 128K
+default    | table.file.compress.type ............................................. | gz
+default    | table.file.max ....................................................... | 15
+default    | table.file.replication ............................................... | 0
+default    | table.file.type ...................................................... | rf
+default    | table.formatter ...................................................... | org.apache.accumulo.core.util.format.DefaultFormatter
+table      |    @override ......................................................... | io.fluo.accumulo.format.FluoFormatter
+table      | table.group.notify ................................................... | ntfy
+default    | table.groups.enabled ................................................. | 
+table      |    @override ......................................................... | notify
+default    | table.interepreter ................................................... | org.apache.accumulo.core.util.interpret.DefaultScanInterpreter
+table      | table.iterator.majc.GarbageCollectionIterator ........................ | 10,io.fluo.accumulo.iterators.GarbageCollectionIterator
+table      | table.iterator.majc.GarbageCollectionIterator.opt.zookeeper.connect .. | node1,node2,node3/fluo
+table      | table.iterator.minc.GarbageCollectionIterator ........................ | 10,io.fluo.accumulo.iterators.GarbageCollectionIterator
+table      | table.iterator.minc.GarbageCollectionIterator.opt.zookeeper.connect .. | node1,node2,node3/fluo
+default    | table.majc.compaction.strategy ....................................... | org.apache.accumulo.tserver.compaction.DefaultCompactionStrategy
+default    | table.scan.max.memory ................................................ | 512K
+default    | table.security.scan.visibility.default ............................... | 
+default    | table.split.threshold ................................................ | 1G
+default    | table.walog.enabled .................................................. | true
+-----------+------------------------------------------------------------------------+------------------------------------------------------------------
+

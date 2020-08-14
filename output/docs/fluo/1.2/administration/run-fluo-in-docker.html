@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.2/administration/run-fluo-in-docker">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Run Fluo in Docker | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+  <div class="col-md-2">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-spy="affix">
+      <div class="panel panel-default">
+      
+      
+      
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="false" aria-controls="collapsegetting-started">
+                  Getting started
+                </a>
+              </h4>
+            </div>
+            <div id="collapsegetting-started" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/design">Design</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/quick-start">Quick Start</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/install-fluo">Install Fluo</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/create-application">Create Application</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseadministration" aria-expanded="true" aria-controls="collapseadministration">
+                  Administration
+                </a>
+              </h4>
+            </div>
+            <div id="collapseadministration" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/initialize">Initialize Application</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-processes">Run Fluo processes</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-yarn">Run Fluo in YARN</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-docker">Run Fluo in Docker</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/manage-applications">Manage Applications</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/metrics">Metrics</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/troubleshooting">Troubleshooting</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+          
+        
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    
+    <p>Fluo 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Administration &nbsp;&gt;&gt;&nbsp; Run Fluo in Docker</p>
+    
+
+    <!--div class="alert alert-warning" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Apache Fluo! <a href="/docs/fluo/1.2/">View documentation for the latest release</a>.</div>-->
+
+    
+    <div class="row">
+      <div class="col-md-10"><h1>Run Fluo in Docker</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/main/_fluo-1-2/administration/run-fluo-in-docker.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+    
+    <h2 id="obtain-the-docker-image">Obtain the Docker image</h2>
+
+<p>To obtain the docker image created by this project, you can either pull it from <a href="https://hub.docker.com/">DockerHub</a> at
+<a href="https://hub.docker.com/r/apache/fluo/">apache/fluo</a> or build it yourself. To pull the image from DockerHub, run the command below:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull apache/fluo
+</code></pre></div></div>
+
+<p>While it is easier to pull from DockerHub, the image will default to the software versions below:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Software</th>
+      <th>Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://fluo.apache.org/">Fluo</a></td>
+      <td>1.2.0</td>
+    </tr>
+    <tr>
+      <td><a href="https://accumulo.apache.org/">Accumulo</a></td>
+      <td>1.8.1</td>
+    </tr>
+    <tr>
+      <td><a href="https://hadoop.apache.org/">Hadoop</a></td>
+      <td>2.7.5</td>
+    </tr>
+    <tr>
+      <td><a href="https://zookeeper.apache.org/">Zookeeper</a></td>
+      <td>3.4.11</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If these versions do not match what is running on your cluster, you should consider <a href="https://github.com/apache/fluo-docker/blob/main/README.md#build-the-docker-image">building
+your own image</a> with matching versions.</p>
+
+<h2 id="image-basics">Image basics</h2>
+
+<p>The entrypoint for the Fluo docker image is the <code class="language-plaintext highlighter-rouge">fluo</code> script. While the primary use
+case for this image is to start an oracle or worker, you can run other commands in the
+<code class="language-plaintext highlighter-rouge">fluo</code> script to test out the image:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># No arguments prints Fluo command usage</span>
+docker run apache/fluo
+<span class="c"># Print Fluo version</span>
+docker run apache/fluo version
+<span class="c"># Print Fluo classpath</span>
+docker run apache/fluo classpath
+</code></pre></div></div>
+
+<p>This Docker image only runs Fluo, it does not run Accumulo, Hadoop, or
+ZooKeeper processes.  These systems must be run separately and the Docker image
+configured to use them.</p>
+
+<h2 id="initialize-application">Initialize application</h2>
+
+<p>Before starting a Fluo oracle and worker using the Fluo Docker image,
+<a href="/docs/fluo/1.2/administration/initialize">initialize your Fluo application</a>.  Initialization can also be
+done using Docker.  To do this, the applications jars and config file need to
+be mapped into the docker container.  To understand how to do this, assume the
+following setup for local files outside of Docker.</p>
+
+<ul>
+  <li>Application jars in <code class="language-plaintext highlighter-rouge">/home/user1/myapp/lib</code></li>
+  <li><code class="language-plaintext highlighter-rouge">fluo-app.properties</code> in <code class="language-plaintext highlighter-rouge">/home/user1/myapp/conf</code></li>
+  <li><code class="language-plaintext highlighter-rouge">fluo.observer.init.dir=/opt/myapp/lib</code> is set in <code class="language-plaintext highlighter-rouge">fluo-app.properties</code> along with any other properties needed</li>
+</ul>
+
+<p>With this setup, the following Docker command will initialize <code class="language-plaintext highlighter-rouge">myapp</code>. Fluo
+init runs in docker as root, so <code class="language-plaintext highlighter-rouge">HADOOP_USER_NAME</code> is set in order to avoid
+copying into HDFS as root.  The Docker run option <code class="language-plaintext highlighter-rouge">-v
+/home/user1/myapp:/opt/myapp</code> maps the local directory <code class="language-plaintext highlighter-rouge">/home/user1/myapp</code> into
+the container at <code class="language-plaintext highlighter-rouge">/opt/myapp</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--network</span><span class="o">=</span><span class="s2">"host"</span> <span class="nt">-v</span> /home/user1/myapp:/opt/myapp <span class="se">\</span>
+           <span class="nt">-e</span> <span class="nv">HADOOP_USER_NAME</span><span class="o">=</span><span class="sb">`</span><span class="nb">whoami</span><span class="sb">`</span> <span class="se">\</span>
+           apache/fluo init <span class="nt">-a</span> myapp <span class="nt">-f</span> <span class="nt">-p</span> /opt/myapp/conf/fluo-app.properties <span class="se">\</span>
+                            <span class="nt">-o</span> fluo.connection.zookeepers<span class="o">=</span>zkhost/fluo
+</code></pre></div></div>
+
+<h2 id="run-application-in-docker">Run application in Docker</h2>
+
+<p>After initializing, choose a method below to run the oracle and worker(s) of your Fluo application. In the examples below, the Fluo
+application is named <code class="language-plaintext highlighter-rouge">myapp</code> and was initialized using a Zookeeper node on <code class="language-plaintext highlighter-rouge">zkhost</code>.</p>
+
+<h3 id="docker-engine">Docker engine</h3>
+
+<p>Use the <code class="language-plaintext highlighter-rouge">docker</code> command to start local docker containers.</p>
+
+<ol>
+  <li>
+    <p>Start a Fluo oracle for <code class="language-plaintext highlighter-rouge">myapp</code> application connecting to a Zookeeper at <code class="language-plaintext highlighter-rouge">zkhost</code>.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -d --network="host" apache/fluo oracle -a myapp -o fluo.connection.zookeepers=zkhost/fluo
+</code></pre></div>    </div>
+
+    <p>The command above uses <code class="language-plaintext highlighter-rouge">-d</code> to run the container in the background and <code class="language-plaintext highlighter-rouge">--network="host"</code> to run the container
+ on the host’s network stack.</p>
+  </li>
+  <li>
+    <p>Start Fluo worker(s). Execute this command multiple times to start multiple workers.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -d --network="host" apache/fluo worker -a myapp -o fluo.connection.zookeepers=zkhost/fluo
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="marathon">Marathon</h3>
+
+<p>Using the <a href="https://mesosphere.github.io/marathon/">Marathon</a> UI, you can create applications using JSON configuration.</p>
+
+<p>The JSON below can be used to start a Fluo oracle.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myapp-fluo-oracle"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"cmd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fluo oracle -a myapp -o fluo.connection.zookeepers=zkhost/fluo"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"cpus"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"mem"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"disk"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"container"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"docker"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apache/fluo"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HOST"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DOCKER"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The JSON below can be used to start Fluo worker(s). Modify instances to start multiple workers.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myapp-fluo-worker"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"cmd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fluo worker -a myapp -o fluo.connection.zookeepers=zkhost/fluo"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"cpus"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"mem"</span><span class="p">:</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"disk"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"container"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"docker"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apache/fluo"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HOST"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DOCKER"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>Learn how to <a href="/docs/fluo/1.2/administration/manage-applications">manage Fluo applications</a>.</p>
+
+
+
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/main/_fluo-1-2/administration/run-fluo-in-docker.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+  </div>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

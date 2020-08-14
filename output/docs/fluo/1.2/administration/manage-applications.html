@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.2/administration/manage-applications">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Manage Applications | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+  <div class="col-md-2">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-spy="affix">
+      <div class="panel panel-default">
+      
+      
+      
+        
+          
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsegetting-started" aria-expanded="false" aria-controls="collapsegetting-started">
+                  Getting started
+                </a>
+              </h4>
+            </div>
+            <div id="collapsegetting-started" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/design">Design</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/quick-start">Quick Start</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/install-fluo">Install Fluo</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/getting-started/create-application">Create Application</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseadministration" aria-expanded="true" aria-controls="collapseadministration">
+                  Administration
+                </a>
+              </h4>
+            </div>
+            <div id="collapseadministration" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/initialize">Initialize Application</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-processes">Run Fluo processes</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-yarn">Run Fluo in YARN</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/run-fluo-in-docker">Run Fluo in Docker</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/manage-applications">Manage Applications</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/metrics">Metrics</a></div>
+                
+                <div class="row doc-sidebar-link"><a href="/docs/fluo/1.2/administration/troubleshooting">Troubleshooting</a></div>
+                
+              </div>
+            </div>
+          
+        
+          
+        
+          
+        
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    
+    <p>Fluo 1.2.0 documentation &nbsp;&gt;&gt;&nbsp; Administration &nbsp;&gt;&gt;&nbsp; Manage Applications</p>
+    
+
+    <!--div class="alert alert-warning" style="margin-bottom: 0px;" role="alert">This documentation is for a future release of Apache Fluo! <a href="/docs/fluo/1.2/">View documentation for the latest release</a>.</div>-->
+
+    
+    <div class="row">
+      <div class="col-md-10"><h1>Manage Applications</h1></div>
+      <div class="col-md-2"><a class="pull-right" style="margin-top: 25px;" href="https://github.com/apache/fluo-website/edit/main/_fluo-1-2/administration/manage-applications.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+    
+    <p>This page contains information on managing Fluo applications.</p>
+
+<h2 id="viewing-data">Viewing data</h2>
+
+<p>When you have data in your Fluo application, you can view it using the command <code class="language-plaintext highlighter-rouge">fluo scan -a myapp</code>. 
+Pipe the output to <code class="language-plaintext highlighter-rouge">less</code> using the command <code class="language-plaintext highlighter-rouge">fluo scan -a myapp | less</code> if you want to page through the data.</p>
+
+<h2 id="get-status-of-all-applications">Get status of all applications</h2>
+
+<p>To list all Fluo applications, run <code class="language-plaintext highlighter-rouge">fluo list</code>.</p>
+
+<h2 id="running-application-code">Running application code</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">fluo exec &lt;app name&gt; &lt;class&gt; {arguments}</code> provides an easy way to execute application code. It
+will execute a class with a main method if a jar containing the class is included with the observer 
+jars configured at initialization. When the class is run, Fluo classes and dependencies will be on 
+the classpath. The <code class="language-plaintext highlighter-rouge">fluo exec</code> command can inject the applications configuration if the class is 
+written in the following way. Defining the injection point is optional.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">javax.inject.Inject</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppCommand</span> <span class="o">{</span>
+
+  <span class="c1">//when run with fluo exec command, the applications configuration will be injected</span>
+  <span class="nd">@Inject</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="nc">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="k">try</span><span class="o">(</span><span class="nc">FluoClient</span> <span class="n">fluoClient</span> <span class="o">=</span> <span class="nc">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">))</span> <span class="o">{</span>
+      <span class="c1">//do stuff with Fluo</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="application-configuration">Application Configuration</h2>
+
+<p>For configuring observers, fluo provides a simple mechanism to set and access application specific
+configuration.  See the javadoc on <a href="https://static.javadoc.io/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/client/FluoClient.html">FluoClient</a>.getAppConfiguration() for more details.</p>
+
+<h2 id="debugging-applications">Debugging Applications</h2>
+
+<p>While monitoring <a href="/docs/fluo/1.2/administration/metrics">Fluo metrics</a> can detect problems (like too many transaction collisions)
+in a Fluo application, <a href="/docs/fluo/1.2/administration/metrics">metrics</a> may not provide enough information to debug the root cause
+of the problem. To help debug Fluo applications, low-level logging of transactions can be turned on
+by setting the following loggers to TRACE:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Logger</th>
+      <th>Level</th>
+      <th>Information</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>fluo.tx</td>
+      <td>TRACE</td>
+      <td>Provides detailed information about what transactions read and wrote</td>
+    </tr>
+    <tr>
+      <td>fluo.tx.summary</td>
+      <td>TRACE</td>
+      <td>Provides a one line summary about each transaction executed</td>
+    </tr>
+    <tr>
+      <td>fluo.tx.collisions</td>
+      <td>TRACE</td>
+      <td>Provides details about what data was involved When a transaction collides with another transaction</td>
+    </tr>
+    <tr>
+      <td>fluo.tx.scan</td>
+      <td>TRACE</td>
+      <td>Provides logging for each cell read by a scan.  Scan summary logged at <code class="language-plaintext highlighter-rouge">fluo.tx</code> level.  This allows suppression of <code class="language-plaintext highlighter-rouge">fluo.tx.scan</code> while still seeing summary.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Below is an example log after setting <code class="language-plaintext highlighter-rouge">fluo.tx</code> to TRACE. The number following <code class="language-plaintext highlighter-rouge">txid: </code> is the
+transactions start timestamp from the Oracle.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2015-02-11 18:24:05,341 [fluo.tx ] TRACE: txid: 3 begin() thread: 198
+2015-02-11 18:24:05,343 [fluo.tx ] TRACE: txid: 3 class: com.SimpleLoader
+2015-02-11 18:24:05,357 [fluo.tx ] TRACE: txid: 3 get(4333, stat count ) -&gt; null
+2015-02-11 18:24:05,357 [fluo.tx ] TRACE: txid: 3 set(4333, stat count , 1)
+2015-02-11 18:24:05,441 [fluo.tx ] TRACE: txid: 3 commit() -&gt; SUCCESSFUL commitTs: 4
+2015-02-11 18:24:05,341 [fluo.tx ] TRACE: txid: 5 begin() thread: 198
+2015-02-11 18:24:05,442 [fluo.tx ] TRACE: txid: 3 close()
+2015-02-11 18:24:05,343 [fluo.tx ] TRACE: txid: 5 class: com.SimpleLoader
+2015-02-11 18:24:05,357 [fluo.tx ] TRACE: txid: 5 get(4333, stat count ) -&gt; 1
+2015-02-11 18:24:05,357 [fluo.tx ] TRACE: txid: 5 set(4333, stat count , 2)
+2015-02-11 18:24:05,441 [fluo.tx ] TRACE: txid: 5 commit() -&gt; SUCCESSFUL commitTs: 6
+2015-02-11 18:24:05,442 [fluo.tx ] TRACE: txid: 5 close()
+</code></pre></div></div>
+
+<p>The log above traces the following sequence of events.</p>
+
+<ul>
+  <li>Transaction T1 has a start timestamp of <code class="language-plaintext highlighter-rouge">3</code></li>
+  <li>Thread with id <code class="language-plaintext highlighter-rouge">198</code> is executing T1, its running code from the class <code class="language-plaintext highlighter-rouge">com.SimpleLoader</code></li>
+  <li>T1 reads row <code class="language-plaintext highlighter-rouge">4333</code> and column <code class="language-plaintext highlighter-rouge">stat count</code> which does not exist</li>
+  <li>T1 sets row <code class="language-plaintext highlighter-rouge">4333</code> and column <code class="language-plaintext highlighter-rouge">stat count</code> to <code class="language-plaintext highlighter-rouge">1</code></li>
+  <li>T1 commits successfully and its commit timestamp from the Oracle is <code class="language-plaintext highlighter-rouge">4</code>.</li>
+  <li>Transaction T2 has a start timestamp of <code class="language-plaintext highlighter-rouge">5</code> (because its <code class="language-plaintext highlighter-rouge">5</code> &gt; <code class="language-plaintext highlighter-rouge">4</code> it can see what T1 wrote).</li>
+  <li>T2 reads a value of <code class="language-plaintext highlighter-rouge">1</code> for row <code class="language-plaintext highlighter-rouge">4333</code> and column <code class="language-plaintext highlighter-rouge">stat count</code></li>
+  <li>T2 sets row <code class="language-plaintext highlighter-rouge">4333</code> and column <code class="language-plaintext highlighter-rouge">stat count</code> to <code class="language-plaintext highlighter-rouge">2</code></li>
+  <li>T2 commits successfully with a commit timestamp of <code class="language-plaintext highlighter-rouge">6</code></li>
+</ul>
+
+<p>Below is an example log after only setting <code class="language-plaintext highlighter-rouge">fluo.tx.collisions</code> to TRACE. This setting will only log
+trace information when a collision occurs. Unlike the previous example, what the transaction read
+and wrote is not logged. This shows that a transaction with a start timestamp of <code class="language-plaintext highlighter-rouge">106</code> and a class
+name of <code class="language-plaintext highlighter-rouge">com.SimpleLoader</code> collided with another transaction on row <code class="language-plaintext highlighter-rouge">r1</code> and column <code class="language-plaintext highlighter-rouge">fam1 qual1</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2015-02-11 18:17:02,639 [tx.collisions] TRACE: txid: 106 class: com.SimpleLoader
+2015-02-11 18:17:02,639 [tx.collisions] TRACE: txid: 106 collisions: {r1=[fam1 qual1 ]}
+</code></pre></div></div>
+
+<p>When applications read and write arbitrary binary data, this does not log so well. In order to make
+the trace logs human readable, non ASCII chars are escaped using hex. The convention used it <code class="language-plaintext highlighter-rouge">\xDD</code>
+where D is a hex digit. Also the <code class="language-plaintext highlighter-rouge">\</code> character is escaped to make the output unambiguous.</p>
+
+
+
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-10"><strong>Find documentation for all Fluo releases in the <a href="/docs/">archive</strong></div>
+      <div class="col-md-2"><a class="pull-right" href="https://github.com/apache/fluo-website/edit/main/_fluo-1-2/administration/manage-applications.md" role="button"><i class="glyphicon glyphicon-pencil"></i> <small>Edit this page</small></a></div>
+    </div>  
+  </div>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

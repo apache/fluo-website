@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//blog/2014/12/30/stress-test-long-run/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>First long stress test run on Fluo | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div id="post-header">
+  <h1>First long stress test run on Fluo</h1>
+  <p class="text-muted">
+     
+    
+    30 Dec 2014
+  </p> 
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=First long stress test run on Fluo&url=https://fluo.apache.org//blog/2014/12/30/stress-test-long-run/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
+</div>
+<div id="post-content">
+  <p>Fluo has a <a href="https://github.com/fluo-io/fluo/blob/acf1ea7d8d6bc74eef7e311008e5e8fc0fd94d30/modules/stress/README.md">stress test</a> which computes the number of unique integers
+through the process of building a bitwise trie.  Multiple collections of
+randomly generated integers are provided as input.  The test suite includes a
+simple map reduce job that can read the same data fed to Fluo and compute the
+number of unique integers. The correctness of Fluo can be verified by checking
+the result in Fluo against the map reduce job.  The test is intended to
+exercise Fluo at scale and complements the unit and integration test.  One of
+our goals before releasing beta is to run this test on clusters for long
+periods of time.  This post records the experience of running the stress test
+overnight on a cluster for the first time.</p>
+
+<p>For this test run, initially ~1 billion random integers were generated and
+loaded into Fluo via map reduce.  After that ~100K random integers were
+repeatedly loaded 120 times, sleeping 2 minutes between loads.  After
+everything finished, the test was a success. The number of unique integers
+computed independently by MapReduce matched the number computed by Fluo. Below
+is the output of the stress test count from Fluo.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ java -cp $STRESS_JAR io.fluo.stress.trie.Print $FLUO_PROPS
+ Total at root : 1011489250
+ Nodes Scanned : 59605
+</code></pre></div></div>
+
+<p>Below are a few lines of output selected from the map reduce job.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Map input records=1011999273
+ io.fluo.stress.trie.Unique$Stats 
+    UNIQUE=1011489250
+</code></pre></div></div>
+
+<p>This output shows that 1,011,999,273 random integers (between 0 and
+10<sup>12</sup>-1) were given to Fluo and map reduce.  Both computations
+reported 1,011,489,250 unique integers.</p>
+
+<h2 id="graphite-plots">Graphite Plots</h2>
+
+<p>Before running the overnight test, a quick test with only a few iterations was
+run against an empty table.  This initial test went well and had no problems
+keeping up.  Based on that quick test, the decision was made load 100K random
+integers into Fluo every two minutes for 120 iterations.  However a big
+difference between the quick test and the long running test, was that the long
+running test did not start with an empty table. What worked well for an empty
+table did not work well for a table with a billion initial entries.  The long
+running test was kicked off in the evening, giving EC2 something to do in the
+wee hours.</p>
+
+<p>In the morning the long running test was still running, but had fallen behind.
+The image below shows transaction committed per minute and covers a 15 hour
+period.  Unfortunately this image does not include the load transactions, there
+was a problem getting that reported to Graphite.  So only Observer transactions
+are shown in the plot.</p>
+
+<p><img src="/resources/blog/stress_1/committed-1.png" alt="TXs committed 1" title="TX Committed per minute" /></p>
+
+<p>The image below shows notifications queued and covers a 15 hour period.</p>
+
+<p><img src="/resources/blog/stress_1/queue-1.png" alt="Notifications Queued" title="Notifications Queued" /></p>
+
+<p>Upon seeing that the test was falling behind, fiddling with it was unavoidable.
+The table was configured to use bloom filters and a compaction forced, with the
+hope that this would lead to less file accesses.  This caused performance to
+drop for some reason.  Since that did not work, different bloom filter setting
+were set and another round of compactions forced.  The new settings caused
+tablet servers to start dying with out of memory errors.  The Fluo workers
+continued to limp along using a subset of tablet servers.   The fiddling and
+futzing was declared a failure, bloom filter settings reverted, another round
+of compactions issued, and tservers restarted.  Around the time the fiddling
+ended, so did the map reduce jobs that were loading new data.  It was very
+satisfying that the counts came out correct after all of this disruptive
+activity.</p>
+
+<p>The plots below cover a 21 hour period and overlap in the 1st 15 hours with the
+plots above.  The drops in performance are due to the previously mentioned
+shenanigans.  The dramatic recovery is due to load transactions finishing and
+compacting away bloom filters.</p>
+
+<p>The plot below shows transactions committed per minute.</p>
+
+<p><img src="/resources/blog/stress_1/committed-2.png" alt="TXs committed 2" title="TX Committed per minute" /></p>
+
+<p>The image below shows notifications queued.</p>
+
+<p><img src="/resources/blog/stress_1/queue-2.png" alt="Notifications Queued 2" title="Notifications Queued 2" /></p>
+
+<p>Something mysterious in the plot above is the difference between min and max
+queue sizes.  To investigate, Graphite was used to plot each workers queue size
+over time.  This plot is shown below.  Its hard to see from the plot, but 10
+workers start falling behind almost immediately and 7 did not.  No idea what
+happened here.</p>
+
+<p><img src="/resources/blog/stress_1/all-workers-queue-sizes-2.png" alt="All workers queue sizes" title="All workers queue sizes" /></p>
+
+<h2 id="test-environment">Test Environment</h2>
+
+<p>The test was run on 20 m1.large EC2 nodes using the script at the end of this
+<a href="https://github.com/fluo-io/fluo/blob/acf1ea7d8d6bc74eef7e311008e5e8fc0fd94d30/modules/stress/README.md">README</a>.  The parameters in the script were set as follows, the for loop
+was changed to <code class="language-plaintext highlighter-rouge">{1..120}</code>, and the sleep time was set to 120.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MAX=$((10**12))
+SPLITS=68
+MAPS=17
+REDUCES=17
+GEN_INIT=$((10**9))
+GEN_INCR=$((10**5))
+</code></pre></div></div>
+
+<p>The following was used to run the test :</p>
+
+<ul>
+  <li><a href="https://github.com/keith-turner/stress-balancer">Custom balancer</a></li>
+  <li><a href="/resources/blog/stress_1/accumulo-site.xml">accumulo-site.xml</a></li>
+  <li><a href="/resources/blog/stress_1/fluo.properties">fluo.properties</a></li>
+  <li><a href="/resources/blog/stress_1/table_settings.txt">Table settings</a></li>
+  <li>Fluo from commit acf1ea7d8d6bc74eef7e311008e5e8fc0fd94d30</li>
+  <li>Accumulo 1.6.1</li>
+  <li>Hadoop 2.6.0</li>
+  <li>Centos 6.5</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We are very happy the counts came out correct especially since some tablet
+servers died (which was unplanned).  In a later test, we can hopefully kill
+tablet servers, Fluo workers, and datanodes.</p>
+
+<p>Looking at the numbers leads to the question: was the performance good?  At
+this point that is unclear.   Need to get a sense of what the theoretical
+maximum rate would be based on basic performance characteristics of nodes.
+That mathematical model does not exist at the moment.</p>
+
+<p>The particular EC2 nodes used in this experiment are not very speedy.  A single
+high end workstation can match the performance of these 20 nodes, however
+scaling issue will never be seen on a single node.  The m1.large nodes were
+used because they were cheap.  Many scaling issue were found using these nodes.
+After working out bugs on the cheaper nodes, we may run experiments using more
+expensive, high performance EC2 nodes.  However this will depend on <a href="https://github.com/fluo-io/fluo/issues/356">#356</a>
+which should make that process easier.  The current 20 node m1.large setup was
+partially manually setup.</p>
+
+<p>Further experiments could be done adjusting various Accumulo and Fluo settings,
+like number of threads.  Also, it will be interesting to see what impact
+implementing issues like <a href="https://github.com/fluo-io/fluo/issues/12">#12</a> will have.</p>
+
+
+</div>
+
+<div>
+  <p class="text-muted">View all posts in the <a href="/news/">news archive</a></p>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

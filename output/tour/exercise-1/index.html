@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//tour/exercise-1/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Word counts for unique documents exercise | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+              
+
+
+<div id="tour-header">
+  <h2><a href="/tour/">Fluo Tour</a>: Word counts for unique documents exercise</h2>
+  <p class="text-muted">Tour page 21 of 28</p>
+</div>
+<div id="tour-content">
+  <p>This exercise gives you an opportunity to use everything you have learned so
+far to attempt writing a simple Fluo application.  A bare minimum of code,
+along with a conceptual sketch of a solution, is provided to get you started.
+After completing this exercise, consider tweeting a link to your solution to
+<a href="https://twitter.com/hashtag/apachefluotour">#apachefluotour</a>.  If you have time, try to complete the exercise before
+looking at the solutions.</p>
+
+<p>The application should compute word counts for unique documents. This
+application should do the following.</p>
+
+<ul>
+  <li>Deduplicate content based on hash</li>
+  <li>Count how many URIs reference content</li>
+  <li>For the unique words in content, update global word counts.</li>
+  <li>When new content is added increment the global counts.</li>
+  <li>When content is no longer referenced by any URIs, decrement the global word counts and delete
+that content.</li>
+  <li>Partition different types of data using row prefixes.  Use <em>u:</em> for URIs, use <em>d:</em> for document
+content, and use <em>w:</em> for word counts.</li>
+</ul>
+
+<h2 id="part-1--loading-data">Part 1 : Loading data.</h2>
+
+<p>The class below is a simple POJO for documents.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.common.hash.Hashing</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Document</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">uri</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">content</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">Document</span><span class="o">(</span><span class="nc">String</span> <span class="n">uri</span><span class="o">,</span> <span class="nc">String</span> <span class="n">content</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">uri</span> <span class="o">=</span> <span class="n">uri</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">hash</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">//use short prefix of hash for example</span>
+    <span class="k">return</span> <span class="nc">Hashing</span><span class="o">.</span><span class="na">sha1</span><span class="o">().</span><span class="na">hashString</span><span class="o">(</span><span class="n">content</span><span class="o">).</span><span class="na">toString</span><span class="o">().</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">7</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The following code loads documents into Fluo.  It should do the following :</p>
+
+<ul>
+  <li>Keep track of the current hash associated with a URI.</li>
+  <li>Deduplicate content based on hash</li>
+  <li>Reference count how many URIs point to content.  Track this information in a column named
+<em>doc:refc</em> with a row based on the hash.</li>
+  <li>Track the status of whether content is referenced or unreferenced in a column named <em>doc:refs</em>.
+Note <em>refs</em> is short for reference status.   When the reference count for content is 0 this
+columns value should be <em>unreferenced</em>.  When the reference count is greater than 0, the
+<em>doc:refs</em> columns value should be <em>referenced</em>.  In a later example, an Observer will watch this
+column.</li>
+  <li>Track the content associated with a hash using the <em>doc:content</em> column.</li>
+</ul>
+
+<p>Some of this is implemented below, but not all. The parts that are not done have TODOs.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.Loader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.TransactionBase</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.Column</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocLoader</span> <span class="kd">implements</span> <span class="nc">Loader</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Document</span> <span class="n">doc</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Column</span> <span class="no">HASH_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"uri"</span><span class="o">,</span> <span class="s">"hash"</span><span class="o">);</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Column</span> <span class="no">REF_COUNT_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"doc"</span><span class="o">,</span> <span class="s">"refc"</span><span class="o">);</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Column</span> <span class="no">REF_STATUS_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"doc"</span><span class="o">,</span> <span class="s">"refs"</span><span class="o">);</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Column</span> <span class="no">CONTENT_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"doc"</span><span class="o">,</span> <span class="s">"content"</span><span class="o">);</span>
+
+  <span class="kd">public</span> <span class="nf">DocLoader</span><span class="o">(</span><span class="nc">Document</span> <span class="n">doc</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">doc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">load</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="nc">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">newHash</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="na">hash</span><span class="o">();</span>
+    <span class="nc">String</span> <span class="n">oldHash</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">gets</span><span class="o">(</span><span class="s">"u:"</span> <span class="o">+</span> <span class="n">doc</span><span class="o">.</span><span class="na">uri</span><span class="o">,</span> <span class="no">HASH_COL</span><span class="o">);</span>
+
+    <span class="c1">// TODO check if uri already has the same content hash.  If so, then nothing to do.</span>
+
+    <span class="c1">// TODO set the new hash associated with the URI</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">oldHash</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// TODO decrement the reference count at row "d:"+oldHash</span>
+      <span class="c1">// TODO set REF_STATUS_COL to "unreferenced" when the reference count goes from 1 to 0. Do</span>
+      <span class="c1">// this for row "d:"+oldHash</span>
+    <span class="o">}</span>
+
+    <span class="c1">// TODO increment the reference count for the newHash content.</span>
+    <span class="c1">// TODO add the new content when the reference count does not exists</span>
+    <span class="c1">// TODO set REF_STATUS_COL to "referenced" when the reference count for the new content goes</span>
+    <span class="c1">// from 0 to 1.  Do this for row "d:"+newHash</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Add the following to the ft.Main class.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// some test data</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Document</span><span class="o">[]</span> <span class="n">docs1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Document</span><span class="o">[]</span> <span class="o">{</span>
+      <span class="k">new</span> <span class="nf">Document</span><span class="o">(</span><span class="s">"http://news.com/a23"</span><span class="o">,</span>
+          <span class="s">"Jebediah orbits Mun for 35 days.  No power, forgot solar panels."</span><span class="o">),</span>
+      <span class="k">new</span> <span class="nf">Document</span><span class="o">(</span><span class="s">"http://news.com/a24"</span><span class="o">,</span>
+          <span class="s">"Bill plans to rescue Jebediah after taking tourist to Minimus."</span><span class="o">)};</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Document</span><span class="o">[]</span> <span class="n">docs2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Document</span><span class="o">[]</span> <span class="o">{</span><span class="k">new</span> <span class="nc">Document</span><span class="o">(</span><span class="s">"http://oldnews.com/a23"</span><span class="o">,</span>
+      <span class="s">"Jebediah orbits Mun for 35 days.  No power, forgot solar panels."</span><span class="o">)};</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Document</span><span class="o">[]</span> <span class="n">docs3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Document</span><span class="o">[]</span> <span class="o">{</span>
+      <span class="k">new</span> <span class="nf">Document</span><span class="o">(</span><span class="s">"http://news.com/a23"</span><span class="o">,</span>
+          <span class="s">"Jebediah orbits Mun for 38 days.  No power, forgot solar panels."</span><span class="o">),</span>
+      <span class="k">new</span> <span class="nf">Document</span><span class="o">(</span><span class="s">"http://news.com/a24"</span><span class="o">,</span>
+          <span class="s">"Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels."</span><span class="o">)};</span>
+
+  <span class="cm">/**
+   * Utility method for loading documents and printing out Fluo table after load completes.
+   */</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">loadAndPrint</span><span class="o">(</span><span class="nc">MiniFluo</span> <span class="n">mini</span><span class="o">,</span> <span class="nc">FluoClient</span> <span class="n">client</span><span class="o">,</span> <span class="nc">Document</span><span class="o">[]</span> <span class="n">docs</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">try</span> <span class="o">(</span><span class="nc">LoaderExecutor</span> <span class="n">loaderExecutor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newLoaderExecutor</span><span class="o">())</span> <span class="o">{</span>
+      <span class="k">for</span> <span class="o">(</span><span class="nc">Document</span> <span class="n">document</span> <span class="o">:</span> <span class="n">docs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">loaderExecutor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="nc">DocLoader</span><span class="o">(</span><span class="n">document</span><span class="o">));</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="c1">// this will close loaderExecutor and wait for all load transactions to complete</span>
+
+    <span class="c1">//This line is not needed in this step of the exercise.  However the next step will need this</span>
+    <span class="c1">//line.</span>
+    <span class="n">mini</span><span class="o">.</span><span class="na">waitForObservers</span><span class="o">();</span>
+
+    <span class="nc">FluoITHelper</span><span class="o">.</span><span class="na">printFluoTable</span><span class="o">(</span><span class="n">client</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">exercise</span><span class="o">(</span><span class="nc">MiniFluo</span> <span class="n">mini</span><span class="o">,</span> <span class="nc">FluoClient</span> <span class="n">client</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">loadAndPrint</span><span class="o">(</span><span class="n">mini</span><span class="o">,</span> <span class="n">client</span><span class="o">,</span> <span class="n">docs1</span><span class="o">);</span>
+    <span class="n">loadAndPrint</span><span class="o">(</span><span class="n">mini</span><span class="o">,</span> <span class="n">client</span><span class="o">,</span> <span class="n">docs2</span><span class="o">);</span>
+    <span class="n">loadAndPrint</span><span class="o">(</span><span class="n">mini</span><span class="o">,</span> <span class="n">client</span><span class="o">,</span> <span class="n">docs3</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Once the TODOs in the DocLoader class are implemented, running Main should print out the following.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+=== fluo end ===
+
+== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	2
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+=== fluo end ===
+
+== fluo start ==
+d:2732ebc doc content	Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
+d:2732ebc doc refc	1
+d:2732ebc doc refs	referenced
+d:6658252 doc content	Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
+d:6658252 doc refc	1
+d:6658252 doc refs	referenced
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc refc	0
+d:cf8ddc0 doc refs	unreferenced
+u:http://news.com/a23 uri hash	6658252
+u:http://news.com/a24 uri hash	2732ebc
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+=== fluo end ===
+</code></pre></div></div>
+
+<h2 id="part-2--computing-word-counts">Part 2 : Computing word counts.</h2>
+
+<p>Now that you have data loading, create an observer that watches the reference
+status column (<em>doc:refs</em>).  This observer should take the following actions 
+based on the values of the columns <em>doc:refs</em> and <em>doc:processed</em>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>doc:refs</th>
+      <th>doc:processed</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>referenced</td>
+      <td>false</td>
+      <td>Increment word counts and set <em>doc:processed</em> to <em>true</em></td>
+    </tr>
+    <tr>
+      <td>referenced</td>
+      <td>true</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>unreferenced</td>
+      <td>false</td>
+      <td>Delete content</td>
+    </tr>
+    <tr>
+      <td>unreferenced</td>
+      <td>true</td>
+      <td>Delete content and decrement word counts</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Make sure you handle the following scenario correctly.</p>
+
+<ul>
+  <li>content A becomes referenced</li>
+  <li>content A becomes unreferenced</li>
+  <li>an observer runs on content A</li>
+</ul>
+
+<p>In this situation, word counts were never incremented for content A so there is no need to decrement
+the word counts.  One way to handle this is to have a column that tracks if word counts were
+incremented.</p>
+
+<p>Below is a skeleton for an observer to compute word counts.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.TransactionBase</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.observer.StringObserver</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContentObserver</span> <span class="kd">implements</span> <span class="nc">StringObserver</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Column</span> <span class="no">PROCESSED_COL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"doc"</span><span class="o">,</span> <span class="s">"processed"</span><span class="o">);</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Column</span> <span class="no">WORD_COUNT</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"word"</span><span class="o">,</span><span class="s">"docCount"</span><span class="o">);</span>
+
+  <span class="cm">/**
+   * Utility method to tokenize the content of a document into unique words.
+   */</span>
+  <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">tokenize</span><span class="o">(</span><span class="nc">String</span> <span class="n">content</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">content</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">"[\\W]+"</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**
+   *  Adds the passed to delta to the values for each word.
+   */</span>
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+     <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">uniqueWords</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;(</span><span class="n">words</span><span class="o">);</span>
+    <span class="c1">// TODO make a single call to get all of the current word counts.  Could use</span>
+    <span class="c1">//tx.gets(Collection&lt;RowColumn&gt;)</span>
+
+    <span class="c1">// TODO for each word, add delta to the current value and set the new value</span>
+  <span class="o">}</span>
+
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="nc">String</span> <span class="n">row</span><span class="o">,</span> <span class="nc">Column</span> <span class="n">col</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Column</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">colVals</span> <span class="o">=</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">gets</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="nc">DocLoader</span><span class="o">.</span><span class="na">CONTENT_COL</span><span class="o">,</span> <span class="nc">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">,</span> <span class="no">PROCESSED_COL</span><span class="o">);</span>
+
+    <span class="nc">String</span> <span class="n">content</span> <span class="o">=</span> <span class="n">colVals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="nc">DocLoader</span><span class="o">.</span><span class="na">CONTENT_COL</span><span class="o">);</span>
+    <span class="nc">String</span> <span class="n">status</span> <span class="o">=</span> <span class="n">colVals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="nc">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">);</span>
+    <span class="nc">String</span> <span class="n">processed</span> <span class="o">=</span> <span class="n">colVals</span><span class="o">.</span><span class="na">getOrDefault</span><span class="o">(</span><span class="no">PROCESSED_COL</span><span class="o">,</span> <span class="s">"false"</span><span class="o">);</span>
+
+    <span class="c1">// TODO if status is referenced and not already processed then adjustCounts by +1 and set</span>
+    <span class="c1">// PROCESSED_COL to true</span>
+
+    <span class="c1">// TODO if status is unreferenced then delete all columns for content</span>
+    <span class="c1">// TODO if status is unreferenced and document was processed, then adjust counts by -1</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Something to think about: why observe the reference status column instead of the reference count
+column?</p>
+
+<p>When you are ready to run the observer, modify the <code class="language-plaintext highlighter-rouge">preInit()</code> method in <code class="language-plaintext highlighter-rouge">ft.Main</code> to configure the
+observer as follows.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">TourObserverProvider</span> <span class="kd">implements</span> <span class="nc">ObserverProvider</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="nc">Registry</span> <span class="n">obsRegistry</span><span class="o">,</span> <span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">obsRegistry</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="nc">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">,</span> <span class="nc">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">useObserver</span><span class="o">(</span><span class="k">new</span> <span class="nc">ContentObserver</span><span class="o">());;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="nc">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">setObserverProvider</span><span class="o">(</span><span class="nc">TourObserverProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>After implementing the Observer, the output of the program should look like the following.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc processed	true
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+w:35 word docCount	1
+w:Bill word docCount	1
+w:Jebediah word docCount	2
+w:Minimus word docCount	1
+w:Mun word docCount	1
+w:No word docCount	1
+w:after word docCount	1
+w:days word docCount	1
+w:for word docCount	1
+w:forgot word docCount	1
+w:orbits word docCount	1
+w:panels word docCount	1
+w:plans word docCount	1
+w:power word docCount	1
+w:rescue word docCount	1
+w:solar word docCount	1
+w:taking word docCount	1
+w:to word docCount	1
+w:tourist word docCount	1
+=== fluo end ===
+
+== fluo start ==
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	2
+d:a6c4d1f doc refs	referenced
+d:cf8ddc0 doc content	Bill plans to rescue Jebediah after taking tourist to Minimus.
+d:cf8ddc0 doc processed	true
+d:cf8ddc0 doc refc	1
+d:cf8ddc0 doc refs	referenced
+u:http://news.com/a23 uri hash	a6c4d1f
+u:http://news.com/a24 uri hash	cf8ddc0
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+w:35 word docCount	1
+w:Bill word docCount	1
+w:Jebediah word docCount	2
+w:Minimus word docCount	1
+w:Mun word docCount	1
+w:No word docCount	1
+w:after word docCount	1
+w:days word docCount	1
+w:for word docCount	1
+w:forgot word docCount	1
+w:orbits word docCount	1
+w:panels word docCount	1
+w:plans word docCount	1
+w:power word docCount	1
+w:rescue word docCount	1
+w:solar word docCount	1
+w:taking word docCount	1
+w:to word docCount	1
+w:tourist word docCount	1
+=== fluo end ===
+
+== fluo start ==
+d:2732ebc doc content	Crisis at KSC.  Tourist stuck at Minimus.  Bill forgot solar panels.
+d:2732ebc doc processed	true
+d:2732ebc doc refc	1
+d:2732ebc doc refs	referenced
+d:6658252 doc content	Jebediah orbits Mun for 38 days.  No power, forgot solar panels.
+d:6658252 doc processed	true
+d:6658252 doc refc	1
+d:6658252 doc refs	referenced
+d:a6c4d1f doc content	Jebediah orbits Mun for 35 days.  No power, forgot solar panels.
+d:a6c4d1f doc processed	true
+d:a6c4d1f doc refc	1
+d:a6c4d1f doc refs	referenced
+u:http://news.com/a23 uri hash	6658252
+u:http://news.com/a24 uri hash	2732ebc
+u:http://oldnews.com/a23 uri hash	a6c4d1f
+w:35 word docCount	1
+w:38 word docCount	1
+w:Bill word docCount	1
+w:Crisis word docCount	1
+w:Jebediah word docCount	2
+w:KSC word docCount	1
+w:Minimus word docCount	1
+w:Mun word docCount	2
+w:No word docCount	2
+w:Tourist word docCount	1
+w:at word docCount	1
+w:days word docCount	2
+w:for word docCount	2
+w:forgot word docCount	3
+w:orbits word docCount	2
+w:panels word docCount	3
+w:power word docCount	2
+w:solar word docCount	3
+w:stuck word docCount	1
+=== fluo end ===
+</code></pre></div></div>
+
+<h2 id="part-3--using-fluo-recipes">Part 3 : Using Fluo Recipes</h2>
+
+<p>The suggested method of computing word counts above is prone to transaction collisions. One way to avoid
+collisions is to use a CombineQueue provided by Fluo Recipes.  This will queue
+updates for words and notify another observer to process the queued updates.  The updates are queued
+in a way that will not cause collisions.  The CombineQueue has its own Observer which will call two functions
+you provide.  One function combines updates for a key and the other consumes changes to values.</p>
+
+<p>To try using a CombineQueue, first add the following class.  This class handles changes to word
+counts by updating an inverted index of word counts.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.TransactionBase</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.combine.ChangeObserver</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">ft</span><span class="o">.</span><span class="na">ContentObserver</span><span class="o">.</span><span class="na">WORD_COUNT</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WordCountChangeObserver</span> <span class="kd">implements</span> <span class="nc">ChangeObserver</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="nc">Iterable</span><span class="o">&lt;</span><span class="nc">Change</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;&gt;</span> <span class="n">changes</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// This print shows per bucket processing.</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"== begin processing word count changes =="</span><span class="o">);</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Change</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">change</span> <span class="o">:</span> <span class="n">changes</span><span class="o">)</span> <span class="o">{</span>
+
+      <span class="kt">long</span> <span class="n">oldCount</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0</span><span class="n">l</span><span class="o">);</span>  <span class="c1">//previous count for a word</span>
+      <span class="kt">long</span> <span class="n">newCount</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">orElse</span><span class="o">(</span><span class="mi">0</span><span class="n">l</span><span class="o">);</span>  <span class="c1">//new count for a word</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">change</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">().</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+        <span class="c1">// delete old count for word from inverted index</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"ic:%06d:%s"</span><span class="o">,</span> <span class="n">oldCount</span><span class="o">,</span> <span class="n">change</span><span class="o">.</span><span class="na">getKey</span><span class="o">()),</span> <span class="no">WORD_COUNT</span><span class="o">);</span>
+      <span class="o">}</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">change</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+        <span class="c1">// insert new count for word into inverted index</span>
+        <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"ic:%06d:%s"</span><span class="o">,</span> <span class="n">newCount</span><span class="o">,</span> <span class="n">change</span><span class="o">.</span><span class="na">getKey</span><span class="o">()),</span> <span class="no">WORD_COUNT</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
+      <span class="o">}</span>
+
+      <span class="c1">// change.getKey() is a word</span>
+      <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"  update %s %d -&gt; %d\n"</span><span class="o">,</span> <span class="n">change</span><span class="o">.</span><span class="na">getKey</span><span class="o">(),</span> <span class="n">oldCount</span><span class="o">,</span> <span class="n">newCount</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"== end processing word count changes =="</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Then modify <code class="language-plaintext highlighter-rouge">preInit()</code> in <code class="language-plaintext highlighter-rouge">Main</code> to the following.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">TourObserverProvider</span> <span class="kd">implements</span> <span class="nc">ObserverProvider</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">provide</span><span class="o">(</span><span class="nc">Registry</span> <span class="n">obsRegistry</span><span class="o">,</span> <span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">CombineQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">wordCQ</span> <span class="o">=</span> <span class="nc">CombineQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"wc"</span><span class="o">,</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+
+      <span class="c1">// Pass the word count combine queue to the ContentObserver so it can queue updates </span>
+      <span class="c1">// when a documents word counts change.</span>
+      <span class="n">obsRegistry</span><span class="o">.</span><span class="na">forColumn</span><span class="o">(</span><span class="nc">DocLoader</span><span class="o">.</span><span class="na">REF_STATUS_COL</span><span class="o">,</span> <span class="nc">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">useObserver</span><span class="o">(</span><span class="k">new</span> <span class="nc">ContentObserver</span><span class="o">(</span><span class="n">wordCQ</span><span class="o">));</span>
+
+      <span class="c1">// Register observer to process queued updates, the observer will call the two functions.</span>
+      <span class="c1">// SummingCombiner is provided by Fluo Recipes.  It sums all updates queued for a key.</span>
+      <span class="n">wordCQ</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">(</span><span class="n">obsRegistry</span><span class="o">,</span> <span class="k">new</span> <span class="nc">SummingCombiner</span><span class="o">&lt;&gt;(),</span> <span class="k">new</span> <span class="nc">WordCountChangeObserver</span><span class="o">());</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">preInit</span><span class="o">(</span><span class="nc">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">fluoConfig</span><span class="o">.</span><span class="na">setObserverProvider</span><span class="o">(</span><span class="nc">TourObserverProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="nc">CombineQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="s">"wc"</span><span class="o">).</span><span class="na">keyType</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">valueType</span><span class="o">(</span><span class="nc">Long</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">buckets</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Add a constructor to <code class="language-plaintext highlighter-rouge">ContentObserver</code> and modify <code class="language-plaintext highlighter-rouge">adjustCounts()</code> to the
+following.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  <span class="kd">private</span> <span class="nc">CombineQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">wordCQ</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">ContentObserver</span><span class="o">(</span><span class="nc">CombineQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">wordCQ</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">wordCQ</span> <span class="o">=</span> <span class="n">wordCQ</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">adjustCounts</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">wcUpdates</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">words</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="n">wcUpdates</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span> <span class="n">delta</span><span class="o">));</span>
+    <span class="n">wordCQ</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">wcUpdates</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>A CombineQueue  groups key values into buckets for efficiency and processes entire buckets in
+a single transaction.  When you run this code, that is why <code class="language-plaintext highlighter-rouge">== begin processing word count changes ==</code> is seen 
+multiple times for each group of documents loaded.</p>
+
+<p>These changes produce two new prefixes in the output of the table scan.  First
+the <code class="language-plaintext highlighter-rouge">wc:</code> prefix is where the CombineQueue stores its data.  By default the CombineQueue uses Kryo for serialization
+and therefore the key values with this prefix contain non-ASCII characters.  The utility function
+<code class="language-plaintext highlighter-rouge">FluoITHelper.printFluoTable()</code> escapes non-ASCII characters with <code class="language-plaintext highlighter-rouge">\x&lt;HEX&gt;</code>.   Second the <code class="language-plaintext highlighter-rouge">ic:</code>
+prefix contains the inverted index of word counts.  This was created simply to show an example of a
+follow on action when word counts change.  Ideally this follow on action would have a low chance of
+collisions.  Creating the inverted index will not cause collisions because each word is in a single
+CombineQueue bucket and each bucket is processed independently.</p>
+
+<h2 id="part-4--running-this-example-on-a-real-instance">Part 4 : Running this example on a real instance.</h2>
+
+<p>Everything in the tour so far has used MiniFluo to run code.  The following
+instructions show how to run the code in this exercise on a real Fluo
+instance.  <a href="https://github.com/apache/fluo-uno">Uno</a> can be used to quickly setup Fluo on a single node.</p>
+
+<p>The following two helper classes will be needed to run on a real instance.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.FluoConfiguration</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Generates application config.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GenConfig</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">FluoConfiguration</span> <span class="n">conf</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FluoConfiguration</span><span class="o">();</span>
+    <span class="nc">Main</span><span class="o">.</span><span class="na">preInit</span><span class="o">(</span><span class="n">conf</span><span class="o">);</span>
+    <span class="n">conf</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">ft</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.nio.charset.StandardCharsets</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.nio.file.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.inject.Inject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.client.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.FluoConfiguration</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Loads one or more document passed in on the command line.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Load</span> <span class="o">{</span>
+  <span class="c1">// when run with fluo exec command, the applications configuration will be injected</span>
+  <span class="nd">@Inject</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="nc">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">(</span><span class="nc">FluoClient</span> <span class="n">client</span> <span class="o">=</span> <span class="nc">FluoFactory</span><span class="o">.</span><span class="na">newClient</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">);</span>
+        <span class="nc">LoaderExecutor</span> <span class="n">loaderExecutor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newLoaderExecutor</span><span class="o">())</span> 
+    <span class="o">{</span>
+      <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">filename</span> <span class="o">:</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Path</span> <span class="n">path</span> <span class="o">=</span> <span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">filename</span><span class="o">);</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">encoded</span> <span class="o">=</span> <span class="nc">Files</span><span class="o">.</span><span class="na">readAllBytes</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">docContent</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">encoded</span><span class="o">,</span> <span class="nc">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">uri</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="na">toAbsolutePath</span><span class="o">().</span><span class="na">normalize</span><span class="o">().</span><span class="na">toUri</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="nc">Document</span> <span class="n">doc</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Document</span><span class="o">(</span><span class="n">uri</span><span class="o">,</span> <span class="n">docContent</span><span class="o">);</span>
+        <span class="n">loaderExecutor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="nc">DocLoader</span><span class="o">(</span><span class="n">doc</span><span class="o">));</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The following command will run this application on a Fluo instance, assuming
+<code class="language-plaintext highlighter-rouge">$FLUO_HOME</code> is set and <code class="language-plaintext highlighter-rouge">fluo</code> is on the path.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> &lt;your fluo tour <span class="nb">dir</span><span class="o">&gt;</span>
+
+<span class="c">#create a new Fluo application named wordCount</span>
+fluo new wordCount
+
+<span class="c">#populate applications lib directory</span>
+mvn clean package
+<span class="nb">cp </span>target/fluo-tour-0.0.1-SNAPSHOT.jar <span class="nv">$FLUO_HOME</span>/apps/wordCount/lib
+mvn dependency:copy-dependencies <span class="nt">-DincludeArtifactIds</span><span class="o">=</span><span class="s2">"fluo-recipes-core,fluo-recipes-accumulo,fluo-recipes-kryo,kryo,minlog,reflectasm,objenesis"</span> <span class="nt">-DoutputDirectory</span><span class="o">=</span><span class="nv">$FLUO_HOME</span>/apps/wordCount/lib
+
+<span class="c">#add app specific config to properties file that Fluo init will use</span>
+fluo <span class="nb">exec </span>wordCount ft.GenConfig <span class="o">&gt;&gt;</span> <span class="nv">$FLUO_HOME</span>/apps/wordCount/conf/fluo.properties
+
+<span class="c">#initialize and start Fluo application</span>
+fluo init wordCount
+fluo start wordCount
+fluo info wordCount
+
+<span class="c">#load some text files</span>
+fluo <span class="nb">exec </span>wordCount ft.Load &lt;some filename&gt; &lt;some filename&gt; ...
+
+<span class="c">#wait for all notifications to process</span>
+fluo <span class="nb">wait </span>wordCount
+
+<span class="c">#scan data in Fluo</span>
+fluo scan wordCount
+fluo scan wordCount <span class="nt">-p</span> ic:
+
+<span class="c">#Could try changing a file and reloading it</span>
+
+<span class="c">#stop Fluo application</span>
+fluo stop wordCount
+</code></pre></div></div>
+
+
+</div>
+
+<script>
+document.body.onkeyup = function(e){
+
+if (e.keyCode == '37') { window.location = '/tour/observer_example/'; }
+
+
+
+if (e.keyCode == '39') { window.location = '/tour/row-locking/'; }
+
+};
+</script>
+
+<div class="text-center">
+ 
+  <h2> 
+    
+    <a href="/tour/observer_example/">&lt;</a> 
+    
+
+    21 / 28 
+    
+    <a href="/tour/row-locking/">&gt;</a> 
+    
+  </h2>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

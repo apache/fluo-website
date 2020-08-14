@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//release-process/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Release Process | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="page">
+
+  <header class="post-header">
+    <h2 class="post-title">Release Process</h2>
+  </header>
+
+  <article id="page-content">
+    <h3 id="initial-setup">Initial Setup</h3>
+
+<p>Before you can release Fluo or Fluo Recipes, you will need a GPG key. For information on generating
+a key look at this <a href="https://www.apache.org/dev/openpgp.html">ASF GPG page</a>.  After generating a key,
+add it to the <a href="https://www.apache.org/dist/fluo/KEYS">KEYS</a> file.  The <a href="https://www.apache.org/dist/fluo/KEYS">KEYS</a> files contains instructions for adding to itself.  Use the 
+following command to checkout the svn repository that contains the KEYS files.  Updates to this
+repository will eventually sync to the website.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn co https://dist.apache.org/repos/dist/release/fluo/
+</code></pre></div></div>
+
+<p>The maven release plugin will need credentials to stage artifacts.  You can provide the credentials
+by adding the following to your <code class="language-plaintext highlighter-rouge">~/.m2/settings.xml</code> file.  Maven offers documentation about <a href="https://maven.apache.org/guides/mini/guide-encryption.html">securing
+your credentials</a>.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;servers&gt;</span>
+  <span class="nt">&lt;server&gt;</span>
+    <span class="c">&lt;!-- Project using the Apache parent pom use following ID --&gt;</span>
+    <span class="nt">&lt;id&gt;</span>apache.releases.https<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;username&gt;</span>your-apache-id<span class="nt">&lt;/username&gt;</span>
+    <span class="nt">&lt;password&gt;</span>your-apache-password<span class="nt">&lt;/password&gt;</span>
+  <span class="nt">&lt;/server&gt;</span>
+<span class="nt">&lt;/servers&gt;</span>
+</code></pre></div></div>
+
+<h3 id="release-fluo">Release Fluo</h3>
+
+<p>Before starting the release process below, the following tasks should be complete:</p>
+
+<ul>
+  <li>Ensure the NOTICE file has the correct year.</li>
+  <li>Create release notes for project website using GitHub issues.</li>
+  <li>Perform testing and document results.</li>
+  <li>
+    <p>Start a gpg-agent to cache your gpg key to avoid entering your passphrase multiple times.  How
+you start this depends on your environment.  The following command works in some environments. 
+Ensure gpg-agent is configured with a sufficiently long timeout so that the cached passphrase 
+do not expire during the build.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gpg-agent <span class="nt">--daemon</span> <span class="nt">--use-standard-socket</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Next, repeat the steps below until a good release candidate (RC) is found.  The script in
+<code class="language-plaintext highlighter-rouge">contrib/create-release-candidate.sh</code> automates this process.  However there is no guarantee that it
+works correctly.  Before using the script ensure you understand the process and inspect the script.
+In the following steps <code class="language-plaintext highlighter-rouge">RCV</code> is short for release candidate version.  For the case where you want to
+make an initial release candidate available for evaluation, but nor for voting, consider using <code class="language-plaintext highlighter-rouge">0</code>
+for <code class="language-plaintext highlighter-rouge">RCV</code>.</p>
+
+<ol>
+  <li>
+    <p>Branch main (or the current snapshot) and call the branch <code class="language-plaintext highlighter-rouge">&lt;releaseVersion&gt;-rc&lt;RCV&gt;-next</code></p>
+  </li>
+  <li>
+    <p>Prepare the release which will verify that all tests pass: <code class="language-plaintext highlighter-rouge">mvn release:prepare</code></p>
+  </li>
+  <li>Perform the release: <code class="language-plaintext highlighter-rouge">mvn release:perform</code>
+    <ul>
+      <li>This step will create a staging repository at https://repository.apache.org</li>
+      <li>When <code class="language-plaintext highlighter-rouge">release:perform</code> finishes, login and close the staging repository to make the artifacts available 
+for download at <code class="language-plaintext highlighter-rouge">https://repository.apache.org/content/repositories/orgapachefluo-REPO_ID</code></li>
+      <li>Its very important to only close the staging repository and not release or promote it at this point.  Releasing publishes
+the artifacts to Maven central and this can not be undone.  Releasing is done after a successful vote.</li>
+      <li>When closing, add a comment like <code class="language-plaintext highlighter-rouge">Apache Fluo 1.2.0-rc3</code></li>
+    </ul>
+  </li>
+  <li>
+    <p>Delete the tag created by <code class="language-plaintext highlighter-rouge">mvn release:pepare</code>.  This tag should not be pushed to Apache until
+the vote passes.  Also, a signed tag should be created instead of the one created by Maven.  So out
+of an abundance of caution its best to delete it now and create the signed tag after the vote
+passes.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git tag <span class="nt">-d</span> rel/fluo-&lt;releaseVersion&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Push the <code class="language-plaintext highlighter-rouge">&lt;releaseVersion&gt;-rc&lt;RCV&gt;-next</code> to apache.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout &lt;releaseVersion&gt;-rc&lt;RCV&gt;-next
+git push apache-remote &lt;releaseVersion&gt;-rc&lt;RCV&gt;-next
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create the release candidate branch <code class="language-plaintext highlighter-rouge">&lt;releaseVersion&gt;-rc&lt;RCV&gt;</code> and push it.  This branch should
+be one commit behind <code class="language-plaintext highlighter-rouge">&lt;releaseVersion&gt;-rc&lt;RCV&gt;-next</code> and one commit ahead of the branch point.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout <span class="nt">-b</span> &lt;releaseVersion&gt;-rc&lt;RCV&gt; &lt;releaseVersion&gt;-rc&lt;RCV&gt;-next~1
+git push <span class="nt">-u</span> apache-remote &lt;releaseVersion&gt;-rc&lt;RCV&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>Send a message to the devs to let them know a release is staged. This <a href="https://lists.apache.org/thread.html/8b6ec5f17e277ed2d01e8df61eb1f1f42266cd30b9e114cb431c1c17@%3Cdev.fluo.apache.org%3E">example</a>
+for the Fluo 1.0.0 release can be used as template.  The script
+<code class="language-plaintext highlighter-rouge">contrib/create-release-candidate.sh</code> can be used to generate this email.</li>
+</ol>
+
+<p>When the vote passes on a release candidate, follow the steps below to complete the release using the chosen RC:</p>
+
+<ol>
+  <li>
+    <p>Merge your RC branch into the correct branch and push those commits upstream.  The example below
+assume <code class="language-plaintext highlighter-rouge">main</code> is the correct branch.  Afterwards, you can delete your RC branch.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout main
+git merge &lt;releaseVersion&gt;-rc&lt;RCV&gt;-next
+git push apache-remote main
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Release the artifacts at https://repository.apache.org so that they get published in Maven
+Central.  You can drop any staging repos for RCs that were not chosen.  Add a comment like <code class="language-plaintext highlighter-rouge">Vote
+failed for Apache Fluo 1.1.0-rc3</code> when dropping or <code class="language-plaintext highlighter-rouge">Apache Fluo 1.1.0</code> when releasing.</p>
+  </li>
+  <li>
+    <p>Create a signed tag for the release from the chosen RC tag and push to upstream repo:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># This step is optional.  Some systems that have gpg and gpg2 may not function correctly.</span>
+<span class="c"># See https://bugzilla.redhat.com/show_bug.cgi?id=568406</span>
+git config <span class="nt">--global</span> <span class="nt">--get</span> gpg.program <span class="o">||</span> git config <span class="nt">--global</span> <span class="nt">--add</span> gpg.program gpg2
+</code></pre></div>    </div>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create signed tag.</span>
+<span class="c"># You may need to use -u &lt;key-id&gt; to specify GPG key</span>
+git tag  <span class="nt">-f</span> <span class="nt">-m</span> <span class="s1">'Apache Fluo &lt;releaseVersion&gt;'</span> <span class="nt">-s</span> rel/fluo-&lt;releaseVersion&gt; &lt;releaseVersion&gt;-rc&lt;RCV&gt;
+<span class="c"># Verify the tag is the expected commit</span>
+git log <span class="nt">-1</span> rel/fluo-&lt;releaseVersion&gt;
+<span class="c"># Push signed tag to upstream repo</span>
+git push apache-remote rel/fluo-&lt;releaseVersion&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Delete all RC branches.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push apache-remote <span class="nt">--delete</span> &lt;releaseVersion&gt;-rc&lt;RCV&gt;-next
+git branch <span class="nt">-d</span> &lt;releaseVersion&gt;-rc&lt;RCV&gt;-next
+git push apache-remote <span class="nt">--delete</span> &lt;releaseVersion&gt;-rc&lt;RCV&gt;
+git branch <span class="nt">-d</span> &lt;releaseVersion&gt;-rc&lt;RCV&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>View the <a href="https://github.com/apache/fluo-website/blob/main/README.md">website README</a> for instructions on how to generate Javadocs and documentation using
+the released tag.  Submit PR to the website repo to publish.</p>
+  </li>
+  <li>
+    <p>Place the source and binary tarballs in the svn distribution repo under <code class="language-plaintext highlighter-rouge">fluo/&lt;releaseVersion&gt;</code>.
+This is the same svn repo mentioned earlier for the KEYS file.  Follow the <a href="https://www.apache.org/dev/release-distribution.html#sigs-and-sums">ASF guidance</a> for
+hashes and signatures.  This step publishes the files to the ASF mirrors.</p>
+  </li>
+  <li>
+    <p>Send an email to <code class="language-plaintext highlighter-rouge">dev@fluo.apache.org</code> announcing new release.</p>
+  </li>
+</ol>
+
+<h3 id="test-a-fluo-release">Test a Fluo release</h3>
+
+<h4 id="set-up-environment-for-all-tests">Set up environment for all tests</h4>
+
+<ol>
+  <li>Set the release version, ID for staging repo, and alias to configure Maven with temporary settings:
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">RC_VERSION</span><span class="o">=</span>1.2.0
+<span class="nb">export </span><span class="nv">RC_STAGING</span><span class="o">=</span>1023
+<span class="nb">alias </span><span class="nv">mvn</span><span class="o">=</span><span class="s1">'mvn -s /tmp/fluo-rc-maven.xml'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Create temporary Maven settings
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> &gt;/tmp/fluo-rc-maven.xml
+&lt;settings&gt;
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;fluoRC&lt;/id&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+          &lt;id&gt;fluorc&lt;/id&gt;
+          &lt;name&gt;fluorc&lt;/name&gt;
+          &lt;url&gt;https://repository.apache.org/content/repositories/orgapachefluo-</span><span class="se">\$</span><span class="sh">{env.RC_STAGING}/&lt;/url&gt;
+        &lt;/repository&gt;
+      &lt;/repositories&gt;
+      &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;fluorcp&lt;/id&gt;
+          &lt;name&gt;fluorcp&lt;/name&gt;
+          &lt;url&gt;https://repository.apache.org/content/repositories/orgapachefluo-</span><span class="se">\$</span><span class="sh">{env.RC_STAGING}/&lt;/url&gt;
+        &lt;/pluginRepository&gt;
+      &lt;/pluginRepositories&gt;
+    &lt;/profile&gt;
+  &lt;/profiles&gt;
+  &lt;activeProfiles&gt;
+    &lt;activeProfile&gt;fluoRC&lt;/activeProfile&gt;
+  &lt;/activeProfiles&gt;
+&lt;/settings&gt;
+</span><span class="no">EOF
+</span></code></pre></div>    </div>
+  </li>
+  <li>If a new release candidate is made, update your staging repo ID.
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">RC_STAGING</span><span class="o">=</span>1024
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h4 id="run-the-integration-tests-of-projects-that-use-fluo">Run the integration tests of projects that use Fluo</h4>
+
+<ol>
+  <li>Clone the <a href="https://github.com/apache/fluo-recipes">Fluo Recipes</a> project:
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span>git clone https://github.com/apache/fluo-recipes.git
+</code></pre></div>    </div>
+  </li>
+  <li>Run the integration test
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span>mvn clean verify <span class="nt">-Dfluo</span>.version<span class="o">=</span><span class="nv">$RC_VERSION</span>
+</code></pre></div>    </div>
+    <p>Below are more projects with integration tests which can be found at - <code class="language-plaintext highlighter-rouge">https://github.com/apache/fluo-examples.git</code>:</p>
+    <ul>
+      <li><a href="https://github.com/apache/fluo-examples/tree/main/phrasecount">Phrasecount</a></li>
+      <li><a href="https://github.com/apache/fluo-examples/tree/main/stresso">Stresso</a></li>
+      <li><a href="https://github.com/apache/fluo-examples/tree/main/webindex">Webindex</a></li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="setup-uno-to-run-fluo-example-applications">Setup Uno to run Fluo example applications</h4>
+
+<ol>
+  <li>Clone <a href="https://github.com/apache/fluo-uno">Uno</a> and fetch Fluo dependencies
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/apache/fluo-uno.git
+<span class="nb">cd </span>uno
+./bin/uno fetch fluo
+</code></pre></div>    </div>
+  </li>
+  <li>Download release tarball
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget <span class="nt">-P</span> downloads/ https://repository.apache.org/content/repositories/orgapachefluo-<span class="k">${</span><span class="nv">RC_STAGING</span><span class="k">}</span>/org/apache/fluo/fluo/<span class="k">${</span><span class="nv">RC_VERSION</span><span class="k">}</span>/fluo-<span class="k">${</span><span class="nv">RC_VERSION</span><span class="k">}</span><span class="nt">-bin</span>.tar.gz
+</code></pre></div>    </div>
+  </li>
+  <li>Set <code class="language-plaintext highlighter-rouge">FLUO_VERSION</code> and <code class="language-plaintext highlighter-rouge">FLUO_HASH</code> in <code class="language-plaintext highlighter-rouge">conf/uno.conf</code>.
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"s/export FLUO_VERSION=[^ ]*/export FLUO_VERSION=</span><span class="nv">$RC_VERSION</span><span class="s2">/"</span> conf/uno.conf
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"s/export FLUO_HASH=[^ ]*/export FLUO_HASH=</span><span class="si">$(</span>shasum <span class="nt">-a</span> 256 downloads/fluo-<span class="k">${</span><span class="nv">RC_VERSION</span><span class="k">}</span><span class="nt">-bin</span>.tar.gz | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s1">' '</span> <span class="nt">-f</span> 1<span class="si">)</span><span class="s2">/"</span> conf/uno.conf
+</code></pre></div>    </div>
+  </li>
+  <li>Set up Fluo and your shell
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/uno setup fluo
+<span class="nb">eval</span> <span class="s2">"</span><span class="si">$(</span>./bin/uno <span class="nb">env</span><span class="si">)</span><span class="s2">"</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h4 id="run-phrasecount-example">Run phrasecount example</h4>
+
+<ol>
+  <li>Clone project
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/apache/fluo-examples.git
+<span class="nb">cd </span>phrasecount
+</code></pre></div>    </div>
+  </li>
+  <li>Create sample data
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>data
+<span class="nb">cp </span>README.md data/README.txt
+</code></pre></div>    </div>
+  </li>
+  <li>Run phrasecount
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/run.sh data/
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.0.0-beta-1/metrics/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Fluo Metrics | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="fluo-doc">
+
+  <!-- This layout is only used by old documentation -->
+  <div class="alert alert-danger" role="alert">These docs are for Fluo 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo/1.2/">latest docs</a>!</div>
+
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo made before Apache incubation.</div>
+  
+
+  <header class="post-header">
+    <h2 class="post-title">Fluo Metrics</h2>
+  </header>
+
+  <article id="page-content">
+    <p>Fluo core is instrumented using <a href="https://dropwizard.github.io/metrics/3.1.0/">dropwizard metrics</a>.  This allows fluo
+users to easily gather information about Fluo by configuring different
+reporters.  Fluo will always setup a JMX reporter, regardless of the number of
+reporters configured.  This is done because the dropwizard config mechanism does
+not currently support the JMX reporter.   The JMX reporter makes it easy to see
+fluo stats in jconsole or jvisualvm.</p>
+
+<h2 id="configuring-fluo-processes">Configuring Fluo processes</h2>
+
+<p>When starting an oracle or workers, using the <code class="language-plaintext highlighter-rouge">fluo</code> script, the
+<code class="language-plaintext highlighter-rouge">$FLUO_CONF_DIR/metrics.yaml</code> file is used to configure reporters.  Consult the
+<a href="https://dropwizard.github.io/dropwizard/manual/configuration.html#metrics">dropwizard config docs</a> inorder to learn how to populate this file.  There
+is one important difference with that documentation. Because Fluo is only
+leveraging the dropwizard metrics config code, you do not need the top level
+<code class="language-plaintext highlighter-rouge">metrics:</code> element in your <code class="language-plaintext highlighter-rouge">metrics.yaml</code> file.  The example <code class="language-plaintext highlighter-rouge">metrics.yaml</code>
+file does not have this element.</p>
+
+<h2 id="configuring-fluo-clients">Configuring Fluo Clients</h2>
+
+<p>Fluo client code that uses the basic API or map reduce API can configure
+reporters by setting <code class="language-plaintext highlighter-rouge">io.fluo.metrics.yaml.base64</code> in <code class="language-plaintext highlighter-rouge">fluo.propeties</code>.  The
+value of this property should be a single line base64 encoded yaml config.
+This can easily be generated with the following command.  Also,
+FluoConfiguration has some convenience methods for setting this property.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat conf/metrics.yaml | base64 -w 0
+</code></pre></div></div>
+
+<p>The property <code class="language-plaintext highlighter-rouge">io.fluo.metrics.yaml.base64</code> is not used by processes started
+with the fluo script.  The primary motivation of having this property is to
+enable collection of metrics from map task executing load transaction using 
+FluoOutputFormat.</p>
+
+<p>In order for the <code class="language-plaintext highlighter-rouge">io.fluo.metrics.yaml.base64</code> property to work, a map reduce
+job must include the <code class="language-plaintext highlighter-rouge">fluo-metrics</code> module.  This module contains the code that
+configures reporters based on yaml.  The module is separate from <code class="language-plaintext highlighter-rouge">fluo-core</code>
+inorder to avoid adding a lot of dependencies that are only needed when
+configuring reporters.</p>
+
+<h2 id="reporter-dependencies">Reporter Dependencies</h2>
+
+<p>The core dropwizard metrics library has a few reporters.  However if you would
+like to utilize additional reporters, then you will need to add dependencies.
+For example if you wanted to use Ganglia, then you would need to depend on
+specific dropwizard ganglia maven artifacts.</p>
+
+<h2 id="custom-reporters">Custom Reporters</h2>
+
+<p>If a reporter follows the discovery mechanisms used by dropwizard
+configuration, then it may be automatically configurable via yaml.  However
+this has not been tested.</p>
+
+<h2 id="metrics-reported-by-fluo">Metrics reported by Fluo</h2>
+
+<p>Some of the metrics reported have the class name as the suffix.  This classname
+is the observer or load task that executed the transactions.   This should
+allow things like transaction collisions to be tracked per class.  In the
+table below this is denoted with <code class="language-plaintext highlighter-rouge">&lt;cn&gt;</code>.  In the table below <code class="language-plaintext highlighter-rouge">io.flou</code> is
+shortened to <code class="language-plaintext highlighter-rouge">i.f</code>.</p>
+
+<p>Since multiple processes can report the same metrics to services like Graphite
+or Ganglia, each process adds a unique id.  When running in yarn, this id is of
+the format <code class="language-plaintext highlighter-rouge">worker-&lt;instance id&gt;</code> or <code class="language-plaintext highlighter-rouge">oracle-&lt;instance id&gt;</code>.  When not running
+from yarn, this id consist of a hostname and a base36 long that’s unique across
+all fluo processes.  In the table below this composite id is represented with
+<code class="language-plaintext highlighter-rouge">&lt;pid&gt;</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>i.f.&lt;pid&gt;.tx.lockWait.&lt;cn&gt;</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#timers">Timer</a></td>
+      <td><em>WHEN:</em> After each transaction. <em>COND:</em> &gt; 0 <em>WHAT:</em> Time transaction spent waiting on locks held by other transactions.</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.tx.time.&lt;cn&gt;</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#timers">Timer</a></td>
+      <td><em>WHEN:</em> After each transaction. <em>WHAT:</em> Time transaction took to execute.  Updated for failed and successful transactions.</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.tx.collisions.&lt;cn&gt;</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a></td>
+      <td><em>WHEN:</em> After each transaction. <em>COND:</em> &gt; 0 <em>WHAT:</em> Number of collisions a transaction had.</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.tx.set.&lt;cn&gt;</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a></td>
+      <td><em>WHEN:</em> After each transaction. <em>WHAT:</em> Number of row/columns set by transaction</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.tx.read.&lt;cn&gt;</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a></td>
+      <td><em>WHEN:</em> After each transaction. <em>WHAT:</em> Number of row/columns read by transaction that existed.  There is currently no count of all reads (including nonexistent data)</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.tx.locks.timedout.&lt;cn&gt;</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a></td>
+      <td><em>WHEN:</em> After each transaction. <em>COND:</em> &gt; 0 <em>WHAT:</em> Number of timedout locks rolled back by transaction.  These are locks that are held for very long periods by another transaction that appears to be alive based on zookeeper.</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.tx.locks.dead.&lt;cn&gt;</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a></td>
+      <td><em>WHEN:</em> After each transaction. <em>COND:</em> &gt; 0 <em>WHAT:</em> Number of dead locks rolled by a transaction.  These are locks held by a process that appears to be dead according to zookeeper.</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.tx.status.&lt;status&gt;.&lt;cn&gt;</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#counters">Counter</a></td>
+      <td><em>WHEN:</em> After each transaction.  <em>WHAT:</em> Counts for the different ways a transaction can terminate</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.oracle.client.rpc.getStamps.time</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#timers">Timer</a></td>
+      <td><em>WHEN:</em> For each request for stamps to the server. <em>WHAT:</em> Time RPC call to oracle took</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.oracle.client.stamps</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a></td>
+      <td><em>WHEN:</em> For each request for stamps to the server. <em>WHAT:</em>  The number of stamps requested.</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.oracle.server.stamps</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#histograms">Histogram</a></td>
+      <td><em>WHEN:</em> For each request for stamps from a client.  <em>WHAT:</em> The number of stamps requested</td>
+    </tr>
+    <tr>
+      <td>i.f.&lt;pid&gt;.worker.notifications.queued</td>
+      <td><a href="https://dropwizard.github.io/metrics/3.1.0/getting-started/#gauges">Gauge</a></td>
+      <td><em>WHAT:</em> The current number of notifications queued for processing</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The table above outlines when a particular metric is updated and whats updated.
+The use of <em>COND</em> indicates that the metric is not always updated.   For
+example <code class="language-plaintext highlighter-rouge">i.f.&lt;pid&gt;.tx.lockWait.&lt;cn&gt;</code> is only updated for transactions that had a non
+zero lock wait time.</p>
+
+<p>Histograms and Timers have a counter.  In the case of a histogram, the counter
+is the number of times the metric was updated and not a sum of the updates.
+For example if a request for 5 timestamps was made to the oracle followed by a
+request for 3 timestamps, then the count for <code class="language-plaintext highlighter-rouge">i.f.&lt;pid&gt;.oracle.server.stamps</code> would
+be 2 and the mean would be (5+3)/2.</p>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

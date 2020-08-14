@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/row-hasher/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Row hash prefix recipe | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="fluo-doc">
+
+  
+  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-incubating which is an old version! Check out the <a href="/docs/fluo-recipes/1.2">latest docs</a>!</div>
+  
+
+  
+
+  <header class="post-header">
+    <h2 class="post-title">Row hash prefix recipe</h2>
+  </header>
+
+  <article id="page-content">
+    <h2 id="background">Background</h2>
+
+<p>Transactions are implemented in Fluo using conditional mutations.  Conditional
+mutations require server side processing on tservers.  If data is not spread
+evenly, it can cause some tservers to execute more conditional mutations than
+others.  These tservers doing more work can become a bottleneck.  Most real
+world data is not uniform and can cause this problem.</p>
+
+<p>Before the Fluo <a href="https://github.com/fluo-io/webindex">Webindex example</a> started using this recipe it suffered
+from this problem.  The example was using reverse dns encoded URLs for row keys
+like <code class="language-plaintext highlighter-rouge">p:com.cnn/story1.html</code>.  This made certain portions of the table more
+popular, which in turn made some tservers do much more work.  This uneven
+distribution of work lead to lower throughput and uneven performance.  Using
+this recipe made those problems go away.</p>
+
+<h2 id="solution">Solution</h2>
+
+<p>This recipe provides code to help add a hash of the row as a prefix of the row.
+Using this recipe rows are structured like the following.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;prefix&gt;:&lt;fixed len row hash&gt;:&lt;user row&gt;
+</code></pre></div></div>
+
+<p>The recipe also provides code to help generate split points and configure
+balancing of the prefix.</p>
+
+<h2 id="example-use">Example Use</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.apache.fluo.api.config.FluoConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.api.data.Bytes</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.fluo.recipes.core.data.RowHasher</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RowHasherExample</span> <span class="o">{</span>
+
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">RowHasher</span> <span class="no">PAGE_ROW_HASHER</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RowHasher</span><span class="o">(</span><span class="s">"p"</span><span class="o">);</span>
+
+  <span class="c1">// Provide one place to obtain row hasher.</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="nc">RowHasher</span> <span class="nf">getPageRowHasher</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="no">PAGE_ROW_HASHER</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">RowHasher</span> <span class="n">pageRowHasher</span> <span class="o">=</span> <span class="n">getPageRowHasher</span><span class="o">();</span>
+
+    <span class="nc">String</span> <span class="n">revUrl</span> <span class="o">=</span> <span class="s">"org.wikipedia/accumulo"</span><span class="o">;</span>
+
+    <span class="c1">// Add a hash prefix to the row. Use this hashedRow in your transaction</span>
+    <span class="nc">Bytes</span> <span class="n">hashedRow</span> <span class="o">=</span> <span class="n">pageRowHasher</span><span class="o">.</span><span class="na">addHash</span><span class="o">(</span><span class="n">revUrl</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"hashedRow      : "</span> <span class="o">+</span> <span class="n">hashedRow</span><span class="o">);</span>
+
+    <span class="c1">// Remove the prefix. This can be used by transactions dealing with the hashed row.</span>
+    <span class="nc">Bytes</span> <span class="n">orig</span> <span class="o">=</span> <span class="n">pageRowHasher</span><span class="o">.</span><span class="na">removeHash</span><span class="o">(</span><span class="n">hashedRow</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"orig           : "</span> <span class="o">+</span> <span class="n">orig</span><span class="o">);</span>
+
+
+    <span class="c1">// Generate table optimizations for the recipe. This can be called when setting up an</span>
+    <span class="c1">// application that uses a hashed row.</span>
+    <span class="kt">int</span> <span class="n">numTablets</span> <span class="o">=</span> <span class="mi">20</span><span class="o">;</span>
+
+    <span class="c1">// The following code would normally be called before initializing Fluo. This code</span>
+    <span class="c1">// registers table optimizations for your prefix+hash.</span>
+    <span class="nc">FluoConfiguration</span> <span class="n">conf</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FluoConfiguration</span><span class="o">();</span>
+    <span class="nc">RowHasher</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">conf</span><span class="o">,</span> <span class="no">PAGE_ROW_HASHER</span><span class="o">.</span><span class="na">getPrefix</span><span class="o">(),</span> <span class="n">numTablets</span><span class="o">);</span>
+
+    <span class="c1">// Normally you would not call the following code, it would be called automatically for you by</span>
+    <span class="c1">// TableOperations.optimizeTable(). Calling this code here to show what table optimization will</span>
+    <span class="c1">// be generated.</span>
+    <span class="nc">TableOptimizations</span> <span class="n">tableOptimizations</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RowHasher</span><span class="o">.</span><span class="na">Optimizer</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">getTableOptimizations</span><span class="o">(</span><span class="no">PAGE_ROW_HASHER</span><span class="o">.</span><span class="na">getPrefix</span><span class="o">(),</span> <span class="n">conf</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Balance config : "</span> <span class="o">+</span> <span class="n">tableOptimizations</span><span class="o">.</span><span class="na">getTabletGroupingRegex</span><span class="o">());</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Splits         : "</span><span class="o">);</span>
+    <span class="n">tableOptimizations</span><span class="o">.</span><span class="na">getSplits</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The example program above prints the following.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hashedRow      : p:1yl0:org.wikipedia/accumulo
+orig           : org.wikipedia/accumulo
+Balance config : (\Qp:\E).*
+Splits         : 
+p:1sst
+p:3llm
+p:5eef
+p:7778
+p:9001
+p:assu
+p:clln
+p:eeeg
+p:g779
+p:i002
+p:jssv
+p:lllo
+p:neeh
+p:p77a
+p:r003
+p:sssw
+p:ullp
+p:weei
+p:y77b
+p:~
+</code></pre></div></div>
+
+<p>The split points are used to create tablets in the Accumulo table used by Fluo.
+Data and computation will spread very evenly across these tablets.  The
+Balancing config will spread the tablets evenly across the tablet servers,
+which will spread the computation evenly. See the <a href="/docs/fluo-recipes/1.0.0-incubating/table-optimization/">table optimizations</a>
+documentation for information on how to apply the optimizations.</p>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo/1.0.0-beta-1/mini-fluo-setup/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>MiniFluo Setup | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="fluo-doc">
+
+  <!-- This layout is only used by old documentation -->
+  <div class="alert alert-danger" role="alert">These docs are for Fluo 1.0.0-beta-1 which is an old version! Check out the <a href="/docs/fluo/1.2/">latest docs</a>!</div>
+
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo made before Apache incubation.</div>
+  
+
+  <header class="post-header">
+    <h2 class="post-title">MiniFluo Setup</h2>
+  </header>
+
+  <article id="page-content">
+    <p>Below are instructions for running a test/development instance of Fluo
+called MiniFluo.  MiniFluo runs its own Accumulo and Zookeeper but can
+only run on one machine.  While MiniFluo is easy to set up and has 
+all of the features of Fluo, it is not recommended for production use as 
+all of its data is lost when its stopped.</p>
+
+<p>If you looking to run Fluo in a production environment, read the
+<a href="/docs/fluo/1.0.0-beta-1/prod-fluo-setup/">production setup instructions</a>.</p>
+
+<h2 id="obtaining-a-distribution">Obtaining a distribution</h2>
+
+<p>Before you can install MiniFluo, you will need to obtain a distribution tarball.  You
+can either download the <a href="https://github.com/fluo-io/fluo/releases">latest release</a> or build a distribution tarball
+by following these steps:</p>
+
+<p>First, clone Fluo:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/fluo-io/fluo.git
+cd fluo/
+</code></pre></div></div>
+
+<p>Optionally, check out a stable tag (if you don’t want to build a release from main):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout 1.0.0-beta-1
+</code></pre></div></div>
+
+<p>Next, build a distribution which will be created in <code class="language-plaintext highlighter-rouge">modules/distribution/target</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn package
+</code></pre></div></div>
+
+<h2 id="install-fluo-distribution">Install Fluo distribution</h2>
+
+<p>When you have a distribution tarball built for your environment, follow these steps
+to install Fluo.</p>
+
+<p>First, choose a directory with plenty of space and untar the distribution:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tar -xvzf fluo-1.0.0-beta-1-bin.tar.gz
+</code></pre></div></div>
+
+<p>Verify that your distribution has the same versions of Hadoop &amp; Accumulo as your environment:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd fluo-1.0.0-beta-1
+ls lib/hadoop-* lib/accumulo-*
+</code></pre></div></div>
+
+<p>Next, copy the example configuration to the base of your configuration directory to create
+the default configuration for your Fluo install:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp conf/examples/* conf/
+</code></pre></div></div>
+
+<p>The default configuration will be used as the base configuration for each new application. 
+Therefore, you should modify <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for your environment. However, you should
+not configure any application settings (like observers).</p>
+
+<p>As you are running a MiniFluo instance, most properties in <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> do not need to be 
+set by you. For example, all “Client properties” can be left unset as MiniFluo will start up 
+its own Accumulo and Zookeeper.  If you would rather have MiniFluo connect to an existing 
+Accumulo instance, change <code class="language-plaintext highlighter-rouge">io.fluo.mini.start.accumulo</code> to <code class="language-plaintext highlighter-rouge">false</code> and set all “Client properties”.
+If you have an existing Accumulo instance, you should also consider running a Fluo instance by 
+following the <a href="/docs/fluo/1.0.0-beta-1/prod-fluo-setup/">production setup instructions</a>.</p>
+
+<h2 id="minifluo-command-script">MiniFluo command script</h2>
+
+<p>The MiniFluo command script is located at <code class="language-plaintext highlighter-rouge">bin/mini-fluo</code> of your Fluo installation.  All
+MiniFluo commands are invoked by this script.</p>
+
+<p>Modify and add the following to your <code class="language-plaintext highlighter-rouge">~/.bashrc</code> if you want to be able to execute the
+<code class="language-plaintext highlighter-rouge">mini-fluo</code> script from any directory:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export PATH=/path/to/fluo-1.0.0-beta-1/bin:$PATH
+</code></pre></div></div>
+
+<p>Source your <code class="language-plaintext highlighter-rouge">.bashrc</code> for the changes to take effect and test the script</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.bashrc
+mini-fluo
+</code></pre></div></div>
+
+<p>Running the script without any arguments prints a description of all commands.</p>
+
+<h2 id="configure-a-minifluo-application">Configure a MiniFluo application</h2>
+
+<p>You are now ready to configure a MiniFluo application.  Use the command below to create the
+configuration necessary for a new application.  Feel free to pick a different name (other
+than <code class="language-plaintext highlighter-rouge">myapp</code>) for your application:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mini-fluo new myapp
+</code></pre></div></div>
+
+<p>This command will create a directory for your application at <code class="language-plaintext highlighter-rouge">apps/myapp</code> of your Fluo
+install which will contain a <code class="language-plaintext highlighter-rouge">conf</code> and <code class="language-plaintext highlighter-rouge">lib</code>.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">apps/myapp/conf</code> directory contains a copy of the <code class="language-plaintext highlighter-rouge">fluo.properties</code> from your default
+configuration.  This should be configured for your application:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim apps/myapp/fluo.properties
+</code></pre></div></div>
+
+<p>When configuring the observer section in <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>, you can configure your application
+to run the <a href="https://github.com/fluo-io/phrasecount">phrasecount</a> example if you have not developed your own application. See
+the <a href="https://github.com/fluo-io/phrasecount">phrasecount</a> example for instructions. You can also choose not to configure any
+observers but MiniFluo will be idle when started.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">apps/myapp/lib</code> directory should contain any observer jars for your application. If 
+you configured <a href="https://github.com/fluo-io/fluo/blob/1.0.0-beta-1/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for observers, copy any jars containing these
+observer classes this directory.</p>
+
+<h2 id="run-a-minifluo-application">Run a MiniFluo application</h2>
+
+<p>A MiniFluo application can be started with the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mini-fluo start myapp
+</code></pre></div></div>
+
+<p>The application will output its logs to <code class="language-plaintext highlighter-rouge">app/myapp/logs/</code> directory of your Fluo installation.</p>
+
+<p>MiniFluo starts its own cluster of Accumulo and Zookeeper.  All data for this
+cluster is written by default to <code class="language-plaintext highlighter-rouge">app/myapp/mini/</code> directory of your Fluo installation 
+but this can be configured in <code class="language-plaintext highlighter-rouge">fluo.properties</code>.  Logs for underlying cluster
+can be viewed in <code class="language-plaintext highlighter-rouge">mini/logs</code>.</p>
+
+<p>Due to MiniFluo starting its own cluster, it generates and writes a <code class="language-plaintext highlighter-rouge">client.properties</code>
+file to its data directory.  This file can be used by Fluo clients to connect
+to the MiniFluo instance.</p>
+
+<p>When you have data in your fluo instance, you can view it using the command <code class="language-plaintext highlighter-rouge">mini-fluo scan myapp</code>.
+Pipe the output to <code class="language-plaintext highlighter-rouge">less</code> using the command <code class="language-plaintext highlighter-rouge">mini-fluo scan myapp | less</code> if you want to page 
+through the data.</p>
+
+<h2 id="stop-a-minifluo-application">Stop a MiniFluo application</h2>
+
+<p>A MiniFluo application can be stopped by running the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mini-fluo stop myapp
+</code></pre></div></div>
+
+<p>If MiniFluo started its own Accumulo cluster, it will also remove the <code class="language-plaintext highlighter-rouge">mini/</code> data 
+directory and any data in your instance will be lost.</p>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

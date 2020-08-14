@@ -1,0 +1,1278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Apache Fluo</title>
+    <description>Apache Fluo Website</description>
+    <link>https://fluo.apache.org//</link>
+    <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Fri, 14 Aug 2020 00:14:25 +0000</pubDate>
+    <lastBuildDate>Fri, 14 Aug 2020 00:14:25 +0000</lastBuildDate>
+    <generator>Jekyll v3.9.0</generator>
+    
+    
+      <item>
+        <title>How Fluo Leveraged Scan Executors</title>
+        <description>&lt;p&gt;Accumulo 2.0 introduced &lt;a href=&quot;https://accumulo.apache.org/docs/2.x/administration/scan-executors&quot;&gt;Scan Executors&lt;/a&gt; giving control over processing of
+scans in Accumulo tablet servers. Fluo has a good use case for scan executors:
+notification scans.  Fluo workers continually scan for notifications to find
+transactions to execute. All workers continually scanning for notifications
+puts load on Accumulo tablet servers which could negatively impact
+transactions.  Scan executors provides a way to limit this load.&lt;/p&gt;
+
+&lt;p&gt;Fluo utilizes this feature by &lt;a href=&quot;https://github.com/apache/fluo/blob/57b154e13c5c0877bb565fcabf620aa0f30c9f24/modules/core/src/main/java/org/apache/fluo/core/worker/finder/hash/ScanTask.java#L197&quot;&gt;setting scan hints&lt;/a&gt; for notification scans
+indicating &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scan_type=fluo-ntfy&lt;/code&gt;.  These hints are passed to Accumulo tablet
+servers and are ignored by default. For these scan types, Accumulo could be
+configured to either send them to a special thread pool and/or prioritize them
+differently within a thread pool.  Below is an example of Accumulo shell
+commands that set up a special executor for notification scans.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config -s tserver.scan.executors.fnotify.threads=1
+config -t fluo_table -s table.scan.dispatcher=org.apache.accumulo.core.spi.scan.SimpleScanDispatcher
+config -t fluo_table -s table.scan.dispatcher.opts.executor.fluo-ntfy=fnotify
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The system setting &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tserver.scan.executors.fnotify.threads=1&lt;/code&gt; creates a single-threaded
+scan executor in each tablet server named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fnotify&lt;/code&gt;. The two per-table
+settings configure a scan dispatcher (the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleScanDispatcher&lt;/code&gt; is built into
+Accumulo) on the table &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo_table&lt;/code&gt;.  The scan dispatcher is configured such that when
+a scan hint of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scan_type=fluo-ntfy&lt;/code&gt; is seen, it runs on the executor &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fnotify&lt;/code&gt;.
+All other scans will run on the default executor. This has the effect running
+all notification scans on a single dedicated thread in each tablet server.&lt;/p&gt;
+
+&lt;p&gt;The above setting were tested in a scenario where 20 Fluo worker were run
+against a single tablet server with 20 tablets.  The Fluo stress test was run
+with a low ingest rate, resulting in continual notification scanning by the 20
+workers.  While the test was running, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jstack&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;top&lt;/code&gt; were used to inspect the
+tablet server. This inspection revealed that notification scans were all
+running in a single thread which was using 100% of a single core.  This left all
+of the other cores free to process transactions.  Further testing to see how
+this impacts throughput is needed. Observing the worker debug logs, all of them
+seemed to complete notification scans, quickly finding new work.&lt;/p&gt;
+
+&lt;p&gt;Fluo took a descriptive approach to using scan hints, where it described to Accumulo
+the type of scan it was running.  However, Fluo does not care what, if
+anything, Accumulo does with that information.  This allows administrators to
+configure Accumulo in many different ways to handle notification scans, without
+any changes to Fluo.&lt;/p&gt;
+
+&lt;p&gt;For my first pass at using scan executors, I tried a prescriptive approach. I
+attempted to use scan hints to explicitly name an executor for notification
+scans.  I realized this would require Fluo configuration to provide the name of
+the scan executor. Forcing a user to specify Accumulo and Fluo configuration
+was very cumbersome so I abandoned the prescriptive approach.  The descriptive
+approach I settled on in its place is less cumbersome (it only requires Accumulo
+config) and more flexible (it supports executors and/or prioritization instead
+of only executors).&lt;/p&gt;
+
+&lt;p&gt;At the time of this writing, no released version of Fluo supports Accumulo 2.0.
+Once Fluo 1.3.0 is released with Accumulo 2.0, Hadoop 3.0, and Java 11 support,
+it will include support for scan executors.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 30 Sep 2019 11:50:00 +0000</pubDate>
+        <link>https://fluo.apache.org//blog/2019/09/30/scan-executors/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//blog/2019/09/30/scan-executors/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Apache Fluo YARN 1.0.0</title>
+        <description>&lt;p&gt;This is the first release of the &lt;a href=&quot;https://github.com/apache/fluo-yarn&quot;&gt;Apache Fluo YARN launcher&lt;/a&gt; which runs Fluo applications in
+&lt;a href=&quot;https://hadoop.apache.org/docs/r2.8.0/hadoop-yarn/hadoop-yarn-site/YARN.html&quot;&gt;Hadoop YARN&lt;/a&gt;. The YARN launcher was originally distributed with &lt;a href=&quot;https://github.com/apache/fluo&quot;&gt;Fluo&lt;/a&gt;. It has been
+moved to its &lt;a href=&quot;https://github.com/apache/fluo-yarn&quot;&gt;own project&lt;/a&gt; as Fluo has multiple application launchers. Moving the code out
+simplified Fluo and reduced its dependencies.&lt;/p&gt;
+
+&lt;p&gt;This release of the Fluo YARN launcher requires Fluo 1.2.0 or above. Future releases of Fluo should
+work with this release as the YARN launcher uses minimal Fluo API. If not, a new release will be made. However,
+new releases of the YARN launcher will likely be due to new releases of &lt;a href=&quot;https://hadoop.apache.org/docs/r2.8.0/hadoop-yarn/hadoop-yarn-site/YARN.html&quot;&gt;Hadoop YARN&lt;/a&gt; and &lt;a href=&quot;http://twill.apache.org/&quot;&gt;Apache Twill&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download a release tarball and verify by these &lt;a href=&quot;https://www.apache.org/info/verification&quot;&gt;procedures&lt;/a&gt; using these &lt;a href=&quot;https://downloads.apache.org/fluo/KEYS&quot;&gt;KEYS&lt;/a&gt;&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/fluo/fluo-yarn/1.0.0/fluo-yarn-1.0.0-bin.tar.gz&quot;&gt;fluo-yarn-1.0.0-bin.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://downloads.apache.org/fluo/fluo-yarn/1.0.0/fluo-yarn-1.0.0-bin.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://downloads.apache.org/fluo/fluo-yarn/1.0.0/fluo-yarn-1.0.0-bin.tar.gz.sha512&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/fluo/fluo-yarn/1.0.0/fluo-yarn-1.0.0-source-release.tar.gz&quot;&gt;fluo-yarn-1.0.0-source-release.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://downloads.apache.org/fluo/fluo-yarn/1.0.0/fluo-yarn-1.0.0-source-release.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://downloads.apache.org/fluo/fluo-yarn/1.0.0/fluo-yarn-1.0.0-source-release.tar.gz.sha512&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;View &lt;a href=&quot;/docs/fluo/1.2/administration/run-fluo-in-yarn&quot;&gt;documentation&lt;/a&gt; for to learn how to run Fluo application in YARN.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;testing&quot;&gt;Testing&lt;/h3&gt;
+
+&lt;p&gt;While testing Fluo 1.2.0, two stress test runs used an unreleased version of Fluo YARN.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+        <link>https://fluo.apache.org//release/fluo-yarn-1.0.0/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-yarn-1.0.0/</guid>
+        
+        
+        <category>release</category>
+        
+      </item>
+    
+      <item>
+        <title>Apache Fluo Recipes 1.2.0</title>
+        <description>&lt;p&gt;Apache Fluo Recipes builds on the Apache Fluo API to provide libraries of common code for Fluo developers.
+The 1.2.0 release is the first release of Fluo Recipes since Fluo graduated from Apache incubation. It has very
+few changes from the 1.1.0-incubating release. If you are new to Fluo Recipes, you should use this release. If you
+are already using Fluo Recipes 1.1.0-incubating, there is no reason to upgrade immediately.&lt;/p&gt;
+
+&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Release artifacts have been pushed to &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;. They can be used by updating your pom.xml:
+    &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.fluo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluo-recipes-core&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.2.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;A source release tarball is available. It can be verified by these &lt;a href=&quot;https://www.apache.org/info/verification&quot;&gt;procedures&lt;/a&gt; using these &lt;a href=&quot;https://downloads.apache.org/fluo/KEYS&quot;&gt;KEYS&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz&quot;&gt;fluo-recipes-1.2.0-source-release.tar.gz&lt;/a&gt; - &lt;a href=&quot;https://downloads.apache.org/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://downloads.apache.org/fluo/fluo-recipes/1.2.0/fluo-recipes-1.2.0-source-release.tar.gz.sha512&quot;&gt;SHA&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo-recipes/1.2/&quot;&gt;documentation&lt;/a&gt; for this release&lt;/li&gt;
+  &lt;li&gt;Read the javadocs: &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-core/1.2.0/&quot; target=&quot;_blank&quot;&gt;core&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-accumulo/1.2.0/&quot; target=&quot;_blank&quot;&gt;accumulo&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-kryo/1.2.0/&quot; target=&quot;_blank&quot;&gt;kryo&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-spark/1.2.0/&quot; target=&quot;_blank&quot;&gt;spark&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-test/1.2.0/&quot; target=&quot;_blank&quot;&gt;test&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;View &lt;a href=&quot;https://github.com/apache/fluo-recipes/milestone/2?closed=1&quot;&gt;all changes&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;notable-changes&quot;&gt;Notable Changes&lt;/h2&gt;
+
+&lt;h3 id=&quot;documentation-moved-to-project-website&quot;&gt;Documentation moved to project website&lt;/h3&gt;
+
+&lt;p&gt;The &lt;a href=&quot;/docs/fluo-recipes/1.2/&quot;&gt;documentation&lt;/a&gt; for Fluo Recipes now lives on the project website. In &lt;a href=&quot;https://github.com/apache/fluo-recipes/pull/144&quot;&gt;#144&lt;/a&gt;, it was removed from the Fluo Recipes repo
+and moved to Fluo Website repo.&lt;/p&gt;
+
+&lt;h3 id=&quot;updated-versions&quot;&gt;Updated versions&lt;/h3&gt;
+
+&lt;p&gt;Fluo Recipes was updated (in &lt;a href=&quot;https://github.com/apache/fluo-recipes/pull/146&quot;&gt;#146&lt;/a&gt;) to build using Fluo 1.2.0 and Accumulo 1.7.3&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+        <link>https://fluo.apache.org//release/fluo-recipes-1.2.0/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-recipes-1.2.0/</guid>
+        
+        
+        <category>release</category>
+        
+      </item>
+    
+      <item>
+        <title>Apache Fluo 1.2.0</title>
+        <description>&lt;p&gt;Apache Fluo is a distributed processing system that lets users make incremental
+updates to large data sets.  With Apache Fluo, users can set up workflows that
+execute cross node transactions when data changes. These workflows enable users
+to continuously join new data into large existing data sets without
+reprocessing all data.  Apache Fluo is built on &lt;a href=&quot;https://accumulo.apache.org/&quot;&gt;Apache Accumulo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download a release tarball and verify by these &lt;a href=&quot;https://www.apache.org/info/verification&quot;&gt;procedures&lt;/a&gt; using these &lt;a href=&quot;https://downloads.apache.org/fluo/KEYS&quot;&gt;KEYS&lt;/a&gt;&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/fluo/fluo/1.2.0/fluo-1.2.0-bin.tar.gz&quot;&gt;fluo-1.2.0-bin.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://downloads.apache.org/fluo/fluo/1.2.0/fluo-1.2.0-bin.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://downloads.apache.org/fluo/fluo/1.2.0/fluo-1.2.0-bin.tar.gz.sha512&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/fluo/fluo/1.2.0/fluo-1.2.0-source-release.tar.gz&quot;&gt;fluo-1.2.0-source-release.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://downloads.apache.org/fluo/fluo/1.2.0/fluo-1.2.0-source-release.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://downloads.apache.org/fluo/fluo/1.2.0/fluo-1.2.0-source-release.tar.gz.sha512&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.2/&quot;&gt;documentation&lt;/a&gt; for this release.&lt;/li&gt;
+  &lt;li&gt;Read the &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-api/1.2.0/&quot;&gt;Javadocs&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Apache Fluo follows &lt;a href=&quot;http://semver.org/&quot;&gt;semver&lt;/a&gt; for its API . The API consists
+of everything under the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;org.apache.fluo.api&lt;/code&gt; package. Code outside of this
+package can change at any time. If your project is using Fluo code that falls
+outside of the API, then consider &lt;a href=&quot;/getinvolved/&quot;&gt;initiating a discussion&lt;/a&gt;
+about adding it to the API.&lt;/p&gt;
+
+&lt;h2 id=&quot;notable-changes&quot;&gt;Notable changes&lt;/h2&gt;
+
+&lt;p&gt;The major changes in 1.2.0 are highlighted here, for the complete list of changes, see the &lt;a href=&quot;https://github.com/apache/fluo/milestone/6?closed=1&quot;&gt;1.2.0
+Milestone&lt;/a&gt; on Github.&lt;/p&gt;
+
+&lt;h3 id=&quot;multiple-ways-of-running-applications&quot;&gt;Multiple ways of running applications&lt;/h3&gt;
+
+&lt;p&gt;Before 1.2.0, Fluo applications could only be run in YARN or as local processes. For 1.2.0, the Fluo tarball
+was refactored to support other ways of running Fluo applications such as Docker, Kubernetes &amp;amp; Marathon. This
+refactoring has the following notable changes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The Fluo tarball is now designed for only initializing Fluo and running local processes.&lt;/li&gt;
+  &lt;li&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo.properties&lt;/code&gt; configuration file was deprecated and was replaced by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo-conn.properties&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo-app.properties&lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo-conn.properties&lt;/code&gt; contains connection properties and is shared by Fluo applications&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo-app.properites&lt;/code&gt; contains application-specific properties and is only used during initialization of Fluo applications.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Code for launching Fluo applications in YARN was moved to its &lt;a href=&quot;https://github.com/apache/fluo-yarn&quot;&gt;own project&lt;/a&gt; that has its own
+&lt;a href=&quot;https://fluo.apache.org/release/fluo-yarn-1.0.0&quot;&gt;release&lt;/a&gt; tarball. The Fluo tarball can still be used to launch Fluo applications
+in YARN if a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo.properties&lt;/code&gt; is created from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo.properties.deprecated&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Fluo application jars are now stored in HDFS and application configuration is now stored in Zookeeper.  This information used to be stored in a local directory.  This change made running Fluo different ways (like YARN or Docker) possible.  The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo get-jars&lt;/code&gt; command (added in &lt;a href=&quot;https://github.com/apache/fluo/commit/db0bdad&quot;&gt;db0bdad&lt;/a&gt;) can be used to retrieve application jars.&lt;/li&gt;
+  &lt;li&gt;Fluo configuration options can now be specified on the command line with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-o&lt;/code&gt; option.  This enables passing Fluo options on the Docker command line.&lt;/li&gt;
+  &lt;li&gt;Fluo scripts now support passing Java options.  In Docker, its useful to have control over the amount of memory Java uses.  This can be done by setting the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FLUO_JAVA_OPTS&lt;/code&gt; env variable on the Docker command line.  This was added in commit &lt;a href=&quot;https://github.com/apache/fluo/commit/4207df4&quot;&gt;4207df4&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Read the &lt;a href=&quot;https://fluo.apache.org/docs/fluo/1.2/getting-started/quick-start&quot;&gt;quickstart documentation&lt;/a&gt; to learn how to run Fluo applications using these new methods.&lt;/p&gt;
+
+&lt;h3 id=&quot;read-locks&quot;&gt;Read locks.&lt;/h3&gt;
+
+&lt;p&gt;The Percolator paper stated that read locks were expensive and usually not
+needed.  Therefore in Percolator reads did not acquire a read lock.  This
+assessment is correct, not every read should acquire a read lock.  However,
+offering the ability to optionally obtain a read lock makes writing certain
+applications much simpler.  So in this release of Fluo, optional read locks
+were added. Below is an example of how to acquire read locks.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;addEdge&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;FluoClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newTransaction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// These reads acquire a read lock.  Any concurrent changes will cause this&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// transaction to fail.&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withReadLock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;node&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;alias&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withReadLock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;node&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;alias&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;e:&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;edge&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;exists&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Y&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setAlias&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;FluoClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newAlias&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newTransaction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldAlias&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;node&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;alias&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;node&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;alias&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newAlias&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;updateExistingEdges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oldAlias&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newAlias&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Concurrent calls to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;addEdge(client,&quot;n1&quot;,&quot;n2&quot;)&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;addEdge(client,&quot;n1&quot;,&quot;n3&quot;)&lt;/code&gt;
+can run without issue.  However, concurrent calls to
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;addEdge(client,&quot;n1&quot;,&quot;n2&quot;)&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setAlias(client, &quot;n1&quot;,&quot;a5&quot;)&lt;/code&gt; will result in a
+collision.  If &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;addEdge&lt;/code&gt; did not obtain a read lock, then it would not collide
+with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setAlias&lt;/code&gt;.  If &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;addEdge&lt;/code&gt; obtained a write lock, then concurrent calls to
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;addEdge&lt;/code&gt; could needlessly collide.&lt;/p&gt;
+
+&lt;p&gt;See the &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/client/TransactionBase.html#withReadLock--&quot;&gt;withReadLock javadoc&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;h3 id=&quot;simplified-scanner-api&quot;&gt;Simplified Scanner API&lt;/h3&gt;
+
+&lt;p&gt;Range scanning API was simplified in &lt;a href=&quot;https://github.com/apache/fluo/commit/c737df6&quot;&gt;c737df6&lt;/a&gt;.  Before, scanning over a row was :&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;CellScanner&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scanner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;snapshot&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;over&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Span&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;exact&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;row&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After this change, it can be written as :&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;CellScanner&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scanner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;snapshot&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;over&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;row&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;streams&quot;&gt;Streams&lt;/h3&gt;
+
+&lt;p&gt;In &lt;a href=&quot;https://github.com/apache/fluo/commit/2f11089&quot;&gt;2f11089&lt;/a&gt; support for Java 8 streams was added.  The following
+computes unique columns in rows with the prefix &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;abc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;snapshot&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;overPrefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;abc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;RowColumnValue:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getColumn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Collectors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toSet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;remove-command&quot;&gt;Remove command.&lt;/h3&gt;
+
+&lt;p&gt;Can now remove applications data in Zookeeper and
+Accumulo. Work on this issue was done in &lt;a href=&quot;https://github.com/apache/fluo/issues/991&quot;&gt;#999&lt;/a&gt;.  Before
+data had to be manually removed from Zookeeper and Accumulo.&lt;/p&gt;
+
+&lt;h3 id=&quot;fluoconfiguration-javadoc&quot;&gt;FluoConfiguration Javadoc&lt;/h3&gt;
+
+&lt;p&gt;Most of the methods in &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/config/FluoConfiguration.html&quot;&gt;FluoConfiguration&lt;/a&gt; get or a set a specific property.
+Before it was not easy to know which property. In &lt;a href=&quot;https://github.com/apache/fluo/commit/cbe44b1&quot;&gt;cbe44b1&lt;/a&gt; the
+javadoc was updated to mention the properties.&lt;/p&gt;
+
+&lt;h3 id=&quot;shaded-libthrift&quot;&gt;Shaded libthrift&lt;/h3&gt;
+
+&lt;p&gt;Fluo uses Apache Thrift for remote procedure calls.  Projects using Thrift use
+its compiler to generate code.  This generated Java code make calls to
+libthrift which is an artifact release by the Thrift project.  The code
+generated by a specific version of Thrift is only guaranteed to work with the
+same version of libthrift.  For example, code generated by the Thrift 0.9.1
+compiler is only guaranteed to work with libthrift 0.9.1.&lt;/p&gt;
+
+&lt;p&gt;Accumulo also uses Thrift for its RPCs.  When Accumulo and Fluo use different
+versions of thrift it can cause serious problems. To avoid these problems,
+in &lt;a href=&quot;https://github.com/apache/fluo/commit/082ee8e&quot;&gt;082ee8e&lt;/a&gt; libthrift was shaded and relocated into the fluo-core jar eliminating Fluo’s
+external dependency on libthrift.  This means that no matter which version
+Accumulo uses, it will not conflict with Fluo’s version.&lt;/p&gt;
+
+&lt;h3 id=&quot;asynchronous-commit-refactored&quot;&gt;Asynchronous commit refactored&lt;/h3&gt;
+
+&lt;p&gt;Fluo’s commit code is asynchronous in order to support high throughput.
+Before this release the high level commit logic was spread far and wide in the
+code.  For this release the commit code was transitioned from Guava’s
+ListenableFuture to Java 8’s CompletableFuture in &lt;a href=&quot;https://github.com/apache/fluo/commit/ca63aaf&quot;&gt;ca63aaf&lt;/a&gt;.  This transition laid
+the ground work for &lt;a href=&quot;https://github.com/apache/fluo/commit/6bf604f&quot;&gt;6bf604f&lt;/a&gt; which centralized the commit logic.  Now the high
+level logic for the commit code is all in one place, making it much easier to
+understand.&lt;/p&gt;
+
+&lt;h3 id=&quot;other-notable-changes&quot;&gt;Other notable changes&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/fluo/commit/7c16599&quot;&gt;7c16599&lt;/a&gt; Added a method for efficiently comparing Byte and byte[]&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/fluo/commit/151c565&quot;&gt;151c565&lt;/a&gt; Added fluo status command.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/fluo/issues/960&quot;&gt;#960&lt;/a&gt; Fluo started using some Accumulo APIs introduced in 1.7.0.  Therefore 1.7.0 is now the minimum version of Accumulo.&lt;/li&gt;
+  &lt;li&gt;A few of Fluo’s internal caches were made configurable in &lt;a href=&quot;https://github.com/apache/fluo/commit/650f044&quot;&gt;650f044&lt;/a&gt;, &lt;a href=&quot;https://github.com/apache/fluo/commit/9e87f47&quot;&gt;9e87f47&lt;/a&gt;, and &lt;a href=&quot;https://github.com/apache/fluo/commit/955c86f&quot;&gt;955c86f&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Optimized Fluo’s server side code that runs in Accumulo tablet servers in &lt;a href=&quot;https://github.com/apache/fluo/commit/202fe08&quot;&gt;202fe08&lt;/a&gt; and &lt;a href=&quot;https://github.com/apache/fluo/commit/51dc912&quot;&gt;51dc912&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Added method to merge Fluo configuration objects in &lt;a href=&quot;https://github.com/apache/fluo/commit/a349a9d&quot;&gt;a349a9d&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Initialization from Java API and command line now behave the same. Before 1.2, only command line initialization copied Fluo’s server side code to HDFS.  Now the Java API also does this and it controlled by configuration.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
+
+&lt;p&gt;The Fluo stress test was run twice as documented &lt;a href=&quot;https://twitter.com/ApacheFluo/status/951112777212530689&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;https://lists.apache.org/thread.html/023ebf28a2ebbed88cfbd25f09cc6f4e4a1ba685f22c217ebc238025@%3Cdev.fluo.apache.org%3E&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 26 Feb 2018 15:00:00 +0000</pubDate>
+        <link>https://fluo.apache.org//release/fluo-1.2.0/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-1.2.0/</guid>
+        
+        
+        <category>release</category>
+        
+      </item>
+    
+      <item>
+        <title>Fluo graduates from the Apache incubator!</title>
+        <description>&lt;p&gt;Apache Fluo graduated from the &lt;a href=&quot;http://incubator.apache.org/&quot;&gt;Apache Incubator&lt;/a&gt; to become a Top-Level Project!
+Graduation signifies Fluo’s commitment to the meritocratic process and principles of the Apache
+Software Foundation. For more information, see the following press announcements :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blogs.apache.org/foundation/entry/the-apache-software-foundation-announces5&quot;&gt;Apache Software Foundation blog post&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://twitter.com/TheASF/status/890149770551078914&quot;&gt;@TheASF Tweet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://globenewswire.com/news-release/2017/07/26/1062705/0/en/The-Apache-Software-Foundation-Announces-Apache-Fluo-as-a-Top-Level-Project.html&quot;&gt;NASDAQ GlobeNewswire&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For general information about Fluo, checkout the &lt;a href=&quot;/&quot;&gt;home page&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 26 Jul 2017 06:00:00 +0000</pubDate>
+        <link>https://fluo.apache.org//blog/2017/07/26/fluo-graduates-from-apache-incubator/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//blog/2017/07/26/fluo-graduates-from-apache-incubator/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Apache Fluo Recipes 1.1.0-incubating</title>
+        <description>&lt;p&gt;Apache Fluo Recipes builds on the Apache Fluo API to provide libraries of common code for Fluo developers.&lt;/p&gt;
+
+&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download a release tarball and verify by these &lt;a href=&quot;https://www.apache.org/info/verification&quot;&gt;procedures&lt;/a&gt; using these &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/KEYS&quot;&gt;KEYS&lt;/a&gt;&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dyn/closer.lua/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz&quot;&gt;fluo-recipes-1.1.0-incubating-source-release.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz.md5&quot;&gt;MD5&lt;/a&gt; &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/fluo-recipes/1.1.0-incubating/fluo-recipes-1.1.0-incubating-source-release.tar.gz.sha&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo-recipes/1.1.0-incubating&quot;&gt;documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Read the javadocs: &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/&quot; target=&quot;_blank&quot;&gt;core&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating/&quot; target=&quot;_blank&quot;&gt;accumulo&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-kryo/1.1.0-incubating/&quot; target=&quot;_blank&quot;&gt;kryo&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-spark/1.1.0-incubating/&quot; target=&quot;_blank&quot;&gt;spark&lt;/a&gt;, &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-recipes-test/1.1.0-incubating/&quot; target=&quot;_blank&quot;&gt;test&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Jars are available in &lt;a href=&quot;http://search.maven.org/#search|ga|1|fluo-recipes&quot;&gt;Maven Central&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/milestone/1?closed=1&quot;&gt;changes&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;major-change&quot;&gt;Major Change&lt;/h2&gt;
+
+&lt;p&gt;For this release of Fluo Recipes, the work done in &lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/issues/127&quot;&gt;#127&lt;/a&gt;, &lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/pull/128&quot;&gt;#128&lt;/a&gt;, &lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/pull/130&quot;&gt;#130&lt;/a&gt;, and
+ &lt;a href=&quot;https://github.com/apache/incubator-fluo-recipes/pull/131&quot;&gt;#131&lt;/a&gt; to support the &lt;a href=&quot;/release/fluo-1.1.0-incubating/#new-api-for-configuring-observers&quot;&gt;new Observer API&lt;/a&gt; was
+the most significant change.  The Collision Free Map and &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/export/ExportQueue.html&quot;&gt;Export Queue&lt;/a&gt; required
+significant additions to support the new Observer API.  Since the name
+&lt;em&gt;Collision Free Map&lt;/em&gt; (CFM) is awful and it needed major API additions, the
+decision was made to deprecate it and offer the &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-recipes-core/1.1.0-incubating/org/apache/fluo/recipes/core/combine/CombineQueue.html&quot;&gt;CombineQueue&lt;/a&gt;.  The
+CombineQueue offers the  same functionality as the CFM, but only supports the
+new observer API. The deprecated CFM still supports the old Observer API.  For
+the Export Queue, additions were made to its API and everything related to the
+old Observer API was deprecated.  All API changes in this release are backwards
+compatible with the 1.0.0 release.&lt;/p&gt;
+
+&lt;h3 id=&quot;example-of-new-apis&quot;&gt;Example of new APIs&lt;/h3&gt;
+
+&lt;p&gt;The new APIs in this release are much easier to use and now offer the ability
+to use lambdas.  This example attempts to shows this and does the following :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Counts events in three dimensions &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x,y,t)&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Counts events in the two dimensional cross sections : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x,y)&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x,t)&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(y,t)&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Prints out the counts as they change.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To illustrate what this example accomplishes, for the following inputs :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;2&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=3,y=3,t=5)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=3,y=3,t=5)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=7,y=3,t=5)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The example code should compute the following.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;3&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=3,y=3,t=5)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=7,y=3,t=5)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;3&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=3,y=3)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=7,y=3)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;3&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=3,t=5)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(x=7,t=5)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;7&lt;/code&gt; events at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(y=3,t=5)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The example achieves this using recipes as follows :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An export queue that prints out all changes in counts.&lt;/li&gt;
+  &lt;li&gt;Three combine queues for counting 2D cross sections.  All three queue data for export when counts change.&lt;/li&gt;
+  &lt;li&gt;A combine queue for counting 3D events.  It queues updates to the 2D combine queues when counts changes.  It also queues changes to the export queue.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Below is the Fluo &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.1.0-incubating/org/apache/fluo/api/observer/ObserverProvider.html&quot;&gt;ObserverProvider&lt;/a&gt; that wires everything together. The new
+Fluo and Fluo Recipes APIs enable wiring everything in Java code.  In the
+previous versions, this would have been a cumbersome combination of
+configuration and Java code.   With the new APIs, using lambdas is now an
+option.  This was not an option with the old APIs.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppObserverProvider&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ObserverProvider&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provide&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Registry&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obsRegistry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Context&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;SimpleConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appCfg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getAppConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xytCq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CQ_XYT_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appCfg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xyCq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CQ_XY_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appCfg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ytCq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CQ_YT_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appCfg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xtCq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CQ_XT_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appCfg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;ExportQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exportQ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExportQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;EXPORTQ_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appCfg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Some of Lambda's below could be inlined. To make the example a little more clear they were&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// not in order to show the types involved.&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// This is called by a combine queue when a value changes. The old and new value for the key&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// are passed. The lambda below queues changes for export.&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;ChangeObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expChangeObs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Change&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldVal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getOldValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;old: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;orElse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;old: -&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newVal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getNewValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;new: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;orElse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;new: -&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;exportQ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldVal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newVal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// This lambda processes changes to 3D counts. It queues updates to the (x,y), (x,t), and (y,t)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 2D combine queues. For example if (x=3,y=2,t=5) changed from 4 to 7, it would queue&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// (x=3,y=2):+3, (x=3,t=5):+3, and (y=2,t=5):+3 to the 2D combine queues. The lambda also queues&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// exports for 3D count changes.&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;ChangeObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;projectingChangeObs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xtUpdates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ytUpdates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xyUpdates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+
+      &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Change&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;delta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getNewValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;orElse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getOldValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;orElse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// While processing the changes for an entire bucket, opportunistically merge multiple&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// updates to the same 2D coordinates.&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;xtUpdates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;delta&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;Long:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ytUpdates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;delta&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;Long:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;xyUpdates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;delta&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;Long:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Queue updates to 2D combine queues.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;xtCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xtUpdates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;ytCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ytUpdates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;xyCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xyUpdates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Queue changes for export&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;expChangeObs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Register observer for 3D combine queue. The observer calls the provided combiner and&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// change observer when processing queued entries.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;xytCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;registerObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;obsRegistry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SummingCombiner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;projectingChangeObs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Register observers for all 2D combine queues.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;xyCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;registerObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;obsRegistry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SummingCombiner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expChangeObs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;xtCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;registerObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;obsRegistry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SummingCombiner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expChangeObs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ytCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;registerObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;obsRegistry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SummingCombiner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expChangeObs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// This functional interface is new in this release. The lambda below prints out data that was&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// successfully queued for export.&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Exporter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exporter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hasNext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;SequencedExport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seqExport&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;EXPORT %-15s %-15s seq: %d\n&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seqExport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seqExport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;seqExport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSequence&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Register an observer to process queued export entries. The observer will call the lambda&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// created above.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;exportQ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;registerObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;obsRegistry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exporter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The code below does three things :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Starts MiniFluo.&lt;/li&gt;
+  &lt;li&gt;Configures the four combine queues and the export queue.&lt;/li&gt;
+  &lt;li&gt;Adds some data to the 3D combine queue twice.  Between the adds, it waits for processing to finish.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nc&quot;&gt;FluoConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;props&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FluoConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setApplicationName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;dimensions&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setMiniDataDir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;target/mini&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;CQ_XYT_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;keyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;valueType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buckets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;CQ_XT_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;keyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;valueType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buckets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;CQ_XY_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;keyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;valueType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buckets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;CQ_YT_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;keyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;valueType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buckets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// A new Fluent method of configuring export queues was introduced in 1.1.0&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;ExportQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EXPORTQ_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;keyType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;valueType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buckets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setObserverProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AppObserverProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;deleteQuietly&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;target/mini&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MiniFluo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;miniFluo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FluoFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newMiniFluo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; 
+         &lt;span class=&quot;nc&quot;&gt;FluoClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FluoFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;miniFluo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getClientConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+      &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xytCq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CombineQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;CQ_XYT_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getAppConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+      &lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x=3:y=5:t=23&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x=5:y=5:t=27&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x=3:y=5:t=27&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newTransaction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;xytCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;miniFluo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;waitForObservers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;\n*** All notifications processed. ***\n&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;clear&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x=3:y=5:t=23&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x=5:y=5:t=27&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x=3:y=5:t=29&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newTransaction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;xytCq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;miniFluo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;waitForObservers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;\n*** All notifications processed. ***\n&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Below is the output of running this example.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;EXPORT x=3:y=5:t=23    old: - new: 1   seq: 8
+EXPORT x=3:y=5:t=27    old: - new: 1   seq: 9
+EXPORT x=5:y=5:t=27    old: - new: 1   seq: 9
+EXPORT x=3:y=5         old: - new: 2   seq: 37
+EXPORT y=5:t=27        old: - new: 2   seq: 42
+EXPORT x=3:t=23        old: - new: 1   seq: 36
+EXPORT x=5:t=27        old: - new: 1   seq: 36
+EXPORT x=3:t=27        old: - new: 1   seq: 38
+EXPORT x=5:y=5         old: - new: 1   seq: 39
+EXPORT y=5:t=23        old: - new: 1   seq: 41
+
+*** All notifications processed. ***
+
+EXPORT x=3:y=5:t=29    old: - new: 1   seq: 92
+EXPORT x=5:y=5:t=27    old: 1 new: -   seq: 92
+EXPORT x=3:y=5:t=23    old: 1 new: 2   seq: 93
+EXPORT y=5:t=27        old: 2 new: 1   seq: 109
+EXPORT x=3:y=5         old: 2 new: 4   seq: 110
+EXPORT y=5:t=23        old: 1 new: 2   seq: 111
+EXPORT y=5:t=29        old: - new: 1   seq: 108
+EXPORT x=3:t=29        old: - new: 1   seq: 105
+EXPORT x=3:t=23        old: 1 new: 2   seq: 106
+EXPORT x=5:y=5         old: 1 new: -   seq: 107
+EXPORT x=5:t=27        old: 1 new: -   seq: 106
+
+*** All notifications processed. ***
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 22 Jun 2017 10:30:00 +0000</pubDate>
+        <link>https://fluo.apache.org//release/fluo-recipes-1.1.0-incubating/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-recipes-1.1.0-incubating/</guid>
+        
+        
+        <category>release</category>
+        
+      </item>
+    
+      <item>
+        <title>Apache Fluo 1.1.0-incubating</title>
+        <description>&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download a release tarball and verify by these &lt;a href=&quot;https://www.apache.org/info/verification&quot;&gt;procedures&lt;/a&gt; using these &lt;a href=&quot;https://www.apache.org/dist/incubator/fluo/KEYS&quot;&gt;KEYS&lt;/a&gt;&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://archive.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-bin.tar.gz&quot;&gt;fluo-1.1.0-incubating-bin.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://archive.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-bin.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://archive.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-bin.tar.gz.md5&quot;&gt;MD5&lt;/a&gt; &lt;a href=&quot;https://archive.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-bin.tar.gz.sha&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://archive.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-source-release.tar.gz&quot;&gt;fluo-1.1.0-incubating-source-release.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://archive.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-source-release.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://archive.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-source-release.tar.gz.md5&quot;&gt;MD5&lt;/a&gt; &lt;a href=&quot;https://archive.apache.org/dist/incubator/fluo/fluo/1.1.0-incubating/fluo-1.1.0-incubating-source-release.tar.gz.sha&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;View the &lt;a href=&quot;/docs/fluo/1.1.0-incubating/&quot;&gt;documentation&lt;/a&gt; for this release.&lt;/li&gt;
+  &lt;li&gt;Read the &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-api/1.1.0-incubating/&quot;&gt;Javadocs&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Apache Fluo follows &lt;a href=&quot;http://semver.org/&quot;&gt;semver&lt;/a&gt; for its API . The API consists
+of everything under the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;org.apache.fluo.api&lt;/code&gt; package. Code outside of this
+package can change at any time. If your project is using Fluo code that falls
+outside of the API, then consider &lt;a href=&quot;/getinvolved/&quot;&gt;initiating a discussion&lt;/a&gt;
+about adding it to the API.&lt;/p&gt;
+
+&lt;h2 id=&quot;significant-changes&quot;&gt;Significant changes&lt;/h2&gt;
+
+&lt;p&gt;The major changes in 1.1.0 are highlighted here, for the complete list of changes, see the &lt;a href=&quot;https://github.com/apache/incubator-fluo/milestone/5?closed=1&quot;&gt;1.1.0
+Milestone&lt;/a&gt; on Github.&lt;/p&gt;
+
+&lt;h3 id=&quot;new-api-for-configuring-observers&quot;&gt;New API for configuring observers.&lt;/h3&gt;
+
+&lt;p&gt;The 1.0.0 API for providing Observers required configuring an Observer class for each observed
+column.  This API was cumbersome to use and made using lambdas impossible.  For &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/816&quot;&gt;#816&lt;/a&gt; a better API
+was introduced.   The new API only requires configuring a single class that provides all Observers.
+This single class can register lambdas to observe a column.  This new API makes writing Fluo
+applications faster and easier.  Below is an example of using the new API to register two observers
+that compute the number of URLs that reference a document.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppObserverProvider&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ObserverProvider&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_CURR_COL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;doc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;curr&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_NEW_COL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;doc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;new&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_URL_CHANGE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;doc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;urlChange&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_REF_COUNT_COL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;doc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;refCount&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// Each Fluo worker will call this method to create the observers it needs.&lt;/span&gt;
+  &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provide&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Registry&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Context&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// This could be used to pass application specific configuration to observers. Its not used in&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// this example.&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;SimpleConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appConfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getAppConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Register an observer that processes new content for a document.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forColumn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DOC_NEW_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;STRONG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;useObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ContentObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Register a lambda that processes notifications for the column DOC_URL_CHANGE.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forColumn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DOC_URL_CHANGE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;WEAK&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;useStrObserver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Compute the number of URLs that refer to this URL.&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;CellScanner&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;refScanner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;over&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Span&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;exact&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ref&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numRefs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Iterables&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;refScanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Do something interesting with count.  This is not interesting, but keeps the example short.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_REF_COUNT_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numRefs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;cm&quot;&gt;/**
+   * Compute the change in a documents URLs and propagate those to other documents.
+   */&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ContentObserver&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringObserver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;TransactionBase&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Retrieve the new and current document content.&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colVals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_CURR_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_NEW_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newContent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colVals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getOrDefault&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DOC_NEW_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currContent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colVals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getOrDefault&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DOC_CURR_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Extract the URLs in the new and current document content.&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newUrls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;extractUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currUrls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;extractUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;currContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// For URLs that only exist in new content, update the document they reference.&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Sets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;difference&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ref&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setWeakNotification&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_URL_CHANGE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// For URLs that are no longer present, update the document they reference.&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Sets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;difference&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;currUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ref&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setWeakNotification&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_URL_CHANGE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Update the current document content.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_CURR_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DOC_NEW_COL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;extractUrls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// TODO implement extracting URLs from content&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Before initializing a Fluo App, the ObserverProvider above would be added to configuration as follows.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;FluoConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fluoConf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fluoConf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setObserverProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AppObserverProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// initialize Fluo app using fluoConf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The old API is still present but has been deprecated and may be removed in the future.&lt;/p&gt;
+
+&lt;h3 id=&quot;improved-fluo-scalability&quot;&gt;Improved Fluo scalability&lt;/h3&gt;
+
+&lt;p&gt;In the previous release each worker scanned the entire table looking for notifications that hashed
+to it.  This strategy for finding notifications is O(N*W) where  N is the number of notification and
+W is the number of workers.&lt;/p&gt;
+
+&lt;p&gt;For &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/500&quot;&gt;#500&lt;/a&gt; a different strategy was used to find notifications.  Workers divide themselves into
+groups and each group scans a subset of the table for notifications.  Every worker in a group scans
+the groups entire subset of a table  looking for notifications that hash to it. The new strategy results
+in O(N*G) work where N is the number of notifications and G is the group size.  By default the group
+size is 7, but this is configurable.  The group size may need to be increased if portion of a table
+is popular and assigned to one group that can not processes it.&lt;/p&gt;
+
+&lt;p&gt;To compare the old and new ways assume we have 10&lt;sup&gt;9&lt;/sup&gt; notifications and 100 workers.  The
+old method would have scanned 10&lt;sup&gt;11&lt;/sup&gt; entries to to find all notifications.  Assuming a group
+size of 7, the new strategy scans 7 * 10&lt;sup&gt;9&lt;/sup&gt; entries to find all notifications.  A
+nice feature of the new strategy is that the amount of scanning is independent of the number of workers.
+For the old strategy if the number of workers increases by factor of 10, then the amount scanning
+will increase by a factor of 10.  So for 1,000 workers the old strategy would scan
+10&lt;sup&gt;12&lt;/sup&gt; entries to find all notifications.  The new strategy will still only scan 7 *
+10&lt;sup&gt;9&lt;/sup&gt; entries with 1,000 workers.&lt;/p&gt;
+
+&lt;h3 id=&quot;improved-bytes&quot;&gt;Improved Bytes&lt;/h3&gt;
+
+&lt;p&gt;Fluo’s API has an immutable wrapper for a byte array.  Multiple improvements were made to this byte
+wrapper.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;startsWith(Bytes)&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;endsWith(Bytes)&lt;/code&gt; methods were added in &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/823&quot;&gt;#823&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;A &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;copyTo(byte[])&lt;/code&gt; method was added for &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/827&quot;&gt;#827&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Internal performance improvements were made in &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/826&quot;&gt;#826&lt;/a&gt; and &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/799&quot;&gt;#799&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;improved-spark-integration&quot;&gt;Improved Spark integration&lt;/h3&gt;
+
+&lt;p&gt;For &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/813&quot;&gt;#813&lt;/a&gt; improvements were made that allow easy passing of FluoConfiguration objects to remote Spark
+processes.&lt;/p&gt;
+
+&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
+
+&lt;p&gt;Long runs of &lt;a href=&quot;https://lists.apache.org/thread.html/2381a0b315e8e81871b6caf41e2f1462aa513b9cb24d3ddd92724674@%3Cdev.fluo.apache.org%3E&quot;&gt;Stresso&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/ApacheFluo/status/870045298424512512&quot;&gt;Webindex&lt;/a&gt; were successfully completed on EC2 using multiple nodes.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 12 Jun 2017 15:00:00 +0000</pubDate>
+        <link>https://fluo.apache.org//release/fluo-1.1.0-incubating/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//release/fluo-1.1.0-incubating/</guid>
+        
+        
+        <category>release</category>
+        
+      </item>
+    
+      <item>
+        <title>Fluo talks at Accumulo Summit 2016</title>
+        <description>&lt;p&gt;Two Apache Fluo talks were given at the &lt;a href=&quot;http://accumulosummit.com/&quot;&gt;2016 Accumulo Summit&lt;/a&gt; on October 11, 2016.  Below are links to
+the talks.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;Tips For Writing Fluo Applications&lt;/em&gt; : &lt;a href=&quot;http://accumulosummit.com/program/talks/tips-for-writing-fluo-applications/&quot;&gt;Summit page&lt;/a&gt;, &lt;a href=&quot;http://www.slideshare.net/AccumuloSummit/accumulo-summit-2016-tips-for-writing-fluo-applications&quot;&gt;Slides&lt;/a&gt;, &lt;a href=&quot;https://youtu.be/06KC0QvmiNk?list=PLRV6DJeV4e-VFbWRNO1QerVPwIlXS1P3f&quot;&gt;Video&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Accumulo Indexing Strategies for Searching Semantic Networks&lt;/em&gt; : &lt;a href=&quot;http://accumulosummit.com/program/talks/indexing-strategies-for-searching-semantic-networks/&quot;&gt;Summit page&lt;/a&gt;, &lt;a href=&quot;http://www.slideshare.net/AccumuloSummit/accumulo-summit-2016-accumulo-indexing-strategies-for-searching-semantic-networks&quot;&gt;Slides&lt;/a&gt;, &lt;a href=&quot;https://youtu.be/6b8-iyi3fws?list=PLRV6DJeV4e-VFbWRNO1QerVPwIlXS1P3f&quot;&gt;Video&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 10 Jan 2017 11:50:00 +0000</pubDate>
+        <link>https://fluo.apache.org//blog/2017/01/10/accumulo-summit-17/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//blog/2017/01/10/accumulo-summit-17/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Loading data into Fluo using Apache Spark</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://spark.apache.org&quot;&gt;Apache Spark&lt;/a&gt; can be used to preprocess and load batches of data into Fluo.  For example
+Spark could be used to group data within a batch and then Fluo transactions could load groups of
+related data. This blog post offers some tips to help you get started writing to Fluo from Spark.&lt;/p&gt;
+
+&lt;h3 id=&quot;executing-load-transactions-in-spark&quot;&gt;Executing load transactions in Spark&lt;/h3&gt;
+
+&lt;p&gt;Spark automatically serializes Java objects that are needed for remote execution.  When trying to
+use Fluo with Spark its important to understand what will serialize properly and what will not.
+Classes used to load data into Fluo like &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/client/FluoClient.html&quot;&gt;FluoClient&lt;/a&gt; and &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/client/LoaderExecutor.html&quot;&gt;LoaderExecutor&lt;/a&gt; are not suitable for
+serialization.  These classes may have thread pools, resources in Zookeeper, transactions that are
+committing in the background, etc .  Therefore these classes must be instantiated at each remote process
+Spark creates.  One way to do this is with Spark’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;foreachParition&lt;/code&gt; method.  This method will
+execute code locally at each RDD partition. Within each partition, a &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/client/LoaderExecutor.html&quot;&gt;LoaderExecutor&lt;/a&gt;
+can be created.  That’s what the example below shows.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dedupeAndLoad&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JavaRDD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Document&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numPartitions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;  
+
+  &lt;span class=&quot;c1&quot;&gt;// Remove duplicate documents.&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;distinct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numPartitions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  
+  &lt;span class=&quot;c1&quot;&gt;// Execute load transactions for unique documents.  Iin Java 8 lambda syntax below, &lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// iter is of type Iterator&amp;lt;Document&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;docRdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;foreachPartition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Assume fluo.properties file was submitted with application&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;FluoConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fconf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FluoConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fluo.properties&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;FluoClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FluoFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fconf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; 
+        &lt;span class=&quot;nc&quot;&gt;LoaderExecutor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;le&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newLoaderExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hasNext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;le&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DocumentLoader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The example above requires that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluo.properties&lt;/code&gt; is available locally for each
+partition.  This can be accomplished with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--files&lt;/code&gt; option when launching a Spark job.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark-submit --class myApp.Load --files &amp;lt;fluo props dir&amp;gt;/fluo.properties myApp.jar
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If FluoConfiguration were serializable, then Spark could automatically serialize and make a
+FluoConfiguration object available for each partition.  However, FluoConfiguration is not
+serializable as of Fluo 1.0.0.  This will be fixed in future releases of Fluo.  See &lt;a href=&quot;https://github.com/apache/incubator-fluo/issues/813&quot;&gt;#813&lt;/a&gt;
+for details and workarounds for 1.0.0.&lt;/p&gt;
+
+&lt;h3 id=&quot;initializing-fluo-table&quot;&gt;Initializing Fluo table&lt;/h3&gt;
+
+&lt;p&gt;If you have a lot of existing data, then you could use Spark to initialize your Fluo table with
+historical data. There are two general ways to do this.  The simplest way is to use the
+&lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/client/mapred/AccumuloOutputFormat.html&quot;&gt;AccumuloOutputFormat&lt;/a&gt; to write &lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Mutation.html&quot;&gt;Mutation&lt;/a&gt; objects to Accumulo.  However, you need to write data
+using the Fluo data format.  Fluo provides an easy way to do this using the &lt;a href=&quot;https://github.com/apache/incubator-fluo/blob/rel/fluo-1.0.0-incubating/modules/mapreduce/src/main/java/org/apache/fluo/mapreduce/FluoMutationGenerator.java&quot;&gt;FluoMutationGenerator&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;A slightly more complex way to initialize a Fluo table is using Accumulo’s bulk load mechanism.
+Bulk load is the process of generating Accumulo RFile’s containing Key/Values in a Spark job. Those
+files are then loaded into an Accumulo table.   This can be faster, but its more complex because it
+requires the user to properly partition data in their Spark job.  Ideally, these partitions would
+consist of non-overlapping ranges of Accumulo keys with roughly even amounts of data.  The default
+partitioning methods in Spark will not accomplish this.&lt;/p&gt;
+
+&lt;p&gt;When following the bulk load approach, you would write &lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Key.html&quot;&gt;Key&lt;/a&gt; and &lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/data/Value.html&quot;&gt;Value&lt;/a&gt; objects using the
+&lt;a href=&quot;http://accumulo.apache.org/1.8/apidocs/org/apache/accumulo/core/client/mapred/AccumuloFileOutputFormat.html&quot;&gt;AccumuloFileOutputFormat&lt;/a&gt;. Fluo provides the &lt;a href=&quot;https://github.com/apache/incubator-fluo/blob/rel/fluo-1.0.0-incubating/modules/mapreduce/src/main/java/org/apache/fluo/mapreduce/FluoKeyValueGenerator.java&quot;&gt;FluoKeyValueGenerator&lt;/a&gt; to create key/values in the
+Fluo data format.  Fluo Recipes builds on this and provides code that makes it easy to bulk import
+into Accumulo.  The &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-recipes-spark/1.2.0/org/apache/fluo/recipes/spark/FluoSparkHelper.html#bulkImportRcvToFluo-org.apache.spark.api.java.JavaPairRDD-org.apache.fluo.recipes.spark.FluoSparkHelper.BulkImportOptions-&quot;&gt;FluoSparkHelper.bulkImportRcvToFluo()&lt;/a&gt; method will do the following :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Repartition data using the split points in the Fluo table&lt;/li&gt;
+  &lt;li&gt;Convert data into expected format for a Fluo table&lt;/li&gt;
+  &lt;li&gt;Create an RFile for each partition in a specified temp dir&lt;/li&gt;
+  &lt;li&gt;Bulk import the RFiles into the Fluo table&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/apache/fluo-examples/tree/main/webindex&quot;&gt;Webindex&lt;/a&gt; example uses bulk load to initialize its Fluo table using the code in Fluo Recipes.
+Webindex uses multiple &lt;a href=&quot;/docs/fluo-recipes/1.0.0-incubating/cfm/&quot;&gt;Collision Free Maps&lt;/a&gt; and initializes them using
+&lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-recipes-core/1.2.0/org/apache/fluo/recipes/core/map/CollisionFreeMap.html#getInitializer-java.lang.String-int-org.apache.fluo.recipes.core.serialization.SimpleSerializer-&quot;&gt;CollisionFreeMap.getInitializer()&lt;/a&gt;.  Webindex uses Spark to initialize the Fluo table with
+historical data.  Webindex also uses Spark to execute load transactions in parallel for
+incrementally loading data.&lt;/p&gt;
+
+&lt;h3 id=&quot;packaging-your-code-to-run-in-spark&quot;&gt;Packaging your code to run in Spark&lt;/h3&gt;
+
+&lt;p&gt;One simple way to execute your Spark code is to create a shaded jar.  This shaded jar should contain
+: Accumulo client code, Fluo client code, Zookeeper client code, and your Application code.  It
+would be best if the shaded jar contained the versions of Accumulo, Fluo, and Zookeeper running on
+the target system.  One way to achieve this goal is to make it easy for users of your Fluo
+application to build the shaded jar themselves.  The examples below shows a simple bash script and
+Maven pom file that achieve this goal.&lt;/p&gt;
+
+&lt;p&gt;There is no need to include Spark code in the shaded jar as this will be provided by the Spark
+runtime environment.   Depending on your Spark environment, Hadoop client code may also be provided.
+Therefore, Hadoop may not need to be included in the shaded jar. One way to exclude these from the
+shaded jars is to make the scope of these dependencies &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;provided&lt;/code&gt;, which is what the example does.
+You may also want to consider excluding other libraries that are provided in the Spark env like
+Guava, log4j, etc.&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;project&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;xmlns:xsi=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;xsi:schemaLocation=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;modelVersion&amp;gt;&lt;/span&gt;4.0.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/modelVersion&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.foo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluoAppShaded&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;0.0.1-SNAPSHOT&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;packaging&amp;gt;&lt;/span&gt;jar&lt;span class=&quot;nt&quot;&gt;&amp;lt;/packaging&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;Shaded Fluo App&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;accumulo.version&amp;gt;&lt;/span&gt;1.7.2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/accumulo.version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;fluo.version&amp;gt;&lt;/span&gt;1.0.0-incubating&lt;span class=&quot;nt&quot;&gt;&amp;lt;/fluo.version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;zookeeper.version&amp;gt;&lt;/span&gt;3.4.9&lt;span class=&quot;nt&quot;&gt;&amp;lt;/zookeeper.version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-shade-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;shade&lt;span class=&quot;nt&quot;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;package&lt;span class=&quot;nt&quot;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;shadedArtifactAttached&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/shadedArtifactAttached&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;shadedClassifierName&amp;gt;&lt;/span&gt;shaded&lt;span class=&quot;nt&quot;&gt;&amp;lt;/shadedClassifierName&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;filters&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;filter&amp;gt;&lt;/span&gt;
+                  &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifact&amp;gt;&lt;/span&gt;*:*&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifact&amp;gt;&lt;/span&gt;
+                  &lt;span class=&quot;nt&quot;&gt;&amp;lt;excludes&amp;gt;&lt;/span&gt;
+                    &lt;span class=&quot;nt&quot;&gt;&amp;lt;exclude&amp;gt;&lt;/span&gt;META-INF/*.SF&lt;span class=&quot;nt&quot;&gt;&amp;lt;/exclude&amp;gt;&lt;/span&gt;
+                    &lt;span class=&quot;nt&quot;&gt;&amp;lt;exclude&amp;gt;&lt;/span&gt;META-INF/*.DSA&lt;span class=&quot;nt&quot;&gt;&amp;lt;/exclude&amp;gt;&lt;/span&gt;
+                    &lt;span class=&quot;nt&quot;&gt;&amp;lt;exclude&amp;gt;&lt;/span&gt;META-INF/*.RSA&lt;span class=&quot;nt&quot;&gt;&amp;lt;/exclude&amp;gt;&lt;/span&gt;
+                  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/excludes&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;/filter&amp;gt;&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;&amp;lt;/filters&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!--
+       The provided scope is used for dependencies that should not end up in
+       the shaded jar.  The shaded jar is used to run Spark jobs. The Spark 
+       launcher will provided Spark and Hadoop dependencies, so they are not
+       needed in the shaded jar.
+  --&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- The dependency on your Fluo application code.  Version of your app could be made configurable. --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.foo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluoApp&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.2.3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.fluo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluo-api&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${fluo.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.fluo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;fluo-core&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${fluo.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.accumulo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;accumulo-core&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${accumulo.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.zookeeper&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;zookeeper&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${zookeeper.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.hadoop&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;hadoop-client&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.7.2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;provided&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.spark&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spark-core_2.10&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.6.2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;provided&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The following bash script can use the pom above to build a shaded jar.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Get the versions of Accumulo and Fluo running on the system.  Could let the&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# user of your Fluo application configure this and have this script read that&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# config.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ACCUMULO_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;accumulo version&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;FLUO_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;fluo version&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Could not find an easy way to get zookeeper version automatically&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ZOOKEEPER_SERVER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;localhost
+&lt;span class=&quot;nv&quot;&gt;ZOOKEEPER_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;status | nc &lt;span class=&quot;nv&quot;&gt;$ZOOKEEPER_SERVER&lt;/span&gt; 2181 | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;version: | &lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s/.*version: \([0-9.]*\).*/\1/'&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Build the shaded jar&lt;/span&gt;
+mvn package &lt;span class=&quot;nt&quot;&gt;-Daccumulo&lt;/span&gt;.version&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ACCUMULO_VERSION&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;-Dfluo&lt;/span&gt;.version&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$FLUO_VERSION&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;-Dzookeeper&lt;/span&gt;.version&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ZOOKEEPER_VERSION&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There are other possible ways to package and run your Fluo application for Spark.  This section
+suggested one possible way.  The core concept of this method is late binding of the Accumulo, Fluo,
+Hadoop, Spark, and Zookeeper libraries.  When choosing a method to create a shaded jar, the
+implications of early vs late binding is something to consider.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 22 Dec 2016 11:43:00 +0000</pubDate>
+        <link>https://fluo.apache.org//blog/2016/12/22/spark-load/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//blog/2016/12/22/spark-load/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Java needs an immutable byte string</title>
+        <description>&lt;h2 id=&quot;fluo-data-model-and-transactions&quot;&gt;Fluo Data Model and Transactions&lt;/h2&gt;
+
+&lt;p&gt;Fluo uses a &lt;a href=&quot;/tour/data-model/&quot;&gt;data model&lt;/a&gt; composed of key/values.  Each key has four fields :
+&lt;em&gt;row&lt;/em&gt;,&lt;em&gt;family&lt;/em&gt;,&lt;em&gt;qualifier&lt;/em&gt;,&lt;em&gt;visibility&lt;/em&gt;.  Each of these key fields is a sequence of bytes.  Fluo
+transactions read key/values from a snapshot of a table.  Any changes a transaction makes is
+buffered until commit.  At the time of commit the changes are only made if no other transaction
+modified any of the key values.&lt;/p&gt;
+
+&lt;p&gt;While designing the Fluo API we were uncertain about making Fluo’s basic &lt;a href=&quot;/tour/data-pojos/&quot;&gt;POJOs&lt;/a&gt; mutable or
+immutable.  In the end we decided to go with immutable types to make writing correct Fluo code
+easier.  One of the POJOs we created was &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/data/Bytes.html&quot;&gt;Bytes&lt;/a&gt;,  an immutable wrapper around a byte array.  We
+also created &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/data/Bytes.BytesBuilder.html&quot;&gt;BytesBuilder&lt;/a&gt;, which is analogous to StringBuilder, and makes it easy and efficient
+to construct Bytes.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-about-the-copies&quot;&gt;What about the copies?&lt;/h3&gt;
+
+&lt;p&gt;Bytes requires a defensive copy at creation time.  When we were designing Fluo’s API we were worried
+about this at first.  However a simple truth became apparent.  If the API took a mutable type, then
+all boundary points between the user and Fluo would require defensive copies.  For example assume
+Fluo’s API took byte arrays and consider the following code.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//A Fluo transaction&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Fluo will buffer changes until a transaction is committed.  In the example above since Fluo accepts
+a mutable row, it would be prudent to do a defensive copy each time &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set()&lt;/code&gt; is called above.&lt;/p&gt;
+
+&lt;p&gt;In the code below where an immutable byte array wrapper is used, the calls to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set()&lt;/code&gt; do not need to
+do a defensive copy.  So when comparing the two examples, the immutable byte wrapper results in less
+defensive copies.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//A Fluo transaction&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Bytes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We really did not want to create Bytes and BytesBuilder types, however we could not find what we
+needed in Java’s standard libraries.  The following sections discuss some of the options we
+considered.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-not-use-string&quot;&gt;Why not use String?&lt;/h2&gt;
+
+&lt;p&gt;Java’s String type is an immutable wrapper around a char array.  In order to store a byte array in a
+String, Java must decode the byte array using a character set.  Some sequences of bytes do not map
+in some characters sets.  Therefore, trying to stuff arbitrary binary data in a String can corrupt
+the data.  The following little program shows this, it will print &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;String can be made to work by specifying an appropriate character set. The following program will
+print &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;.  However, this is error prone and inefficient.  It’s error prone in the case where the
+character set is wrong or omitted.  It’s inefficient because it results in copying from byte arrays
+to char arrays and visa versa.  Also, char arrays use twice as much memory.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ISO_8859_1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ISO_8859_1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;why-not-use-bytebuffer&quot;&gt;Why not use ByteBuffer?&lt;/h2&gt;
+
+&lt;p&gt;A read only ByteBuffer might seem like it would fit the bill of an immutable byte array wrapper.
+However, the following program shows two ways that ByteBuffer falls short.  ByteBuffers are great
+for I/O, but it would not be prudent to use them when immutability is desired.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;ByteBuffer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ByteBuffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;wrap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asReadOnlyBuffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The program above prints the following, which is less than ideal :&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;747721
+830367
+26786
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This little program shows two things.  First, the only guarantee we are getting from
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;asReadOnlyBuffer()&lt;/code&gt; is that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1&lt;/code&gt; can not be used to modify &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bytes1&lt;/code&gt;.  However, the originator of
+the read only buffer can still modify the wrapped byte array.   Java’s String and Fluo’s Bytes avoid
+this by always copying data into an internal private array that never escapes.&lt;/p&gt;
+
+&lt;p&gt;The second issue is that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1&lt;/code&gt; has a position and calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1.get()&lt;/code&gt; changes this position.
+Changing the position conceptually changes the contents of the ByteBuffer.  This is why &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hashCode()&lt;/code&gt;
+returns something different after &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1.get()&lt;/code&gt; is called.  So even though &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1&lt;/code&gt; does not enable
+mutating &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bytes1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1&lt;/code&gt; is itself mutable.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-not-use-protobufs-bytestring&quot;&gt;Why not use Protobuf’s ByteString?&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developers.google.com/protocol-buffers/&quot;&gt;Protocol Buffers&lt;/a&gt; has a beautiful implementation of an immutable byte array wrapper called
+&lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/ByteString&quot;&gt;ByteString&lt;/a&gt;.  I would encourage its use when possible.  I discovered this jewel after Bytes was
+implemented in Fluo.  Using it was considered, however in Fluo’s case its not really appropriate to
+use for two reasons.  First, any library designer should try to minimize what transitive dependencies
+they force on users.  Internally Fluo does not currently use Protocol Buffers in its implementation,
+so this would be a new dependency for Fluo users.  The second reason is going to require some
+background to explain.&lt;/p&gt;
+
+&lt;p&gt;Technologies like &lt;a href=&quot;https://www.osgi.org&quot;&gt;OSGI&lt;/a&gt; and &lt;a href=&quot;http://openjdk.java.net/projects/jigsaw/&quot;&gt;Jigsaw&lt;/a&gt; seek to modularize Java libraries and provide dependency
+isolation.  Dependency isolation allows a user to use a library without having to share a libraries
+dependencies.  For example, consider the following hypothetical scenario.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fluo’s implementation uses Protobuf version 2.5&lt;/li&gt;
+  &lt;li&gt;Fluo user code uses Protobuf version 1.8&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Without dependency isolation, the user must converge dependencies and make their application and
+Fluo use the same version of Protobuf.  Sometimes this works without issue, but sometimes things
+will break because Protobuf dropped, changed, or added a method.&lt;/p&gt;
+
+&lt;p&gt;With dependency isolation, Fluo’s implementation and Fluo user code can easily use different versions
+of Protobuf.  This is only true as long as Fluo’s API does not use Protobuf.  So, this is the second
+reason that Fluo should not use classes from Protobuf in its API.  If Fluo used Protobuf in its API
+then it forces the user to have to converge dependencies, even if they are using OSGI or Jigsaw.&lt;/p&gt;
+
+&lt;h2 id=&quot;java-should-have-an-immutable-byte-array-wrapper&quot;&gt;Java should have an immutable byte array wrapper&lt;/h2&gt;
+
+&lt;p&gt;So far, the following arguments have been presented:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An immutable byte array wrapper is useful and needed.&lt;/li&gt;
+  &lt;li&gt;Java does not provide a good immutable byte array wrapper.&lt;/li&gt;
+  &lt;li&gt;Using an immutable byte array wrapper from library X in library Y’s API may be problematic.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These arguments all point to the need for an immutable byte array wrapper to exist in Java. This
+need could also be satisfied by a library outside of Java with some restrictions. Assume a new
+library called Lib Immutable Byte Array Wrapper (libibaw) was created.  In order for libibaw to be
+used in other libraries APIs, it would need to promise the following.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;No dependencies other than Java.&lt;/li&gt;
+  &lt;li&gt;Backwards compatibility.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The reason backwards compatibility is important is that it would make dependency convergence super
+easy.  The following situation shows this.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fluo uses libibaw 1.2 in its API&lt;/li&gt;
+  &lt;li&gt;Fluo user code uses libibaw 1.1.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If libibaw promises backward compatibility, then all the user needs to do is use version 1.2 of
+libibaw.  With the promise of backwards compatibility, using version 1.2 will not break the users
+code.&lt;/p&gt;
+
+&lt;p&gt;Having a library would be nice, but having something in Java would minimize copies.  Outside
+of Java there will inevitably be multiple implementations and going between them will require a
+copy.  For example if a user uses Fluo and Protobuf they may be forced to copy Fluo’s Bytes to
+Protobuf’s ByteString. If Protobuf and Fluo both used an immutable byte sequence type from Java, this
+would not be needed.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 10 Nov 2016 11:43:00 +0000</pubDate>
+        <link>https://fluo.apache.org//blog/2016/11/10/immutable-bytes/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//blog/2016/11/10/immutable-bytes/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+  </channel>
+</rss>

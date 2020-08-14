@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//release/fluo-1.0.0-alpha-1/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Fluo 1.0.0-alpha-1 released | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="post-header">
+  <h2>Fluo 1.0.0-alpha-1 released</h2>
+  <p class="text-muted">02 Oct 2014</p>
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Fluo 1.0.0-alpha-1 released&url=https://fluo.apache.org//release/fluo-1.0.0-alpha-1/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
+</div>
+
+
+
+
+  <div class="alert alert-danger" role="alert">This release was made before Apache incubation and is not endorsed by the ASF.</div>
+
+
+<div class="post-content">
+  <p>Fluo 1.0.0-alpha-1 is the first official release of Fluo. It contains 83 initial tickets marked for this first milestone. The roadmap for this release included a working initial implementation, completing an initial pass at the client API (which will be finalized in 1.0.0), and writing a stress test application.  This release has not been tested much at scale and is not ready for production use.  More scale and performance testing will be done for the beta release.</p>
+
+<p>Below are resources for this release:</p>
+
+<ul>
+  <li>Download the <a href="https://github.com/fluo-io/fluo/releases/tag/1.0.0-alpha-1">Fluo binary tarball</a> for 1.0.0-alpha-1 from GitHub.</li>
+  <li>View the <a href="/docs/fluo/1.0.0-alpha-1/">documentation</a> for this release.</li>
+  <li>Read the <a href="https://javadoc.io/doc/io.fluo/fluo-api/1.0.0-alpha-1/">Javadocs</a>.</li>
+  <li>The Fluo <a href="http://search.maven.org/#search%7Cga%7C1%7Cfluo">jars</a> have been deploy to Maven Central.</li>
+</ul>
+
+<p>Fluo is an implementation of Google’s <a href="http://research.google.com/pubs/pub36726.html">percolator paper</a>, which adds large-scale incremental processing of data using distributed transactions and notifications. It runs on <a href="http://hadoop.apache.org/docs/r2.5.1/hadoop-yarn/hadoop-yarn-site/YARN.html">YARN</a> using <a href="http://twill.incubator.apache.org/">Twill</a> and stores its data in <a href="https://accumulo.apache.org/">Accumulo</a>.</p>
+
+<h2 id="significant-features">Significant features</h2>
+
+<p>This alpha release contained a lot of initial features to help establish the basic implementation and client API. All of these features will be expected to become more robust over time.</p>
+
+<h4 id="minifluo">MiniFluo</h4>
+
+<p>MiniAccumulo and MiniFluo make it easy to start a local Fluo instance for integration testing. MiniFluo also makes it easy for developers to experiment with Fluo locally without installing it on an Accumulo cluster.</p>
+
+<h4 id="garbage-collection">Garbage Collection</h4>
+
+<p>Without garbage collection, the columns in a Fluo table would grow without bound as updates are applied over time. Because of this, it’s important to clean up old fully-processed (and no longer being read) transaction data. The initial implementation of garbage collection kept N versions of columns. <a href="https://github.com/fluo-io/fluo/issues/8">Fluo-8</a> added the ability to garbage collect all column versions that are no longer being read by transactions anywhere else in the cluster.</p>
+
+<h4 id="mapreduce-inputformat">MapReduce InputFormat</h4>
+
+<p>The FluoInputFormat allows a specific snapshot to be read into a mapreduce job. It was established in <a href="https://github.com/fluo-io/fluo/issues/7">Fluo-7</a>.</p>
+
+<h4 id="fluofileoutputformat-and-fluooutputformat">FluoFileOutputFormat and FluoOutputFormat</h4>
+
+<p>The FluoFileOutputFormat enables the bulk ingest of a Fluo table using mapreduce by creating the Accumulo r-files in HDFS. The FluoOutputFormat pushes keys directly into the Accumulo tablet servers through the client API. <a href="https://github.com/fluo-io/fluo/issues/35">Fluo-35</a> added this feature.</p>
+
+<h4 id="fluo-workers-and-oracle-running-in-yarn">Fluo Workers and Oracle running in Yarn</h4>
+
+<p>Fluo can use Yarn to manage fault tolerance and guarantee multiple worker processes and some number of Oracle processes are kept running across the cluster. <a href="http://twill.incubator.apache.org/">Apache Twill</a> was used for the Yarn integration. <a href="https://github.com/fluo-io/fluo/issues/11">Fluo-11</a> added an application that will deploy Fluo to a Yarn cluster.</p>
+
+<h4 id="fluo-api">Fluo API</h4>
+
+<p>Fluo provides a fluent-builder API for creating transactions to read and mutate data of various different data types in the Fluo table. This API was finalized in <a href="https://github.com/fluo-io/fluo/issues/23">Fluo-23</a> and <a href="https://github.com/fluo-io/fluo/issues/98">Fluo-98</a> when it was moved into its own module.  It includes a type layer (finished in <a href="https://github.com/fluo-io/fluo/issues/153">Fluo-153</a>) that makes it easier to work with different types, default values, null return types, and row/column maps.</p>
+
+<h4 id="stress-test">Stress test</h4>
+
+<p>A <a href="https://github.com/fluo-io/fluo/blob/1.0.0-alpha-1/modules/stress/README.md">stress test</a> was created that uses a tree to force collisions on transactions trying to mutate multiple columns at the same time. This was established in <a href="https://github.com/fluo-io/fluo/issues/24">Fluo-24</a>.</p>
+
+<p>Other important improvements and features:</p>
+
+<ul>
+  <li><a href="https://github.com/fluo-io/fluo/issues/1">Fluo-1</a>     - Create scripts for starting/stopping services</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/3">Fluo-3</a>     - use Curator for leader election and leader discovery</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/13">Fluo-13</a>   - Register clients that perform transactions in Zookeeper</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/15">Fluo-15</a>   - Leader election for the Oracle Server</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/16">Fluo-16</a>   - Allow observer notification to be configured in AbstractObserver class</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/89">Fluo-89</a>   - OracleApp should allow configurable number of instances</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/98">Fluo-98</a>   - Create a Range class for Fluo</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/123">Fluo-123</a> - Hide implementation of Bytes in the API</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/130">Fluo-130</a> - Expose MiniFluo in public API</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/131">Fluo-131</a> - Make LoaderExecutor implement closeable</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/147">Fluo-147</a> - Create fluo-accumulo module for Accumulo iterators and formatter</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/175">Fluo-175</a> - Add newTransaction() method to FluoClient</li>
+  <li><a href="https://github.com/fluo-io/fluo/issues/186">Fluo-186</a> - Add Exceptions to API</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+
+<p>All unit and integration tests passed.  Two <a href="https://github.com/fluo-io/fluo/blob/1.0.0-alpha-1/modules/stress/README.md">stress tests</a> were run successfully on a 20-node cluster with one test generating 2000 integers and another generating 5000 integers.  The 5000 integer test took about 10 minutes to run after the MapReduce load of integers was complete.</p>
+
+<h2 id="current-status-of-percolator-implementation">Current Status of Percolator Implementation</h2>
+
+<p>The following tables identify the features necessary for a full implementation of Percolator and the current state of Fluo with regards to the implementation. For alpha, a test to exercise some of these features at scale was created, however, it was not run at scale for long periods. One of the goals for beta is to have at least a 24hr run of the scale test, on at least 20 nodes, succeed.</p>
+
+<h3 id="necessary-features">Necessary features:</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Percolator Feature</th>
+      <th>Details</th>
+      <th>Testing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ACID-compliant cross-row transactions</td>
+      <td>Provides distributed transactions with ACID guarantees that work across Accumulo rows. Rows are distributed across tablet servers.</td>
+      <td>IT,CST,<a href="https://github.com/fluo-io/fluo/issues/240">#240</a><sup>1</sup></td>
+    </tr>
+    <tr>
+      <td>Observers</td>
+      <td>Perform transactions by sending read/write RPCs to Accumulo tablet servers, which in turn send read/write RPCs to HDFS.</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Worker Process</td>
+      <td>Scans Accumulo for changed columns and invokes necessary observers as function calls on the worker.</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Timestamp Oracle</td>
+      <td>Provides strictly increasing timestamps; a property required for correct operation of the snapshot isolation protocol.</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Oracle Failover</td>
+      <td>When an active Oracle process dies, timestamps should be served from a different Oracle. They should never go backwards.</td>
+      <td>IT,<a href="https://github.com/fluo-io/fluo/issues/37">#37</a>,<a href="https://github.com/fluo-io/fluo/issues/241">#241</a><sup>1</sup></td>
+    </tr>
+    <tr>
+      <td>Lightweight Lock Service</td>
+      <td>Makes searches for dirty notifications more efficient. Zookeeper is used in this case. Should be low-latency, replicated, balanced, and persist to a backing store.</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Multithreaded Transactions</td>
+      <td>Allows highly parallel execution of transactions and synchronization only during get() and commit() upon which transactions actually collide.</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Snapshot Isolation</td>
+      <td>Non-serializable isolation mostly implemented through MVCC provided through Accumulo’s timestamp portion of the key.</td>
+      <td>IT,CST,<a href="https://github.com/fluo-io/fluo/issues/240">#240</a><sup>1</sup></td>
+    </tr>
+    <tr>
+      <td>Roll-back / Roll-forward semantics</td>
+      <td>Failures during the first phase of commit cause transactions to be rolled back while failures during the second phase can cause them to be rolled forward.</td>
+      <td>IT,<a href="https://github.com/fluo-io/fluo/issues/240">#240</a><sup>1</sup></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><sup>1</sup> This feature has been at least partially tested.</p>
+
+<h3 id="performance-enhancements">Performance enhancements:</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enhancement</th>
+      <th>Details</th>
+      <th>Testing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Locality Group for NOTIFY column</td>
+      <td>Add an extra index in the underlying r-files for the notify column where it can be scanned faster by workers.</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Worker scan conflict resolution</td>
+      <td>Workers register random tablets they choose to scan. When two workers generate the same tablet, one of them re-generates a new random tablet.</td>
+      <td><a href="https://github.com/fluo-io/fluo/issues/5">#5</a></td>
+    </tr>
+    <tr>
+      <td>Worker advertisement</td>
+      <td>Workers advertise through the lock service so that the system can know if they failed and any transactions upon which they are working can be rolled back or rolled forward</td>
+      <td>IT</td>
+    </tr>
+    <tr>
+      <td>Oracle batching</td>
+      <td>Timestamps get allocated in batch to workers. Each worker should share one connection to Oracle to limit RPCs across threads</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Weak Notifications</td>
+      <td>Allows notification of a cell without the possibility of transactional conflict through a special type of column that can be notified but not written to</td>
+      <td>IT</td>
+    </tr>
+    <tr>
+      <td>Conditional Mutations</td>
+      <td>Allows READ-MODIFY-WRITE of a mutation in a single RPC.</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Conditional Mutation batching</td>
+      <td>Delay sending of conditional mutations destined for same tablet server so they can be batched. Lowers number of RPCs, adds latency but provides better parallelism.</td>
+      <td>IT,CST</td>
+    </tr>
+    <tr>
+      <td>Read batching</td>
+      <td>Delaying of read operations on tablet server for batching</td>
+      <td><a href="https://github.com/fluo-io/fluo/issues/138">#138</a></td>
+    </tr>
+    <tr>
+      <td>Prefetching &amp; read-ahead caching</td>
+      <td>Prediction made each time a column is read, which other columns will be read in the same transaction based on previous behavior.</td>
+      <td><a href="https://github.com/fluo-io/fluo/issues/12">#12</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>IT = Integration tests, CST = Cluster stress tests</li>
+  <li>Testing columns providing a ticket number have not yet been implemented.</li>
+</ul>
+
+<h2 id="quickstart">Quickstart</h2>
+
+<p>If you are new to Fluo, the best way to get started is to follow the <a href="https://github.com/fluo-io/fluo-quickstart">quickstart</a> which starts a local Fluo instance 
+(called MiniFluo).  By using MiniFluo, you can avoid following the steps below to run your own Fluo instance.</p>
+
+<h2 id="running-a-fluo-instance">Running a Fluo instance</h2>
+
+<p>In order to run a Fluo instance, you will need <a href="https://accumulo.apache.org/">Accumulo</a> (version 1.6+), <a href="http://hadoop.apache.org/">Hadoop</a> (version 2.2+), and <a href="http://zookeeper.apache.org/">Zookeeper</a> installed and
+running on your local machine or cluster.</p>
+
+<p>Fluo distributions are built for specific releases of Hadoop and Accumulo.  If you are using Accumulo 1.6.1 and Hadoop 2.3.0, you
+can download the <a href="https://github.com/fluo-io/fluo/releases/tag/1.0.0-alpha-1">1.0.0-alpha-1 tarball</a>. Otherwise, you will need to clone the Fluo repo and build a distribution tarball
+of 1.0.0-alpha-1 for your environment:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">git clone https://github.com/fluo-io/fluo.git
+<span class="nb">cd </span>fluo/
+git checkout 1.0.0-alpha-1
+mvn package <span class="nt">-Daccumulo</span>.version<span class="o">=</span>1.6.1-SNAPSHOT <span class="nt">-Dhadoop</span>.version<span class="o">=</span>2.4.0</code></pre></figure>
+
+<p>The distribution tarball will be created in <code class="language-plaintext highlighter-rouge">modules/distribution/target</code></p>
+
+<p>When you have a Fluo distribution, install it to a directory:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">tar </span>xzf fluo-distribution-1.0.0-alpha-1-bin.tar.gz</code></pre></figure>
+
+<p>Next, follow the instructions to configure and run Fluo in the <a href="https://github.com/fluo-io/fluo/blob/1.0.0-alpha-1/README.md">README</a>.</p>
+
+<h2 id="running-fluo-applications">Running Fluo applications</h2>
+
+<p>Once you have Fluo installed and running on your cluster, you can now run Fluo applications.  Fluo applications consist of 
+clients and observers. If you are new to Fluo, consider first building and running the <a href="https://github.com/fluo-io/phrasecount">phrasecount</a> application on your Fluo
+instance.  Otherwise, you will need to include the following in your Maven pom and follow the steps below to create your own
+Fluo client or observer:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>fluo-api<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0.0-alpha-1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.fluo<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>fluo-core<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0.0-alpha-1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;scope&gt;</span>runtime<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre></figure>
+
+<h3 id="creating-a-fluo-client">Creating a Fluo client</h3>
+
+<p>To create a <a href="https://github.com/fluo-io/fluo/blob/1.0.0-alpha-1/modules/api/src/main/java/io/fluo/api/client/FluoClient.java">FluoClient</a>, you will need all properties with the <code class="language-plaintext highlighter-rouge">io.fluo.client.*</code> prefix set in the configuration that is passed
+to the <code class="language-plaintext highlighter-rouge">newClient()</code> method of <a href="https://github.com/fluo-io/fluo/blob/1.0.0-alpha-1/modules/api/src/main/java/io/fluo/api/client/FluoFactory.java">FluoFactory</a>.  See <a href="https://github.com/fluo-io/fluo/blob/1.0.0-alpha-1/modules/distribution/src/main/config/fluo.properties">fluo.properties</a> for details on these properties.</p>
+
+<h3 id="creating-a-fluo-observer">Creating a Fluo observer</h3>
+
+<p>To create an observer, follow these steps:</p>
+
+<ol>
+  <li>Create a class that extends <a href="https://github.com/fluo-io/fluo/blob/1.0.0-alpha-1/modules/api/src/main/java/io/fluo/api/observer/AbstractObserver.java">AbstractObserver</a>.</li>
+  <li>Build a jar containing this class and include this jar in <code class="language-plaintext highlighter-rouge">lib/observers</code> of your Fluo installation.</li>
+  <li>Configure your Fluo instance to use this observer by modifying the Observer section of <a href="https://github.com/fluo-io/fluo/blob/1.0.0-alpha-1/modules/distribution/src/main/config/fluo.properties">fluo.properties</a>.</li>
+  <li>Restart your Fluo instance so that your Fluo workers load the new observer.</li>
+</ol>
+
+
+</div>
+
+<div>
+  <p class="text-muted">View all releases in the <a href="/releases/">archive</a></p>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

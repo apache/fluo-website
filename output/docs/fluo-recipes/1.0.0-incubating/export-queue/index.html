@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-incubating/export-queue/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Export Queue Recipe | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="fluo-doc">
+
+  
+  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-incubating which is an old version! Check out the <a href="/docs/fluo-recipes/1.2">latest docs</a>!</div>
+  
+
+  
+
+  <header class="post-header">
+    <h2 class="post-title">Export Queue Recipe</h2>
+  </header>
+
+  <article id="page-content">
+    <h2 id="background">Background</h2>
+
+<p>Fluo is not suited for servicing low latency queries for two reasons.  The
+first reason is that the implementation of transactions are designed for
+throughput.  To get throughput, transactions recover lazily from failures and
+may wait on another transaction that is writing.  Both of these design decisions
+can lead to delays for an individual transaction, but do not negatively impact
+throughput.   The second reason is that Fluo observers executing transactions
+will likely cause a large number of random accesses.  This could lead to high
+response time variability for an individual random access.  This variability
+would not impede throughput but would impede the goal of latency.</p>
+
+<p>One way to make data transformed by Fluo available for low latency queries is
+to export that data to another system.  For example Fluo could be running
+cluster A, continually transforming a large data set, and exporting data to
+Accumulo tables on cluster B.  The tables on cluster B would service user
+queries.  Fluo Recipes has built in support for <a href="/docs/fluo-recipes/1.0.0-incubating/accumulo-export-queue/">exporting to Accumulo</a>,
+however recipe could be used to export to systems other than Accumulo, like
+Redis, Elasticsearch, MySQL, etc.</p>
+
+<p>Exporting data from Fluo is easy to get wrong which is why this recipe exists.
+To understand what can go wrong consider the following example observer
+transaction.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">extends</span> <span class="nc">AbstractObserver</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="no">TYPEL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TypeLayer</span><span class="o">(</span><span class="k">new</span> <span class="nc">StringEncoder</span><span class="o">());</span>
+
+    <span class="c1">//represents a Query system external to Fluo that is updated by Fluo</span>
+    <span class="nc">QuerySystem</span> <span class="n">querySystem</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="nc">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="nc">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="nc">TypedTransactionBase</span> <span class="n">ttx</span> <span class="o">=</span> <span class="no">TYPEL</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">oldCount</span> <span class="o">=</span> <span class="n">ttx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"counter1"</span><span class="o">).</span><span class="na">toInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">numUpdates</span> <span class="o">=</span> <span class="n">ttx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"numUpdates"</span><span class="o">).</span><span class="na">toInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">newCount</span> <span class="o">=</span> <span class="n">oldCount</span> <span class="o">+</span> <span class="n">numUpdates</span><span class="o">;</span>
+        <span class="n">ttx</span><span class="o">.</span><span class="na">mutate</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"counter1"</span><span class="o">).</span><span class="na">set</span><span class="o">(</span><span class="n">newCount</span><span class="o">);</span>
+        <span class="n">ttx</span><span class="o">.</span><span class="na">mutate</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"numUpdates"</span><span class="o">).</span><span class="na">set</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+
+        <span class="c1">//Build an inverted index in the query system, based on count from the</span>
+        <span class="c1">//meta:counter1 column in fluo.  Do this by creating rows for the</span>
+        <span class="c1">//external query system based on the count.        </span>
+        <span class="nc">String</span> <span class="n">oldCountRow</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%06d"</span><span class="o">,</span> <span class="n">oldCount</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">newCountRow</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%06d"</span><span class="o">,</span> <span class="n">newCount</span><span class="o">);</span>
+        
+        <span class="c1">//add a new entry to the inverted index</span>
+        <span class="n">querySystem</span><span class="o">.</span><span class="na">insertRow</span><span class="o">(</span><span class="n">newCountRow</span><span class="o">,</span> <span class="n">row</span><span class="o">);</span>
+        <span class="c1">//remove the old entry from the inverted index</span>
+        <span class="n">querySystem</span><span class="o">.</span><span class="na">deleteRow</span><span class="o">(</span><span class="n">oldCountRow</span><span class="o">,</span> <span class="n">row</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The above example would keep the external index up to date beautifully as long
+as the following conditions are met.</p>
+
+<ul>
+  <li>Threads executing transactions always complete successfully.</li>
+  <li>Only a single thread ever responds to a notification.</li>
+</ul>
+
+<p>However these conditions are not guaranteed by Fluo.  Multiple threads may
+attempt to process a notification concurrently (only one may succeed).  Also at
+any point in time a transaction may fail (for example the computer executing it
+may reboot).   Both of these problems will occur and will lead to corruption of
+the external index in the example.  The inverted index and Fluo  will become
+inconsistent.  The inverted index will end up with multiple entries (that are
+never cleaned up) for single entity even though the intent is to only have one.</p>
+
+<p>The root of the problem in the example above is that its exporting uncommitted
+data.  There is no guarantee that setting the column <code class="language-plaintext highlighter-rouge">&lt;row&gt;:meta:counter1</code> to
+<code class="language-plaintext highlighter-rouge">newCount</code> will succeed until the transaction is successfully committed.
+However, <code class="language-plaintext highlighter-rouge">newCountRow</code> is derived from <code class="language-plaintext highlighter-rouge">newCount</code> and written to the external query
+system before the transaction is committed (Note : for observers, the
+transaction is committed by the framework after <code class="language-plaintext highlighter-rouge">process(...)</code> is called).  So
+if the transaction fails, the next time it runs it could compute a completely
+different value for <code class="language-plaintext highlighter-rouge">newCountRow</code> (and it would not delete what was written by the
+failed transaction).</p>
+
+<h2 id="solution">Solution</h2>
+
+<p>The simple solution to the problem of exporting uncommitted data is to only
+export committed data.  There are multiple ways to accomplish this.  This
+recipe offers a reusable implementation of one method.  This recipe has the
+following elements:</p>
+
+<ul>
+  <li>An export queue that transactions can add key/values to.  Only if the transaction commits successfully will the key/value end up in the queue.  A Fluo application can have multiple export queues, each one must have a unique id.</li>
+  <li>When a key/value is added to the export queue, its given a sequence number.  This sequence number is based on the transactions start timestamp.</li>
+  <li>Each export queue is configured with an observer that processes key/values that were successfully committed to the queue.</li>
+  <li>When key/values in an export queue are processed, they are deleted so the export queue does not keep any long term data.</li>
+  <li>Key/values in an export queue are placed in buckets.  This is done so that all of the updates in a bucket can be processed in a single transaction.  This allows an efficient implementation of this recipe in Fluo.  It can also lead to efficiency in a system being exported to, if the system can benefit from batching updates.  The number of buckets in an export queue is configurable.</li>
+</ul>
+
+<p>There are three requirements for using this recipe :</p>
+
+<ul>
+  <li>Must configure export queues before initializing a Fluo application.</li>
+  <li>Transactions adding to an export queue must get an instance of the queue using its unique QID.</li>
+  <li>Must implement a class that extends <a href="https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.0.0-incubating/org/apache/fluo/recipes/core/export/Exporter.html">Exporter</a> in order to process exports.</li>
+</ul>
+
+<h2 id="schema">Schema</h2>
+
+<p>Each export queue stores its data in the Fluo table in a contiguous row range.
+This row range is defined by using the export queue id as a row prefix for all
+data in the export queue.  So the row range defined by the export queue id
+should not be used by anything else.</p>
+
+<p>All data stored in an export queue is <a href="/docs/fluo-recipes/1.0.0-incubating/transient/">transient</a>. When an export
+queue is configured, it will recommend split points using the <a href="table-optimization.md">table
+optimization process</a>.  The number of splits generated
+by this process can be controlled by setting the number of buckets per tablet
+when configuring an export queue.</p>
+
+<h2 id="example-use">Example Use</h2>
+
+<p>This example will show how to build an inverted index in an external
+query system using an export queue.  The class below is simple POJO to hold the
+count update, this will be used as the value for the export queue.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">CountUpdate</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">oldCount</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">newCount</span><span class="o">;</span>
+  
+  <span class="kd">public</span> <span class="nf">CountUpdate</span><span class="o">(</span><span class="kt">int</span> <span class="n">oc</span><span class="o">,</span> <span class="kt">int</span> <span class="n">nc</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">oldCount</span> <span class="o">=</span> <span class="n">oc</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">newCount</span> <span class="o">=</span> <span class="n">nc</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The following code shows how to configure an export queue.  This code will
+modify the FluoConfiguration object with options needed for the export queue.
+This FluoConfiguration object should be used to initialize the fluo
+application.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="nc">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+
+   <span class="c1">//queue id "ici" means inverted count index, would probably use static final in real application</span>
+   <span class="nc">String</span> <span class="n">exportQueueID</span> <span class="o">=</span> <span class="s">"ici"</span><span class="o">;</span>  
+   <span class="nc">Class</span><span class="o">&lt;</span><span class="nc">CountExporter</span><span class="o">&gt;</span> <span class="n">exporterType</span> <span class="o">=</span> <span class="nc">CountExporter</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+   <span class="nc">Class</span><span class="o">&lt;</span><span class="nc">Bytes</span><span class="o">&gt;</span> <span class="n">keyType</span> <span class="o">=</span> <span class="nc">Bytes</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+   <span class="nc">Class</span><span class="o">&lt;</span><span class="nc">CountUpdate</span><span class="o">&gt;</span> <span class="n">valueType</span> <span class="o">=</span> <span class="nc">CountUpdate</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+   <span class="kt">int</span> <span class="n">numBuckets</span> <span class="o">=</span> <span class="mi">1009</span><span class="o">;</span>
+   <span class="c1">//the desired number of tablets to create when applying table optimizations</span>
+   <span class="kt">int</span> <span class="n">numTablets</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+
+   <span class="nc">ExportQueue</span><span class="o">.</span><span class="na">Options</span> <span class="n">eqOptions</span> <span class="o">=</span>
+        <span class="k">new</span> <span class="nc">ExportQueue</span><span class="o">.</span><span class="na">Options</span><span class="o">(</span><span class="n">exportQueueId</span><span class="o">,</span> <span class="n">exporterType</span><span class="o">,</span> <span class="n">keyType</span><span class="o">,</span> <span class="n">valueType</span><span class="o">,</span> <span class="n">numBuckets</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setsetBucketsPerTablet</span><span class="o">(</span><span class="n">numBuckets</span><span class="o">/</span><span class="n">numTablets</span><span class="o">);</span>
+   <span class="nc">ExportQueue</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="n">eqOptions</span><span class="o">);</span>
+
+   <span class="c1">//initialize Fluo using fluoConfig</span>
+</code></pre></div></div>
+
+<p>Below is updated version of the observer from above that’s now using the export
+queue.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">extends</span> <span class="nc">AbstractObserver</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="no">TYPEL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TypeLayer</span><span class="o">(</span><span class="k">new</span> <span class="nc">StringEncoder</span><span class="o">());</span>
+
+    <span class="kd">private</span> <span class="nc">ExportQueue</span><span class="o">&lt;</span><span class="nc">Bytes</span><span class="o">,</span> <span class="nc">CountUpdate</span><span class="o">&gt;</span> <span class="n">exportQueue</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+      <span class="n">exportQueue</span> <span class="o">=</span> <span class="nc">ExportQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"ici"</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="nc">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="nc">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="nc">TypedTransactionBase</span> <span class="n">ttx</span> <span class="o">=</span> <span class="no">TYPEL</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">oldCount</span> <span class="o">=</span> <span class="n">ttx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"counter1"</span><span class="o">).</span><span class="na">toInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">numUpdates</span> <span class="o">=</span> <span class="n">ttx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"numUpdates"</span><span class="o">).</span><span class="na">toInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">newCount</span> <span class="o">=</span> <span class="n">oldCount</span> <span class="o">+</span> <span class="n">numUpdates</span><span class="o">;</span>
+        <span class="n">ttx</span><span class="o">.</span><span class="na">mutate</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"counter1"</span><span class="o">).</span><span class="na">set</span><span class="o">(</span><span class="n">newCount</span><span class="o">);</span>
+        <span class="n">ttx</span><span class="o">.</span><span class="na">mutate</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"numUpdates"</span><span class="o">).</span><span class="na">set</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+
+        <span class="c1">//Because the update to the export queue is part of the transaction,</span>
+        <span class="c1">//either the update to meta:counter1 is made and an entry is added to</span>
+        <span class="c1">//the export queue or neither happens.</span>
+        <span class="n">exportQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">row</span><span class="o">,</span> <span class="k">new</span> <span class="nc">CountUpdate</span><span class="o">(</span><span class="n">oldCount</span><span class="o">,</span> <span class="n">newCount</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The observer setup for the export queue will call the <code class="language-plaintext highlighter-rouge">processExports()</code> method
+on the class below to process entries in the export queue.  It possible the
+call to <code class="language-plaintext highlighter-rouge">processExports()</code> can fail part way through and/or be called multiple
+times.  In the case of failures the exporter will eventually be called again
+with the exact same data.  The possibility of the same export entry being
+processed on multiple computer at different times can cause exports to arrive
+out of order.  The system receiving exports has to be resilient to data
+arriving out of order and multiple times.  The purpose of the sequence number
+is to help systems receiving data from Fluo process out of order and redundant
+data.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CountExporter</span> <span class="kd">extends</span> <span class="nc">Exporter</span><span class="o">&lt;</span><span class="nc">Bytes</span><span class="o">,</span> <span class="nc">CountUpdate</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="c1">//represents the external query system we want to update from Fluo</span>
+    <span class="nc">QuerySystem</span> <span class="n">querySystem</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">processExports</span><span class="o">(</span><span class="nc">Iterator</span><span class="o">&lt;</span><span class="nc">SequencedExport</span><span class="o">&lt;</span><span class="nc">Bytes</span><span class="o">,</span> <span class="nc">CountUpdate</span><span class="o">&gt;&gt;</span> <span class="n">exportIterator</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">BatchUpdater</span> <span class="n">batchUpdater</span> <span class="o">=</span> <span class="n">querySystem</span><span class="o">.</span><span class="na">getBatchUpdater</span><span class="o">();</span>
+      <span class="k">while</span><span class="o">(</span><span class="n">exportIterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+        <span class="nc">SequencedExport</span><span class="o">&lt;</span><span class="nc">Bytes</span><span class="o">,</span> <span class="nc">CountUpdate</span><span class="o">&gt;</span> <span class="n">exportEntry</span> <span class="o">=</span>  <span class="n">exportItertor</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+        <span class="nc">Bytes</span> <span class="n">row</span> <span class="o">=</span>  <span class="n">exportEntry</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+        <span class="nc">UpdateCount</span> <span class="n">uc</span> <span class="o">=</span> <span class="n">exportEntry</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+        <span class="kt">long</span> <span class="n">seqNum</span> <span class="o">=</span> <span class="n">exportEntry</span><span class="o">.</span><span class="na">getSequence</span><span class="o">();</span>
+
+        <span class="nc">String</span> <span class="n">oldCountRow</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%06d"</span><span class="o">,</span> <span class="n">uc</span><span class="o">.</span><span class="na">oldCount</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">newCountRow</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%06d"</span><span class="o">,</span> <span class="n">uc</span><span class="o">.</span><span class="na">newCount</span><span class="o">);</span>
+
+        <span class="c1">//add a new entry to the inverted index</span>
+        <span class="n">batchUpdater</span><span class="o">.</span><span class="na">insertRow</span><span class="o">(</span><span class="n">newCountRow</span><span class="o">,</span> <span class="n">row</span><span class="o">,</span> <span class="n">seqNum</span><span class="o">);</span>
+        <span class="c1">//remove the old entry from the inverted index</span>
+        <span class="n">batchUpdater</span><span class="o">.</span><span class="na">deleteRow</span><span class="o">(</span><span class="n">oldCountRow</span><span class="o">,</span> <span class="n">row</span><span class="o">,</span> <span class="n">seqNum</span><span class="o">);</span>
+      <span class="o">}</span>
+
+      <span class="c1">//flush all of the updates to the external query system</span>
+      <span class="n">batchUpdater</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="concurrency">Concurrency</h2>
+
+<p>Additions to the export queue will never collide.  If two transactions add the
+same key at around the same time and successfully commit, then two entries with
+different sequence numbers will always be added to the queue.  The sequence
+number is based on the start timestamp of the transactions.</p>
+
+<p>If the key used to add items to the export queue is deterministically derived
+from something the transaction is writing to, then that will cause a collision.
+For example consider the following interleaving of two transactions adding to
+the same export queue in a manner that will collide. Note, TH1 is shorthand for
+thread 1, ek() is a function the creates the export key, and ev() is a function
+that creates the export value.</p>
+
+<ol>
+  <li>TH1 : key1 = ek(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>)</li>
+  <li>TH1 : val1 = ev(tx1.get(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>), tx1.get(<code class="language-plaintext highlighter-rouge">rowA</code>,<code class="language-plaintext highlighter-rouge">fam1:qual2</code>))</li>
+  <li>TH1 : exportQueueA.add(tx1, key1, val1)</li>
+  <li>TH2 : key2 = ek(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>)</li>
+  <li>TH2 : val2 = ev(tx2.get(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>), tx2.get(<code class="language-plaintext highlighter-rouge">rowB</code>,<code class="language-plaintext highlighter-rouge">fam1:qual2</code>))</li>
+  <li>TH2 : exportQueueA.add(tx2, key2, val2)</li>
+  <li>TH1 : tx1.set(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>, val1)</li>
+  <li>TH2 : tx2.set(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>, val2)</li>
+</ol>
+
+<p>In the example above only one transaction will succeed because both are setting
+<code class="language-plaintext highlighter-rouge">row1 fam1:qual1</code>.  Since adding to the export queue is part of the
+transaction, only the transaction that succeeds will add something to the
+queue.  If the function ek() in the example is deterministic, then both
+transactions would have been trying to add the same key to the export queue.</p>
+
+<p>With the above method, we know that transactions adding entries to the queue for
+the same key must have executed <a href="https://en.wikipedia.org/wiki/Serializability">serially</a>. Knowing that transactions which
+added the same key did not overlap in time makes reasoning about those export
+entries very simple.</p>
+
+<p>The example below is a slight modification of the example above.  In this
+example both transactions will successfully add entries to the queue using the
+same key.  Both transactions succeed because they are writing to different
+cells (<code class="language-plaintext highlighter-rouge">rowB fam1:qual2</code> and <code class="language-plaintext highlighter-rouge">rowA fam1:qual2</code>).  This approach makes it more
+difficult to reason about export entries with the same key, because the
+transactions adding those entries could have overlapped in time.  This is an
+example of write skew mentioned in the Percolator paper.</p>
+
+<ol>
+  <li>TH1 : key1 = ek(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>)</li>
+  <li>TH1 : val1 = ev(tx1.get(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>), tx1.get(<code class="language-plaintext highlighter-rouge">rowA</code>,<code class="language-plaintext highlighter-rouge">fam1:qual2</code>))</li>
+  <li>TH1 : exportQueueA.add(tx1, key1, val1)</li>
+  <li>TH2 : key2 = ek(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>)</li>
+  <li>TH2 : val2 = ev(tx2.get(<code class="language-plaintext highlighter-rouge">row1</code>,<code class="language-plaintext highlighter-rouge">fam1:qual1</code>), tx2.get(<code class="language-plaintext highlighter-rouge">rowB</code>,<code class="language-plaintext highlighter-rouge">fam1:qual2</code>))</li>
+  <li>TH2 : exportQueueA.add(tx2, key2, val2)</li>
+  <li>TH1 : tx1.set(<code class="language-plaintext highlighter-rouge">rowA</code>,<code class="language-plaintext highlighter-rouge">fam1:qual2</code>, val1)</li>
+  <li>TH2 : tx2.set(<code class="language-plaintext highlighter-rouge">rowB</code>,<code class="language-plaintext highlighter-rouge">fam1:qual2</code>, val2)</li>
+</ol>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

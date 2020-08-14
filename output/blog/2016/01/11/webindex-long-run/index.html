@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//blog/2016/01/11/webindex-long-run/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Running Webindex for 3 days on EC2 | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div id="post-header">
+  <h1>Running Webindex for 3 days on EC2</h1>
+  <p class="text-muted">
+     
+    
+    11 Jan 2016
+  </p> 
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Running Webindex for 3 days on EC2&url=https://fluo.apache.org//blog/2016/01/11/webindex-long-run/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
+</div>
+<div id="post-content">
+  <p>In preparation for the Fluo beta 2 release, <a href="http://github.com/fluo-io/webindex">Webindex</a>, an example
+Fluo application, was run on 24 EC2 m3-xlarge nodes (20 worker node) for 3
+days.  The experiment went well as Webindex indexed 178 million web pages and
+2.32 billion links. The average rate for the entire test was 698 pages/sec and
+8,943 links/sec.  A few problems with <a href="http://github.com/fluo-io/fluo-recipes">Fluo Recipes</a> and Webindex were
+discovered during the course of the test.</p>
+
+<h2 id="webindex-overview">Webindex Overview</h2>
+
+<p>Webindex indexes URLs from <a href="https://commoncrawl.org/">Common Crawl</a> data in multiple ways into an
+external <a href="http://accumulo.apache.org/">Accumulo</a> table. Webindex offers a simple web application
+for querying this external Accumulo table.  The following three questions can
+be answered from this web page.</p>
+
+<ul>
+  <li>Which page is the most linked to?</li>
+  <li>Which page in a domain is the most linked to and how many pages were seen for a domain?</li>
+  <li>For a given page, what links to it and how many links are there?</li>
+</ul>
+
+<p>In order to answer these questions, Webindex continually updates the following
+three indexes in an external Accumulo table.</p>
+
+<ul>
+  <li>A per domain index containing linked to counts in descending order.</li>
+  <li>A total index containing linked to counts for all pages in descending order.</li>
+  <li>A per page index containing the pages incoming and outgoing links and incoming link count.</li>
+</ul>
+
+<p>The following is a simple example of some of what Webindex does.  In order to
+keep it simple, the example below does not show everything Webindex does.</p>
+
+<ol>
+  <li>Content for <code class="language-plaintext highlighter-rouge">http://A.com</code> that links to <code class="language-plaintext highlighter-rouge">http://B.org</code> is loaded.</li>
+  <li>Content for <code class="language-plaintext highlighter-rouge">http://C.com</code> that links to <code class="language-plaintext highlighter-rouge">http://B.org</code> is loaded.</li>
+  <li>The inbound link count for <code class="language-plaintext highlighter-rouge">http://B.org</code> is computed as 2.</li>
+  <li><code class="language-plaintext highlighter-rouge">(2,http://B.org)</code> is inserted into the external domain index, total index, and page count.</li>
+  <li>Content for <code class="language-plaintext highlighter-rouge">http://C.com</code> that links to <code class="language-plaintext highlighter-rouge">http://B.org</code> is loaded.</li>
+  <li>The inbound link count for <code class="language-plaintext highlighter-rouge">http://B.org</code> is computed as 3.</li>
+  <li><code class="language-plaintext highlighter-rouge">(2,http://B.org)</code> is deleted from all the external indexes and <code class="language-plaintext highlighter-rouge">(3, http://B.org)</code> is inserted.</li>
+</ol>
+
+<h2 id="videos-from-run">Videos from run</h2>
+
+<p>During the course of the 3 day run, screenshots of different queries in the
+Webindex web application were taken every 6 minutes.  From these screenshots,
+the following videos were created showing Fluo in action. Keep in mind that as
+the counts are changing, the old count is deleted and a new count is inserted.
+If Fluo ever dropped the ball on this, it would leave both entries in the
+external index causing the same URL to show up twice with different counts.</p>
+
+<p>The video below shows querying for the most linked to page every 6 minutes.</p>
+
+<iframe width="715" height="402" src="https://www.youtube.com/embed/Munsucq1KXo" frameborder="0" allowfullscreen=""></iframe>
+
+<p>The video below shows querying for which pages at stackoverflow.com are the most
+linked to.  The count at the top is the total number of pages seen in the
+wikipedia.org domain.</p>
+
+<iframe width="715" height="402" src="https://www.youtube.com/embed/mJJNJbPN2EI" frameborder="0" allowfullscreen=""></iframe>
+
+<p>Videos were also created for <a href="http://youtu.be/9kvYzgg72Es">apache</a>,
+<a href="https://youtu.be/a-9_hnRprpQ">wikipedia</a>,
+<a href="https://youtu.be/IlJ95dVkLnk">github</a>, and <a href="https://youtu.be/D66nBP5QKS8">cnn</a></p>
+
+<p>Some custom scripts and <a href="https://github.com/sindresorhus/pageres-cli">pageres-cli</a> were used to generate the screenshots.
+Videos with a screenshot every minute are also available.  If interested in
+seeing these, contact the Fluo dev list.</p>
+
+<h2 id="grafana-plots">Grafana plots</h2>
+
+<p>The Grafana plots below are from the three day run. No plot of notifications
+queued is shown because processing of pages kept up and never fell behind. To
+understand the plots, below is a simple description of what the different
+observers do.  Observers are written by Fluo users, run by Fluo workers,  and
+respond to notifications and execute transactions.</p>
+
+<ul>
+  <li>The PageLoader runs in a Spark job and loads pages parsed from a CommonCrawl
+data file.</li>
+  <li>The PageObserver processes updates to pages, determines what links changed,
+and pushes link updates to other observers.</li>
+  <li>The CollisionFreeMapObserver computes linked to counts and pushes the counts
+to the ExportObserver.  This observer also rolls up domain counts and pushes
+those for export (calling different code and operating on a different part of
+the table).</li>
+  <li>The ExportObserver updates the external Accumulo index table in a fault
+tolerant manner.</li>
+</ul>
+
+<p><img src="/resources/blog/webindex_run_201601/grafana-1.png" alt="Grafana long run" /></p>
+
+<h2 id="problems-found">Problems Found</h2>
+
+<p>The test was useful in that it showed Fluo is probably ready for another
+release. While no show stoppers were found, it was also useful in that many
+areas where improvements could be made were found.</p>
+
+<p>During the first day of the test, it was noticed that major compactions in
+Accumulo were sucking up a lot of resources.  Each node only had four cores.
+Before the test were started, compaction ratios were adjusted.   Fluo’s table
+was set to 1.5 and the external index table was set to 2.  These ratios coupled
+with the fact that the compactions were using gzip caused really high load,
+which eventually caused processing to drop to around 500 pages/sec.  While the
+test was running the compaction ratios were adjusted to 2 and 3, and compaction
+was set use snappy.  This caused performance to increase.  A few more cores
+would have been nice.</p>
+
+<p>The Spark load jobs have to parse, validate, and clean up all of the links.
+This seems to be very CPU intensive and may be the current bottleneck (see
+<a href="https://github.com/fluo-io/webindex/issues/41">fluo-io/webindex#41</a>). It seems that as Accumulo’s CPU load
+increased (because of compactions) that the load rate dropped.  As an
+experiment during the 2nd day of the test, loaders were stopped and two loaders
+per node were started.  This resulted in a higher load rate of around 1000
+pages/sec.  In order to ensure the test would run over night, this was only
+done for a brief period before reverting to one loader per node.  Again, more
+cores would have been nice.  In place of more cores, looking into optimizing this
+and getting a higher load rate would nice.  Another issue noticed with loading
+was <a href="https://github.com/fluo-io/webindex/issues/39">fluo-io/webindex#39</a>.</p>
+
+<p>While monitoring the test it became apparent that split points for the Fluo
+table were not equally spreading computation across all tablet servers. See
+<a href="https://github.com/fluo-io/fluo-recipes/issues/44">fluo-io/fluo-recipes#44</a> for more information.  Somewhere around the
+2nd day of the test, tablets were merged and new splits points were added while
+the test was running.  This worked really well.  Another issue found relating
+to split points was <a href="https://github.com/fluo-io/webindex/issues/40">fluo-io/webindex#40</a>.</p>
+
+<p>The lack of metrics about Conditional mutations from Accumulo tablet servers
+makes it hard to track down problems where many Fluo transactions are hitting a
+few tablet servers.  The bad split points mentioned in the previous paragraph
+are one example of this type of problem.  <a href="https://issues.apache.org/jira/browse/ACCUMULO-4107">ACCUMULO-4107</a> was
+created to address this issue.</p>
+
+<p>Some skew was noticed as a result of YARN’s placement decisions.  This was
+caused by coordination task displacing CPU intensive task.  For example
+Fluo has three task types that run in YARN : Oracle, Twill Application manager,
+and Workers.  Ideally there would be one Worker per node. However, because of
+the Oracle and Application task, YARN may place two workers on a single node.
+Opened <a href="https://github.com/fluo-io/fluo/issues/600">fluo-io/fluo#600</a>.</p>
+
+<p>During the test, worker task were dying or being killed because of memory
+overuse.  Twill/YARN automatically restarted the workers and the test kept
+running w/o much problem.  It would be good to avoid this since this causes
+transaction recovery or rollback.  See <a href="https://github.com/fluo-io/webindex/issues/42">fluo-io/webindex#42</a>.</p>
+
+<p>The test identified a possible need for <a href="https://github.com/fluo-io/fluo-recipes/issues/45">HashedRow recipe</a> to more
+evenly distribute processing of page related transactions.</p>
+
+<h2 id="test-environment">Test environment</h2>
+
+<p>The following configuration and software were used for this test.</p>
+
+<ul>
+  <li>24 m3.xlarge EC2 nodes. 15G ram, 4 cores, and 2x35G SSD.</li>
+  <li>Centos 7</li>
+  <li>Hadoop 2.6.0</li>
+  <li>Zookeeper 3.4.7</li>
+  <li>Accumulo 1.8.0-SNAPSHOT with <a href="https://issues.apache.org/jira/browse/ACCUMULO-4066">ACCUMULO-4066</a> patches</li>
+  <li>Fluo beta-2-SNAPSHOT 78bcdb7</li>
+  <li>Fluo recipes beta-1-SNAPSHOT 96858d0</li>
+  <li>Fluo deploy 43bf08f</li>
+  <li>2G data cache and 768M index cache in Accumulo</li>
+  <li>64 threads in Accumulo client pool and readahead pool</li>
+  <li>128 worker threads and 4G per worker (initially went to 5G and 6G as test was running).</li>
+  <li>20 Load task running in Spark</li>
+</ul>
+
+<h2 id="storage-statistics">Storage statistics</h2>
+
+<p>After the three day run completed, the external index table had 4.71 billion
+entries and used 191G in HDFS.   A compaction was forced on the Accumulo table,
+which caused old versions and deleted data to be dropped.  After the compaction
+the table had 4.02 billion entries and used 159G in HDFS.  The table was being
+frequently updated by Fluo and that’s why so much data was dropped by the
+compaction.  The way Accumulo works, compactions were continually happening
+while test was running.  So the total amount of data dropped from the table as
+a result of updates is unknown.</p>
+
+<p>The table used by Fluo had 1.46 billion entries at the conclusion of the test
+and used 93G in HDFS.</p>
+
+<h2 id="future-work">Future Work</h2>
+
+<p>Most Fluo scale testing to date has been on EC2.  It would be really nice to
+test Fluo on bare metal.  We are going to experiment with getting <a href="https://github.com/fluo-io/fluo-deploy">Fluo
+Deploy</a> to work on bare metal where
+CentOS 7 is already installed.</p>
+
+<p>Seeing Application level stats plotted in Grafana, as outlined in
+<a href="https://github.com/fluo-io/fluo/issues/534">fluo-io/fluo#534</a>, would be really nice.  For webindex this would
+include things like URLs exported per second, domains exported per second, etc.
+This issue was not identified during this test, it just would have been really
+nice to have this information while running the test.</p>
+
+<p>Eventually this test needs to be run on 10, 20, and 40 nodes to measure the
+relative performance increase as the number of nodes is increased.  Ideally
+this test would run on bare metal.</p>
+
+
+</div>
+
+<div>
+  <p class="text-muted">View all posts in the <a href="/news/">news archive</a></p>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

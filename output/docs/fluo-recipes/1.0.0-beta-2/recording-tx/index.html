@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-beta-2/recording-tx/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>RecordingTransaction recipe | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="fluo-doc">
+
+  
+  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-2 which is an old version! Check out the <a href="/docs/fluo-recipes/1.2">latest docs</a>!</div>
+  
+
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
+  
+
+  <header class="post-header">
+    <h2 class="post-title">RecordingTransaction recipe</h2>
+  </header>
+
+  <article id="page-content">
+    <p>A <code class="language-plaintext highlighter-rouge">RecordingTransaction</code> is an implementation of <code class="language-plaintext highlighter-rouge">Transaction</code> that logs all transaction operations
+(i.e GET, SET, or DELETE) to a <code class="language-plaintext highlighter-rouge">TxLog</code> object for later uses such as exporting data.  The code below
+shows how a RecordingTransaction is created by wrapping a Transaction object:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">RecordingTransactionBase</span> <span class="n">rtx</span> <span class="o">=</span> <span class="nc">RecordingTransactionBase</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>A predicate function can be passed to wrap method to select which log entries to record.  The code
+below only records log entries whose column family is <code class="language-plaintext highlighter-rouge">meta</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">RecordingTransactionBase</span> <span class="n">rtx</span> <span class="o">=</span> <span class="nc">RecordingTransactionBase</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span>
+                               <span class="n">le</span> <span class="o">-&gt;</span> <span class="n">le</span><span class="o">.</span><span class="na">getColumn</span><span class="o">().</span><span class="na">getFamily</span><span class="o">().</span><span class="na">toString</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"meta"</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>After creating a RecordingTransaction, users can use it as they would use a Transaction object.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Bytes</span> <span class="n">value</span> <span class="o">=</span> <span class="n">rtx</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="nc">Bytes</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"r1"</span><span class="o">),</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"cf1"</span><span class="o">,</span> <span class="s">"cq1"</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>While SET or DELETE operations are always recorded to the log, GET operations are only recorded if a
+value was found at the requested row/column.  Also, if a GET method returns an iterator, only the GET
+operations that are retrieved from the iterator are logged.  GET operations are logged as they are
+necessary if you want to determine the changes made by the transaction.</p>
+
+<p>When you are done operating on the transaction, you can retrieve the TxLog using the following code:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TxLog</span> <span class="n">myTxLog</span> <span class="o">=</span> <span class="n">rtx</span><span class="o">.</span><span class="na">getTxLog</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>Below is example code of how a RecordingTransaction can be used in an observer to record all operations
+performed by the transaction in a TxLog.  In this example, a GET (if data exists) and SET operation
+will be logged.  This TxLog can be added to an export queue and later used to export updates from 
+Fluo.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver</span> <span class="kd">extends</span> <span class="nc">AbstractObserver</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="no">TYPEL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TypeLayer</span><span class="o">(</span><span class="k">new</span> <span class="nc">StringEncoder</span><span class="o">());</span>
+    
+    <span class="kd">private</span> <span class="nc">ExportQueue</span><span class="o">&lt;</span><span class="nc">Bytes</span><span class="o">,</span> <span class="nc">TxLog</span><span class="o">&gt;</span> <span class="n">exportQueue</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="nc">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="nc">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="c1">// create recording transaction (rtx)</span>
+        <span class="nc">RecordingTransactionBase</span> <span class="n">rtx</span> <span class="o">=</span> <span class="nc">RecordingTransactionBase</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span>
+        
+        <span class="c1">// use rtx to create a typed transaction &amp; perform operations</span>
+        <span class="nc">TypedTransactionBase</span> <span class="n">ttx</span> <span class="o">=</span> <span class="no">TYPEL</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">rtx</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">ttx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"counter1"</span><span class="o">).</span><span class="na">toInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="n">ttx</span><span class="o">.</span><span class="na">mutate</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"meta"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"counter1"</span><span class="o">).</span><span class="na">set</span><span class="o">(</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="o">);</span>
+        
+        <span class="c1">// when finished performing operations, retrieve transaction log</span>
+        <span class="nc">TxLog</span> <span class="n">txLog</span> <span class="o">=</span> <span class="n">rtx</span><span class="o">.</span><span class="na">getTxLog</span><span class="o">()</span>
+
+        <span class="c1">// add txLog to exportQueue if not empty</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">txLog</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+          <span class="c1">//do not pass rtx to exportQueue.add()</span>
+          <span class="n">exportQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">row</span><span class="o">,</span> <span class="n">txLog</span><span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

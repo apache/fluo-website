@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//release/fluo-1.2.0/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Apache Fluo 1.2.0 | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="post-header">
+  <h2>Apache Fluo 1.2.0</h2>
+  <p class="text-muted">26 Feb 2018</p>
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Apache Fluo 1.2.0&url=https://fluo.apache.org//release/fluo-1.2.0/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
+</div>
+
+
+
+
+
+<div class="post-content">
+  <p>Apache Fluo is a distributed processing system that lets users make incremental
+updates to large data sets.  With Apache Fluo, users can set up workflows that
+execute cross node transactions when data changes. These workflows enable users
+to continuously join new data into large existing data sets without
+reprocessing all data.  Apache Fluo is built on <a href="https://accumulo.apache.org/">Apache Accumulo</a>.</p>
+
+<p>Below are resources for this release:</p>
+
+<ul>
+  <li>
+    <p>Download a release tarball and verify by these <a href="https://www.apache.org/info/verification">procedures</a> using these <a href="https://downloads.apache.org/fluo/KEYS">KEYS</a></p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://www.apache.org/dyn/closer.lua/fluo/fluo/1.2.0/fluo-1.2.0-bin.tar.gz">fluo-1.2.0-bin.tar.gz</a></td>
+          <td><a href="https://downloads.apache.org/fluo/fluo/1.2.0/fluo-1.2.0-bin.tar.gz.asc">ASC</a> <a href="https://downloads.apache.org/fluo/fluo/1.2.0/fluo-1.2.0-bin.tar.gz.sha512">SHA</a></td>
+        </tr>
+        <tr>
+          <td><a href="https://www.apache.org/dyn/closer.lua/fluo/fluo/1.2.0/fluo-1.2.0-source-release.tar.gz">fluo-1.2.0-source-release.tar.gz</a></td>
+          <td><a href="https://downloads.apache.org/fluo/fluo/1.2.0/fluo-1.2.0-source-release.tar.gz.asc">ASC</a> <a href="https://downloads.apache.org/fluo/fluo/1.2.0/fluo-1.2.0-source-release.tar.gz.sha512">SHA</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>View the <a href="/docs/fluo/1.2/">documentation</a> for this release.</li>
+  <li>Read the <a href="https://javadoc.io/doc/org.apache.fluo/fluo-api/1.2.0/">Javadocs</a>.</li>
+</ul>
+
+<p>Apache Fluo follows <a href="http://semver.org/">semver</a> for its API . The API consists
+of everything under the <code class="language-plaintext highlighter-rouge">org.apache.fluo.api</code> package. Code outside of this
+package can change at any time. If your project is using Fluo code that falls
+outside of the API, then consider <a href="/getinvolved/">initiating a discussion</a>
+about adding it to the API.</p>
+
+<h2 id="notable-changes">Notable changes</h2>
+
+<p>The major changes in 1.2.0 are highlighted here, for the complete list of changes, see the <a href="https://github.com/apache/fluo/milestone/6?closed=1">1.2.0
+Milestone</a> on Github.</p>
+
+<h3 id="multiple-ways-of-running-applications">Multiple ways of running applications</h3>
+
+<p>Before 1.2.0, Fluo applications could only be run in YARN or as local processes. For 1.2.0, the Fluo tarball
+was refactored to support other ways of running Fluo applications such as Docker, Kubernetes &amp; Marathon. This
+refactoring has the following notable changes:</p>
+
+<ul>
+  <li>The Fluo tarball is now designed for only initializing Fluo and running local processes.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">fluo.properties</code> configuration file was deprecated and was replaced by <code class="language-plaintext highlighter-rouge">fluo-conn.properties</code> and <code class="language-plaintext highlighter-rouge">fluo-app.properties</code>.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">fluo-conn.properties</code> contains connection properties and is shared by Fluo applications</li>
+      <li><code class="language-plaintext highlighter-rouge">fluo-app.properites</code> contains application-specific properties and is only used during initialization of Fluo applications.</li>
+    </ul>
+  </li>
+  <li>Code for launching Fluo applications in YARN was moved to its <a href="https://github.com/apache/fluo-yarn">own project</a> that has its own
+<a href="https://fluo.apache.org/release/fluo-yarn-1.0.0">release</a> tarball. The Fluo tarball can still be used to launch Fluo applications
+in YARN if a <code class="language-plaintext highlighter-rouge">fluo.properties</code> is created from <code class="language-plaintext highlighter-rouge">fluo.properties.deprecated</code>.</li>
+  <li>Fluo application jars are now stored in HDFS and application configuration is now stored in Zookeeper.  This information used to be stored in a local directory.  This change made running Fluo different ways (like YARN or Docker) possible.  The <code class="language-plaintext highlighter-rouge">fluo get-jars</code> command (added in <a href="https://github.com/apache/fluo/commit/db0bdad">db0bdad</a>) can be used to retrieve application jars.</li>
+  <li>Fluo configuration options can now be specified on the command line with <code class="language-plaintext highlighter-rouge">-o</code> option.  This enables passing Fluo options on the Docker command line.</li>
+  <li>Fluo scripts now support passing Java options.  In Docker, its useful to have control over the amount of memory Java uses.  This can be done by setting the <code class="language-plaintext highlighter-rouge">FLUO_JAVA_OPTS</code> env variable on the Docker command line.  This was added in commit <a href="https://github.com/apache/fluo/commit/4207df4">4207df4</a>.</li>
+</ul>
+
+<p>Read the <a href="https://fluo.apache.org/docs/fluo/1.2/getting-started/quick-start">quickstart documentation</a> to learn how to run Fluo applications using these new methods.</p>
+
+<h3 id="read-locks">Read locks.</h3>
+
+<p>The Percolator paper stated that read locks were expensive and usually not
+needed.  Therefore in Percolator reads did not acquire a read lock.  This
+assessment is correct, not every read should acquire a read lock.  However,
+offering the ability to optionally obtain a read lock makes writing certain
+applications much simpler.  So in this release of Fluo, optional read locks
+were added. Below is an example of how to acquire read locks.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kt">void</span> <span class="nf">addEdge</span><span class="o">(</span><span class="nc">FluoClient</span> <span class="n">client</span><span class="o">,</span> <span class="nc">String</span> <span class="n">node1</span><span class="o">,</span> <span class="nc">String</span> <span class="n">node2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span><span class="o">(</span><span class="nc">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">())</span> <span class="o">{</span>
+
+      <span class="c1">// These reads acquire a read lock.  Any concurrent changes will cause this</span>
+      <span class="c1">// transaction to fail.</span>
+      <span class="nc">String</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">withReadLock</span><span class="o">().</span><span class="na">gets</span><span class="o">(</span><span class="n">node1</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"node"</span><span class="o">,</span><span class="s">"alias"</span><span class="o">));</span>
+      <span class="nc">String</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">withReadLock</span><span class="o">().</span><span class="na">gets</span><span class="o">(</span><span class="n">node2</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"node"</span><span class="o">,</span><span class="s">"alias"</span><span class="o">));</span>
+
+      <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"e:"</span><span class="o">+</span><span class="n">a1</span><span class="o">+</span><span class="s">":"</span><span class="o">+</span><span class="n">a2</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"edge"</span><span class="o">,</span> <span class="s">"exists"</span><span class="o">),</span> <span class="s">"Y"</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kt">void</span> <span class="nf">setAlias</span><span class="o">(</span><span class="nc">FluoClient</span> <span class="n">client</span><span class="o">,</span> <span class="nc">String</span> <span class="n">node</span><span class="o">,</span> <span class="nc">String</span> <span class="n">newAlias</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span><span class="o">(</span><span class="nc">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">())</span> <span class="o">{</span>
+      <span class="nc">String</span> <span class="n">oldAlias</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">gets</span><span class="o">(</span><span class="n">node</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"node"</span><span class="o">,</span><span class="s">"alias"</span><span class="o">));</span>
+      <span class="n">tx</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">node</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"node"</span><span class="o">,</span><span class="s">"alias"</span><span class="o">),</span> <span class="n">newAlias</span><span class="o">);</span>
+
+      <span class="n">updateExistingEdges</span><span class="o">(</span><span class="n">oldAlias</span><span class="o">,</span> <span class="n">newAlias</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Concurrent calls to <code class="language-plaintext highlighter-rouge">addEdge(client,"n1","n2")</code> and <code class="language-plaintext highlighter-rouge">addEdge(client,"n1","n3")</code>
+can run without issue.  However, concurrent calls to
+<code class="language-plaintext highlighter-rouge">addEdge(client,"n1","n2")</code> and <code class="language-plaintext highlighter-rouge">setAlias(client, "n1","a5")</code> will result in a
+collision.  If <code class="language-plaintext highlighter-rouge">addEdge</code> did not obtain a read lock, then it would not collide
+with <code class="language-plaintext highlighter-rouge">setAlias</code>.  If <code class="language-plaintext highlighter-rouge">addEdge</code> obtained a write lock, then concurrent calls to
+<code class="language-plaintext highlighter-rouge">addEdge</code> could needlessly collide.</p>
+
+<p>See the <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/client/TransactionBase.html#withReadLock--">withReadLock javadoc</a> for more information.</p>
+
+<h3 id="simplified-scanner-api">Simplified Scanner API</h3>
+
+<p>Range scanning API was simplified in <a href="https://github.com/apache/fluo/commit/c737df6">c737df6</a>.  Before, scanning over a row was :</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">CellScanner</span> <span class="n">scanner</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="na">scanner</span><span class="o">().</span><span class="na">over</span><span class="o">(</span><span class="nc">Span</span><span class="o">.</span><span class="na">exact</span><span class="o">(</span><span class="s">"row"</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>After this change, it can be written as :</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">CellScanner</span> <span class="n">scanner</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="na">scanner</span><span class="o">().</span><span class="na">over</span><span class="o">(</span><span class="s">"row"</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+</code></pre></div></div>
+
+<h3 id="streams">Streams</h3>
+
+<p>In <a href="https://github.com/apache/fluo/commit/2f11089">2f11089</a> support for Java 8 streams was added.  The following
+computes unique columns in rows with the prefix <code class="language-plaintext highlighter-rouge">abc</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Column</span><span class="o">&gt;</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="na">scanner</span><span class="o">().</span><span class="na">overPrefix</span><span class="o">(</span><span class="s">"abc"</span><span class="o">).</span><span class="na">build</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="nl">RowColumnValue:</span><span class="o">:</span><span class="n">getColumn</span><span class="o">).</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toSet</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h3 id="remove-command">Remove command.</h3>
+
+<p>Can now remove applications data in Zookeeper and
+Accumulo. Work on this issue was done in <a href="https://github.com/apache/fluo/issues/991">#999</a>.  Before
+data had to be manually removed from Zookeeper and Accumulo.</p>
+
+<h3 id="fluoconfiguration-javadoc">FluoConfiguration Javadoc</h3>
+
+<p>Most of the methods in <a href="https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/config/FluoConfiguration.html">FluoConfiguration</a> get or a set a specific property.
+Before it was not easy to know which property. In <a href="https://github.com/apache/fluo/commit/cbe44b1">cbe44b1</a> the
+javadoc was updated to mention the properties.</p>
+
+<h3 id="shaded-libthrift">Shaded libthrift</h3>
+
+<p>Fluo uses Apache Thrift for remote procedure calls.  Projects using Thrift use
+its compiler to generate code.  This generated Java code make calls to
+libthrift which is an artifact release by the Thrift project.  The code
+generated by a specific version of Thrift is only guaranteed to work with the
+same version of libthrift.  For example, code generated by the Thrift 0.9.1
+compiler is only guaranteed to work with libthrift 0.9.1.</p>
+
+<p>Accumulo also uses Thrift for its RPCs.  When Accumulo and Fluo use different
+versions of thrift it can cause serious problems. To avoid these problems,
+in <a href="https://github.com/apache/fluo/commit/082ee8e">082ee8e</a> libthrift was shaded and relocated into the fluo-core jar eliminating Fluo’s
+external dependency on libthrift.  This means that no matter which version
+Accumulo uses, it will not conflict with Fluo’s version.</p>
+
+<h3 id="asynchronous-commit-refactored">Asynchronous commit refactored</h3>
+
+<p>Fluo’s commit code is asynchronous in order to support high throughput.
+Before this release the high level commit logic was spread far and wide in the
+code.  For this release the commit code was transitioned from Guava’s
+ListenableFuture to Java 8’s CompletableFuture in <a href="https://github.com/apache/fluo/commit/ca63aaf">ca63aaf</a>.  This transition laid
+the ground work for <a href="https://github.com/apache/fluo/commit/6bf604f">6bf604f</a> which centralized the commit logic.  Now the high
+level logic for the commit code is all in one place, making it much easier to
+understand.</p>
+
+<h3 id="other-notable-changes">Other notable changes</h3>
+
+<ul>
+  <li><a href="https://github.com/apache/fluo/commit/7c16599">7c16599</a> Added a method for efficiently comparing Byte and byte[]</li>
+  <li><a href="https://github.com/apache/fluo/commit/151c565">151c565</a> Added fluo status command.</li>
+  <li><a href="https://github.com/apache/fluo/issues/960">#960</a> Fluo started using some Accumulo APIs introduced in 1.7.0.  Therefore 1.7.0 is now the minimum version of Accumulo.</li>
+  <li>A few of Fluo’s internal caches were made configurable in <a href="https://github.com/apache/fluo/commit/650f044">650f044</a>, <a href="https://github.com/apache/fluo/commit/9e87f47">9e87f47</a>, and <a href="https://github.com/apache/fluo/commit/955c86f">955c86f</a>.</li>
+  <li>Optimized Fluo’s server side code that runs in Accumulo tablet servers in <a href="https://github.com/apache/fluo/commit/202fe08">202fe08</a> and <a href="https://github.com/apache/fluo/commit/51dc912">51dc912</a></li>
+  <li>Added method to merge Fluo configuration objects in <a href="https://github.com/apache/fluo/commit/a349a9d">a349a9d</a></li>
+  <li>Initialization from Java API and command line now behave the same. Before 1.2, only command line initialization copied Fluo’s server side code to HDFS.  Now the Java API also does this and it controlled by configuration.</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+
+<p>The Fluo stress test was run twice as documented <a href="https://twitter.com/ApacheFluo/status/951112777212530689">here</a> and <a href="https://lists.apache.org/thread.html/023ebf28a2ebbed88cfbd25f09cc6f4e4a1ba685f22c217ebc238025@%3Cdev.fluo.apache.org%3E">here</a>.</p>
+
+
+</div>
+
+<div>
+  <p class="text-muted">View all releases in the <a href="/releases/">archive</a></p>
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

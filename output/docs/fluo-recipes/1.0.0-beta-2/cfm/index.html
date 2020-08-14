@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//docs/fluo-recipes/1.0.0-beta-2/cfm/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>Collision Free Map Recipe | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="fluo-doc">
+
+  
+  <div class="alert alert-danger" role="alert">These docs are for Fluo Recipes 1.0.0-beta-2 which is an old version! Check out the <a href="/docs/fluo-recipes/1.2">latest docs</a>!</div>
+  
+
+  
+  <div class="alert alert-danger" role="alert">These docs are for a release of Fluo Recipes made before Apache incubation.</div>
+  
+
+  <header class="post-header">
+    <h2 class="post-title">Collision Free Map Recipe</h2>
+  </header>
+
+  <article id="page-content">
+    <h2 id="background">Background</h2>
+
+<p>When many transactions are trying to modify the same keys, collisions will occur.
+These collisions will cause the transactions to fail and throughput to nose
+dive.  For example consider the <a href="https://github.com/fluo-io/phrasecount">phrasecount</a> example.  In this example many
+transactions are processing documents as input.  Each transaction counts the
+phrases in its document and then tries to update global phrase counts.  With
+each transaction attempting to update many phrase counts, the probability of
+two transactions colliding is very high.</p>
+
+<h2 id="solution">Solution</h2>
+
+<p>This recipe provides a reusable solution for the problem of many transactions
+updating many keys while avoiding collisions.  As an added bonus, this recipe
+also organizes updates into batches for efficiency in order to improve
+throughput.</p>
+
+<p>The central idea behind this recipe is that updates to a key are queued up to
+be processed by another transaction triggered by weak notifications.  In the
+phrase count example transactions processing documents would queue updates,
+but would not actually update the counts.  Below is an example of how
+transactions would compute phrasecounts using this recipe.</p>
+
+<ul>
+  <li>TX1 queues <code class="language-plaintext highlighter-rouge">+1</code> update  for phrase <code class="language-plaintext highlighter-rouge">we want lambdas now</code></li>
+  <li>TX2 queues <code class="language-plaintext highlighter-rouge">+1</code> update  for phrase <code class="language-plaintext highlighter-rouge">we want lambdas now</code></li>
+  <li>TX3 reads the updates and current value for the phrase <code class="language-plaintext highlighter-rouge">we want lambdas now</code>.  There is no current value and the updates sum to 2, so a new value of 2 is written.</li>
+  <li>TX4 queues <code class="language-plaintext highlighter-rouge">+2</code> update  for phrase <code class="language-plaintext highlighter-rouge">we want lambdas now</code></li>
+  <li>TX5 queues <code class="language-plaintext highlighter-rouge">-1</code> update  for phrase <code class="language-plaintext highlighter-rouge">we want lambdas now</code></li>
+  <li>TX6 reads the updates and current value for the phrase <code class="language-plaintext highlighter-rouge">we want lambdas now</code>.  The current value is 2 and the updates sum to 1, so a new value of 3 is written.</li>
+</ul>
+
+<p>Transactions processing updates have the ability to make additional updates.
+For example in addition to updating the current value for a phrase, the new
+value could also be placed on an export queue to update an external database.</p>
+
+<h3 id="buckets">Buckets</h3>
+
+<p>A simple implementation of this recipe would be to have an update queue for
+each key.  However the implementation does something slightly more complex.
+Each update queue is in a bucket and transactions that process updates, process
+all of the updates in a bucket.  This allows more efficient processing of
+updates for the following reasons :</p>
+
+<ul>
+  <li>When updates are queued, notifications are made per bucket(instead of per a key).</li>
+  <li>The transaction doing the update can scan the entire bucket reading updates, this avoids a seek for each key being updated.</li>
+  <li>Also the transaction can request a batch lookup to get the current value of all the keys being updated.</li>
+  <li>Any additional actions taken on update (like adding something to an export queue) can also be batched.</li>
+  <li>Data is organized to make reading exiting values for keys in a bucket more efficient.</li>
+</ul>
+
+<p>Which bucket a key goes to is decided using hash and modulus so that multiple
+updates for the same key always go to the same bucket.</p>
+
+<h2 id="example-use">Example Use</h2>
+
+<p>The following code snippets show how to setup and use this recipe for
+wordcount.  The first step in using this recipe is to configure it before
+initializing Fluo.  When initializing an ID will need to be provided.  This ID
+is used in two ways.  First, the ID is used as a row prefix in the table.
+Therefore nothing else should use that row range in the table.  Second, the ID
+is used in generating configuration keys associated with the instance of the
+Collision Free Map.</p>
+
+<p>The following snippet shows how to setup a collision free map.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nc">FluoConfiguration</span> <span class="n">fluoConfig</span> <span class="o">=</span> <span class="o">...;</span>
+
+  <span class="kt">int</span> <span class="n">numBuckets</span> <span class="o">=</span> <span class="mi">119</span><span class="o">;</span>
+
+  <span class="nc">WordCountMap</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="mi">119</span><span class="o">);</span>
+
+  <span class="c1">//initialize Fluo using fluoConfig</span>
+
+</code></pre></div></div>
+
+<p>Assume the following observer is triggered when a documents contents are
+updated.  It examines new and old document content and determines changes in
+word counts.  These changes are pushed to a collision free map.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocumentObserver</span> <span class="kd">extends</span> <span class="nc">TypedObserver</span> <span class="o">{</span>
+
+  <span class="nc">CollisionFreeMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">wcm</span><span class="o">;</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="n">wcm</span> <span class="o">=</span> <span class="nc">CollisionFreeMap</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="nc">WordCountMap</span><span class="o">.</span><span class="na">ID</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="nc">ObservedColumn</span> <span class="nf">getObservedColumn</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ObservedColumn</span><span class="o">(</span><span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"content"</span><span class="o">,</span> <span class="s">"new"</span><span class="o">),</span> <span class="nc">NotificationType</span><span class="o">.</span><span class="na">STRONG</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">TypedTransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="nc">Bytes</span> <span class="n">row</span><span class="o">,</span> <span class="nc">Column</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">newContent</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">col</span><span class="o">(</span><span class="n">col</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
+    <span class="nc">String</span> <span class="n">currentContent</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"content"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"current"</span><span class="o">).</span><span class="na">toString</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>
+
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">newWordCounts</span> <span class="o">=</span> <span class="n">getWordCounts</span><span class="o">(</span><span class="n">newContent</span><span class="o">);</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">currentWordCounts</span> <span class="o">=</span> <span class="n">getWordCounts</span><span class="o">(</span><span class="n">currentContent</span><span class="o">);</span>
+
+    <span class="c1">//determine changes in word counts between old and new document content</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">changes</span> <span class="o">=</span> <span class="n">calculateChanges</span><span class="o">(</span><span class="n">newWordCounts</span><span class="o">,</span> <span class="n">currentWordCounts</span><span class="o">);</span>    
+
+    <span class="c1">//queue updates to word counts for processing by other transactions</span>
+    <span class="n">wcm</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">changes</span><span class="o">);</span>
+
+    <span class="c1">//update the current content and delete the new content</span>
+    <span class="n">tx</span><span class="o">.</span><span class="na">mutate</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">fam</span><span class="o">(</span><span class="s">"content"</span><span class="o">).</span><span class="na">qual</span><span class="o">(</span><span class="s">"current"</span><span class="o">).</span><span class="na">set</span><span class="o">(</span><span class="n">newContent</span><span class="o">);</span>
+    <span class="n">tx</span><span class="o">.</span><span class="na">mutate</span><span class="o">().</span><span class="na">row</span><span class="o">(</span><span class="n">row</span><span class="o">).</span><span class="na">col</span><span class="o">(</span><span class="n">col</span><span class="o">).</span><span class="na">delete</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="nf">getWordCounts</span><span class="o">(</span><span class="nc">String</span> <span class="n">doc</span><span class="o">)</span> <span class="o">{</span>
+   <span class="c1">//TODO extract words from doc</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="nf">calculateChanges</span><span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">newCounts</span><span class="o">,</span>
+      <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">currCounts</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">changes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+
+    <span class="c1">// guava Maps class</span>
+    <span class="nc">MapDifference</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">diffs</span> <span class="o">=</span> <span class="nc">Maps</span><span class="o">.</span><span class="na">difference</span><span class="o">(</span><span class="n">currCounts</span><span class="o">,</span> <span class="n">newCounts</span><span class="o">);</span>
+
+    <span class="c1">// compute the diffs for words that changed</span>
+    <span class="n">changes</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="nc">Maps</span><span class="o">.</span><span class="na">transformValues</span><span class="o">(</span><span class="n">diffs</span><span class="o">.</span><span class="na">entriesDiffering</span><span class="o">(),</span>
+        <span class="n">vDiff</span> <span class="o">-&gt;</span> <span class="n">vDiff</span><span class="o">.</span><span class="na">rightValue</span><span class="o">()</span> <span class="o">-</span> <span class="n">vDiff</span><span class="o">.</span><span class="na">leftValue</span><span class="o">()));</span>
+
+    <span class="c1">// add all new words</span>
+    <span class="n">changes</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="n">diffs</span><span class="o">.</span><span class="na">entriesOnlyOnRight</span><span class="o">());</span>
+
+    <span class="c1">// subtract all words no longer present</span>
+    <span class="n">changes</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="nc">Maps</span><span class="o">.</span><span class="na">transformValues</span><span class="o">(</span><span class="n">diffs</span><span class="o">.</span><span class="na">entriesOnlyOnLeft</span><span class="o">(),</span> <span class="n">l</span> <span class="o">-&gt;</span> <span class="n">l</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="o">));</span>
+
+    <span class="k">return</span> <span class="n">changes</span><span class="o">;</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Each collision free map has two extension points, a combiner and an update
+observer.  These two extension points are defined below as <code class="language-plaintext highlighter-rouge">WordCountCombiner</code>
+and  <code class="language-plaintext highlighter-rouge">WordCountObserver</code>.  The collision free map configures a Fluo observer that
+will process queued updates.  When processing these queued updates the two
+extension points are called.  In this example <code class="language-plaintext highlighter-rouge">WordCountCombiner</code> is called to
+combine updates that were queued by <code class="language-plaintext highlighter-rouge">DocumentObserver</code>. The collision free map
+will process a batch of keys, calling the combiner for each key.  When finished
+processing a batch, it will call the update observer <code class="language-plaintext highlighter-rouge">WordCountObserver</code>.</p>
+
+<p>An update observer can do additional processing when a batch of key values are
+updated.  In <code class="language-plaintext highlighter-rouge">WordCountObserver</code>, updates are queued for export to an external
+database.  The export is given the new and old value allowing it to delete the
+old value if needed.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * This class exists to provide a single place to put all code related to the
+ * word count map.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WordCountMap</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">ID</span> <span class="o">=</span> <span class="s">"wc"</span><span class="o">;</span>
+
+  <span class="cm">/**
+   * A helper method for configuring the word count map.
+   */</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">FluoConfiguration</span> <span class="n">fluoConfig</span><span class="o">,</span> <span class="kt">int</span> <span class="n">numBuckets</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">CollisionFreeMap</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">fluoConfig</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Options</span><span class="o">(</span><span class="no">ID</span><span class="o">,</span> <span class="nc">WordCountCombiner</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> 
+        <span class="nc">WordCountObserver</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">Long</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">numBuckets</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">WordCountCombiner</span> <span class="kd">implements</span> <span class="nc">Combiner</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="nf">combine</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">,</span> <span class="nc">Iterator</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">updates</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0L</span><span class="o">;</span>
+
+      <span class="k">while</span> <span class="o">(</span><span class="n">updates</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">updates</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+      <span class="o">}</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">sum</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//returning absent will cause the collision free map to delete the current key</span>
+        <span class="k">return</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">absent</span><span class="o">();</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">sum</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">WordCountObserver</span> <span class="kd">extends</span> <span class="nc">UpdateObserver</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">ExportQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">MyDatabaseExport</span><span class="o">&gt;</span> <span class="n">exportQ</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="nc">String</span> <span class="n">mapId</span><span class="o">,</span> <span class="nc">Context</span> <span class="n">observerContext</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+      <span class="n">exportQ</span> <span class="o">=</span> <span class="nc">ExportQueue</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="nc">MyExportQ</span><span class="o">.</span><span class="na">ID</span><span class="o">,</span> <span class="n">observerContext</span><span class="o">.</span><span class="na">getAppConfiguration</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updatingValues</span><span class="o">(</span><span class="nc">TransactionBase</span> <span class="n">tx</span><span class="o">,</span> <span class="nc">Iterator</span><span class="o">&lt;</span><span class="nc">Update</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;&gt;</span> <span class="n">updates</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">while</span> <span class="o">(</span><span class="n">updates</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+        <span class="nc">Update</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">update</span> <span class="o">=</span> <span class="n">updates</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+
+        <span class="nc">String</span> <span class="n">word</span> <span class="o">=</span> <span class="n">update</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+        <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">oldVal</span> <span class="o">=</span> <span class="n">update</span><span class="o">.</span><span class="na">getOldValue</span><span class="o">();</span>
+        <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">newVal</span> <span class="o">=</span> <span class="n">update</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">();</span>
+
+        <span class="c1">//queue an export to let an external database know the word count has changed</span>
+        <span class="n">exportQ</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MyDatabaseExport</span><span class="o">(</span><span class="n">oldVal</span><span class="o">,</span> <span class="n">newVal</span><span class="o">));</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="guarantees">Guarantees</h2>
+
+<p>This recipe makes two important guarantees about updates for a key when it
+calls <code class="language-plaintext highlighter-rouge">updatingValues()</code> on an <code class="language-plaintext highlighter-rouge">UpdateObserver</code>.</p>
+
+<ul>
+  <li>The new value reported for an update will be derived from combining all
+updates that were committed before the transaction that’s processing updates
+started.  The implementation may have to make multiple passes over queued
+updates to achieve this.  In the situation where TX1 queues a <code class="language-plaintext highlighter-rouge">+1</code> and later
+TX2 queues a <code class="language-plaintext highlighter-rouge">-1</code> for the same key, there is no need to worry about only seeing
+the <code class="language-plaintext highlighter-rouge">-1</code> processed.  A transaction that started processing updates after TX2
+committed would process both.</li>
+  <li>The old value will always be what was reported as the new value in the
+previous transaction that called <code class="language-plaintext highlighter-rouge">updatingValues()</code>.</li>
+</ul>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

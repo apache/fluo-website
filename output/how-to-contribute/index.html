@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/fluo.css">
+    <link rel="canonical" href="https://fluo.apache.org//how-to-contribute/">
+    <link rel="icon" type="image/png" href="/resources/favicon.png">
+    
+    <title>How To Contribute | Apache Fluo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Place your <script> tags here. -->
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+  </head>
+  <body style="padding-top: 100px">
+    <nav id="fluo-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="/" class="navbar-brand"><img id="fluo-img" height="40px" src="/resources/fluo-logo-dark.png" alt="Apache Fluo"></a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse" style="margin-top: 20px">
+          <ul class="navbar-nav nav">
+            <li><a href="/releases/">Releases</a></li>
+            <li><a href="/tour/">Tour</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Docs<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/docs/fluo/1.2/">Fluo</a></li>
+                <li><a href="/docs/fluo-recipes/1.2/">Fluo Recipes</a></li>
+              </ul>
+            </li>
+            <li><a href="/api/">API</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/contactus/">Contact Us</a></li>
+                <li><a href="/news/">News Archive</a></li>
+                <li><a href="/people/">People</a></li>
+                <li><a href="/related-projects/">Related Projects</a></li>
+                <li><a href="/poweredby/">Powered By</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contributing<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/how-to-contribute/">How To Contribute</a></li>
+                <li><a href="/release-process/">Release Process</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/">Search</a></li>
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="Apache Software Foundation" src="https://www.apache.org/images/feather-small.png" width="70"/><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://www.apache.org">Apache Homepage</a></li>
+                <li><a href="https://www.apache.org/licenses/">License</a></li>
+                <li><a href="https://www.apache.org/foundation/sponsorship">Sponsorship</i></a></li>
+                <li><a href="https://www.apache.org/security">Security</a></li>
+                <li><a href="https://www.apache.org/foundation/thanks">Thanks</a></li>
+                <li><a href="https://www.apache.org/foundation/policies/conduct">Code of Conduct</a></li>
+                <li><a href="https://www.apache.org/events/current-event.html">Current Event</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+            <div class="page">
+
+  <header class="post-header">
+    <h2 class="post-title">How To Contribute</h2>
+  </header>
+
+  <article id="page-content">
+    <p>Contributions are welcome to all Apache Fluo repositories.  All repositories follow a
+<a href="https://www.apache.org/foundation/glossary.html#ReviewThenCommit">review-then-commit</a> process.  Prior to commit all contributions must pass any integration
+tests and be approved by at least one other committer. Code reviews are done by commenting on a
+GitHub pull request. If you would like to contribute, but are not sure where to start then
+<a href="/contactus/">contact us</a> and/or look at issues marked <a href="https://github.com/search?q=repo%3Aapache%2Ffluo+repo%3Aapache%2Ffluo-recipes+repo%3Aapache%2Ffluo-bytes+repo%3Aapache%2Ffluo-website+repo%3Aapache%2Ffluo-yarn+repo%3Aapache%2Ffluo-docker+repo%3Aapache%2Ffluo-uno+repo%3Aapache%2Ffluo-muchos+repo%3Aapache%2Ffluo-examples+label%3A%22help+wanted%22+type%3Aissue+state%3Aopen&amp;type=Issues">helpwanted</a>. Fluo committers will follow the
+<a href="https://www.apache.org/foundation/policies/conduct.html">Apache Code of Conduct</a> when corresponding with a contributor. We respectfully ask all
+contributors to follow this code of conduct also.</p>
+
+<h3 id="repositories">Repositories</h3>
+
+<p>Contributions can be made to the following repositories.  This page contains general instructions
+for all repositories.  Each repository also has a <code class="language-plaintext highlighter-rouge">CONTRIBUTING.md</code> file containing instructions
+specifically for it. For the links columns below, <code class="language-plaintext highlighter-rouge">I</code> is for issues and <code class="language-plaintext highlighter-rouge">C</code> is for CONTRIBUTING.md.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Repository</th>
+      <th>Links</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/apache/fluo">Fluo</a></td>
+      <td><a href="https://github.com/apache/fluo/issues">I</a> <a href="https://github.com/apache/fluo/blob/main/CONTRIBUTING.md">C</a></td>
+      <td>Core Project</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-recipes">Fluo Recipes</a></td>
+      <td><a href="https://github.com/apache/fluo-recipes/issues">I</a> <a href="https://github.com/apache/fluo-recipes/blob/main/CONTRIBUTING.md">C</a></td>
+      <td>Recipes that build on core.  Code for interoperating with other projects.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-website">Website</a></td>
+      <td><a href="https://github.com/apache/fluo-website/issues">I</a> <a href="https://github.com/apache/fluo-website/blob/main/CONTRIBUTING.md">C</a></td>
+      <td>Source for this website.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-yarn">Fluo Yarn</a></td>
+      <td><a href="https://github.com/apache/fluo-yarn/issues">I</a> <a href="https://github.com/apache/fluo-yarn/blob/main/CONTRIBUTING.md">C</a></td>
+      <td>Enables launching Fluo using YARN.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-docker">Fluo Docker</a></td>
+      <td><a href="https://github.com/apache/fluo-docker/issues">I</a> <a href="https://github.com/apache/fluo-docker/blob/main/CONTRIBUTING.md">C</a></td>
+      <td>Support for running Fluo in Docker.  Enables launching Fluo in Mesos and Kubernetes.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-bytes">Fluo Bytes</a></td>
+      <td><a href="https://github.com/apache/fluo-bytes/issues">I</a> <a href="https://github.com/apache/fluo-bytes/blob/main/CONTRIBUTING.md">C</a></td>
+      <td>An immutable Byte wrapper for Java suitable for use in APIs.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-uno">Fluo Uno</a></td>
+      <td><a href="https://github.com/apache/fluo-uno/issues">I</a></td>
+      <td>Uno automates setting up Apache Accumulo or Apache Fluo (and their dependencies) on a single machine.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-muchos">Fluo Muchos</a></td>
+      <td><a href="https://github.com/apache/fluo-muchos/issues">I</a></td>
+      <td>Muchos automates setting up Apache Accumulo or Apache Fluo (and their dependencies) on a cluster.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/fluo-examples">Fluo Examples</a></td>
+      <td><a href="https://github.com/apache/fluo-examples/issues">I</a></td>
+      <td>Collection of example projects that utilizes Apache Fluo.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="contribution-workflow">Contribution workflow</h3>
+
+<ol>
+  <li><a href="https://help.github.com/articles/fork-a-repo/">Fork</a> and <a href="https://help.github.com/articles/cloning-a-repository/">clone</a> the repository you want to contribute to.</li>
+  <li>If needed, create an issue that describes the work.</li>
+  <li>
+    <p>Create a branch in the local clone of your fork. An example branch name is <code class="language-plaintext highlighter-rouge">fluo-301</code> which describes the repo and issue number.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout <span class="nt">-b</span> fluo-301
+</code></pre></div>    </div>
+  </li>
+  <li>Do work and commit to your branch.</li>
+  <li>Ensure you works satisfies the guidelines laid out in the <code class="language-plaintext highlighter-rouge">CONTRIBUTING.md</code> file.</li>
+  <li>If needed, squash to the minimum number of commits. For help on squashing commits, see this <a href="http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html">tutorial</a> or <a href="https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git">StackOverflow answer</a>.</li>
+  <li>
+    <p><a href="https://help.github.com/articles/pushing-to-a-remote/">Push</a> your branch to your fork.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Push work in local branch fluo-301 to fork</span>
+git push origin fluo-301
+</code></pre></div>    </div>
+  </li>
+  <li>Create a <a href="https://help.github.com/articles/about-pull-requests/">Pull Request</a> in the appropriate repository.  If the work is not complete and the Pull Request is for feedback, please put <code class="language-plaintext highlighter-rouge">[WIP]</code> in the subject.</li>
+  <li>At least one committer (and others in the community) will review your pull request and add any comments to your code.</li>
+  <li>Push any changes from the review to the branch as new commits so the reviewer only needs to review new changes.  Please avoid squashing commits after the review starts.  Squashing makes it hard for the reviewer to follow the changes.</li>
+  <li>Repeat this process until a reviewer approves the pull request.</li>
+  <li>When the review process is finished, all commits on the pull request may be squashed by a committer.  Please avoid squashing as it makes it difficult for the committer to know if they are merging what was reviewed.</li>
+</ol>
+
+<h3 id="coding-guidelines">Coding guidelines</h3>
+
+<p>All Fluo projects have configured Maven to do automatic code formatting and import organizing.  So in projects with <code class="language-plaintext highlighter-rouge">pom.xml</code> files, running <code class="language-plaintext highlighter-rouge">mvn compile</code> should format all modified code.  Please run this before committing.  The instructions below explain how to set this formatting up in your IDE.</p>
+
+<p>To properly organize imports, make sure your imports look like the block below:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.
+javax.
+&lt;blank line&gt;
+&lt;all other non-static imports in alphabetical order&gt;
+&lt;blank line&gt;
+&lt;static imports in alphabetical order&gt;
+</code></pre></div></div>
+
+<p>This can be configured by common IDEs:</p>
+
+<ul>
+  <li>Eclipse: <code class="language-plaintext highlighter-rouge">Window -&gt; Preferences -&gt; Java -&gt; Code Style -&gt; Organize Imports</code></li>
+  <li>Intelli-J: <code class="language-plaintext highlighter-rouge">Preferences -&gt; Code Style -&gt; Java -&gt; Imports</code></li>
+</ul>
+
+<p>To properly format code in Eclipse :</p>
+
+<ul>
+  <li>Go to <code class="language-plaintext highlighter-rouge">Window -&gt; Preferences -&gt; Java -&gt; Code Style -&gt; Formatter</code></li>
+  <li>Click Import and import <code class="language-plaintext highlighter-rouge">&lt;local Fluo source dir&gt;/contrib/fluo-eclipse-style.xml</code></li>
+  <li>Either configure all projects in eclipse to use this style or just the Fluo projects.</li>
+</ul>
+
+
+  </article>
+
+</div>
+
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 center-block">
+          <footer>
+            <hr/>
+            <p>
+            <a href="https://www.apache.org/foundation/contributing"><img
+              src="https://www.apache.org/images/SupportApache-small.png"
+              id="asf-logo" height="100" alt="Apache"/></a>
+            </p>
+            <p>
+            Copyright &copy; 2020 <a
+              href="https://www.apache.org">The&nbsp;Apache&nbsp;Software&nbsp;Foundation</a>.
+            Licensed under the <a
+              href="https://www.apache.org/licenses/">Apache&nbsp;License,&nbsp;Version&nbsp;2.0</a>
+            </p>
+            <p>
+            Apache®, the names of Apache projects and their logos, and the multicolor feather
+            logo are registered trademarks or trademarks of The Apache Software Foundation
+            in the United States and/or other countries.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
