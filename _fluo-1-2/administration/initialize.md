@@ -74,7 +74,7 @@ Also, learn how to [manage Fluo applications][manage].
 
 [fluo-app.properties]: {{ page.github_base}}/modules/distribution/src/main/config/fluo-app.properties
 [fluo-conn.properties]: {{ page.github_base}}/modules/distribution/src/main/config/fluo-conn.properties
-[phrasecount]: https://github.com/apache/fluo-examples/tree/master/phrasecount
+[phrasecount]: https://github.com/apache/fluo-examples/tree/main/phrasecount
 [process]: {{ page.docs_base }}/administration/run-fluo-processes
 [yarn]: {{ page.docs_base }}/administration/run-fluo-in-yarn
 [docker]: {{ page.docs_base }}/administration/run-fluo-in-docker

@@ -1,0 +1,24 @@
+
+staging:
+  profile: ~
+  whoami:  asf-staging
+
+publish:
+  whoami:  asf-site
+
+github:
+  description: "Apache Fluo Website"
+  homepage: https://fluo.apache.org/
+  labels:
+    - fluo
+    - big-data
+    - asf-site
+  features:
+    wiki: false
+    issues: true
+    projects: true
+
+jekyll:
+  whoami: main
+  target: asf-staging
+

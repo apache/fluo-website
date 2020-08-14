@@ -59,8 +59,8 @@ defaults:
       minor_release: "1.2"
       docs_base: "/docs/fluo/1.2"
       javadoc_base: "https://static.javadoc.io/org.apache.fluo/fluo-api/1.2.0"
-      github_base: "https://github.com/apache/fluo/blob/master"
-      github_yarn: "https://github.com/apache/fluo-yarn/blob/master"
+      github_base: "https://github.com/apache/fluo/blob/main"
+      github_yarn: "https://github.com/apache/fluo-yarn/blob/main"
   -
     scope:
       path: "_recipes-1-2"
@@ -71,7 +71,7 @@ defaults:
       version: "1.2.0"
       minor_release: "1.2"
       docs_base: "/docs/fluo-recipes/1.2"
-      github_base: "https://github.com/apache/fluo-recipes/blob/master"
+      github_base: "https://github.com/apache/fluo-recipes/blob/main"
       javadoc_fluo: "https://static.javadoc.io/org.apache.fluo/fluo-api/1.1.0-incubating"
       javadoc_core: "https://static.javadoc.io/org.apache.fluo/fluo-recipes-core/1.1.0-incubating"
       javadoc_accumulo: "https://static.javadoc.io/org.apache.fluo/fluo-recipes-accumulo/1.1.0-incubating"

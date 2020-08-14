@@ -29,7 +29,7 @@ and worker processes if you are running in YARN.
 ## Install and Configure Fluo YARN launcher
 
 To install the Fluo YARN launcher, you will need to obtain a distribution tarball. It is recommended that you
-download the [latest release]. You can also build a distribution from the master branch by following these steps
+download the [latest release]. You can also build a distribution from the main branch by following these steps
 which create a tarball in `distribution/target`:
 
     git clone https://github.com/apache/fluo-yarn.git

@@ -97,7 +97,7 @@ Below is a sample Maven POM containing all possible Fluo Recipes dependencies:
 [row-hasher]: /docs/fluo-recipes/1.1.0-incubating/row-hasher/
 [spark]: /docs/fluo-recipes/1.1.0-incubating/spark/
 [testing]: /docs/fluo-recipes/1.1.0-incubating/testing/
-[ti]: https://travis-ci.org/apache/incubator-fluo-recipes.svg?branch=master
+[ti]: https://travis-ci.org/apache/incubator-fluo-recipes.svg?branch=main
 [tl]: https://travis-ci.org/apache/incubator-fluo-recipes
 [li]: http://img.shields.io/badge/license-ASL-blue.svg
-[ll]: https://github.com/apache/incubator-fluo-recipes/blob/master/LICENSE
+[ll]: https://github.com/apache/incubator-fluo-recipes/blob/main/LICENSE

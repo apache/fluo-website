@@ -31,9 +31,9 @@ list, please open an issue or submit a pull request [on GitHub][web-ghr].
 [Fluo Recipes]: https://github.com/apache/fluo-recipes
 [Muchos]: https://github.com/apache/fluo-muchos
 [Uno]: https://github.com/apache/fluo-uno
-[Webindex]: https://github.com/apache/fluo-examples/tree/master/webindex
-[Stresso]: https://github.com/apache/fluo-examples/tree/master/stresso
-[Phrasecount]: https://github.com/apache/fluo-examples/tree/master/phrasecount
+[Webindex]: https://github.com/apache/fluo-examples/tree/main/webindex
+[Stresso]: https://github.com/apache/fluo-examples/tree/main/stresso
+[Phrasecount]: https://github.com/apache/fluo-examples/tree/main/phrasecount
 [Jaccard]: https://github.com/keith-turner/jaccard
 [web-ghr]: https://github.com/apache/fluo-website
 [Rya]: https://rya.apache.org

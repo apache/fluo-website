@@ -138,7 +138,7 @@ Learn how to [manage Fluo applications][manage].
 
 [DockerHub]: https://hub.docker.com/
 [fluo-dockerhub]: https://hub.docker.com/r/apache/fluo/
-[build-image]: https://github.com/apache/fluo-docker/blob/master/README.md#build-the-docker-image
+[build-image]: https://github.com/apache/fluo-docker/blob/main/README.md#build-the-docker-image
 [manage]: {{ page.docs_base }}/administration/manage-applications
 [Fluo]: https://fluo.apache.org/
 [Accumulo]: https://accumulo.apache.org/
