@@ -42,6 +42,7 @@ based on commits.
 | [Jeffrey Zeiberg](https://github.com/jzeiberg)              | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
 | [Lucas Lima Vieira](https://github.com/llvieira)            |                                     | [BRT][brt] |
 | [Manjiri Tapaswi](https://github.com/mptap)                 |                                     | [PT][pt]   |
+| [Mark Owens](https://github.com/jmark99)                    |                                     | [ET][et]   |
 | [Michael Wall](https://github.com/mjwall)                   |                                     | [ET][et]   |
 | [Nikhil Manchanda](https://github.com/slicknik)             | [Microsoft][msft]                   | [PT][pt]   |
 | [Ravikrishna Adepu](https://github.com/adepuravikrishna)    | [SAP Labs LLC](https://sap.com)     | [PT][pt]   |
