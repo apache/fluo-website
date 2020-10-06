@@ -18,7 +18,6 @@ Apache Fluo is powered by:
 * [Guava][guava]
 * [Kryo][kryo]
 * [slf4j][slf4j]
-* [TravisCI][travisci]
 
 This website was made using:
 
@@ -39,7 +38,6 @@ This website was made using:
 [guava]: https://github.com/google/guava
 [maven]: https://maven.apache.org/
 [slf4j]: https://www.slf4j.org/
-[travisci]: https://travis-ci.org/
 [bootstrap]: https://getbootstrap.com/
 [fontawesome]: https://fontawesome.com/
 [jekyll]: https://jekyllrb.com/
