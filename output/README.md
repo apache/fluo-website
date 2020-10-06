@@ -1,4 +1,25 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
 # Apache Fluo website
+
+[![Build Status][ti]][tl] [![Apache License][li]][ll]
 
 Code powering the Apache Fluo website ([https://fluo.apache.org][production]).
 [Contributing](CONTRIBUTING.md) describes how to test locally.
@@ -97,3 +118,8 @@ The final site can be viewed [here][production].
 [Jekyll]: https://jekyllrb.com/
 [production]: https://fluo.apache.org
 [staging]: https://fluo.staged.apache.org
+[ti]: https://github.com/apache/fluo-website/workflows/CI/badge.svg
+[tl]: https://github.com/apache/fluo-website/actions
+[li]: http://img.shields.io/badge/license-ASL-blue.svg
+[ll]: https://github.com/apache/fluo-website/blob/main/LICENSE
+
