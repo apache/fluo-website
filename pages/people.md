@@ -20,7 +20,7 @@ permalink: /people/
 | [Josh Elser](https://github.com/joshelser)                  | [Hortonworks][hw]                   | [ET][et]   |
 | [Karthick Narendran](https://github.com/karthick-rn)        | [Microsoft][msft]                   | [BST][bst] |
 | [Keith Turner](https://github.com/keith-turner)             | [Microsoft][msft]                   | [ET][et]   |
-| [Kenneth McFarland](https://github.com/kpm1985)             |                                     | [PT][pt]   |
+| [Kenneth McFarland](https://github.com/kennethmcfarland)    |                                     | [PT][pt]   |
 | [Michael Miller](https://github.com/milleruntime)           | [Centroid LLC][centroid]            | [ET][et]   |
 | [Mike Walch](https://github.com/mikewalch)                  | [Peterson Technologies][ptech]      | [ET][et]   |
 
