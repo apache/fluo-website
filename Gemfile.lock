@@ -63,8 +63,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  jekyll (>= 3.7.4)
-  jekyll-redirect-from (>= 0.13.0)
+  jekyll (>= 4.2.0)
+  jekyll-redirect-from (>= 0.16.0)
 
 RUBY VERSION
    ruby 2.7.1p83
