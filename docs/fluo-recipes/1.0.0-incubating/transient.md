@@ -25,7 +25,7 @@ standard way.
 
 ## Registering Transient Ranges
 
-Recipes like [Export Queue](export-queue.md) will automatically register
+Recipes like [Export Queue](../export-queue/) will automatically register
 transient ranges when configured.  If you would like to register your own
 transient ranges, use [TransientRegistry][1].  Below is a simple example of
 using this.

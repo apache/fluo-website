@@ -240,7 +240,7 @@ This row range is defined by using the export queue id as a row prefix for all
 data in the export queue.  So the row range defined by the export queue id
 should not be used by anything else.
 
-All data stored in an export queue is [transient](transient.md). When an export
+All data stored in an export queue is [transient](../transient/). When an export
 queue is configured, it will recommend split points using the [table
 optimization process](table-optimization.md).  The number of splits generated
 by this process can be controlled by setting the number of buckets per tablet

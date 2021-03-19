@@ -1,3 +1,8 @@
-_site
-.sass-cache
-.idea
+/_site
+/.sass-cache
+/.jekyll-cache/
+/.jekyll-metadata
+/vendor
+/.idea
+/*.iml
+/.bundle/
