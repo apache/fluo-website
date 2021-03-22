@@ -39,6 +39,7 @@ based on commits.
 | [Eric Newton](https://github.com/ericnewton)                |                                     | [ET][et]   |
 | [Furkan KAMACI](https://github.com/kamaci)                  | [LAGOM](https://www.lagom.ai)       | [TRT][trt] |
 | [Garvit Bansal](https://github.com/Garvit244)               | [Flipkart](https://www.flipkart.com)| [IST][ist] |
+| [Jared Winick](https://github.com/jaredwinick)              | [Koverse](https://www.koverse.com/) | [MT][mt]   |
 | [Jeffrey Manno](https://github.com/Manno15)                 | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
 | [Jeffrey Zeiberg](https://github.com/jzeiberg)              | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
 | [Lucas Lima Vieira](https://github.com/llvieira)            |                                     | [BRT][brt] |
@@ -69,3 +70,4 @@ based on commits.
 [trt]: https://www.timeanddate.com/time/zones/trt
 [bst]: https://www.timeanddate.com/time/zones/bst
 [gmt]: https://www.timeanddate.com/time/zones/gmt
+[mt]: https://www.timeanddate.com/time/zones/mt
