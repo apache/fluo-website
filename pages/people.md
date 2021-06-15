@@ -35,6 +35,7 @@ based on commits.
 | [Amal Krishnan](https://github.com/krishamal)               |                                     | [IST][ist] |
 | [Ben Kelly](https://github.com/benkelly)                    | [Microsoft][msft]                   | [GMT][gmt] |
 | [Bhuvan Mysore Sreenivas](https://github.com/flyingcanopy)  |                                     | [IST][ist] |
+| [Brian Loss](https://github.com/brianloss)                  | [Microsoft][msft]                   | [ET][et]   |
 | [Dominic Garguilo](https://github.com/DomGarguilo)          | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
 | [Eric Newton](https://github.com/ericnewton)                |                                     | [ET][et]   |
 | [Furkan KAMACI](https://github.com/kamaci)                  | [LAGOM](https://www.lagom.ai)       | [TRT][trt] |
