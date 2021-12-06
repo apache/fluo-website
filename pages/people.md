@@ -23,6 +23,7 @@ permalink: /people/
 | [Kenneth McFarland](https://github.com/kennethmcfarland)    |                                     | [PT][pt]   |
 | [Michael Miller](https://github.com/milleruntime)           | [Centroid LLC][centroid]            | [ET][et]   |
 | [Mike Walch](https://github.com/mikewalch)                  | [Peterson Technologies][ptech]      | [ET][et]   |
+| [Zachary Radtka](https://github.com/zachradtka)             |                                     | [ET][et]   |
 
 ## Contributors
 
