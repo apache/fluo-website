@@ -16,6 +16,7 @@ permalink: /people/
 | [Christopher McTague](https://github.com/cjmctague)         | [Peterson Technologies][ptech]      | [ET][et]   |
 | [Christopher Tubbs](https://github.com/ctubbsii)            |                                     | [ET][et]   |
 | [Drew Farris](https://github.com/drewfarris)                | [Booz Allen Hamilton][bah]          | [ET][et]   |
+| [Jeffrey Manno](https://github.com/Manno15)                 | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
 | [Joseph Koshakow](https://github.com/jkosh44)               |                                     | [ET][et]   |
 | [Josh Elser](https://github.com/joshelser)                  | [Hortonworks][hw]                   | [ET][et]   |
 | [Karthick Narendran](https://github.com/karthick-rn)        | [Microsoft][msft]                   | [BST][bst] |
@@ -41,7 +42,6 @@ based on commits.
 | [Furkan KAMACI](https://github.com/kamaci)                  | [LAGOM](https://www.lagom.ai)       | [TRT][trt] |
 | [Garvit Bansal](https://github.com/Garvit244)               | [Flipkart](https://www.flipkart.com)| [IST][ist] |
 | [Jared Winick](https://github.com/jaredwinick)              | [Koverse](https://www.koverse.com/) | [MT][mt]   |
-| [Jeffrey Manno](https://github.com/Manno15)                 | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
 | [Jeffrey Zeiberg](https://github.com/jzeiberg)              | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
 | [Lucas Lima Vieira](https://github.com/llvieira)            |                                     | [BRT][brt] |
 | [Manjiri Tapaswi](https://github.com/mptap)                 |                                     | [PT][pt]   |
