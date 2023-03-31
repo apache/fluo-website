@@ -21,7 +21,7 @@ permalink: /people/
 | [Joseph Koshakow](https://github.com/jkosh44)               |                                     | [ET][et]   |
 | [Josh Elser](https://github.com/joshelser)                  | [Hortonworks][hw]                   | [ET][et]   |
 | [Karthick Narendran](https://github.com/karthick-rn)        | [Microsoft][msft]                   | [BST][bst] |
-| [Keith Turner](https://github.com/keith-turner)             | [Microsoft][msft]                   | [ET][et]   |
+| [Keith Turner](https://github.com/keith-turner)             | [Wrench.io,LLC][wrench]             | [ET][et]   |
 | [Kenneth McFarland](https://github.com/kennethmcfarland)    |                                     | [PT][pt]   |
 | [Michael Miller](https://github.com/milleruntime)           | [Centroid LLC][centroid]            | [ET][et]   |
 | [Mike Walch](https://github.com/mikewalch)                  | [Peterson Technologies][ptech]      | [ET][et]   |
@@ -73,3 +73,4 @@ based on commits.
 [bst]: https://www.timeanddate.com/time/zones/bst
 [gmt]: https://www.timeanddate.com/time/zones/gmt
 [mt]: https://www.timeanddate.com/time/zones/mt
+[wrench]: https://wrench.io
