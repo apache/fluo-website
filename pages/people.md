@@ -10,7 +10,6 @@ permalink: /people/
 
 | Name                                                        | Organization                        | Timezone   |
 --------------------------------------------------------------|-------------------------------------|------------|
-| [Arvind Shyamsundar](https://github.com/arvindshmicrosoft/) | [Microsoft][msft]                   | [PT][pt]   |
 | [Billie Rinaldi](https://github.com/billierinaldi)          | [Microsoft][msft]                   | [ET][et]   |
 | [Brian Loss](https://github.com/brianloss)                  | [Microsoft][msft]                   | [ET][et]   |
 | [Corey Nolet](https://github.com/cjnolet)                   | [Tetra Concepts LLC][tc]            | [ET][et]   |
@@ -18,13 +17,19 @@ permalink: /people/
 | [Christopher Tubbs](https://github.com/ctubbsii)            |                                     | [ET][et]   |
 | [Drew Farris](https://github.com/drewfarris)                | [Booz Allen Hamilton][bah]          | [ET][et]   |
 | [Jeffrey Manno](https://github.com/Manno15)                 | [ASRC Federal](https://www.asrc.com)| [ET][et]   |
-| [Joseph Koshakow](https://github.com/jkosh44)               |                                     | [ET][et]   |
 | [Josh Elser](https://github.com/joshelser)                  | [Hortonworks][hw]                   | [ET][et]   |
 | [Karthick Narendran](https://github.com/karthick-rn)        | [Microsoft][msft]                   | [BST][bst] |
 | [Keith Turner](https://github.com/keith-turner)             | [Wrench.io,LLC][wrench]             | [ET][et]   |
 | [Kenneth McFarland](https://github.com/kennethmcfarland)    |                                     | [PT][pt]   |
 | [Michael Miller](https://github.com/milleruntime)           | [Centroid LLC][centroid]            | [ET][et]   |
 | [Mike Walch](https://github.com/mikewalch)                  | [Peterson Technologies][ptech]      | [ET][et]   |
+
+## Committers Only (PMC Emeritus)
+
+| Name                                                        | Organization                        | Timezone   |
+--------------------------------------------------------------|-------------------------------------|------------|
+| [Arvind Shyamsundar](https://github.com/arvindshmicrosoft/) | [Microsoft][msft]                   | [PT][pt]   |
+| [Joseph Koshakow](https://github.com/jkosh44)               |                                     | [ET][et]   |
 
 ## Contributors
 
