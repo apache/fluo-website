@@ -5,10 +5,74 @@
     <description>Apache Fluo Website</description>
     <link>https://fluo.apache.org//</link>
     <atom:link href="https://fluo.apache.org//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 18 May 2023 14:22:22 +0000</pubDate>
-    <lastBuildDate>Thu, 18 May 2023 14:22:22 +0000</lastBuildDate>
+    <pubDate>Wed, 11 Oct 2023 20:04:31 +0000</pubDate>
+    <lastBuildDate>Wed, 11 Oct 2023 20:04:31 +0000</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
+    
+      <item>
+        <title>Apache Fluo 2.0.0</title>
+        <description>&lt;p&gt;Apache Fluo is a distributed processing system that lets users make incremental
+updates to large data sets.  With Apache Fluo, users can set up workflows that
+execute cross node transactions when data changes. These workflows enable users
+to continuously join new data into large existing data sets without
+reprocessing all data.  Apache Fluo is built on [Apache Accumulo].&lt;/p&gt;
+
+&lt;p&gt;Below are resources for this release:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download a release tarball and verify by these [procedures] using these [KEYS]&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-bin.tar.gz&quot;&gt;fluo-2.0.0-bin.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-bin.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-bin.tar.gz.sha512&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-source-release.tar.gz&quot;&gt;fluo-2.0.0-source-release.tar.gz&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-source-release.tar.gz.asc&quot;&gt;ASC&lt;/a&gt; &lt;a href=&quot;https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-source-release.tar.gz.sha512&quot;&gt;SHA&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Read the &lt;a href=&quot;https://javadoc.io/doc/org.apache.fluo/fluo-api/2.0.0/index.html&quot;&gt;Javadocs&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Apache Fluo follows &lt;a href=&quot;http://semver.org/&quot;&gt;semver&lt;/a&gt; for its API . The API consists
+of everything under the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;org.apache.fluo.api&lt;/code&gt; package. Code outside of this
+package can change at any time. If your project is using Fluo code that falls
+outside of the API, then consider &lt;a href=&quot;/getinvolved/&quot;&gt;initiating a discussion&lt;/a&gt;
+about adding it to the API.&lt;/p&gt;
+
+&lt;h2 id=&quot;notable-changes&quot;&gt;Notable changes&lt;/h2&gt;
+
+&lt;p&gt;The major changes in 2.0.0 are highlighted here, for the complete list of changes, see the &lt;a href=&quot;https://github.com/apache/fluo/milestone/8?closed=1&quot;&gt;2.0.0
+Milestone&lt;/a&gt; on Github.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Many performance and bug fixes were made.&lt;/li&gt;
+  &lt;li&gt;Fluo was updated to work with Accumulo 2.1.0, Java 11, and Hadoop 3&lt;/li&gt;
+  &lt;li&gt;Added scan authorizations to snapshots &lt;a href=&quot;https://github.com/apache/fluo/pull/1120&quot;&gt;1120&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Added asynchronous get methods to snapshots for reading data. &lt;a href=&quot;https://github.com/apache/fluo/pull/969&quot;&gt;969&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Added asynchronous submit method to LoaderExecutor &lt;a href=&quot;https://github.com/apache/fluo/pull/1113&quot;&gt;1100&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Added option to Fluo’s scan command to show notifications.  &lt;a href=&quot;https://github.com/apache/fluo/issues/1026&quot;&gt;1026&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Fluo now sets Accumulo scan hints. This can be used to optimize Fluo server side scan execution in Accumulo. &lt;a href=&quot;https://github.com/apache/fluo/pull/1072&quot;&gt;1072&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Summaries of Fluo’s metadata are generated in Accumulo. This could be used to select files for compaction in Accumulo. &lt;a href=&quot;https://github.com/apache/fluo/pull/1071&quot;&gt;1071&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 18 Apr 2023 15:00:00 +0000</pubDate>
+        <link>https://fluo.apache.org//release/2.0.0/</link>
+        <guid isPermaLink="true">https://fluo.apache.org//release/2.0.0/</guid>
+        
+        
+        <category>release</category>
+        
+      </item>
     
       <item>
         <title>How Fluo Leveraged Scan Executors</title>
@@ -1076,198 +1140,6 @@ implications of early vs late binding is something to consider.&lt;/p&gt;
         <pubDate>Thu, 22 Dec 2016 11:43:00 +0000</pubDate>
         <link>https://fluo.apache.org//blog/2016/12/22/spark-load/</link>
         <guid isPermaLink="true">https://fluo.apache.org//blog/2016/12/22/spark-load/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Java needs an immutable byte string</title>
-        <description>&lt;h2 id=&quot;fluo-data-model-and-transactions&quot;&gt;Fluo Data Model and Transactions&lt;/h2&gt;
-
-&lt;p&gt;Fluo uses a &lt;a href=&quot;/tour/data-model/&quot;&gt;data model&lt;/a&gt; composed of key/values.  Each key has four fields :
-&lt;em&gt;row&lt;/em&gt;,&lt;em&gt;family&lt;/em&gt;,&lt;em&gt;qualifier&lt;/em&gt;,&lt;em&gt;visibility&lt;/em&gt;.  Each of these key fields is a sequence of bytes.  Fluo
-transactions read key/values from a snapshot of a table.  Any changes a transaction makes is
-buffered until commit.  At the time of commit the changes are only made if no other transaction
-modified any of the key values.&lt;/p&gt;
-
-&lt;p&gt;While designing the Fluo API we were uncertain about making Fluo’s basic &lt;a href=&quot;/tour/data-pojos/&quot;&gt;POJOs&lt;/a&gt; mutable or
-immutable.  In the end we decided to go with immutable types to make writing correct Fluo code
-easier.  One of the POJOs we created was &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/data/Bytes.html&quot;&gt;Bytes&lt;/a&gt;,  an immutable wrapper around a byte array.  We
-also created &lt;a href=&quot;https://javadoc.io/page/org.apache.fluo/fluo-api/1.2.0/org/apache/fluo/api/data/Bytes.BytesBuilder.html&quot;&gt;BytesBuilder&lt;/a&gt;, which is analogous to StringBuilder, and makes it easy and efficient
-to construct Bytes.&lt;/p&gt;
-
-&lt;h3 id=&quot;what-about-the-copies&quot;&gt;What about the copies?&lt;/h3&gt;
-
-&lt;p&gt;Bytes requires a defensive copy at creation time.  When we were designing Fluo’s API we were worried
-about this at first.  However a simple truth became apparent.  If the API took a mutable type, then
-all boundary points between the user and Fluo would require defensive copies.  For example assume
-Fluo’s API took byte arrays and consider the following code.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//A Fluo transaction&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Fluo will buffer changes until a transaction is committed.  In the example above since Fluo accepts
-a mutable row, it would be prudent to do a defensive copy each time &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set()&lt;/code&gt; is called above.&lt;/p&gt;
-
-&lt;p&gt;In the code below where an immutable byte array wrapper is used, the calls to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set()&lt;/code&gt; do not need to
-do a defensive copy.  So when comparing the two examples, the immutable byte wrapper results in less
-defensive copies.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//A Fluo transaction&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;Transaction&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;Bytes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;We really did not want to create Bytes and BytesBuilder types, however we could not find what we
-needed in Java’s standard libraries.  The following sections discuss some of the options we
-considered.&lt;/p&gt;
-
-&lt;h2 id=&quot;why-not-use-string&quot;&gt;Why not use String?&lt;/h2&gt;
-
-&lt;p&gt;Java’s String type is an immutable wrapper around a char array.  In order to store a byte array in a
-String, Java must decode the byte array using a character set.  Some sequences of bytes do not map
-in some characters sets.  Therefore, trying to stuff arbitrary binary data in a String can corrupt
-the data.  The following little program shows this, it will print &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;String can be made to work by specifying an appropriate character set. The following program will
-print &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;.  However, this is error prone and inefficient.  It’s error prone in the case where the
-character set is wrong or omitted.  It’s inefficient because it results in copying from byte arrays
-to char arrays and visa versa.  Also, char arrays use twice as much memory.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ISO_8859_1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ISO_8859_1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;why-not-use-bytebuffer&quot;&gt;Why not use ByteBuffer?&lt;/h2&gt;
-
-&lt;p&gt;A read only ByteBuffer might seem like it would fit the bill of an immutable byte array wrapper.
-However, the following program shows two ways that ByteBuffer falls short.  ByteBuffers are great
-for I/O, but it would not be prudent to use them when immutability is desired.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;ByteBuffer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ByteBuffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;wrap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asReadOnlyBuffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;bytes1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bb1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The program above prints the following, which is less than ideal :&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;747721
-830367
-26786
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This little program shows two things.  First, the only guarantee we are getting from
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;asReadOnlyBuffer()&lt;/code&gt; is that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1&lt;/code&gt; can not be used to modify &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bytes1&lt;/code&gt;.  However, the originator of
-the read only buffer can still modify the wrapped byte array.   Java’s String and Fluo’s Bytes avoid
-this by always copying data into an internal private array that never escapes.&lt;/p&gt;
-
-&lt;p&gt;The second issue is that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1&lt;/code&gt; has a position and calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1.get()&lt;/code&gt; changes this position.
-Changing the position conceptually changes the contents of the ByteBuffer.  This is why &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hashCode()&lt;/code&gt;
-returns something different after &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1.get()&lt;/code&gt; is called.  So even though &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1&lt;/code&gt; does not enable
-mutating &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bytes1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bb1&lt;/code&gt; is itself mutable.&lt;/p&gt;
-
-&lt;h2 id=&quot;why-not-use-protobufs-bytestring&quot;&gt;Why not use Protobuf’s ByteString?&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://developers.google.com/protocol-buffers/&quot;&gt;Protocol Buffers&lt;/a&gt; has a beautiful implementation of an immutable byte array wrapper called
-&lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/ByteString&quot;&gt;ByteString&lt;/a&gt;.  I would encourage its use when possible.  I discovered this jewel after Bytes was
-implemented in Fluo.  Using it was considered, however in Fluo’s case its not really appropriate to
-use for two reasons.  First, any library designer should try to minimize what transitive dependencies
-they force on users.  Internally Fluo does not currently use Protocol Buffers in its implementation,
-so this would be a new dependency for Fluo users.  The second reason is going to require some
-background to explain.&lt;/p&gt;
-
-&lt;p&gt;Technologies like &lt;a href=&quot;https://www.osgi.org&quot;&gt;OSGI&lt;/a&gt; and &lt;a href=&quot;http://openjdk.java.net/projects/jigsaw/&quot;&gt;Jigsaw&lt;/a&gt; seek to modularize Java libraries and provide dependency
-isolation.  Dependency isolation allows a user to use a library without having to share a libraries
-dependencies.  For example, consider the following hypothetical scenario.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fluo’s implementation uses Protobuf version 2.5&lt;/li&gt;
-  &lt;li&gt;Fluo user code uses Protobuf version 1.8&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Without dependency isolation, the user must converge dependencies and make their application and
-Fluo use the same version of Protobuf.  Sometimes this works without issue, but sometimes things
-will break because Protobuf dropped, changed, or added a method.&lt;/p&gt;
-
-&lt;p&gt;With dependency isolation, Fluo’s implementation and Fluo user code can easily use different versions
-of Protobuf.  This is only true as long as Fluo’s API does not use Protobuf.  So, this is the second
-reason that Fluo should not use classes from Protobuf in its API.  If Fluo used Protobuf in its API
-then it forces the user to have to converge dependencies, even if they are using OSGI or Jigsaw.&lt;/p&gt;
-
-&lt;h2 id=&quot;java-should-have-an-immutable-byte-array-wrapper&quot;&gt;Java should have an immutable byte array wrapper&lt;/h2&gt;
-
-&lt;p&gt;So far, the following arguments have been presented:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;An immutable byte array wrapper is useful and needed.&lt;/li&gt;
-  &lt;li&gt;Java does not provide a good immutable byte array wrapper.&lt;/li&gt;
-  &lt;li&gt;Using an immutable byte array wrapper from library X in library Y’s API may be problematic.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;These arguments all point to the need for an immutable byte array wrapper to exist in Java. This
-need could also be satisfied by a library outside of Java with some restrictions. Assume a new
-library called Lib Immutable Byte Array Wrapper (libibaw) was created.  In order for libibaw to be
-used in other libraries APIs, it would need to promise the following.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;No dependencies other than Java.&lt;/li&gt;
-  &lt;li&gt;Backwards compatibility.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The reason backwards compatibility is important is that it would make dependency convergence super
-easy.  The following situation shows this.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fluo uses libibaw 1.2 in its API&lt;/li&gt;
-  &lt;li&gt;Fluo user code uses libibaw 1.1.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If libibaw promises backward compatibility, then all the user needs to do is use version 1.2 of
-libibaw.  With the promise of backwards compatibility, using version 1.2 will not break the users
-code.&lt;/p&gt;
-
-&lt;p&gt;Having a library would be nice, but having something in Java would minimize copies.  Outside
-of Java there will inevitably be multiple implementations and going between them will require a
-copy.  For example if a user uses Fluo and Protobuf they may be forced to copy Fluo’s Bytes to
-Protobuf’s ByteString. If Protobuf and Fluo both used an immutable byte sequence type from Java, this
-would not be needed.&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 10 Nov 2016 11:43:00 +0000</pubDate>
-        <link>https://fluo.apache.org//blog/2016/11/10/immutable-bytes/</link>
-        <guid isPermaLink="true">https://fluo.apache.org//blog/2016/11/10/immutable-bytes/</guid>
         
         
         <category>blog</category>

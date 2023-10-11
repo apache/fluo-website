@@ -8,10 +8,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" integrity="sha384-h21C2fcDk/eFsW9sC9h0dhokq5pDinLNklTKoxIZRUn3+hvmgQSffLLQ4G4l2eEr" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/fluo.css">
-    <link rel="canonical" href="https://fluo.apache.org//releases/">
+    <link rel="canonical" href="https://fluo.apache.org//release/2.0.0/">
     <link rel="icon" type="image/png" href="/resources/favicon.png">
     
-    <title>Releases | Apache Fluo</title>
+    <title>Apache Fluo 2.0.0 | Apache Fluo</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -100,88 +100,75 @@
     <div class="container">
       <div class="row">
           <div class="col-sm-12">
-            <h2 id="current">Current</h2>
-
-<div class="row">
-  <a href="/release/fluo-1.2.0">
-    <div class="col-sm-4 btn btn-info">
-      <h3>Fluo 1.2.0</h3>
-      <p>Core project containing 'fluo' command that initializes<br /> applications, starts oracle and worker processes, and<br />manages running applications</p>
-    </div>
-  </a>
-  <a href="/release/fluo-yarn-1.0.0">
-    <div class="col-sm-4 btn btn-warning">
-      <h3>Fluo YARN 1.0.0</h3>
-      <p>Project containing 'fluo-yarn' command that launches<br />Fluo applications in YARN after they have been<br />initialized using 'fluo' command</p>
-    </div>
-  </a>
-  <a href="/release/fluo-recipes-1.2.0">
-    <div class="col-sm-4 btn btn-success">
-      <h3>Fluo Recipes 1.2.0</h3>
-      <p>Libraries containing common code that build on the<br />Fluo API to offer complex transactional updates or<br />provide additional utilities<br /></p>
-    </div>
-  </a>
+            <div class="post-header">
+  <h2>Apache Fluo 2.0.0</h2>
+  <p class="text-muted">18 Apr 2023</p>
+  <p><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Apache Fluo 2.0.0&url=https://fluo.apache.org//release/2.0.0/&via=ApacheFluo&related=ApacheFluo" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a></p>
 </div>
 
-<h2 id="archive">Archive</h2>
 
-<h3>2023</h3>
 
-<div class="row" style="margin-top: 15px">
-    <div class="col-md-1">Apr 18</div>
-    <div class="col-md-10"><a href="/release/fluo-2.0.0">Apache Fluo 2.0.0</a></div>
-  </div>
 
-<hr />
 
-<h3>2018</h3>
+<div class="post-content">
+  <p>Apache Fluo is a distributed processing system that lets users make incremental
+updates to large data sets.  With Apache Fluo, users can set up workflows that
+execute cross node transactions when data changes. These workflows enable users
+to continuously join new data into large existing data sets without
+reprocessing all data.  Apache Fluo is built on [Apache Accumulo].</p>
 
-<div class="row" style="margin-top: 15px">
-    <div class="col-md-1">Mar 06</div>
-    <div class="col-md-10"><a href="/release/fluo-yarn-1.0.0">Apache Fluo YARN 1.0.0</a></div>
-  </div>
+<p>Below are resources for this release:</p>
 
-<div class="row" style="margin-top: 15px">
-    <div class="col-md-1">Mar 06</div>
-    <div class="col-md-10"><a href="/release/fluo-recipes-1.2.0">Apache Fluo Recipes 1.2.0</a></div>
-  </div>
+<ul>
+  <li>
+    <p>Download a release tarball and verify by these [procedures] using these [KEYS]</p>
 
-<div class="row" style="margin-top: 15px">
-    <div class="col-md-1">Feb 26</div>
-    <div class="col-md-10"><a href="/release/fluo-1.2.0">Apache Fluo 1.2.0</a></div>
-  </div>
+    <table>
+      <tbody>
+        <tr>
+          <td><a href="https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-bin.tar.gz">fluo-2.0.0-bin.tar.gz</a></td>
+          <td><a href="https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-bin.tar.gz.asc">ASC</a> <a href="https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-bin.tar.gz.sha512">SHA</a></td>
+        </tr>
+        <tr>
+          <td><a href="https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-source-release.tar.gz">fluo-2.0.0-source-release.tar.gz</a></td>
+          <td><a href="https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-source-release.tar.gz.asc">ASC</a> <a href="https://dlcdn.apache.org/fluo/fluo/2.0.0/fluo-2.0.0-source-release.tar.gz.sha512">SHA</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>Read the <a href="https://javadoc.io/doc/org.apache.fluo/fluo-api/2.0.0/index.html">Javadocs</a>.</p>
+  </li>
+</ul>
 
-<hr />
+<p>Apache Fluo follows <a href="http://semver.org/">semver</a> for its API . The API consists
+of everything under the <code class="language-plaintext highlighter-rouge">org.apache.fluo.api</code> package. Code outside of this
+package can change at any time. If your project is using Fluo code that falls
+outside of the API, then consider <a href="/getinvolved/">initiating a discussion</a>
+about adding it to the API.</p>
 
-<h3>2017</h3>
+<h2 id="notable-changes">Notable changes</h2>
 
-<div class="row" style="margin-top: 15px">
-    <div class="col-md-1">Jun 22</div>
-    <div class="col-md-10"><a href="/release/fluo-recipes-1.1.0-incubating">Apache Fluo Recipes 1.1.0-incubating</a></div>
-  </div>
+<p>The major changes in 2.0.0 are highlighted here, for the complete list of changes, see the <a href="https://github.com/apache/fluo/milestone/8?closed=1">2.0.0
+Milestone</a> on Github.</p>
 
-<div class="row" style="margin-top: 15px">
-    <div class="col-md-1">Jun 12</div>
-    <div class="col-md-10"><a href="/release/fluo-1.1.0-incubating">Apache Fluo 1.1.0-incubating</a></div>
-  </div>
+<ul>
+  <li>Many performance and bug fixes were made.</li>
+  <li>Fluo was updated to work with Accumulo 2.1.0, Java 11, and Hadoop 3</li>
+  <li>Added scan authorizations to snapshots <a href="https://github.com/apache/fluo/pull/1120">1120</a></li>
+  <li>Added asynchronous get methods to snapshots for reading data. <a href="https://github.com/apache/fluo/pull/969">969</a></li>
+  <li>Added asynchronous submit method to LoaderExecutor <a href="https://github.com/apache/fluo/pull/1113">1100</a></li>
+  <li>Added option to Fluo’s scan command to show notifications.  <a href="https://github.com/apache/fluo/issues/1026">1026</a></li>
+  <li>Fluo now sets Accumulo scan hints. This can be used to optimize Fluo server side scan execution in Accumulo. <a href="https://github.com/apache/fluo/pull/1072">1072</a></li>
+  <li>Summaries of Fluo’s metadata are generated in Accumulo. This could be used to select files for compaction in Accumulo. <a href="https://github.com/apache/fluo/pull/1071">1071</a></li>
+</ul>
 
-<hr />
 
-<h3>2016</h3>
+</div>
 
-<div class="row" style="margin-top: 15px">
-    <div class="col-md-1">Oct 28</div>
-    <div class="col-md-10"><a href="/release/fluo-recipes-1.0.0-incubating">Apache Fluo Recipes 1.0.0-incubating</a></div>
-  </div>
-
-<div class="row" style="margin-top: 15px">
-    <div class="col-md-1">Oct 14</div>
-    <div class="col-md-10"><a href="/release/fluo-1.0.0-incubating">Apache Fluo 1.0.0-incubating</a></div>
-  </div>
-
-<hr />
-
-<p>Releases before joining Apache are in <a href="/pre-asf-release/">pre-ASF archive</a>.</p>
+<div>
+  <p class="text-muted">View all releases in the <a href="/releases/">archive</a></p>
+</div>
 
           </div>
       </div>
