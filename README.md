@@ -68,56 +68,12 @@ replace any reference to `fluo` with `recipes`.
    
 ## Publishing
 
-### Automatic Staging
-
 Changes pushed to our `main` branch will automatically trigger [Jekyll] to
-build our site from that branch and push the result to our `asf-staging`
-branch, where they will be served on [our default staging site][staging].
-
-### Publishing Staging to Production
-
-First, add our repository as a remote in your local clone, if you haven't
-already done so (these commands assume the name of that remote is 'upstream').
-
-Example:
-
-```bash
-git clone https://github.com/<yourusername>/fluo-website
-cd fluo-website
-git remote add upstream https://github.com/apache/fluo-website
-```
-
-Next, publish the staging site to production by updating the `asf-site` branch
-to match the contents in the `asf-staging` branch:
-
-```bash
-# Step 0: stay in main branch; you never need to switch
-git checkout main
-
-# Step 1: update your upstream remote
-git remote update upstream
-
-# Step 2: push upstream/asf-staging to upstream/asf-site
-# run next command with --dry-run first to see what it will do without making changes
-git push upstream upstream/asf-staging:asf-site
-```
-
-A convenience script can be found that performs these steps for you, after
-asking which remote you want to use. It is located in the `main` branch at
-`_scripts/publish.sh`
-
-Note that Step 2 should always be a fast-forward merge. That is, there should
-never be any reason to force-push it if everything is done correctly. If extra
-commits are ever added to `asf-site` that are not present in `asf-staging`,
-then those branches will need to be sync'd back up in order to continue
-avoiding force pushes.
-
-The final site can be viewed [here][production].
-
+build our site from that branch and push the result to our `asf-site`
+branch, where they will be served on [our production site][production].
 
 [Jekyll]: https://jekyllrb.com/
 [production]: https://fluo.apache.org
-[staging]: https://fluo.staged.apache.org
 [ti]: https://github.com/apache/fluo-website/workflows/CI/badge.svg
 [tl]: https://github.com/apache/fluo-website/actions
 [li]: http://img.shields.io/badge/license-ASL-blue.svg
